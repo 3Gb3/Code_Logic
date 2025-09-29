@@ -178,15 +178,9 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ## 👥 Equipe
 
-- **Desenvolvedor**: [Seu Nome]
+- **Desenvolvedor**: Gabriel Schwingel Conci
 - **Orientador**: Professor Arthur Marques de Oliveira
 - **Instituição**: Faculdade Cesuca
-
-## 📞 Contato
-
-- **Email**: [seu-email@exemplo.com]
-- **LinkedIn**: [Seu LinkedIn]
-- **GitHub**: [Seu GitHub]
 
 ## 🔄 Status do Desenvolvimento
 
@@ -225,4 +219,4 @@ O CodeLogic visa proporcionar uma experiência de aprendizado completa em progra
 
 ---
 
-*Projeto desenvolvido como parte do curso de [Seu Curso] na Faculdade Cesuca, sob orientação do Professor Arthur Marques de Oliveira.*
+*Projeto desenvolvido como parte do curso de Análise e Desenvolvimento de Sistemas na Faculdade Cesuca, sob orientação do Professor Arthur Marques de Oliveira.*
