@@ -1,0 +1,278 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 2 - Percorrendo Matrizes | CodeLogic{% endblock %}
+{% block lesson_title %}Aula 2 - Percorrendo Matrizes{% endblock %}
+
+{% block theory_content %}
+<div class="content-section">
+    <h2>🎯 Objetivos da Aula</h2>
+    <ul>
+        <li>Aprender loops aninhados para percorrer matrizes</li>
+        <li>Entender a diferença entre percorrer por linha e por coluna</li>
+        <li>Praticar com diferentes padrões de percorrimento</li>
+        <li>Aplicar em problemas reais</li>
+    </ul>
+</div>
+
+<div class="content-section">
+    <h2>🔄 Loops Aninhados</h2>
+    <p>
+        Para percorrer uma matriz completamente, precisamos de dois loops:
+        um para as linhas e outro para as colunas.
+    </p>
+    
+    <div class="code-example">
+        <h3>Estrutura básica:</h3>
+        <pre><code>matriz = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+
+# Loop externo: linhas
+for linha in range(len(matriz)):
+    # Loop interno: colunas
+    for coluna in range(len(matriz[0])):
+        elemento = matriz[linha][coluna]
+        print(elemento, end=" ")
+    print()  # Nova linha após cada linha da matriz</code></pre>
+    </div>
+
+    <div class="highlight-box">
+        <h3>💡 Resultado:</h3>
+        <pre>1 2 3
+4 5 6
+7 8 9</pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>📊 Diferentes Formas de Percorrer</h2>
+    
+    <div class="code-example">
+        <h3>1. Por linha (padrão):</h3>
+        <pre><code>for i in range(len(matriz)):
+    for j in range(len(matriz[0])):
+        print(f"[{i}][{j}] = {matriz[i][j]}")
+        
+# Resultado:
+# [0][0] = 1
+# [0][1] = 2
+# [0][2] = 3
+# [1][0] = 4...</code></pre>
+    </div>
+
+    <div class="code-example">
+        <h3>2. Por coluna:</h3>
+        <pre><code>for j in range(len(matriz[0])):  # Colunas primeiro
+    for i in range(len(matriz)):     # Depois linhas
+        print(f"[{i}][{j}] = {matriz[i][j]}")
+        
+# Resultado:
+# [0][0] = 1
+# [1][0] = 4
+# [2][0] = 7
+# [0][1] = 2...</code></pre>
+    </div>
+
+    <div class="code-example">
+        <h3>3. Usando enumerate:</h3>
+        <pre><code>for i, linha in enumerate(matriz):
+    for j, elemento in enumerate(linha):
+        print(f"Posição ({i},{j}): {elemento}")</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>🔍 Operações Comuns</h2>
+    
+    <div class="code-example">
+        <h3>Soma de todos os elementos:</h3>
+        <pre><code>matriz = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+
+soma_total = 0
+for i in range(len(matriz)):
+    for j in range(len(matriz[0])):
+        soma_total += matriz[i][j]
+
+print(f"Soma total: {soma_total}")  # 45</code></pre>
+    </div>
+
+    <div class="code-example">
+        <h3>Encontrar o maior elemento:</h3>
+        <pre><code>maior = matriz[0][0]  # Primeiro elemento como referência
+posicao = (0, 0)
+
+for i in range(len(matriz)):
+    for j in range(len(matriz[0])):
+        if matriz[i][j] > maior:
+            maior = matriz[i][j]
+            posicao = (i, j)
+
+print(f"Maior elemento: {maior} na posição {posicao}")</code></pre>
+    </div>
+
+    <div class="code-example">
+        <h3>Contar elementos específicos:</h3>
+        <pre><code>contador = 0
+valor_procurado = 5
+
+for i in range(len(matriz)):
+    for j in range(len(matriz[0])):
+        if matriz[i][j] == valor_procurado:
+            contador += 1
+
+print(f"Encontrei {contador} elemento(s) = {valor_procurado}")</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>🏠 Exemplo Prático: Assentos de Cinema</h2>
+    
+    <div class="example-box">
+        <h3>Sistema de Reservas:</h3>
+        <pre><code># 0 = livre, 1 = ocupado
+cinema = [
+    [0, 1, 0, 1],  # Fila A
+    [1, 1, 0, 0],  # Fila B
+    [0, 0, 1, 1]   # Fila C
+]
+
+print("🎬 Mapa do Cinema:")
+filas = ['A', 'B', 'C']
+
+for i in range(len(cinema)):
+    print(f"Fila {filas[i]}: ", end="")
+    for j in range(len(cinema[0])):
+        if cinema[i][j] == 0:
+            print("🟢", end=" ")  # Livre
+        else:
+            print("🔴", end=" ")  # Ocupado
+    print()
+
+# Contar assentos livres
+livres = 0
+for i in range(len(cinema)):
+    for j in range(len(cinema[0])):
+        if cinema[i][j] == 0:
+            livres += 1
+
+print(f"\n💺 Assentos livres: {livres}")</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>🌟 Padrões Especiais</h2>
+    
+    <div class="code-example">
+        <h3>Diagonal principal:</h3>
+        <pre><code># Matriz quadrada - diagonal onde i == j
+for i in range(len(matriz)):
+    for j in range(len(matriz[0])):
+        if i == j:  # Diagonal principal
+            print(f"Diagonal: {matriz[i][j]}")
+            
+# Resultado: 1, 5, 9</code></pre>
+    </div>
+
+    <div class="code-example">
+        <h3>Triângulo superior:</h3>
+        <pre><code># Elementos acima da diagonal
+for i in range(len(matriz)):
+    for j in range(len(matriz[0])):
+        if j > i:  # Acima da diagonal
+            print(f"Superior: {matriz[i][j]}")
+            
+# Resultado: 2, 3, 6</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>⚡ Dicas de Performance</h2>
+    <ul>
+        <li><strong>Ordem dos loops:</strong> Por linha é mais eficiente (organização da memória)</li>
+        <li><strong>Evite recalcular:</strong> Armazene len(matriz) em variáveis</li>
+        <li><strong>Break early:</strong> Use break quando encontrar o que procura</li>
+        <li><strong>List comprehension:</strong> Para operações simples pode ser mais rápida</li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block exercise_content %}
+<div class="exercise-header">
+    <h2>🏋️‍♂️ Exercício Prático</h2>
+    <p>Analise as vendas de uma loja em uma semana</p>
+</div>
+
+<div class="exercise-description">
+    <h3>📋 Instruções:</h3>
+    <ol>
+        <li>Você tem uma matriz de vendas (4 produtos x 7 dias)</li>
+        <li>Calcule o total de vendas de cada produto</li>
+        <li>Calcule o total de vendas de cada dia</li>
+        <li>Encontre o dia com maior venda total</li>
+        <li>Encontre o produto mais vendido</li>
+    </ol>
+</div>
+
+<div class="exercise-data">
+    <h3>📊 Dados das Vendas:</h3>
+    <pre>Matriz vendas (Produto x Dia):
+     Dom Seg Ter Qua Qui Sex Sab
+P1:  10  15  12  18  20  25  22
+P2:   8  12  10  15  18  20  16
+P3:  15  20  18  22  25  30  28
+P4:   5   8   6  10  12  15  12</pre>
+</div>
+
+<div class="exercise-hints">
+    <h3>💡 Dicas:</h3>
+    <ul>
+        <li>Use loops aninhados para percorrer a matriz</li>
+        <li>Para total por produto: some a linha</li>
+        <li>Para total por dia: some a coluna</li>
+        <li>Mantenha controle do maior valor encontrado</li>
+    </ul>
+</div>
+
+<div class="expected-output">
+    <h3>📤 Resultado Esperado:</h3>
+    <pre>Vendas por produto:
+Produto 1: 122 unidades
+Produto 2: 99 unidades
+Produto 3: 158 unidades
+Produto 4: 68 unidades
+
+Vendas por dia:
+Domingo: 38
+Segunda: 55
+...
+
+Dia com maior venda: Sábado (78)
+Produto mais vendido: Produto 3 (158)</pre>
+</div>
+{% endblock %}
+
+{% block starter_code %}
+# Exercício: Análise de Vendas
+# Complete o código abaixo
+
+vendas = [
+    [10, 15, 12, 18, 20, 25, 22],  # Produto 1
+    [8, 12, 10, 15, 18, 20, 16],   # Produto 2
+    [15, 20, 18, 22, 25, 30, 28],  # Produto 3
+    [5, 8, 6, 10, 12, 15, 12]      # Produto 4
+]
+
+dias = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']
+
+# Seu código aqui:
+# 1. Calcular vendas por produto
+# 2. Calcular vendas por dia
+# 3. Encontrar maior dia
+# 4. Encontrar produto mais vendido
+{% endblock %}

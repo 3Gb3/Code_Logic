@@ -1,0 +1,220 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 8 - Match-Case | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 8 – Match-Case (Python 3.10+){% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Conhecer a nova estrutura match-case</li>
+            <li>Comparar com if-elif-else tradicionais</li>
+            <li>Usar pattern matching eficientemente</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>🆕 O que é Match-Case?</h2>
+        <p>Introduzido no Python 3.10, o match-case é similar ao switch-case de outras linguagens, mas mais poderoso.</p>
+        
+        <h3>Sintaxe Básica:</h3>
+        <pre><code>match variavel:
+    case valor1:
+        # código para valor1
+    case valor2:
+        # código para valor2
+    case _:  # default (opcional)
+        # código padrão</code></pre>
+    </section>
+
+    <section>
+        <h2>📝 Exemplo Básico: Menu de Opções</h2>
+        
+        <h3>Com if-elif tradicional:</h3>
+        <pre><code>opcao = input("Digite uma opção (1-4): ")
+
+if opcao == "1":
+    print("Cadastrar usuário")
+elif opcao == "2":
+    print("Listar usuários")
+elif opcao == "3":
+    print("Editar usuário")
+elif opcao == "4":
+    print("Excluir usuário")
+else:
+    print("Opção inválida")</code></pre>
+    
+        <h3>Com match-case:</h3>
+        <pre><code>opcao = input("Digite uma opção (1-4): ")
+
+match opcao:
+    case "1":
+        print("Cadastrar usuário")
+    case "2":
+        print("Listar usuários")
+    case "3":
+        print("Editar usuário")
+    case "4":
+        print("Excluir usuário")
+    case _:
+        print("Opção inválida")</code></pre>
+    </section>
+
+    <section>
+        <h2>🎯 Pattern Matching Avançado</h2>
+        
+        <h3>1. Múltiplos Valores</h3>
+        <pre><code>dia_semana = input("Que dia é hoje? ").lower()
+
+match dia_semana:
+    case "segunda" | "terça" | "quarta" | "quinta" | "sexta":
+        print("Dia útil - hora de trabalhar! 💼")
+    case "sábado" | "domingo":
+        print("Final de semana - hora de descansar! 🏖️")
+    case _:
+        print("Dia inválido")</code></pre>
+    
+        <h3>2. Matching com Condições (Guards)</h3>
+        <pre><code>idade = int(input("Sua idade: "))
+
+match idade:
+    case x if x < 0:
+        print("Idade inválida")
+    case x if x < 13:
+        print("Criança")
+    case x if x < 18:
+        print("Adolescente")
+    case x if x < 60:
+        print("Adulto")
+    case x if x >= 60:
+        print("Idoso")</code></pre>
+    </section>
+
+    <section>
+        <h2>📊 Calculadora com Match-Case</h2>
+        <pre><code>num1 = float(input("Primeiro número: "))
+operacao = input("Operação (+, -, *, /): ")
+num2 = float(input("Segundo número: "))
+
+match operacao:
+    case "+":
+        resultado = num1 + num2
+        print(f"{num1} + {num2} = {resultado}")
+    case "-":
+        resultado = num1 - num2
+        print(f"{num1} - {num2} = {resultado}")
+    case "*":
+        resultado = num1 * num2
+        print(f"{num1} × {num2} = {resultado}")
+    case "/":
+        if num2 != 0:
+            resultado = num1 / num2
+            print(f"{num1} ÷ {num2} = {resultado}")
+        else:
+            print("Erro: Divisão por zero!")
+    case _:
+        print("Operação inválida!")</code></pre>
+    </section>
+
+    <section>
+        <h2>🎮 Sistema de Classificação de Jogos</h2>
+        <pre><code>classificacao = input("Classificação do jogo: ").upper()
+
+match classificacao:
+    case "L":
+        print("🟢 LIVRE - Para todas as idades")
+        idade_minima = 0
+    case "10":
+        print("🟡 +10 - Não recomendado para menores de 10 anos")
+        idade_minima = 10
+    case "12":
+        print("🟠 +12 - Não recomendado para menores de 12 anos")
+        idade_minima = 12
+    case "14":
+        print("🔴 +14 - Não recomendado para menores de 14 anos")
+        idade_minima = 14
+    case "16":
+        print("🔴 +16 - Não recomendado para menores de 16 anos")
+        idade_minima = 16
+    case "18":
+        print("⚫ +18 - Não recomendado para menores de 18 anos")
+        idade_minima = 18
+    case _:
+        print("Classificação inválida")
+        idade_minima = None</code></pre>
+    </section>
+
+    <section>
+        <h2>🎮 Exercício Prático</h2>
+        <div class="exercise-box">
+            <h3>Sistema de Notas e Conceitos</h3>
+            <p>Crie um sistema que converta notas numéricas em conceitos usando match-case:</p>
+            <ul>
+                <li>9.0 a 10.0: Conceito A (Excelente)</li>
+                <li>7.0 a 8.9: Conceito B (Bom)</li>
+                <li>5.0 a 6.9: Conceito C (Regular)</li>
+                <li>3.0 a 4.9: Conceito D (Insuficiente)</li>
+                <li>0.0 a 2.9: Conceito F (Reprovado)</li>
+            </ul>
+            
+            <textarea id="code-input" placeholder="# Sistema de Conceitos
+nota = float(input('Digite a nota (0-10): '))
+
+# Use match-case com guards para classificar
+match nota:
+    case x if x < 0 or x > 10:
+        print('Nota inválida!')
+    case x if x >= 9.0:
+        print('Conceito A - Excelente! 🌟')
+    # Continue com os outros casos..."></textarea>
+            
+            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
+            <div id="output"></div>
+        </div>
+    </section>
+
+    <section>
+        <h2>🆚 Match-Case vs If-Elif</h2>
+        
+        <h3>✅ Use Match-Case quando:</h3>
+        <ul>
+            <li>Comparando uma variável com valores fixos</li>
+            <li>Há muitas opções diferentes</li>
+            <li>Os valores são simples (strings, números)</li>
+            <li>Quer aproveitar pattern matching</li>
+        </ul>
+        
+        <h3>✅ Use If-Elif quando:</h3>
+        <ul>
+            <li>Precisa de condições complexas</li>
+            <li>Há lógica booleana envolvida</li>
+            <li>Compatibilidade com Python < 3.10</li>
+            <li>Condições envolvem múltiplas variáveis</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>💡 Dicas Importantes</h2>
+        <div class="tip-box">
+            <ul>
+                <li>🐍 Disponível apenas no Python 3.10+</li>
+                <li>🎯 Ideal para menus e sistemas de opções</li>
+                <li>🔍 Use guards (if) para condições adicionais</li>
+                <li>📋 O case _ é opcional mas recomendado</li>
+                <li>⚡ Pode ser mais rápido que if-elif em alguns casos</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function runCode() {
+    const code = document.getElementById('code-input').value;
+    const output = document.getElementById('output');
+    
+    output.innerHTML = '<div class="output-success">Sistema de conceitos executado! Teste com diferentes notas.</div>';
+}
+</script>
+{% endblock %}

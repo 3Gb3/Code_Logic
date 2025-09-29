@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estruturas Repetitivas - CodeLogic</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/code_logic.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='aulas/aulas.css') }}">
+    
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+        import { firebaseConfig } from "/static/js/firebase-config.js";
+
+        console.log("Inicializando Firebase...");
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        console.log("Firebase inicializado");
+
+        let userLoaded = false;
+        let redirectTimeout = null;
+
+        // Função para cancelar redirecionamento se usuário for encontrado
+        function cancelRedirect() {
+            if (redirectTimeout) {
+                clearTimeout(redirectTimeout);
+                redirectTimeout = null;
+                console.log("Redirecionamento cancelado - usuário encontrado");
+            }
+        }
+
+        // Debug: verifica localStorage
+        console.log("🔍 Estado do localStorage:");
+        console.log("- userName:", localStorage.getItem("userName"));
+        console.log("- userId:", localStorage.getItem("userId"));
+        
+        // Função para verificar autenticação de forma mais robusta
+        async function verifyAuth() {
+            console.log("🔍 Verificando autenticação...");
+            
+            // PRIMEIRO: Verifica se há dados salvos
+            const savedUserName = localStorage.getItem("userName");
+            const savedUserId = localStorage.getItem("userId");
+            
+            if (!savedUserName || !savedUserId) {
+                console.log("❌ Dados de usuário não encontrados no localStorage");
+                alert("Sua sessão expirou. Faça login novamente.");
+                window.location.href = "/";
+                return;
+            }
+            
+            console.log("📱 Dados salvos encontrados:", savedUserName, "ID:", savedUserId);
+            
+            // SEGUNDO: Verifica várias vezes se o Firebase Auth detecta o usuário
+            let attempts = 0;
+            const maxAttempts = 8; // 4 segundos total
+            
+            const checkInterval = setInterval(() => {
+                attempts++;
+                console.log(`🔍 Tentativa ${attempts}/${maxAttempts} - Verificando Firebase Auth...`);
+                
+                const user = auth.currentUser;
+                if (user) {
+                    console.log("✅ Firebase Auth OK - Usuário:", user.uid);
+                    clearInterval(checkInterval);
+                    cancelRedirect();
+                    
+                    if (!userLoaded) {
+                        userLoaded = true;
+                        loadUserProgress(user.uid);
+                    }
+                    return;
+                }
+                
+                if (attempts >= maxAttempts) {
+                    console.log("⚠️ Firebase Auth não funcionou - usando fallback");
+                    clearInterval(checkInterval);
+                    
+                    // TERCEIRO: Usa dados salvos como fallback
+                    console.log("🚨 Carregando com dados salvos...");
+                    cancelRedirect();
+                    loadUserProgressFallback(savedUserId, savedUserName);
+                }
+            }, 500); // Verifica a cada 500ms
+        }
+        
+        // Função fallback para carregar dados quando Firebase Auth falha
+        async function loadUserProgressFallback(userId, userName) {
+            try {
+                console.log("📊 Carregando progresso via fallback para:", userName);
+                
+                // PRIMEIRO: Verifica se pode acessar este módulo
+                const accessResponse = await fetch(`/api/check-module-access/${userId}/repetitiva`);
+                const accessResult = await accessResponse.json();
+                
+                if (!accessResult.success || !accessResult.can_access) {
+                    // Redireciona para página de módulo bloqueado
+                    const message = accessResult.message || "Complete o módulo anterior primeiro";
+                    alert(message);
+                    window.location.href = "/dashboard";
+                    return;
+                }
+                
+                // Inicializa progresso se necessário
+                await initUserProgress(userId);
+                
+                // Carrega progresso específico do módulo
+                await loadModuleProgress(userId, 'repetitiva');
+                
+                // Atualiza interface
+                document.getElementById("user-name").textContent = userName;
+                document.getElementById("loading-screen").style.display = "none";
+                document.getElementById("main-content").style.display = "block";
+                
+            } catch (error) {
+                console.error("Erro no fallback:", error);
+                document.getElementById("user-name").textContent = savedUserName || "Usuário";
+                document.getElementById("loading-screen").style.display = "none";
+                document.getElementById("main-content").style.display = "block";
+            }
+        }
+
+        // Função para inicializar progresso do usuário
+        async function initUserProgress(userId) {
+            try {
+                const response = await fetch('/api/init-progress', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ user_id: userId })
+                });
+                
+                const result = await response.json();
+                if (!result.success) {
+                    console.warn("Aviso ao inicializar progresso:", result.error);
+                }
+            } catch (error) {
+                console.warn("Erro ao inicializar progresso:", error);
+            }
+        }
+
+        // Função para carregar progresso do módulo repetitiva
+        async function loadModuleProgress(userId, module) {
+            try {
+                const response = await fetch(`/api/get-progress/${userId}/${module}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    const { aulas_liberadas, aulas_concluidas, total_completed, progress_percentage } = result;
+                    
+                    // Atualiza interface das aulas
+                    updateAulasStatus(aulas_liberadas, aulas_concluidas);
+                    
+                    // Atualiza estatísticas
+                    document.getElementById('progress-completed').textContent = total_completed;
+                    document.getElementById('progress-total').textContent = '10';
+                    document.getElementById('progress-percentage').textContent = Math.round(progress_percentage) + '%';
+                    
+                    // Atualiza barra de progresso
+                    const progressBar = document.getElementById('progress-fill');
+                    progressBar.style.width = progress_percentage + '%';
+                    
+                } else {
+                    console.error('Erro ao carregar progresso:', result.error);
+                    // Fallback: todas as aulas bloqueadas exceto a primeira
+                    updateAulasStatus([1], []);
+                }
+                
+            } catch (error) {
+                console.error('Erro ao carregar progresso:', error);
+                // Fallback: todas as aulas bloqueadas exceto a primeira
+                updateAulasStatus([1], []);
+            }
+        }
+
+        // Função para atualizar status das aulas
+        function updateAulasStatus(aulas_liberadas, aulas_concluidas) {
+            for (let i = 1; i <= 10; i++) {
+                const aulaCard = document.getElementById(`aula-${i}`);
+                const aulaStatus = aulaCard.querySelector('.aula-status');
+                const aulaLink = aulaCard.querySelector('.aula-link');
+                
+                if (aulas_concluidas.includes(i)) {
+                    // Aula concluída
+                    aulaCard.className = 'aula-card completed';
+                    aulaStatus.textContent = '✅ Concluída';
+                    aulaLink.style.pointerEvents = 'auto';
+                    aulaLink.style.opacity = '1';
+                } else if (aulas_liberadas.includes(i)) {
+                    // Aula disponível
+                    aulaCard.className = 'aula-card available';
+                    aulaStatus.textContent = '🔓 Disponível';
+                    aulaLink.style.pointerEvents = 'auto';
+                    aulaLink.style.opacity = '1';
+                } else {
+                    // Aula bloqueada
+                    aulaCard.className = 'aula-card locked';
+                    aulaStatus.textContent = '🔒 Bloqueada';
+                    aulaLink.style.pointerEvents = 'none';
+                    aulaLink.style.opacity = '0.5';
+                }
+            }
+        }
+
+        // Função para carregar progresso do usuário
+        async function loadUserProgress(userId) {
+            try {
+                // PRIMEIRO: Verifica se pode acessar este módulo
+                const accessResponse = await fetch(`/api/check-module-access/${userId}/repetitiva`);
+                const accessResult = await accessResponse.json();
+                
+                if (!accessResult.success || !accessResult.can_access) {
+                    // Redireciona para página de módulo bloqueado
+                    const message = accessResult.message || "Complete o módulo anterior primeiro";
+                    alert(message);
+                    window.location.href = "/dashboard";
+                    return;
+                }
+                
+                // Primeiro inicializa o progresso (se não existir)
+                await initUserProgress(userId);
+                
+                // Carrega progresso específico do módulo
+                await loadModuleProgress(userId, 'repetitiva');
+                
+                // Mostra conteúdo
+                document.getElementById("loading-screen").style.display = "none";
+                document.getElementById("main-content").style.display = "block";
+                
+            } catch (error) {
+                console.error('Erro ao carregar progresso:', error);
+                document.getElementById("loading-screen").style.display = "none";
+                document.getElementById("main-content").style.display = "block";
+            }
+        }
+
+        // Inicializa quando a página carrega
+        window.addEventListener('load', () => {
+            console.log("🚀 Página carregada, verificando autenticação...");
+            verifyAuth();
+        });
+
+        // Função para logout
+        window.logout = function() {
+            localStorage.removeItem("userName");
+            localStorage.removeItem("userId");
+            
+            auth.signOut().then(() => {
+                console.log("👋 Logout realizado");
+                window.location.href = "/";
+            }).catch((error) => {
+                console.error("Erro no logout:", error);
+                // Mesmo com erro, redireciona
+                window.location.href = "/";
+            });
+        };
+    </script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/code_logic.ico') }}" alt="CodeLogic">
+                <h1>CodeLogic</h1>
+            </div>
+            <nav class="nav-menu">
+                <a href="/dashboard" class="nav-link">Dashboard</a>
+                <a href="/dashboard" class="nav-link active">Aulas</a>
+                <a href="#" onclick="logout()" class="nav-link">Sair</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Loading Screen -->
+        <div id="loading-screen" class="loading-screen">
+            <div class="loading-content">
+                <div class="spinner"></div>
+                <p>Carregando suas aulas...</p>
+            </div>
+        </div>
+
+        <!-- Content (hidden initially) -->
+        <div id="main-content" class="content-wrapper">
+            <div class="content-header">
+                <h1>🔄 Estruturas Repetitivas</h1>
+                <p class="subtitle">Domine loops com for, while e muito mais</p>
+            </div>
+
+        <!-- Aulas Grid -->
+        <div class="aulas-grid">
+            <div id="aula-1" class="aula-card locked">
+                <a href="/exercicios/repetitiva/aula/1" class="aula-link">
+                    <div class="aula-number">01</div>
+                    <div class="aula-info">
+                        <h3>Introdução aos Loops</h3>
+                        <p>Conceitos básicos de repetição</p>
+                        <div class="aula-status">🔒 Bloqueada</div>
+                    </div>
+                </a>
+            </div>
+
+            <div id="aula-2" class="aula-card locked">
+                <a href="/exercicios/repetitiva/aula/2" class="aula-link">
+                    <div class="aula-number">02</div>
+                    <div class="aula-info">
+                        <h3>Loop for Básico</h3>
+                        <p>Iterando com range() e sequências</p>
+                        <div class="aula-status">🔒 Bloqueada</div>
+                    </div>
+                </a>
+            </div>
+
+            <div id="aula-3" class="aula-card locked">
+                <a href="/exercicios/repetitiva/aula/3" class="aula-link">
+                    <div class="aula-number">03</div>
+                    <div class="aula-info">
+                        <h3>Loop while</h3>
+                        <p>Repetição baseada em condições</p>
+                        <div class="aula-status">🔒 Bloqueada</div>
+                    </div>
+                </a>
+            </div>
+
+            <div id="aula-4" class="aula-card locked">
+                <a href="/exercicios/repetitiva/aula/4" class="aula-link">
+                    <div class="aula-number">04</div>
+                    <div class="aula-info">
+                        <h3>Break e Continue</h3>
+                        <p>Controlando o fluxo dos loops</p>
+                        <div class="aula-status">🔒 Bloqueada</div>
+                    </div>
+                </a>
+            </div>
+
+            <div id="aula-5" class="aula-card locked">
+                <a href="/exercicios/repetitiva/aula/5" class="aula-link">
+                    <div class="aula-number">05</div>
+                    <div class="aula-info">
+                        <h3>Loops Aninhados</h3>
+                        <p>Loop dentro de loop</p>
+                        <div class="aula-status">🔒 Bloqueada</div>
+                    </div>
+                </a>
+            </div>
+
+            <div id="aula-6" class="aula-card locked">
+                <a href="/exercicios/repetitiva/aula/6" class="aula-link">
+                    <div class="aula-number">06</div>
+                    <div class="aula-info">
+                        <h3>Iterando Strings</h3>
+                        <p>Percorrendo caracteres e palavras</p>
+                        <div class="aula-status">🔒 Bloqueada</div>
+                    </div>
+                </a>
+            </div>
+
+            <div id="aula-7" class="aula-card locked">
+                <a href="/exercicios/repetitiva/aula/7" class="aula-link">
+                    <div class="aula-number">07</div>
+                    <div class="aula-info">
+                        <h3>Enumerate e Zip</h3>
+                        <p>Funções avançadas para loops</p>
+                        <div class="aula-status">🔒 Bloqueada</div>
+                    </div>
+                </a>
+            </div>
+
+            <div id="aula-8" class="aula-card locked">
+                <a href="/exercicios/repetitiva/aula/8" class="aula-link">
+                    <div class="aula-number">08</div>
+                    <div class="aula-info">
+                        <h3>List Comprehensions</h3>
+                        <p>Criando listas com sintaxe concisa</p>
+                        <div class="aula-status">🔒 Bloqueada</div>
+                    </div>
+                </a>
+            </div>
+
+            <div id="aula-9" class="aula-card locked">
+                <a href="/exercicios/repetitiva/aula/9" class="aula-link">
+                    <div class="aula-number">09</div>
+                    <div class="aula-info">
+                        <h3>Algoritmos com Loops</h3>
+                        <p>Busca, ordenação e padrões</p>
+                        <div class="aula-status">🔒 Bloqueada</div>
+                    </div>
+                </a>
+            </div>
+
+            <div id="aula-10" class="aula-card locked">
+                <a href="/exercicios/repetitiva/aula/10" class="aula-link">
+                    <div class="aula-number">10</div>
+                    <div class="aula-info">
+                        <h3>Projeto Final</h3>
+                        <p>Sistema completo com loops</p>
+                        <div class="aula-status">🔒 Bloqueada</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="progress-section">
+            <h2>📊 Seu Progresso</h2>
+            <div class="progress-info">
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
+                </div>
+                <div class="progress-text">
+                    <span id="progress-completed">0</span>/<span id="progress-total">10</span> aulas concluídas 
+                    (<span id="progress-percentage">0%</span>)
+                </div>
+            </div>
+        </div>
+        </div>
+    </main>
+
+    <style>
+        /* Estilos específicos para loading */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-content {
+            text-align: center;
+            color: white;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid white;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .content-wrapper {
+            display: none;
+        }
+
+        .user-info {
+            color: #34495e;
+            font-weight: 500;
+            margin-right: 20px;
+        }
+
+        /* Estilos específicos para aulas repetitivas */
+        .content-header h1 {
+            color: #f39c12;
+            text-shadow: 2px 2px 4px rgba(243, 156, 18, 0.1);
+        }
+
+        .aula-card.available {
+            border-left: 4px solid #f39c12;
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.1);
+        }
+
+        .aula-card.completed {
+            border-left: 4px solid #27ae60;
+            background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 100%);
+        }
+
+        .progress-fill {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            width: 0%;
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+    </style>
+</body>
+</html>

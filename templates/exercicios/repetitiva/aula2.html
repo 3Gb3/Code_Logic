@@ -1,0 +1,185 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 2 - Loop for Básico | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 2 – Loop for Básico{% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Entender a estrutura do loop for</li>
+            <li>Usar a função range() para criar sequências</li>
+            <li>Iterar sobre diferentes tipos de dados</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>🔄 O que é um Loop for?</h2>
+        <p>O loop <code>for</code> é usado para iterar (repetir) sobre uma sequência de elementos, como números, strings ou listas.</p>
+        
+        <h3>Sintaxe Básica:</h3>
+        <pre><code>for variavel in sequencia:
+    # código a ser repetido</code></pre>
+    </section>
+
+    <section>
+        <h2>📊 A Função range()</h2>
+        <p>A função <code>range()</code> gera uma sequência de números:</p>
+        
+        <h3>1. range(stop)</h3>
+        <pre><code># Números de 0 até 4 (5 não incluído)
+for i in range(5):
+    print(i)  # 0, 1, 2, 3, 4</code></pre>
+    
+        <h3>2. range(start, stop)</h3>
+        <pre><code># Números de 2 até 6 (7 não incluído)
+for i in range(2, 7):
+    print(i)  # 2, 3, 4, 5, 6</code></pre>
+    
+        <h3>3. range(start, stop, step)</h3>
+        <pre><code># Números pares de 0 até 10
+for i in range(0, 11, 2):
+    print(i)  # 0, 2, 4, 6, 8, 10</code></pre>
+    </section>
+
+    <section>
+        <h2>📝 Exemplos Práticos</h2>
+        
+        <h3>Exemplo 1: Tabuada</h3>
+        <pre><code>numero = int(input("Digite um número: "))
+
+print(f"Tabuada do {numero}:")
+for i in range(1, 11):
+    resultado = numero * i
+    print(f"{numero} x {i} = {resultado}")</code></pre>
+    
+        <h3>Exemplo 2: Contagem Regressiva</h3>
+        <pre><code>print("Contagem regressiva:")
+for i in range(10, 0, -1):
+    print(i)
+print("🚀 Decolagem!")</code></pre>
+    
+        <h3>Exemplo 3: Somando Números</h3>
+        <pre><code>soma = 0
+for i in range(1, 101):
+    soma += i
+
+print(f"A soma de 1 a 100 é: {soma}")</code></pre>
+    </section>
+
+    <section>
+        <h2>🔤 Iterando sobre Strings</h2>
+        <pre><code>nome = "Python"
+
+print("Letra por letra:")
+for letra in nome:
+    print(letra)
+
+# Com índice
+print("\nCom posição:")
+for i in range(len(nome)):
+    print(f"Posição {i}: {nome[i]}")</code></pre>
+    </section>
+
+    <section>
+        <h2>📋 Iterando sobre Listas</h2>
+        <pre><code>frutas = ["maçã", "banana", "uva", "pêra"]
+
+print("Frutas disponíveis:")
+for fruta in frutas:
+    print(f"🍎 {fruta}")
+
+# Com numeração
+print("\nMenu numerado:")
+for i in range(len(frutas)):
+    print(f"{i + 1}. {frutas[i]}")</code></pre>
+    </section>
+
+    <section>
+        <h2>🎮 Exercício Prático</h2>
+        <div class="exercise-box">
+            <h3>Calculadora de Médias</h3>
+            <p>Crie um programa que:</p>
+            <ul>
+                <li>Pergunte quantas notas o usuário quer inserir</li>
+                <li>Use um loop for para coletar todas as notas</li>
+                <li>Calcule e exiba a média</li>
+                <li>Mostre quantas notas estão acima da média</li>
+            </ul>
+            
+            <textarea id="code-input" placeholder="# Calculadora de Médias
+quantidade = int(input('Quantas notas você quer inserir? '))
+notas = []
+
+# Use for para coletar as notas
+for i in range(quantidade):
+    nota = float(input(f'Digite a nota {i + 1}: '))
+    notas.append(nota)
+
+# Calculate a média
+# Conte quantas estão acima da média
+# Exiba os resultados"></textarea>
+            
+            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
+            <div id="output"></div>
+        </div>
+    </section>
+
+    <section>
+        <h2>🎨 Padrões com Loops</h2>
+        
+        <h3>Exemplo 1: Pirâmide de Estrelas</h3>
+        <pre><code>altura = 5
+
+for i in range(1, altura + 1):
+    estrelas = "*" * i
+    print(estrelas)</code></pre>
+    
+        <h3>Exemplo 2: Números Pares</h3>
+        <pre><code>print("Números pares de 0 a 20:")
+for i in range(0, 21, 2):
+    print(i, end=" ")  # 0 2 4 6 8 10 12 14 16 18 20</code></pre>
+    </section>
+
+    <section>
+        <h2>🔍 Buscando em Sequências</h2>
+        <pre><code>cores = ["azul", "verde", "vermelho", "amarelo"]
+cor_procurada = input("Que cor você está procurando? ")
+
+encontrou = False
+for cor in cores:
+    if cor == cor_procurada:
+        encontrou = True
+        break
+
+if encontrou:
+    print(f"✅ A cor {cor_procurada} foi encontrada!")
+else:
+    print(f"❌ A cor {cor_procurada} não está na lista.")</code></pre>
+    </section>
+
+    <section>
+        <h2>💡 Dicas Importantes</h2>
+        <div class="tip-box">
+            <ul>
+                <li>🎯 Use <code>range()</code> quando precisar de números sequenciais</li>
+                <li>🔤 Itere diretamente sobre strings e listas quando possível</li>
+                <li>📊 O parâmetro <code>step</code> permite pular elementos</li>
+                <li>⚡ Use <code>break</code> para sair do loop antecipadamente</li>
+                <li>🔄 Lembre-se: range(n) vai de 0 até n-1</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function runCode() {
+    const code = document.getElementById('code-input').value;
+    const output = document.getElementById('output');
+    
+    output.innerHTML = '<div class="output-success">Calculadora executada! Teste com diferentes quantidades de notas.</div>';
+}
+</script>
+{% endblock %}

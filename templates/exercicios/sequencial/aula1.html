@@ -1,0 +1,124 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 1 - Introdução à Programação e Python | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 1 – Introdução à Programação e Python{% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Entender o que é programação</li>
+            <li>Conhecer o que são linguagens de programação e suas categorias</li>
+            <li>Introduzir Python e suas características</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>💡 O que é Programação</h2>
+        <p>Programação é o processo de criar instruções que um computador pode executar.</p>
+        <p>Essas instruções permitem que o computador realize tarefas como:</p>
+        <ul>
+            <li>Calcular valores</li>
+            <li>Armazenar informações</li>
+            <li>Automatizar processos</li>
+            <li>Criar jogos e aplicativos</li>
+        </ul>
+        <blockquote>
+            <strong>Exemplo do mundo real:</strong> Uma receita de bolo é como um programa: cada passo é executado em sequência.
+        </blockquote>
+    </section>
+
+    <section>
+        <h2>🔧 Linguagens de Programação</h2>
+        <h3>Classificação:</h3>
+        <ul>
+            <li><strong>Baixo nível:</strong> próximas da linguagem da máquina (ex: Assembly)</li>
+            <li><strong>Alto nível:</strong> mais próximas da linguagem humana, fáceis de ler (ex: Python, Java, C#)</li>
+        </ul>
+        
+        <h3>Por que aprender Python?</h3>
+        <ul>
+            <li>Sintaxe simples e fácil de ler</li>
+            <li>Usada em automação, ciência de dados, inteligência artificial e web</li>
+            <li>Grande comunidade e muitos recursos online</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>🐍 Python: Características</h2>
+        <ul>
+            <li><strong>Interpretada:</strong> roda linha a linha</li>
+            <li><strong>Multiparadigma:</strong> suporta programação sequencial, orientada a objetos e funcional</li>
+            <li><strong>Gratuita:</strong> e de código aberto</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>🛠️ Instalando Python</h2>
+        <ol>
+            <li>Acesse <a href="https://www.python.org/downloads/" target="_blank" rel="noopener noreferrer">python.org</a></li>
+            <li>Baixe a versão recomendada</li>
+            <li>Marque "Add Python to PATH" durante a instalação</li>
+            <li>Teste no terminal com <code>python --version</code></li>
+        </ol>
+    </section>
+
+    <section>
+        <h2>👋 Primeiro Programa em Python</h2>
+        <pre><code>print("Olá, mundo!")</code></pre>
+        
+        <h3>Explicação:</h3>
+        <ul>
+            <li><code>print()</code> exibe mensagens na tela</li>
+            <li>Tudo que está entre aspas é considerado texto (string)</li>
+        </ul>
+    </section>
+{% endblock %}
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    <p><strong>Tarefa 1:</strong> Execute o programa "Olá, mundo!" no editor ao lado.</p>
+    
+    <p><strong>Tarefa 2:</strong> Modifique o programa para mostrar seu nome e idade:</p>
+    <pre><code>print("Meu nome é [Seu Nome] e tenho [Sua Idade] anos")</code></pre>
+    
+    <p><strong>Tarefa 3:</strong> Crie um programa que exiba 3 mensagens diferentes usando 3 comandos print().</p>
+    
+    <p><strong>Dica:</strong> Cada comando print() vai para uma linha nova automaticamente!</p>
+    
+    <h4>📝 Exemplos de saída esperada:</h4>
+    <pre><code>Olá, mundo!
+Meu nome é João e tenho 20 anos
+Bem-vindo ao Python!
+Hoje é um ótimo dia para programar!
+Vamos aprender juntos!</code></pre>
+{% endblock %}
+
+{% block initial_code %}print("Olá, mundo!"){% endblock %}
+
+{% block extra_js %}
+<script>
+    // Descrição específica do exercício da Aula 1
+    function getExerciseDescription() {
+        return `Aula 1 - Introdução à Programação e Python:
+
+TAREFAS:
+1. Execute o programa "Olá, mundo!" 
+2. Modifique o programa para mostrar seu nome e idade usando o formato: 
+   print("Meu nome é [Seu Nome] e tenho [Sua Idade] anos")
+3. Crie um programa que exiba 3 mensagens diferentes usando 3 comandos print()
+
+CRITÉRIOS DE AVALIAÇÃO:
+- O código deve usar a função print() corretamente
+- Deve exibir pelo menos 3 mensagens na tela
+- As mensagens devem incluir nome e idade
+- Cada print() cria uma nova linha automaticamente
+
+EXEMPLO DE SAÍDA ESPERADA:
+Olá, mundo!
+Meu nome é João e tenho 20 anos
+Bem-vindo ao Python!`;
+    }
+</script>
+{% endblock %}

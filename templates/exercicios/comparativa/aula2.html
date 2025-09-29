@@ -1,0 +1,143 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 2 - Operadores de Comparação | CodeLogic{% endblock %}
+{% block lesson_title %}Aula 2 - Operadores de Comparação{% endblock %}
+
+{% block theory_content %}
+<div class="content-section">
+    <h2>🎯 Objetivos da Aula</h2>
+    <ul>
+        <li>Conhecer todos os operadores de comparação</li>
+        <li>Entender como comparar valores</li>
+        <li>Usar comparações em estruturas condicionais</li>
+        <li>Praticar com diferentes tipos de dados</li>
+    </ul>
+</div>
+
+<div class="content-section">
+    <h2>📊 Operadores de Comparação</h2>
+    <p>
+        Os operadores de comparação são usados para comparar valores e sempre retornam 
+        <code>True</code> ou <code>False</code>.
+    </p>
+    
+    <div class="comparison-table">
+        <table>
+            <tr><th>Operador</th><th>Significado</th><th>Exemplo</th><th>Resultado</th></tr>
+            <tr><td>==</td><td>Igual a</td><td>5 == 5</td><td>True</td></tr>
+            <tr><td>!=</td><td>Diferente de</td><td>5 != 3</td><td>True</td></tr>
+            <tr><td>&gt;</td><td>Maior que</td><td>8 &gt; 5</td><td>True</td></tr>
+            <tr><td>&lt;</td><td>Menor que</td><td>3 &lt; 7</td><td>True</td></tr>
+            <tr><td>&gt;=</td><td>Maior ou igual</td><td>5 &gt;= 5</td><td>True</td></tr>
+            <tr><td>&lt;=</td><td>Menor ou igual</td><td>4 &lt;= 6</td><td>True</td></tr>
+        </table>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>🔍 Exemplos Práticos</h2>
+    
+    <div class="code-example">
+        <h3>Comparando Números:</h3>
+        <pre><code>a = 10
+b = 15
+
+print(a == b)    # False
+print(a != b)    # True
+print(a > b)     # False
+print(a < b)     # True
+print(a >= 10)   # True
+print(b <= 20)   # True</code></pre>
+    </div>
+
+    <div class="code-example">
+        <h3>Comparando Strings:</h3>
+        <pre><code>nome1 = "Ana"
+nome2 = "Bruno"
+
+print(nome1 == nome2)    # False
+print(nome1 != nome2)    # True
+print(nome1 < nome2)     # True (ordem alfabética)</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>🎮 Usando em Condições</h2>
+    
+    <div class="example-box">
+        <h3>Exemplo: Sistema de Notas</h3>
+        <pre><code>nota = 8.5
+
+if nota >= 9.0:
+    print("Excelente!")
+else:
+    if nota >= 7.0:
+        print("Bom!")
+    else:
+        print("Precisa melhorar")</code></pre>
+    </div>
+
+    <div class="example-box">
+        <h3>Exemplo: Verificação de Senha</h3>
+        <pre><code>senha_correta = "1234"
+senha_digitada = "1234"
+
+if senha_digitada == senha_correta:
+    print("Acesso liberado!")
+else:
+    print("Senha incorreta!")</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>⚠️ Cuidados Importantes</h2>
+    <ul>
+        <li><strong>== vs =:</strong> Use == para comparar, = para atribuir</li>
+        <li><strong>Tipos compatíveis:</strong> Compare valores do mesmo tipo quando possível</li>
+        <li><strong>Strings:</strong> Comparação é case-sensitive ("A" != "a")</li>
+        <li><strong>Números:</strong> Cuidado ao comparar int com float</li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block exercise_content %}
+<div class="exercise-header">
+    <h2>🏋️‍♂️ Exercício Prático</h2>
+    <p>Crie um programa que compara duas idades e informa qual é maior</p>
+</div>
+
+<div class="exercise-description">
+    <h3>📋 Instruções:</h3>
+    <ol>
+        <li>Crie duas variáveis: <code>idade1 = 25</code> e <code>idade2 = 30</code></li>
+        <li>Compare as idades usando operadores de comparação</li>
+        <li>Se idade1 for maior, imprima "A primeira pessoa é mais velha"</li>
+        <li>Se idade2 for maior, imprima "A segunda pessoa é mais velha"</li>
+        <li>Se forem iguais, imprima "As duas pessoas têm a mesma idade"</li>
+    </ol>
+</div>
+
+<div class="exercise-hints">
+    <h3>💡 Dicas:</h3>
+    <ul>
+        <li>Use if, elif e else para cobrir todos os casos</li>
+        <li>Lembre-se dos operadores >, < e ==</li>
+        <li>Teste alterando os valores das idades</li>
+    </ul>
+</div>
+
+<div class="expected-output">
+    <h3>📤 Resultado Esperado:</h3>
+    <pre>A segunda pessoa é mais velha</pre>
+</div>
+{% endblock %}
+
+{% block starter_code %}
+# Exercício: Comparação de idades
+# Complete o código abaixo
+
+idade1 = 25
+idade2 = 30
+
+# Seu código aqui
+{% endblock %}

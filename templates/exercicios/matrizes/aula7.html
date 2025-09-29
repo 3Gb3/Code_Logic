@@ -1,0 +1,783 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 7 - Matrizes Esparsas e Otimização | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 7 – Matrizes Esparsas e Otimização{% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Compreender o conceito de matrizes esparsas</li>
+            <li>Implementar representações eficientes</li>
+            <li>Otimizar operações com grandes matrizes</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>📈 Matrizes Esparsas</h2>
+        <p>Matrizes esparsas são matrizes que contêm principalmente zeros. Para economizar memória e melhorar performance, usamos representações especiais.</p>
+        
+        <h3>Representação por Coordenadas (COO):</h3>
+        <pre><code>class MatrizEsparsaCOO:
+    """Matriz esparsa usando formato COO (Coordinate)"""
+    
+    def __init__(self, linhas, colunas):
+        self.linhas = linhas
+        self.colunas = colunas
+        self.dados = []  # Lista de (linha, coluna, valor)
+    
+    def adicionar(self, linha, coluna, valor):
+        """Adiciona elemento não-zero"""
+        if valor != 0:
+            self.dados.append((linha, coluna, valor))
+    
+    def obter(self, linha, coluna):
+        """Obtém valor em posição específica"""
+        for l, c, v in self.dados:
+            if l == linha and c == coluna:
+                return v
+        return 0
+    
+    def para_matriz_densa(self):
+        """Converte para matriz densa (lista de listas)"""
+        matriz = [[0 for _ in range(self.colunas)] for _ in range(self.linhas)]
+        
+        for linha, coluna, valor in self.dados:
+            matriz[linha][coluna] = valor
+        
+        return matriz
+    
+    def densidade(self):
+        """Calcula densidade da matriz (% de elementos não-zero)"""
+        total_elementos = self.linhas * self.colunas
+        elementos_nao_zero = len(self.dados)
+        return (elementos_nao_zero / total_elementos) * 100
+    
+    def __str__(self):
+        return f"MatrizEsparsaCOO({self.linhas}x{self.colunas}, {len(self.dados)} elementos)"
+
+# Exemplo de uso
+matriz_esparsa = MatrizEsparsaCOO(5, 5)
+
+# Adicionar apenas elementos não-zero
+elementos = [(0, 0, 10), (1, 2, 20), (2, 1, 30), (3, 3, 40), (4, 4, 50)]
+for l, c, v in elementos:
+    matriz_esparsa.adicionar(l, c, v)
+
+print(f"Matriz esparsa: {matriz_esparsa}")
+print(f"Densidade: {matriz_esparsa.densidade():.1f}%")
+
+# Converter para matriz densa para visualização
+densa = matriz_esparsa.para_matriz_densa()
+print("\\nMatriz densa:")
+for linha in densa:
+    print(linha)</code></pre>
+        
+        <h3>Representação CSR (Compressed Sparse Row):</h3>
+        <pre><code>class MatrizEsparsaCSR:
+    """Matriz esparsa usando formato CSR (Compressed Sparse Row)"""
+    
+    def __init__(self, matriz_densa=None):
+        self.linhas = 0
+        self.colunas = 0
+        self.valores = []      # Valores não-zero
+        self.indices_colunas = []  # Índices das colunas
+        self.ponteiros_linhas = [0]  # Ponteiros para início de cada linha
+        
+        if matriz_densa:
+            self._de_matriz_densa(matriz_densa)
+    
+    def _de_matriz_densa(self, matriz):
+        """Converte matriz densa para CSR"""
+        self.linhas = len(matriz)
+        self.colunas = len(matriz[0])
+        
+        for i in range(self.linhas):
+            for j in range(self.colunas):
+                if matriz[i][j] != 0:
+                    self.valores.append(matriz[i][j])
+                    self.indices_colunas.append(j)
+            
+            # Adicionar ponteiro para próxima linha
+            self.ponteiros_linhas.append(len(self.valores))
+    
+    def obter(self, linha, coluna):
+        """Obtém valor em posição específica"""
+        inicio = self.ponteiros_linhas[linha]
+        fim = self.ponteiros_linhas[linha + 1]
+        
+        for k in range(inicio, fim):
+            if self.indices_colunas[k] == coluna:
+                return self.valores[k]
+        
+        return 0
+    
+    def multiplicar_vetor(self, vetor):
+        """Multiplica matriz por vetor de forma eficiente"""
+        if len(vetor) != self.colunas:
+            raise ValueError("Dimensões incompatíveis")
+        
+        resultado = [0] * self.linhas
+        
+        for i in range(self.linhas):
+            inicio = self.ponteiros_linhas[i]
+            fim = self.ponteiros_linhas[i + 1]
+            
+            for k in range(inicio, fim):
+                j = self.indices_colunas[k]
+                resultado[i] += self.valores[k] * vetor[j]
+        
+        return resultado
+    
+    def para_matriz_densa(self):
+        """Converte para matriz densa"""
+        matriz = [[0 for _ in range(self.colunas)] for _ in range(self.linhas)]
+        
+        for i in range(self.linhas):
+            inicio = self.ponteiros_linhas[i]
+            fim = self.ponteiros_linhas[i + 1]
+            
+            for k in range(inicio, fim):
+                j = self.indices_colunas[k]
+                matriz[i][j] = self.valores[k]
+        
+        return matriz
+    
+    def estatisticas(self):
+        """Retorna estatísticas da matriz"""
+        total_elementos = self.linhas * self.colunas
+        elementos_nao_zero = len(self.valores)
+        
+        return {
+            'dimensoes': (self.linhas, self.colunas),
+            'elementos_nao_zero': elementos_nao_zero,
+            'densidade': (elementos_nao_zero / total_elementos) * 100,
+            'economia_memoria': ((total_elementos - elementos_nao_zero) / total_elementos) * 100
+        }
+
+# Exemplo - matriz tridiagonal
+matriz_densa = [
+    [2, -1, 0, 0, 0],
+    [-1, 2, -1, 0, 0],
+    [0, -1, 2, -1, 0],
+    [0, 0, -1, 2, -1],
+    [0, 0, 0, -1, 2]
+]
+
+csr = MatrizEsparsaCSR(matriz_densa)
+stats = csr.estatisticas()
+
+print("Estatísticas da matriz CSR:")
+for chave, valor in stats.items():
+    if isinstance(valor, float):
+        print(f"  {chave}: {valor:.1f}%")
+    else:
+        print(f"  {chave}: {valor}")
+
+# Teste de multiplicação por vetor
+vetor = [1, 2, 3, 4, 5]
+resultado = csr.multiplicar_vetor(vetor)
+print(f"\\nMultiplicação por vetor {vetor}:")
+print(f"Resultado: {resultado}")</code></pre>
+    </section>
+
+    <section>
+        <h2>⚡ Otimizações de Performance</h2>
+        
+        <h3>Cache-Friendly Matrix Operations:</h3>
+        <pre><code>import time
+
+def multiplicar_matrizes_naive(A, B):
+    """Multiplicação naive (ordem i,j,k)"""
+    n = len(A)
+    C = [[0 for _ in range(n)] for _ in range(n)]
+    
+    for i in range(n):
+        for j in range(n):
+            for k in range(n):
+                C[i][j] += A[i][k] * B[k][j]
+    
+    return C
+
+def multiplicar_matrizes_otimizada(A, B):
+    """Multiplicação otimizada (ordem i,k,j)"""
+    n = len(A)
+    C = [[0 for _ in range(n)] for _ in range(n)]
+    
+    for i in range(n):
+        for k in range(n):
+            for j in range(n):
+                C[i][j] += A[i][k] * B[k][j]
+    
+    return C
+
+def multiplicar_por_blocos(A, B, tamanho_bloco=64):
+    """Multiplicação por blocos para melhor uso de cache"""
+    n = len(A)
+    C = [[0 for _ in range(n)] for _ in range(n)]
+    
+    for i in range(0, n, tamanho_bloco):
+        for j in range(0, n, tamanho_bloco):
+            for k in range(0, n, tamanho_bloco):
+                # Multiplicar blocos
+                for ii in range(i, min(i + tamanho_bloco, n)):
+                    for kk in range(k, min(k + tamanho_bloco, n)):
+                        for jj in range(j, min(j + tamanho_bloco, n)):
+                            C[ii][jj] += A[ii][kk] * B[kk][jj]
+    
+    return C
+
+def benchmark_multiplicacao(tamanho=100):
+    """Compara performance dos algoritmos"""
+    import random
+    
+    # Criar matrizes de teste
+    A = [[random.randint(1, 10) for _ in range(tamanho)] for _ in range(tamanho)]
+    B = [[random.randint(1, 10) for _ in range(tamanho)] for _ in range(tamanho)]
+    
+    print(f"Benchmark multiplicação {tamanho}x{tamanho}:")
+    
+    # Teste método naive
+    inicio = time.time()
+    C1 = multiplicar_matrizes_naive(A, B)
+    tempo_naive = time.time() - inicio
+    print(f"  Naive: {tempo_naive:.3f}s")
+    
+    # Teste método otimizado
+    inicio = time.time()
+    C2 = multiplicar_matrizes_otimizada(A, B)
+    tempo_otimizado = time.time() - inicio
+    print(f"  Otimizado: {tempo_otimizado:.3f}s")
+    
+    # Teste por blocos
+    inicio = time.time()
+    C3 = multiplicar_por_blocos(A, B, 32)
+    tempo_blocos = time.time() - inicio
+    print(f"  Por blocos: {tempo_blocos:.3f}s")
+    
+    speedup_otimizado = tempo_naive / tempo_otimizado
+    speedup_blocos = tempo_naive / tempo_blocos
+    
+    print(f"  Speedup otimizado: {speedup_otimizado:.2f}x")
+    print(f"  Speedup blocos: {speedup_blocos:.2f}x")
+
+# Executar benchmark (descomente para testar)
+# benchmark_multiplicacao(50)</code></pre>
+        
+        <h3>Operações In-Place:</h3>
+        <pre><code>def transposta_in_place(matriz):
+    """Transposta in-place para matrizes quadradas"""
+    n = len(matriz)
+    
+    for i in range(n):
+        for j in range(i + 1, n):
+            # Trocar elementos simétricos
+            matriz[i][j], matriz[j][i] = matriz[j][i], matriz[i][j]
+
+def rotacionar_90_in_place(matriz):
+    """Rotaciona matriz 90° in-place"""
+    n = len(matriz)
+    
+    # Primeiro: transpor
+    transposta_in_place(matriz)
+    
+    # Segundo: reverter cada linha
+    for i in range(n):
+        matriz[i].reverse()
+
+# Teste
+teste_matriz = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+
+print("Matriz original:")
+for linha in teste_matriz:
+    print(linha)
+
+rotacionar_90_in_place(teste_matriz)
+
+print("\\nApós rotação 90°:")
+for linha in teste_matriz:
+    print(linha)</code></pre>
+    </section>
+
+    <section>
+        <h2>🎮 Exercício Prático</h2>
+        <div class="exercise-box">
+            <h3>Sistema de Análise de Redes Sociais</h3>
+            <p>Implemente um sistema que usa matrizes esparsas para analisar redes sociais:</p>
+            <ul>
+                <li>Matriz de adjacência para representar conexões</li>
+                <li>Cálculo de métricas de centralidade</li>
+                <li>Detecção de comunidades</li>
+            </ul>
+            
+            <textarea id="code-input" placeholder="import random
+from collections import defaultdict, deque
+
+class AnalisadorRedeSocial:
+    def __init__(self):
+        '''Sistema para análise de redes sociais usando matrizes esparsas'''
+        self.usuarios = []
+        self.matriz_adjacencia = None
+        self.conexoes = defaultdict(set)
+    
+    def adicionar_usuario(self, nome):
+        '''Adiciona usuário à rede'''
+        if nome not in self.usuarios:
+            self.usuarios.append(nome)
+            return len(self.usuarios) - 1
+        return self.usuarios.index(nome)
+    
+    def adicionar_conexao(self, usuario1, usuario2):
+        '''Adiciona conexão bidirecional entre usuários'''
+        idx1 = self.adicionar_usuario(usuario1)
+        idx2 = self.adicionar_usuario(usuario2)
+        
+        self.conexoes[idx1].add(idx2)
+        self.conexoes[idx2].add(idx1)
+    
+    def construir_matriz_adjacencia(self):
+        '''Constrói matriz de adjacência esparsa'''
+        n = len(self.usuarios)
+        self.matriz_adjacencia = MatrizEsparsaCOO(n, n)
+        
+        for usuario, conexoes in self.conexoes.items():
+            for conexao in conexoes:
+                self.matriz_adjacencia.adicionar(usuario, conexao, 1)
+    
+    def calcular_grau(self, usuario):
+        '''Calcula grau (número de conexões) de um usuário'''
+        if isinstance(usuario, str):
+            usuario = self.usuarios.index(usuario)
+        
+        return len(self.conexoes[usuario])
+    
+    def centralidade_grau(self):
+        '''Calcula centralidade de grau para todos os usuários'''
+        centralidades = {}
+        n = len(self.usuarios)
+        
+        for i, usuario in enumerate(self.usuarios):
+            grau = self.calcular_grau(i)
+            # Normalizar pelo número máximo possível de conexões
+            centralidades[usuario] = grau / (n - 1) if n > 1 else 0
+        
+        return centralidades
+    
+    def centralidade_proximidade(self):
+        '''Calcula centralidade de proximidade (baseada em distâncias)'''
+        centralidades = {}
+        n = len(self.usuarios)
+        
+        for i, usuario in enumerate(self.usuarios):
+            distancias = self._bfs_distancias(i)
+            
+            # Soma das distâncias para todos os outros nós alcançáveis
+            soma_distancias = sum(d for d in distancias.values() if d > 0)
+            
+            if soma_distancias > 0:
+                centralidades[usuario] = (n - 1) / soma_distancias
+            else:
+                centralidades[usuario] = 0
+        
+        return centralidades
+    
+    def _bfs_distancias(self, inicio):
+        '''Calcula distâncias usando BFS'''
+        distancias = {inicio: 0}
+        fila = deque([inicio])
+        
+        while fila:
+            atual = fila.popleft()
+            
+            for vizinho in self.conexoes[atual]:
+                if vizinho not in distancias:
+                    distancias[vizinho] = distancias[atual] + 1
+                    fila.append(vizinho)
+        
+        return distancias
+    
+    def detectar_comunidades_simples(self):
+        '''Detecta comunidades usando busca em profundidade'''
+        visitados = set()
+        comunidades = []
+        
+        for i in range(len(self.usuarios)):
+            if i not in visitados:
+                comunidade = self._dfs_comunidade(i, visitados)
+                if comunidade:
+                    nomes_comunidade = [self.usuarios[idx] for idx in comunidade]
+                    comunidades.append(nomes_comunidade)
+        
+        return comunidades
+    
+    def _dfs_comunidade(self, inicio, visitados):
+        '''DFS para encontrar componente conectado'''
+        if inicio in visitados:
+            return []
+        
+        visitados.add(inicio)
+        comunidade = [inicio]
+        
+        for vizinho in self.conexoes[inicio]:
+            if vizinho not in visitados:
+                comunidade.extend(self._dfs_comunidade(vizinho, visitados))
+        
+        return comunidade
+    
+    def calcular_coeficiente_clustering(self, usuario):
+        '''Calcula coeficiente de clustering local'''
+        if isinstance(usuario, str):
+            usuario = self.usuarios.index(usuario)
+        
+        vizinhos = list(self.conexoes[usuario])
+        k = len(vizinhos)
+        
+        if k < 2:
+            return 0.0
+        
+        # Contar conexões entre vizinhos
+        conexoes_vizinhos = 0
+        for i in range(len(vizinhos)):
+            for j in range(i + 1, len(vizinhos)):
+                if vizinhos[j] in self.conexoes[vizinhos[i]]:
+                    conexoes_vizinhos += 1
+        
+        # Coeficiente = conexões reais / conexões possíveis
+        conexoes_possiveis = k * (k - 1) // 2
+        return conexoes_vizinhos / conexoes_possiveis
+    
+    def usuarios_mais_influentes(self, n=5):
+        '''Encontra os N usuários mais influentes por centralidade de grau'''
+        centralidades = self.centralidade_grau()
+        ordenados = sorted(centralidades.items(), key=lambda x: x[1], reverse=True)
+        return ordenados[:n]
+    
+    def sugerir_amigos(self, usuario, n=3):
+        '''Sugere amigos baseado em amigos em comum'''
+        if isinstance(usuario, str):
+            usuario_idx = self.usuarios.index(usuario)
+        else:
+            usuario_idx = usuario
+            usuario = self.usuarios[usuario_idx]
+        
+        amigos_diretos = self.conexoes[usuario_idx]
+        sugestoes = defaultdict(int)
+        
+        # Para cada amigo direto
+        for amigo in amigos_diretos:
+            # Ver amigos do amigo
+            for amigo_do_amigo in self.conexoes[amigo]:
+                # Se não é o próprio usuário e não é amigo direto
+                if (amigo_do_amigo != usuario_idx and 
+                    amigo_do_amigo not in amigos_diretos):
+                    sugestoes[amigo_do_amigo] += 1
+        
+        # Ordenar por número de amigos em comum
+        melhores = sorted(sugestoes.items(), key=lambda x: x[1], reverse=True)
+        
+        # Converter índices para nomes
+        resultado = []
+        for idx, amigos_comuns in melhores[:n]:
+            resultado.append((self.usuarios[idx], amigos_comuns))
+        
+        return resultado
+    
+    def estatisticas_rede(self):
+        '''Calcula estatísticas gerais da rede'''
+        n = len(self.usuarios)
+        total_conexoes = sum(len(conexoes) for conexoes in self.conexoes.values()) // 2
+        
+        # Densidade da rede
+        max_conexoes = n * (n - 1) // 2
+        densidade = (total_conexoes / max_conexoes) * 100 if max_conexoes > 0 else 0
+        
+        # Grau médio
+        grau_medio = (2 * total_conexoes) / n if n > 0 else 0
+        
+        # Coeficiente de clustering médio
+        clustering_total = 0
+        for i in range(n):
+            clustering_total += self.calcular_coeficiente_clustering(i)
+        clustering_medio = clustering_total / n if n > 0 else 0
+        
+        return {
+            'usuarios': n,
+            'conexoes': total_conexoes,
+            'densidade': densidade,
+            'grau_medio': grau_medio,
+            'clustering_medio': clustering_medio
+        }
+
+# Exemplo de uso
+rede = AnalisadorRedeSocial()
+
+# Construir rede de exemplo
+conexoes_exemplo = [
+    ('Alice', 'Bob'), ('Alice', 'Carol'), ('Alice', 'David'),
+    ('Bob', 'Carol'), ('Bob', 'Eve'),
+    ('Carol', 'David'), ('Carol', 'Frank'),
+    ('David', 'Frank'),
+    ('Eve', 'Grace'), ('Eve', 'Henry'),
+    ('Frank', 'Grace'),
+    ('Grace', 'Henry'), ('Grace', 'Ivan'),
+    ('Henry', 'Ivan')
+]
+
+print('🌐 ANÁLISE DE REDE SOCIAL')
+print('=' * 30)
+
+# Adicionar todas as conexões
+for u1, u2 in conexoes_exemplo:
+    rede.adicionar_conexao(u1, u2)
+
+# Construir matriz de adjacência
+rede.construir_matriz_adjacencia()
+
+print(f'Usuários na rede: {rede.usuarios}')
+print(f'Total de conexões: {len(conexoes_exemplo)}')
+
+# Estatísticas gerais
+print('\\n📊 ESTATÍSTICAS GERAIS:')
+stats = rede.estatisticas_rede()
+for chave, valor in stats.items():
+    if isinstance(valor, float):
+        print(f'  {chave.replace(\"_\", \" \").title()}: {valor:.2f}')
+    else:
+        print(f'  {chave.replace(\"_\", \" \").title()}: {valor}')
+
+# Centralidade de grau
+print('\\n🏆 CENTRALIDADE DE GRAU:')
+centralidade_grau = rede.centralidade_grau()
+usuarios_ordenados = sorted(centralidade_grau.items(), key=lambda x: x[1], reverse=True)
+for usuario, centralidade in usuarios_ordenados[:5]:
+    print(f'  {usuario}: {centralidade:.3f}')
+
+# Centralidade de proximidade
+print('\\n📍 CENTRALIDADE DE PROXIMIDADE:')
+centralidade_prox = rede.centralidade_proximidade()
+usuarios_prox = sorted(centralidade_prox.items(), key=lambda x: x[1], reverse=True)
+for usuario, centralidade in usuarios_prox[:5]:
+    print(f'  {usuario}: {centralidade:.3f}')
+
+# Usuários mais influentes
+print('\\n⭐ USUÁRIOS MAIS INFLUENTES:')
+influentes = rede.usuarios_mais_influentes(3)
+for i, (usuario, score) in enumerate(influentes, 1):
+    print(f'  {i}. {usuario} (Score: {score:.3f})')
+
+# Coeficiente de clustering
+print('\\n🔗 COEFICIENTE DE CLUSTERING:')
+for usuario in rede.usuarios[:5]:
+    clustering = rede.calcular_coeficiente_clustering(usuario)
+    print(f'  {usuario}: {clustering:.3f}')
+
+# Detecção de comunidades
+print('\\n👥 COMUNIDADES DETECTADAS:')
+comunidades = rede.detectar_comunidades_simples()
+for i, comunidade in enumerate(comunidades, 1):
+    print(f'  Comunidade {i}: {comunidade}')
+
+# Sugestões de amigos
+print('\\n💡 SUGESTÕES DE AMIGOS:')
+for usuario in ['Alice', 'Eve']:
+    sugestoes = rede.sugerir_amigos(usuario, 2)
+    print(f'  Para {usuario}:')
+    for amigo_sugerido, amigos_comuns in sugestoes:
+        print(f'    {amigo_sugerido} ({amigos_comuns} amigos em comum)')
+
+# Análise da matriz esparsa
+print('\\n🗜️ ANÁLISE DA MATRIZ ESPARSA:')
+matriz_stats = {
+    'dimensoes': f'{rede.matriz_adjacencia.linhas}x{rede.matriz_adjacencia.colunas}',
+    'elementos_nao_zero': len(rede.matriz_adjacencia.dados),
+    'densidade': f'{rede.matriz_adjacencia.densidade():.1f}%',
+    'economia_memoria': f'{100 - rede.matriz_adjacencia.densidade():.1f}%'
+}
+
+for chave, valor in matriz_stats.items():
+    print(f'  {chave.replace(\"_\", \" \").title()}: {valor}')
+
+# Demonstração de algoritmo otimizado vs naive
+print('\\n⚡ COMPARAÇÃO DE PERFORMANCE:')
+print('(Simulação com matriz 100x100)')
+
+# Criar matrizes de teste pequenas para demonstração
+import time
+
+def criar_matriz_teste(n, densidade=0.1):
+    matriz = [[0 for _ in range(n)] for _ in range(n)]
+    import random
+    
+    elementos_nao_zero = int(n * n * densidade)
+    for _ in range(elementos_nao_zero):
+        i = random.randint(0, n-1)
+        j = random.randint(0, n-1)
+        matriz[i][j] = random.randint(1, 10)
+    
+    return matriz
+
+n_teste = 50
+matriz_teste = criar_matriz_teste(n_teste, 0.05)
+vetor_teste = [1] * n_teste
+
+# Método denso (naive)
+inicio = time.time()
+resultado_denso = []
+for i in range(n_teste):
+    soma = sum(matriz_teste[i][j] * vetor_teste[j] for j in range(n_teste))
+    resultado_denso.append(soma)
+tempo_denso = time.time() - inicio
+
+# Método esparso (otimizado)
+csr_teste = MatrizEsparsaCSR(matriz_teste)
+inicio = time.time()
+resultado_esparso = csr_teste.multiplicar_vetor(vetor_teste)
+tempo_esparso = time.time() - inicio
+
+speedup = tempo_denso / tempo_esparso if tempo_esparso > 0 else float('inf')
+
+print(f'  Método denso: {tempo_denso*1000:.2f}ms')
+print(f'  Método esparso: {tempo_esparso*1000:.2f}ms')
+print(f'  Speedup: {speedup:.1f}x')
+print(f'  Resultados iguais: {resultado_denso == resultado_esparso}')"></textarea>
+            
+            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
+            <div id="output"></div>
+        </div>
+    </section>
+
+    <section>
+        <h2>💾 Formatos de Matrizes Esparsas</h2>
+        
+        <table class="sparse-formats-table">
+            <tr>
+                <th>Formato</th>
+                <th>Uso</th>
+                <th>Vantagens</th>
+                <th>Desvantagens</th>
+            </tr>
+            <tr>
+                <td>COO</td>
+                <td>Construção</td>
+                <td>Simples, flexível</td>
+                <td>Lento para operações</td>
+            </tr>
+            <tr>
+                <td>CSR</td>
+                <td>Multiplicação</td>
+                <td>Rápido para Ax</td>
+                <td>Difícil modificar</td>
+            </tr>
+            <tr>
+                <td>CSC</td>
+                <td>Operações em colunas</td>
+                <td>Rápido para A^Tx</td>
+                <td>Lento para linhas</td>
+            </tr>
+            <tr>
+                <td>DOK</td>
+                <td>Construção dinâmica</td>
+                <td>Modificação rápida</td>
+                <td>Lento para álgebra</td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h2>📈 Complexidade e Performance</h2>
+        
+        <h3>Comparação de Operações:</h3>
+        <pre><code>def comparar_performance():
+    """Compara performance entre representações"""
+    
+    # Dados de exemplo
+    resultados = {
+        "Operação": ["Acesso", "Multiplicação", "Soma", "Modificação"],
+        "Matriz Densa": ["O(1)", "O(n³)", "O(n²)", "O(1)"],
+        "Matriz Esparsa": ["O(log nnz)", "O(nnz)", "O(nnz)", "O(log nnz)"],
+        "Economia Memória": ["0%", "90%+", "90%+", "90%+"]
+    }
+    
+    print("Comparação de Performance:")
+    print("-" * 60)
+    
+    for i, operacao in enumerate(resultados["Operação"]):
+        print(f"{operacao:12} | {resultados['Matriz Densa'][i]:8} | "
+              f"{resultados['Matriz Esparsa'][i]:12} | {resultados['Economia Memória'][i]}")
+    
+    print("-" * 60)
+    print("nnz = número de elementos não-zero")
+
+comparar_performance()</code></pre>
+    </section>
+
+    <section>
+        <h2>🔧 Bibliotecas Especializadas</h2>
+        
+        <h3>Usando SciPy (Exemplo Conceitual):</h3>
+        <pre><code># Exemplo conceitual - requer scipy
+"""
+import scipy.sparse as sp
+import numpy as np
+
+# Criar matriz esparsa
+data = [1, 2, 3, 4]
+row = [0, 1, 2, 1]
+col = [0, 1, 2, 3]
+
+# Formato COO
+coo = sp.coo_matrix((data, (row, col)), shape=(4, 4))
+
+# Converter para CSR para operações eficientes
+csr = coo.tocsr()
+
+# Multiplicação eficiente
+vetor = np.array([1, 1, 1, 1])
+resultado = csr.dot(vetor)
+
+# Operações lineares
+A = sp.random(1000, 1000, density=0.01)  # 1% de densidade
+b = np.random.rand(1000)
+
+# Resolver sistema linear Ax = b
+from scipy.sparse.linalg import spsolve
+x = spsolve(A, b)
+"""
+
+print("Para uso em produção, considere:")
+print("- NumPy/SciPy para matrizes esparsas")
+print("- BLAS/LAPACK para álgebra linear otimizada")
+print("- CuPy/CuSparse para GPU")
+print("- PETSc para computação paralela")</code></pre>
+    </section>
+
+    <section>
+        <h2>💡 Estratégias de Otimização</h2>
+        <div class="tip-box">
+            <ul>
+                <li>🎯 <strong>Escolha o formato certo</strong> - COO para construção, CSR para operações</li>
+                <li>💾 <strong>Minimize realocações</strong> - pré-aloque quando possível</li>
+                <li>⚡ <strong>Use operações vectorizadas</strong> - evite loops em Python</li>
+                <li>🧠 <strong>Considere padrões de acesso</strong> - row-major vs column-major</li>
+                <li>📊 <strong>Profile antes de otimizar</strong> - identifique gargalos reais</li>
+                <li>🔧 <strong>Use bibliotecas especializadas</strong> - SciPy, NumPy para produção</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function runCode() {
+    const code = document.getElementById('code-input').value;
+    const output = document.getElementById('output');
+    
+    output.innerHTML = '<div class="output-success">Analisador de rede social executado! Veja como matrizes esparsas otimizam análises complexas.</div>';
+}
+</script>
+{% endblock %}

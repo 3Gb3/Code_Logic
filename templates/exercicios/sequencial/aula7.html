@@ -1,0 +1,170 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 7 - Trabalhando com Strings | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 7 – Trabalhando com Strings{% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Manipular strings eficientemente</li>
+            <li>Conhecer métodos importantes de string</li>
+            <li>Trabalhar com índices e fatiamento</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>🔤 Conceitos Básicos</h2>
+        <p>Strings são sequências de caracteres. Cada caractere tem uma posição (índice):</p>
+        
+        <pre><code>texto = "Python"
+#        0123456  (índices positivos)
+#       -654321   (índices negativos)</code></pre>
+        
+        <h3>Acessando caracteres:</h3>
+        <pre><code>print(texto[0])    # P (primeiro)
+print(texto[-1])   # n (último)
+print(texto[2])    # t (terceiro)</code></pre>
+    </section>
+
+    <section>
+        <h2>✂️ Fatiamento (Slicing)</h2>
+        <p>Extrair partes da string: <code>string[início:fim:passo]</code></p>
+        
+        <pre><code>texto = "Python Programming"
+
+print(texto[0:6])     # "Python"
+print(texto[7:])      # "Programming"
+print(texto[:6])      # "Python"
+print(texto[::2])     # "Pto rgamn"
+print(texto[::-1])    # "gnimmargorP nohtyP" (invertido)</code></pre>
+    </section>
+
+    <section>
+        <h2>🛠️ Métodos Importantes</h2>
+        
+        <h3>Métodos de transformação:</h3>
+        <pre><code>texto = "  Python Programming  "
+
+print(texto.upper())        # "  PYTHON PROGRAMMING  "
+print(texto.lower())        # "  python programming  "
+print(texto.title())        # "  Python Programming  "
+print(texto.capitalize())   # "  python programming  "
+print(texto.strip())        # "Python Programming"
+print(texto.replace("Python", "Java"))  # "  Java Programming  "</code></pre>
+        
+        <h3>Métodos de verificação:</h3>
+        <pre><code>texto = "Python123"
+
+print(texto.isalpha())      # False (tem números)
+print(texto.isdigit())      # False (tem letras)
+print(texto.isalnum())      # True (só letras e números)
+print(texto.isspace())      # False (não é só espaços)
+print(texto.startswith("Py"))  # True
+print(texto.endswith("123"))   # True</code></pre>
+        
+        <h3>Métodos de busca:</h3>
+        <pre><code>texto = "Python Programming"
+
+print(texto.find("Pro"))    # 7 (índice onde começa)
+print(texto.find("Java"))   # -1 (não encontrou)
+print(texto.count("o"))     # 2 (quantas vezes aparece)
+print(len(texto))           # 18 (tamanho da string)</code></pre>
+    </section>
+
+    <section>
+        <h2>🔧 Dividindo e Juntando Strings</h2>
+        
+        <h3>Split - dividir:</h3>
+        <pre><code>frase = "Python é uma linguagem incrível"
+palavras = frase.split()  # Divide por espaços
+print(palavras)  # ['Python', 'é', 'uma', 'linguagem', 'incrível']
+
+dados = "João,25,São Paulo"
+lista = dados.split(",")  # Divide por vírgulas
+print(lista)  # ['João', '25', 'São Paulo']</code></pre>
+        
+        <h3>Join - juntar:</h3>
+        <pre><code>palavras = ['Python', 'é', 'incrível']
+frase = " ".join(palavras)  # Junta com espaços
+print(frase)  # "Python é incrível"
+
+dados = ['João', '25', 'São Paulo']
+linha = ",".join(dados)  # Junta com vírgulas
+print(linha)  # "João,25,São Paulo"</code></pre>
+    </section>
+
+    <section>
+        <h2>💡 Exemplos Práticos</h2>
+        
+        <h3>Validador de email simples:</h3>
+        <pre><code>email = input("Digite seu email: ")
+
+if "@" in email and "." in email:
+    partes = email.split("@")
+    if len(partes) == 2:
+        nome = partes[0]
+        dominio = partes[1]
+        print(f"Nome: {nome}")
+        print(f"Domínio: {dominio}")
+        print("Email válido!")
+    else:
+        print("Email inválido!")
+else:
+    print("Email deve conter @ e .")</code></pre>
+        
+        <h3>Contador de palavras:</h3>
+        <pre><code>texto = input("Digite um texto: ")
+palavras = texto.split()
+caracteres = len(texto)
+caracteres_sem_espacos = len(texto.replace(" ", ""))
+
+print(f"Palavras: {len(palavras)}")
+print(f"Caracteres: {caracteres}")
+print(f"Caracteres (sem espaços): {caracteres_sem_espacos}")</code></pre>
+    </section>
+{% endblock %}
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    
+    <p><strong>Tarefa 1:</strong> Analisador de Nome</p>
+    <ul>
+        <li>Peça o nome completo do usuário</li>
+        <li>Extraia e exiba: primeiro nome, último nome, iniciais</li>
+        <li>Conte quantas palavras tem o nome</li>
+        <li>Exiba o nome em diferentes formatos (maiúsculo, minúsculo, título)</li>
+    </ul>
+    
+    <p><strong>Tarefa 2:</strong> Validador de Senha</p>
+    <ul>
+        <li>Peça uma senha</li>
+        <li>Verifique se tem pelo menos 8 caracteres</li>
+        <li>Verifique se tem números e letras</li>
+        <li>Mostre feedback detalhado</li>
+    </ul>
+    
+    <p><strong>Tarefa 3:</strong> Palíndromo</p>
+    <ul>
+        <li>Peça uma palavra ou frase</li>
+        <li>Remova espaços e converta para minúsculo</li>
+        <li>Verifique se é um palíndromo</li>
+        <li>Exemplo: "Anotaram a data da maratona"</li>
+    </ul>
+    
+    <p><strong>Exemplo de saída esperada:</strong></p>
+    <pre><code>Nome completo: João Silva Santos
+Primeiro nome: João
+Último nome: Santos
+Iniciais: J.S.S.
+Quantidade de nomes: 3
+Maiúsculo: JOÃO SILVA SANTOS
+Minúsculo: joão silva santos</code></pre>
+{% endblock %}
+
+{% block initial_code %}nome = "João Silva"
+print(f"Primeiro nome: {nome.split()[0]}")
+print(f"Último nome: {nome.split()[-1]}")
+
+# Agora implemente os exercícios completos{% endblock %}

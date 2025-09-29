@@ -1,0 +1,180 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 8 - Random e Geração de Números Aleatórios | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 8 – Random e Geração de Números Aleatórios{% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Conhecer a biblioteca random</li>
+            <li>Gerar números e elementos aleatórios</li>
+            <li>Criar programas com elementos de aleatoriedade</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>🎲 Biblioteca Random</h2>
+        <p>A biblioteca random permite gerar números e escolhas aleatórias:</p>
+        
+        <pre><code>import random</code></pre>
+        
+        <h3>Principais funções:</h3>
+        
+        <h4>random() - número decimal entre 0 e 1:</h4>
+        <pre><code>print(random.random())  # Ex: 0.7234567890123456</code></pre>
+        
+        <h4>randint() - número inteiro entre dois valores:</h4>
+        <pre><code>dado = random.randint(1, 6)  # Simula dado de 6 faces
+print(f"Dado: {dado}")</code></pre>
+        
+        <h4>uniform() - número decimal entre dois valores:</h4>
+        <pre><code>altura = random.uniform(1.5, 2.0)  # Altura entre 1.5 e 2.0m
+print(f"Altura: {altura:.2f}m")</code></pre>
+        
+        <h4>choice() - escolhe um elemento de uma lista:</h4>
+        <pre><code>cores = ["vermelho", "azul", "verde", "amarelo"]
+cor_escolhida = random.choice(cores)
+print(f"Cor sorteada: {cor_escolhida}")</code></pre>
+        
+        <h4>shuffle() - embaralha uma lista:</h4>
+        <pre><code>cartas = ["A", "K", "Q", "J"]
+random.shuffle(cartas)  # Modifica a lista original
+print(f"Cartas embaralhadas: {cartas}")</code></pre>
+    </section>
+
+    <section>
+        <h2>🎮 Exemplos Práticos</h2>
+        
+        <h3>Jogo de Adivinhação:</h3>
+        <pre><code>import random
+
+numero_secreto = random.randint(1, 100)
+tentativa = int(input("Adivinhe o número (1-100): "))
+
+if tentativa == numero_secreto:
+    print("Parabéns! Você acertou!")
+elif tentativa < numero_secreto:
+    print("O número é maior!")
+else:
+    print("O número é menor!")
+    
+print(f"O número era: {numero_secreto}")</code></pre>
+        
+        <h3>Gerador de Senhas:</h3>
+        <pre><code>import random
+
+letras = "abcdefghijklmnopqrstuvwxyz"
+numeros = "0123456789"
+simbolos = "!@#$%&*"
+
+todos_chars = letras + letras.upper() + numeros + simbolos
+senha = ""
+
+for i in range(8):  # Senha de 8 caracteres
+    senha += random.choice(todos_chars)
+    
+print(f"Senha gerada: {senha}")</code></pre>
+        
+        <h3>Simulador de Cara ou Coroa:</h3>
+        <pre><code>import random
+
+resultado = random.choice(["Cara", "Coroa"])
+print(f"Resultado: {resultado}")
+
+# Ou usando randint:
+moeda = random.randint(0, 1)
+resultado = "Cara" if moeda == 0 else "Coroa"
+print(f"Resultado: {resultado}")</code></pre>
+    </section>
+
+    <section>
+        <h2>📊 Estatísticas e Simulações</h2>
+        
+        <h3>Simulação de dados:</h3>
+        <pre><code>import random
+
+# Simular 1000 jogadas de dado
+resultados = []
+for i in range(1000):
+    dado = random.randint(1, 6)
+    resultados.append(dado)
+
+# Contar frequência de cada face
+for face in range(1, 7):
+    frequencia = resultados.count(face)
+    percentual = (frequencia / 1000) * 100
+    print(f"Face {face}: {frequencia} vezes ({percentual:.1f}%)")</code></pre>
+        
+        <h3>Sorteio de nomes:</h3>
+        <pre><code>import random
+
+participantes = ["Ana", "Bruno", "Carlos", "Diana", "Eduardo"]
+vencedor = random.choice(participantes)
+print(f"Vencedor do sorteio: {vencedor}")
+
+# Para sortear múltiplos vencedores sem repetição:
+vencedores = random.sample(participantes, 3)  # 3 vencedores
+print(f"Vencedores: {vencedores}")</code></pre>
+    </section>
+
+    <section>
+        <h2>🔧 Semente (Seed)</h2>
+        <p>Para resultados reproduzíveis, use seed:</p>
+        <pre><code>import random
+
+random.seed(42)  # Sempre gerará a mesma sequência
+print(random.randint(1, 10))  # Sempre será o mesmo número
+print(random.randint(1, 10))  # Sempre será o mesmo número
+
+# Sem seed, números são diferentes a cada execução</code></pre>
+    </section>
+{% endblock %}
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    
+    <p><strong>Tarefa 1:</strong> Jogo de Adivinhação Melhorado</p>
+    <ul>
+        <li>Gere um número entre 1 e 100</li>
+        <li>Dê 3 tentativas ao jogador</li>
+        <li>Para cada tentativa, diga se o número é maior ou menor</li>
+        <li>Mostre o resultado final</li>
+    </ul>
+    
+    <p><strong>Tarefa 2:</strong> Simulador de Loteria</p>
+    <ul>
+        <li>Gere 6 números únicos entre 1 e 60</li>
+        <li>Ordene os números</li>
+        <li>Exiba como um resultado de loteria</li>
+    </ul>
+    
+    <p><strong>Tarefa 3:</strong> Gerador de Frases Aleatórias</p>
+    <ul>
+        <li>Crie listas de sujeitos, verbos e objetos</li>
+        <li>Combine aleatoriamente para criar frases</li>
+        <li>Gere 5 frases diferentes</li>
+    </ul>
+    
+    <p><strong>Exemplo de saída esperada:</strong></p>
+    <pre><code>🎲 Jogo de Adivinhação 🎲
+Tentativa 1: Muito baixo!
+Tentativa 2: Muito alto!
+Tentativa 3: Parabéns! Acertou!
+
+🎰 Números da Sorte: 05 12 23 34 45 58</code></pre>
+{% endblock %}
+
+{% block initial_code %}import random
+
+# Exemplo: Dado simples
+dado = random.randint(1, 6)
+print(f"Você tirou: {dado}")
+
+# Exemplo: Escolha aleatória
+opcoes = ["Pedra", "Papel", "Tesoura"]
+escolha = random.choice(opcoes)
+print(f"Computador escolheu: {escolha}")
+
+# Agora implemente os exercícios{% endblock %}

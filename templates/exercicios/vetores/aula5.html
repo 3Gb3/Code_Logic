@@ -1,0 +1,561 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 5 - Busca e Ordenação | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 5 – Busca e Ordenação{% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Implementar algoritmos de busca em listas</li>
+            <li>Ordenar listas usando diferentes métodos</li>
+            <li>Compreender complexidade de algoritmos</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>🔍 Algoritmos de Busca</h2>
+        
+        <h3>Busca Linear (Sequencial):</h3>
+        <pre><code>def busca_linear(lista, item):
+    """
+    Busca um item na lista percorrendo sequencialmente
+    Retorna o índice se encontrado, -1 se não encontrado
+    """
+    for i in range(len(lista)):
+        if lista[i] == item:
+            return i
+    return -1
+
+def busca_linear_todos(lista, item):
+    """Retorna todos os índices onde o item aparece"""
+    indices = []
+    for i in range(len(lista)):
+        if lista[i] == item:
+            indices.append(i)
+    return indices
+
+# Teste
+numeros = [64, 34, 25, 12, 22, 11, 90, 25]
+print(f"Lista: {numeros}")
+print(f"Buscar 25: índice {busca_linear(numeros, 25)}")  # 2
+print(f"Todos os 25: {busca_linear_todos(numeros, 25)}")  # [2, 7]
+print(f"Buscar 100: índice {busca_linear(numeros, 100)}")  # -1</code></pre>
+        
+        <h3>Busca Binária (Lista Ordenada):</h3>
+        <pre><code>def busca_binaria(lista_ordenada, item):
+    """
+    Busca binária - lista DEVE estar ordenada
+    Complexidade: O(log n)
+    """
+    esquerda = 0
+    direita = len(lista_ordenada) - 1
+    
+    while esquerda <= direita:
+        meio = (esquerda + direita) // 2
+        
+        if lista_ordenada[meio] == item:
+            return meio
+        elif lista_ordenada[meio] < item:
+            esquerda = meio + 1
+        else:
+            direita = meio - 1
+    
+    return -1
+
+def busca_binaria_recursiva(lista, item, esquerda=0, direita=None):
+    """Versão recursiva da busca binária"""
+    if direita is None:
+        direita = len(lista) - 1
+    
+    if esquerda > direita:
+        return -1
+    
+    meio = (esquerda + direita) // 2
+    
+    if lista[meio] == item:
+        return meio
+    elif lista[meio] < item:
+        return busca_binaria_recursiva(lista, item, meio + 1, direita)
+    else:
+        return busca_binaria_recursiva(lista, item, esquerda, meio - 1)
+
+# Teste
+lista_ordenada = [11, 12, 22, 25, 34, 64, 90]
+print(f"Lista ordenada: {lista_ordenada}")
+print(f"Busca binária 25: {busca_binaria(lista_ordenada, 25)}")  # 3
+print(f"Busca recursiva 64: {busca_binaria_recursiva(lista_ordenada, 64)}")  # 5</code></pre>
+    </section>
+
+    <section>
+        <h2>📊 Algoritmos de Ordenação</h2>
+        
+        <h3>1. Bubble Sort (Ordenação por Bolha):</h3>
+        <pre><code>def bubble_sort(lista):
+    """
+    Bubble Sort - compara elementos adjacentes
+    Complexidade: O(n²)
+    """
+    lista = lista.copy()  # Não modificar original
+    n = len(lista)
+    
+    for i in range(n):
+        # Flag para otimização
+        houve_troca = False
+        
+        for j in range(0, n - i - 1):
+            if lista[j] > lista[j + 1]:
+                # Trocar elementos
+                lista[j], lista[j + 1] = lista[j + 1], lista[j]
+                houve_troca = True
+        
+        # Se não houve troca, lista já está ordenada
+        if not houve_troca:
+            break
+    
+    return lista
+
+# Teste
+numeros = [64, 34, 25, 12, 22, 11, 90]
+print(f"Original: {numeros}")
+ordenado = bubble_sort(numeros)
+print(f"Bubble Sort: {ordenado}")  # [11, 12, 22, 25, 34, 64, 90]</code></pre>
+        
+        <h3>2. Selection Sort (Ordenação por Seleção):</h3>
+        <pre><code>def selection_sort(lista):
+    """
+    Selection Sort - encontra o menor e coloca na posição
+    Complexidade: O(n²)
+    """
+    lista = lista.copy()
+    n = len(lista)
+    
+    for i in range(n):
+        # Encontrar o índice do menor elemento
+        indice_menor = i
+        
+        for j in range(i + 1, n):
+            if lista[j] < lista[indice_menor]:
+                indice_menor = j
+        
+        # Trocar o menor com o elemento atual
+        lista[i], lista[indice_menor] = lista[indice_menor], lista[i]
+    
+    return lista
+
+# Teste
+numeros = [64, 25, 12, 22, 11]
+print(f"Selection Sort: {selection_sort(numeros)}")  # [11, 12, 22, 25, 64]</code></pre>
+        
+        <h3>3. Insertion Sort (Ordenação por Inserção):</h3>
+        <pre><code>def insertion_sort(lista):
+    """
+    Insertion Sort - insere cada elemento na posição correta
+    Complexidade: O(n²) no pior caso, O(n) no melhor caso
+    """
+    lista = lista.copy()
+    
+    for i in range(1, len(lista)):
+        chave = lista[i]
+        j = i - 1
+        
+        # Mover elementos maiores para a direita
+        while j >= 0 and lista[j] > chave:
+            lista[j + 1] = lista[j]
+            j -= 1
+        
+        # Inserir a chave na posição correta
+        lista[j + 1] = chave
+    
+    return lista
+
+# Teste
+numeros = [5, 2, 4, 6, 1, 3]
+print(f"Insertion Sort: {insertion_sort(numeros)}")  # [1, 2, 3, 4, 5, 6]</code></pre>
+        
+        <h3>4. Quick Sort (Ordenação Rápida):</h3>
+        <pre><code>def quick_sort(lista):
+    """
+    Quick Sort - divide e conquista
+    Complexidade: O(n log n) em média, O(n²) no pior caso
+    """
+    if len(lista) <= 1:
+        return lista
+    
+    pivot = lista[len(lista) // 2]
+    esquerda = [x for x in lista if x < pivot]
+    meio = [x for x in lista if x == pivot]
+    direita = [x for x in lista if x > pivot]
+    
+    return quick_sort(esquerda) + meio + quick_sort(direita)
+
+def quick_sort_inplace(lista, inicio=0, fim=None):
+    """Quick Sort que modifica a lista original"""
+    if fim is None:
+        fim = len(lista) - 1
+    
+    if inicio < fim:
+        # Particionar e obter posição do pivot
+        pivot_pos = particionar(lista, inicio, fim)
+        
+        # Recursivamente ordenar elementos antes e depois do pivot
+        quick_sort_inplace(lista, inicio, pivot_pos - 1)
+        quick_sort_inplace(lista, pivot_pos + 1, fim)
+
+def particionar(lista, inicio, fim):
+    """Função auxiliar para particionamento"""
+    pivot = lista[fim]
+    i = inicio - 1
+    
+    for j in range(inicio, fim):
+        if lista[j] <= pivot:
+            i += 1
+            lista[i], lista[j] = lista[j], lista[i]
+    
+    lista[i + 1], lista[fim] = lista[fim], lista[i + 1]
+    return i + 1
+
+# Teste
+numeros = [3, 6, 8, 10, 1, 2, 1]
+print(f"Quick Sort: {quick_sort(numeros)}")  # [1, 1, 2, 3, 6, 8, 10]</code></pre>
+    </section>
+
+    <section>
+        <h2>🔧 Métodos Built-in do Python</h2>
+        
+        <h3>sort() e sorted():</h3>
+        <pre><code># sorted() - retorna nova lista ordenada
+numeros = [3, 1, 4, 1, 5, 9, 2, 6]
+ordenados = sorted(numeros)
+print(f"Original: {numeros}")      # [3, 1, 4, 1, 5, 9, 2, 6]
+print(f"Ordenados: {ordenados}")   # [1, 1, 2, 3, 4, 5, 6, 9]
+
+# sort() - modifica a lista original
+numeros.sort()
+print(f"Após sort(): {numeros}")   # [1, 1, 2, 3, 4, 5, 6, 9]
+
+# Ordenação reversa
+numeros_rev = sorted(numeros, reverse=True)
+print(f"Reverso: {numeros_rev}")   # [9, 6, 5, 4, 3, 2, 1, 1]</code></pre>
+        
+        <h3>Ordenação com key (função personalizada):</h3>
+        <pre><code># Ordenar strings por comprimento
+palavras = ["python", "java", "c", "javascript", "go"]
+por_tamanho = sorted(palavras, key=len)
+print(f"Por tamanho: {por_tamanho}")  # ['c', 'go', 'java', 'python', 'javascript']
+
+# Ordenar por último caractere
+por_ultimo = sorted(palavras, key=lambda x: x[-1])
+print(f"Por último char: {por_ultimo}")  # ['java', 'c', 'go', 'python', 'javascript']
+
+# Ordenar lista de tuplas
+estudantes = [("Ana", 85), ("Bruno", 92), ("Carlos", 78), ("Diana", 96)]
+
+# Por nota (segundo elemento)
+por_nota = sorted(estudantes, key=lambda x: x[1])
+print(f"Por nota: {por_nota}")
+
+# Por nome (primeiro elemento)
+por_nome = sorted(estudantes, key=lambda x: x[0])
+print(f"Por nome: {por_nome}")
+
+# Ordenação múltipla - por nota decrescente, depois por nome
+multipla = sorted(estudantes, key=lambda x: (-x[1], x[0]))
+print(f"Múltipla: {multipla}")</code></pre>
+    </section>
+
+    <section>
+        <h2>🎮 Exercício Prático</h2>
+        <div class="exercise-box">
+            <h3>Sistema de Ranking de Jogadores</h3>
+            <p>Crie um sistema que gerencie rankings de jogadores com diferentes critérios de ordenação:</p>
+            <ul>
+                <li>Buscar jogadores por nome ou pontuação</li>
+                <li>Ordenar por diferentes critérios</li>
+                <li>Filtrar e analisar estatísticas</li>
+            </ul>
+            
+            <textarea id="code-input" placeholder="class SistemaRanking:
+    def __init__(self):
+        # Lista de jogadores: [nome, pontuacao, nivel, partidas_jogadas]
+        self.jogadores = [
+            ['Ana', 1520, 25, 150],
+            ['Bruno', 1680, 30, 200],
+            ['Carlos', 1350, 20, 120],
+            ['Diana', 1750, 35, 180],
+            ['Eduardo', 1420, 22, 160],
+            ['Fernanda', 1650, 28, 170],
+            ['Gabriel', 1580, 26, 145],
+            ['Helena', 1720, 32, 190]
+        ]
+    
+    def buscar_jogador(self, nome):
+        '''Busca jogador por nome'''
+        for i, jogador in enumerate(self.jogadores):
+            if jogador[0].lower() == nome.lower():
+                return i, jogador
+        return -1, None
+    
+    def buscar_por_pontuacao(self, pontuacao_min, pontuacao_max=None):
+        '''Busca jogadores por faixa de pontuação'''
+        resultado = []
+        
+        if pontuacao_max is None:
+            pontuacao_max = float('inf')
+        
+        for jogador in self.jogadores:
+            if pontuacao_min <= jogador[1] <= pontuacao_max:
+                resultado.append(jogador)
+        
+        return resultado
+    
+    def ordenar_ranking(self, criterio='pontuacao', reverso=True):
+        '''Ordena jogadores por critério específico'''
+        criterios = {
+            'nome': 0,
+            'pontuacao': 1,
+            'nivel': 2,
+            'partidas': 3
+        }
+        
+        if criterio not in criterios:
+            return None, 'Critério inválido'
+        
+        indice = criterios[criterio]
+        jogadores_ordenados = sorted(self.jogadores, 
+                                   key=lambda x: x[indice], 
+                                   reverse=reverso)
+        
+        return jogadores_ordenados, f'Ordenado por {criterio}'
+    
+    def top_jogadores(self, n=5):
+        '''Retorna os top N jogadores por pontuação'''
+        ordenados, _ = self.ordenar_ranking('pontuacao', True)
+        return ordenados[:n]
+    
+    def calcular_media_pontuacao(self):
+        '''Calcula média de pontuação dos jogadores'''
+        total_pontos = sum(jogador[1] for jogador in self.jogadores)
+        return total_pontos / len(self.jogadores)
+    
+    def jogadores_acima_media(self):
+        '''Jogadores com pontuação acima da média'''
+        media = self.calcular_media_pontuacao()
+        return [jogador for jogador in self.jogadores if jogador[1] > media]
+    
+    def estatisticas_completas(self):
+        '''Retorna estatísticas completas do ranking'''
+        pontuacoes = [jogador[1] for jogador in self.jogadores]
+        
+        return {
+            'total_jogadores': len(self.jogadores),
+            'pontuacao_maxima': max(pontuacoes),
+            'pontuacao_minima': min(pontuacoes),
+            'pontuacao_media': self.calcular_media_pontuacao(),
+            'jogadores_acima_media': len(self.jogadores_acima_media())
+        }
+    
+    def exibir_jogador(self, jogador):
+        '''Formata informações do jogador para exibição'''
+        nome, pontos, nivel, partidas = jogador
+        return f'{nome}: {pontos} pts (Nível {nivel}, {partidas} partidas)'
+
+# Testando o sistema
+sistema = SistemaRanking()
+
+print('🏆 SISTEMA DE RANKING DE JOGADORES')
+print('=' * 40)
+
+# Exibir todos os jogadores
+print('\\n📋 TODOS OS JOGADORES:')
+for jogador in sistema.jogadores:
+    print(f'  {sistema.exibir_jogador(jogador)}')
+
+# Top 3 jogadores
+print('\\n🥇 TOP 3 JOGADORES:')
+top3 = sistema.top_jogadores(3)
+for i, jogador in enumerate(top3, 1):
+    print(f'  {i}º - {sistema.exibir_jogador(jogador)}')
+
+# Buscar jogador específico
+print('\\n🔍 BUSCA POR JOGADOR:')
+indice, jogador = sistema.buscar_jogador('Diana')
+if jogador:
+    print(f'  Encontrado: {sistema.exibir_jogador(jogador)} (posição {indice})')
+
+# Buscar por pontuação
+print('\\n🎯 JOGADORES COM 1600+ PONTOS:')
+elite = sistema.buscar_por_pontuacao(1600)
+for jogador in elite:
+    print(f'  {sistema.exibir_jogador(jogador)}')
+
+# Ordenar por nível
+print('\\n📊 RANKING POR NÍVEL:')
+por_nivel, _ = sistema.ordenar_ranking('nivel', True)
+for jogador in por_nivel[:5]:
+    print(f'  {sistema.exibir_jogador(jogador)}')
+
+# Estatísticas
+print('\\n📈 ESTATÍSTICAS:')
+stats = sistema.estatisticas_completas()
+for chave, valor in stats.items():
+    if isinstance(valor, float):
+        print(f'  {chave.replace(\"_\", \" \").title()}: {valor:.1f}')
+    else:
+        print(f'  {chave.replace(\"_\", \" \").title()}: {valor}')
+
+# Jogadores acima da média
+print('\\n⭐ JOGADORES ACIMA DA MÉDIA:')
+acima_media = sistema.jogadores_acima_media()
+for jogador in acima_media:
+    print(f'  {sistema.exibir_jogador(jogador)}')"></textarea>
+            
+            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
+            <div id="output"></div>
+        </div>
+    </section>
+
+    <section>
+        <h2>📊 Comparação de Algoritmos</h2>
+        
+        <table class="comparison-table">
+            <tr>
+                <th>Algoritmo</th>
+                <th>Melhor Caso</th>
+                <th>Caso Médio</th>
+                <th>Pior Caso</th>
+                <th>Espaço</th>
+                <th>Estável?</th>
+            </tr>
+            <tr>
+                <td>Bubble Sort</td>
+                <td>O(n)</td>
+                <td>O(n²)</td>
+                <td>O(n²)</td>
+                <td>O(1)</td>
+                <td>✅ Sim</td>
+            </tr>
+            <tr>
+                <td>Selection Sort</td>
+                <td>O(n²)</td>
+                <td>O(n²)</td>
+                <td>O(n²)</td>
+                <td>O(1)</td>
+                <td>❌ Não</td>
+            </tr>
+            <tr>
+                <td>Insertion Sort</td>
+                <td>O(n)</td>
+                <td>O(n²)</td>
+                <td>O(n²)</td>
+                <td>O(1)</td>
+                <td>✅ Sim</td>
+            </tr>
+            <tr>
+                <td>Quick Sort</td>
+                <td>O(n log n)</td>
+                <td>O(n log n)</td>
+                <td>O(n²)</td>
+                <td>O(log n)</td>
+                <td>❌ Não</td>
+            </tr>
+            <tr>
+                <td>Python sort()</td>
+                <td>O(n)</td>
+                <td>O(n log n)</td>
+                <td>O(n log n)</td>
+                <td>O(n)</td>
+                <td>✅ Sim</td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h2>🔍 Algoritmos de Busca Avançados</h2>
+        
+        <h3>Busca Interpolada:</h3>
+        <pre><code>def busca_interpolada(lista, item):
+    """
+    Busca interpolada - melhor que binária para dados uniformemente distribuídos
+    """
+    esquerda = 0
+    direita = len(lista) - 1
+    
+    while esquerda <= direita and item >= lista[esquerda] and item <= lista[direita]:
+        # Se há apenas um elemento
+        if esquerda == direita:
+            if lista[esquerda] == item:
+                return esquerda
+            return -1
+        
+        # Estimar posição
+        pos = esquerda + int(((float(item - lista[esquerda]) / 
+                              (lista[direita] - lista[esquerda])) * 
+                             (direita - esquerda)))
+        
+        if lista[pos] == item:
+            return pos
+        elif lista[pos] < item:
+            esquerda = pos + 1
+        else:
+            direita = pos - 1
+    
+    return -1
+
+# Teste
+numeros_uniformes = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+print(f"Busca interpolada 70: {busca_interpolada(numeros_uniformes, 70)}")  # 6</code></pre>
+    </section>
+
+    <section>
+        <h2>💡 Dicas de Performance</h2>
+        <div class="tip-box">
+            <ul>
+                <li>🔍 Use busca binária apenas em listas ordenadas</li>
+                <li>📊 Python's sort() usa Timsort (híbrido, muito eficiente)</li>
+                <li>⚡ Para listas pequenas (<50), insertion sort é muito eficiente</li>
+                <li>🎯 Use bisect module para inserção ordenada eficiente</li>
+                <li>🧠 Quick sort é ótimo para listas grandes e aleatórias</li>
+                <li>🛡️ Algoritmos estáveis preservam ordem de elementos iguais</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <h2>🔧 Módulo bisect</h2>
+        <pre><code>import bisect
+
+# Lista ordenada
+numeros = [1, 3, 5, 7, 9, 11, 13, 15]
+
+# Buscar posição de inserção
+pos = bisect.bisect_left(numeros, 8)
+print(f"Posição para inserir 8: {pos}")  # 4
+
+# Inserir mantendo ordem
+bisect.insort(numeros, 8)
+print(f"Após inserir 8: {numeros}")  # [1, 3, 5, 7, 8, 9, 11, 13, 15]
+
+# Buscar elemento
+def busca_bisect(lista, item):
+    """Busca usando bisect"""
+    pos = bisect.bisect_left(lista, item)
+    if pos != len(lista) and lista[pos] == item:
+        return pos
+    return -1
+
+print(f"Buscar 8: {busca_bisect(numeros, 8)}")  # 4</code></pre>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function runCode() {
+    const code = document.getElementById('code-input').value;
+    const output = document.getElementById('output');
+    
+    output.innerHTML = '<div class="output-success">Sistema de ranking executado! Veja como algoritmos de busca e ordenação funcionam na prática.</div>';
+}
+</script>
+{% endblock %}

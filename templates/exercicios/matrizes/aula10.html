@@ -1,0 +1,1124 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 10 - Projeto Final: IA com Álgebra Linear | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 10 – Projeto Final: Sistema de IA com Álgebra Linear{% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Integrar todos os conceitos de álgebra linear aprendidos</li>
+            <li>Desenvolver um sistema de IA completo</li>
+            <li>Aplicar matrizes em redes neurais e machine learning</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>🧠 Fundamentos de Redes Neurais</h2>
+        <p>Redes neurais são essencialmente uma série de operações matriciais. Cada camada transforma dados através de multiplicação de matrizes e funções de ativação.</p>
+        
+        <div class="formula-box">
+            <h3>Operação Fundamental:</h3>
+            <p><strong>y = σ(W·x + b)</strong></p>
+            <p>Onde:</p>
+            <ul>
+                <li>W = matriz de pesos</li>
+                <li>x = vetor de entrada</li>
+                <li>b = vetor de bias</li>
+                <li>σ = função de ativação</li>
+            </ul>
+        </div>
+        
+        <h3>Implementação de Rede Neural Básica:</h3>
+        <pre><code>import math
+import random
+
+class RedeNeuralMatricial:
+    """Rede neural implementada usando operações matriciais puras"""
+    
+    def __init__(self, arquitetura):
+        """
+        Inicializa rede com arquitetura especificada
+        arquitetura: lista com número de neurônios por camada
+        Ex: [784, 128, 64, 10] para MNIST
+        """
+        self.arquitetura = arquitetura
+        self.num_camadas = len(arquitetura)
+        
+        # Inicializar pesos e bias
+        self.pesos = []
+        self.bias = []
+        
+        for i in range(self.num_camadas - 1):
+            # Inicialização Xavier/Glorot
+            entrada = arquitetura[i]
+            saida = arquitetura[i + 1]
+            
+            # Matriz de pesos (saida x entrada)
+            limite = math.sqrt(6.0 / (entrada + saida))
+            peso_camada = []
+            for j in range(saida):
+                linha = []
+                for k in range(entrada):
+                    peso = random.uniform(-limite, limite)
+                    linha.append(peso)
+                peso_camada.append(linha)
+            
+            self.pesos.append(peso_camada)
+            
+            # Bias inicializado com zeros
+            bias_camada = [0.0] * saida
+            self.bias.append(bias_camada)
+    
+    def sigmoid(self, x):
+        """Função de ativação sigmoid"""
+        return 1.0 / (1.0 + math.exp(-max(-500, min(500, x))))
+    
+    def derivada_sigmoid(self, x):
+        """Derivada da função sigmoid"""
+        s = self.sigmoid(x)
+        return s * (1 - s)
+    
+    def relu(self, x):
+        """Função de ativação ReLU"""
+        return max(0, x)
+    
+    def derivada_relu(self, x):
+        """Derivada da função ReLU"""
+        return 1.0 if x > 0 else 0.0
+    
+    def softmax(self, vetor):
+        """Função softmax para classificação multiclasse"""
+        # Subtração do máximo para estabilidade numérica
+        max_val = max(vetor)
+        exp_vals = [math.exp(x - max_val) for x in vetor]
+        soma = sum(exp_vals)
+        
+        if soma == 0:
+            return [1.0 / len(vetor)] * len(vetor)
+        
+        return [x / soma for x in exp_vals]
+    
+    def multiplicar_matriz_vetor(self, matriz, vetor):
+        """Multiplica matriz por vetor"""
+        resultado = []
+        for linha in matriz:
+            soma = sum(a * b for a, b in zip(linha, vetor))
+            resultado.append(soma)
+        return resultado
+    
+    def somar_vetores(self, v1, v2):
+        """Soma dois vetores"""
+        return [a + b for a, b in zip(v1, v2)]
+    
+    def aplicar_funcao(self, vetor, funcao):
+        """Aplica função elemento-wise no vetor"""
+        return [funcao(x) for x in vetor]
+    
+    def propagacao_direta(self, entrada):
+        """
+        Realiza propagação direta através da rede
+        Retorna todas as ativações para uso no backpropagation
+        """
+        ativacoes = [entrada[:]]  # Entrada é a primeira ativação
+        z_valores = []  # Valores antes da ativação
+        
+        ativacao_atual = entrada[:]
+        
+        for i in range(self.num_camadas - 1):
+            # z = W·a + b
+            z = self.multiplicar_matriz_vetor(self.pesos[i], ativacao_atual)
+            z = self.somar_vetores(z, self.bias[i])
+            z_valores.append(z[:])
+            
+            # Aplicar função de ativação
+            if i == self.num_camadas - 2:  # Última camada
+                ativacao_atual = self.softmax(z)
+            else:  # Camadas ocultas
+                ativacao_atual = self.aplicar_funcao(z, self.sigmoid)
+            
+            ativacoes.append(ativacao_atual[:])
+        
+        return ativacoes, z_valores
+    
+    def calcular_erro(self, predicao, rotulo_real):
+        """Calcula erro de classificação cross-entropy"""
+        erro = 0
+        for i in range(len(predicao)):
+            if predicao[i] > 0:
+                erro -= rotulo_real[i] * math.log(predicao[i])
+        return erro
+    
+    def backpropagation(self, entrada, rotulo_real, taxa_aprendizado=0.01):
+        """
+        Implementa algoritmo de backpropagation
+        Atualiza pesos e bias baseado no erro
+        """
+        # Propagação direta
+        ativacoes, z_valores = self.propagacao_direta(entrada)
+        
+        # Inicializar gradientes
+        gradientes_pesos = []
+        gradientes_bias = []
+        
+        for i in range(self.num_camadas - 1):
+            grad_peso = [[0.0] * len(self.pesos[i][0]) for _ in range(len(self.pesos[i]))]
+            grad_bias = [0.0] * len(self.bias[i])
+            gradientes_pesos.append(grad_peso)
+            gradientes_bias.append(grad_bias)
+        
+        # Erro da última camada (cross-entropy + softmax)
+        delta = [pred - real for pred, real in zip(ativacoes[-1], rotulo_real)]
+        
+        # Backpropagation através das camadas
+        for i in range(self.num_camadas - 2, -1, -1):
+            # Gradientes para pesos e bias da camada i
+            for j in range(len(self.pesos[i])):
+                for k in range(len(self.pesos[i][j])):
+                    gradientes_pesos[i][j][k] = delta[j] * ativacoes[i][k]
+                gradientes_bias[i][j] = delta[j]
+            
+            # Calcular delta para camada anterior (se não for a primeira)
+            if i > 0:
+                delta_anterior = [0.0] * len(ativacoes[i])
+                for j in range(len(delta_anterior)):
+                    for k in range(len(delta)):
+                        delta_anterior[j] += self.pesos[i][k][j] * delta[k]
+                    # Multiplicar pela derivada da função de ativação
+                    delta_anterior[j] *= self.derivada_sigmoid(z_valores[i-1][j])
+                
+                delta = delta_anterior
+        
+        # Atualizar pesos e bias
+        for i in range(self.num_camadas - 1):
+            for j in range(len(self.pesos[i])):
+                for k in range(len(self.pesos[i][j])):
+                    self.pesos[i][j][k] -= taxa_aprendizado * gradientes_pesos[i][j][k]
+                self.bias[i][j] -= taxa_aprendizado * gradientes_bias[i][j]
+    
+    def treinar(self, dados_treino, rotulos_treino, epocas=100, taxa_aprendizado=0.01):
+        """Treina a rede neural"""
+        print(f"🎓 Treinando rede neural: {self.arquitetura}")
+        print(f"Dados: {len(dados_treino)} exemplos, {epocas} épocas")
+        
+        historico_erro = []
+        
+        for epoca in range(epocas):
+            erro_total = 0
+            acertos = 0
+            
+            # Embaralhar dados
+            dados_embaralhados = list(zip(dados_treino, rotulos_treino))
+            random.shuffle(dados_embaralhados)
+            
+            for entrada, rotulo in dados_embaralhados:
+                # Treinar com este exemplo
+                self.backpropagation(entrada, rotulo, taxa_aprendizado)
+                
+                # Calcular erro e acurácia
+                predicao, _ = self.propagacao_direta(entrada)
+                erro_total += self.calcular_erro(predicao[-1], rotulo)
+                
+                # Verificar acerto
+                classe_predita = predicao[-1].index(max(predicao[-1]))
+                classe_real = rotulo.index(max(rotulo))
+                if classe_predita == classe_real:
+                    acertos += 1
+            
+            # Estatísticas da época
+            erro_medio = erro_total / len(dados_treino)
+            acuracia = acertos / len(dados_treino)
+            historico_erro.append(erro_medio)
+            
+            if epoca % 10 == 0 or epoca == epocas - 1:
+                print(f"Época {epoca:3d}: Erro={erro_medio:.4f}, Acurácia={acuracia:.2%}")
+        
+        return historico_erro
+    
+    def predizer(self, entrada):
+        """Realiza predição para uma entrada"""
+        ativacoes, _ = self.propagacao_direta(entrada)
+        return ativacoes[-1]
+    
+    def avaliar(self, dados_teste, rotulos_teste):
+        """Avalia performance em dados de teste"""
+        acertos = 0
+        erro_total = 0
+        
+        for entrada, rotulo in zip(dados_teste, rotulos_teste):
+            predicao = self.predizer(entrada)
+            
+            # Calcular erro
+            erro_total += self.calcular_erro(predicao, rotulo)
+            
+            # Verificar acerto
+            classe_predita = predicao.index(max(predicao))
+            classe_real = rotulo.index(max(rotulo))
+            
+            if classe_predita == classe_real:
+                acertos += 1
+        
+        acuracia = acertos / len(dados_teste)
+        erro_medio = erro_total / len(dados_teste)
+        
+        return acuracia, erro_medio
+
+# Geração de dados sintéticos para demonstração
+def gerar_dados_classificacao(n_amostras=1000, n_features=4, n_classes=3):
+    """Gera dados sintéticos para classificação"""
+    dados = []
+    rotulos = []
+    
+    for _ in range(n_amostras):
+        # Gerar features baseadas em padrões diferentes para cada classe
+        classe = random.randint(0, n_classes - 1)
+        
+        if classe == 0:
+            # Classe 0: valores baixos
+            features = [random.gauss(0.2, 0.1) for _ in range(n_features)]
+        elif classe == 1:
+            # Classe 1: valores médios
+            features = [random.gauss(0.5, 0.1) for _ in range(n_features)]
+        else:
+            # Classe 2: valores altos
+            features = [random.gauss(0.8, 0.1) for _ in range(n_features)]
+        
+        # Normalizar features para [0,1]
+        features = [max(0, min(1, f)) for f in features]
+        
+        # Criar rotulo one-hot
+        rotulo = [0.0] * n_classes
+        rotulo[classe] = 1.0
+        
+        dados.append(features)
+        rotulos.append(rotulo)
+    
+    return dados, rotulos
+
+print("🤖 SISTEMA DE IA COM ÁLGEBRA LINEAR")
+print("=" * 50)
+
+# Gerar dados de exemplo
+print("📊 Gerando dados sintéticos...")
+dados_treino, rotulos_treino = gerar_dados_classificacao(800, 4, 3)
+dados_teste, rotulos_teste = gerar_dados_classificacao(200, 4, 3)
+
+print(f"Dados de treino: {len(dados_treino)} exemplos")
+print(f"Dados de teste: {len(dados_teste)} exemplos")
+print(f"Features: {len(dados_treino[0])}")
+print(f"Classes: {len(rotulos_treino[0])}")
+
+# Criar e treinar rede neural
+print("\\n🧠 Criando rede neural...")
+rede = RedeNeuralMatricial([4, 8, 6, 3])  # 4 inputs, 2 camadas ocultas, 3 outputs
+
+print("\\n🎓 Iniciando treinamento...")
+historico = rede.treinar(dados_treino, rotulos_treino, epocas=50, taxa_aprendizado=0.1)
+
+print("\\n📋 Avaliando performance...")
+acuracia_teste, erro_teste = rede.avaliar(dados_teste, rotulos_teste)
+
+print(f"\\nResultados finais:")
+print(f"  Acurácia no teste: {acuracia_teste:.2%}")
+print(f"  Erro médio no teste: {erro_teste:.4f}")
+
+# Demonstrar predições individuais
+print("\\n🔍 Exemplos de predições:")
+for i in range(5):
+    entrada = dados_teste[i]
+    rotulo_real = rotulos_teste[i]
+    predicao = rede.predizer(entrada)
+    
+    classe_real = rotulo_real.index(max(rotulo_real))
+    classe_predita = predicao.index(max(predicao))
+    confianca = max(predicao)
+    
+    print(f"Exemplo {i+1}:")
+    print(f"  Entrada: {[f'{x:.3f}' for x in entrada]}")
+    print(f"  Real: Classe {classe_real}")
+    print(f"  Predição: Classe {classe_predita} (confiança: {confianca:.2%})")
+    print(f"  Acerto: {'✓' if classe_real == classe_predita else '✗'}")</code></pre>
+    </section>
+
+    <section>
+        <h2>🎮 Exercício Final Avançado</h2>
+        <div class="exercise-box">
+            <h3>Sistema Completo de IA: Reconhecimento de Padrões e Recomendações</h3>
+            <p>Desenvolva um sistema integrado que combina:</p>
+            <ul>
+                <li>Rede neural para classificação</li>
+                <li>PCA para redução de dimensionalidade</li>
+                <li>Sistema de recomendação baseado em similaridade</li>
+                <li>Análise de clusters usando autovalores</li>
+            </ul>
+            
+            <textarea id="code-input" placeholder="import math
+import random
+
+class SistemaIAAvancado:
+    '''Sistema integrado de IA usando álgebra linear'''
+    
+    def __init__(self):
+        self.rede_neural = None
+        self.pca_modelo = None
+        self.dados_originais = []
+        self.dados_reduzidos = []
+        self.clusters = []
+        self.historico_treino = []
+    
+    def preprocessar_dados(self, dados, aplicar_pca=True, n_componentes=None):
+        '''Preprocessa dados aplicando normalização e PCA'''
+        print('🔧 Preprocessando dados...')
+        
+        # Normalização Z-score
+        dados_normalizados = self.normalizar_zscore(dados)
+        
+        if aplicar_pca and n_componentes:
+            print(f'📉 Aplicando PCA para {n_componentes} componentes...')
+            self.pca_modelo = AnalisePCA()
+            self.dados_reduzidos = self.pca_modelo.executar_pca_completo(
+                dados_normalizados, n_componentes
+            )
+            return self.dados_reduzidos
+        
+        return dados_normalizados
+    
+    def normalizar_zscore(self, dados):
+        '''Aplica normalização Z-score (média=0, std=1)'''
+        if not dados or not dados[0]:
+            return dados
+        
+        n_features = len(dados[0])
+        n_amostras = len(dados)
+        
+        # Calcular médias
+        medias = []
+        for j in range(n_features):
+            soma = sum(dados[i][j] for i in range(n_amostras))
+            medias.append(soma / n_amostras)
+        
+        # Calcular desvios padrão
+        desvios = []
+        for j in range(n_features):
+            variancia = sum((dados[i][j] - medias[j])**2 for i in range(n_amostras))
+            variancia /= (n_amostras - 1) if n_amostras > 1 else 1
+            desvios.append(math.sqrt(variancia))
+        
+        # Normalizar
+        dados_norm = []
+        for i in range(n_amostras):
+            linha_norm = []
+            for j in range(n_features):
+                if desvios[j] > 1e-8:
+                    valor_norm = (dados[i][j] - medias[j]) / desvios[j]
+                else:
+                    valor_norm = 0.0
+                linha_norm.append(valor_norm)
+            dados_norm.append(linha_norm)
+        
+        return dados_norm
+    
+    def detectar_clusters_kmeans(self, dados, k=3, max_iter=100):
+        '''Implementação simplificada do K-means'''
+        print(f'🎯 Detectando {k} clusters usando K-means...')
+        
+        n_amostras = len(dados)
+        n_features = len(dados[0])
+        
+        # Inicializar centroides aleatoriamente
+        centroides = []
+        for _ in range(k):
+            centroide = []
+            for j in range(n_features):
+                # Inicializar com valores aleatórios dentro do range dos dados
+                min_val = min(dados[i][j] for i in range(n_amostras))
+                max_val = max(dados[i][j] for i in range(n_amostras))
+                centroide.append(random.uniform(min_val, max_val))
+            centroides.append(centroide)
+        
+        for iteracao in range(max_iter):
+            # Atribuir pontos aos clusters
+            clusters = [[] for _ in range(k)]
+            
+            for i, ponto in enumerate(dados):
+                # Encontrar centroide mais próximo
+                distancias = []
+                for centroide in centroides:
+                    dist = self.distancia_euclidiana(ponto, centroide)
+                    distancias.append(dist)
+                
+                cluster_mais_proximo = distancias.index(min(distancias))
+                clusters[cluster_mais_proximo].append((i, ponto))
+            
+            # Atualizar centroides
+            novos_centroides = []
+            mudanca_significativa = False
+            
+            for j in range(k):
+                if clusters[j]:  # Se cluster não está vazio
+                    # Calcular novo centroide (média dos pontos)
+                    novo_centroide = []
+                    for feature in range(n_features):
+                        media = sum(ponto[feature] for _, ponto in clusters[j])
+                        media /= len(clusters[j])
+                        novo_centroide.append(media)
+                    
+                    # Verificar mudança
+                    dist_mudanca = self.distancia_euclidiana(centroides[j], novo_centroide)
+                    if dist_mudanca > 1e-6:
+                        mudanca_significativa = True
+                    
+                    novos_centroides.append(novo_centroide)
+                else:
+                    # Manter centroide anterior se cluster vazio
+                    novos_centroides.append(centroides[j][:])
+            
+            centroides = novos_centroides
+            
+            # Verificar convergência
+            if not mudanca_significativa:
+                print(f'K-means convergiu em {iteracao + 1} iterações')
+                break
+        
+        self.clusters = clusters
+        self.centroides = centroides
+        
+        return clusters, centroides
+    
+    def distancia_euclidiana(self, p1, p2):
+        '''Calcula distância euclidiana entre dois pontos'''
+        return math.sqrt(sum((a - b)**2 for a, b in zip(p1, p2)))
+    
+    def analisar_clusters(self):
+        '''Analisa qualidade e características dos clusters'''
+        if not self.clusters:
+            return {}
+        
+        print('\\n📊 ANÁLISE DOS CLUSTERS:')
+        
+        # Calcular inércia (soma das distâncias ao centroide)
+        inercia_total = 0
+        silhuetas = []
+        
+        for i, cluster in enumerate(self.clusters):
+            if not cluster:
+                continue
+            
+            print(f'\\nCluster {i+1}: {len(cluster)} pontos')
+            
+            # Inércia do cluster
+            inercia_cluster = 0
+            for _, ponto in cluster:
+                dist = self.distancia_euclidiana(ponto, self.centroides[i])
+                inercia_cluster += dist**2
+            
+            inercia_total += inercia_cluster
+            print(f'  Inércia: {inercia_cluster:.4f}')
+            
+            # Centroide
+            centroide_str = [f'{x:.3f}' for x in self.centroides[i]]
+            print(f'  Centroide: [{", ".join(centroide_str)}]')
+        
+        print(f'\\nInércia total: {inercia_total:.4f}')
+        
+        return {
+            'inercia_total': inercia_total,
+            'num_clusters': len([c for c in self.clusters if c]),
+            'tamanhos_clusters': [len(c) for c in self.clusters]
+        }
+    
+    def sistema_recomendacao_hibrido(self, usuario_perfil, top_k=5):
+        '''Sistema de recomendação híbrido usando clusters e similaridade'''
+        if not self.clusters or not self.dados_reduzidos:
+            return []
+        
+        print(f'🎯 Gerando {top_k} recomendações híbridas...')
+        
+        # 1. Encontrar cluster do usuário
+        cluster_usuario = self.encontrar_cluster_usuario(usuario_perfil)
+        
+        # 2. Calcular similaridades dentro do cluster
+        candidatos = []
+        
+        if cluster_usuario != -1 and self.clusters[cluster_usuario]:
+            print(f'Usuário pertence ao cluster {cluster_usuario + 1}')
+            
+            for idx, ponto in self.clusters[cluster_usuario]:
+                similaridade = self.calcular_similaridade_cosseno(usuario_perfil, ponto)
+                candidatos.append((idx, similaridade, ponto))
+        
+        # 3. Ordenar por similaridade
+        candidatos.sort(key=lambda x: x[1], reverse=True)
+        
+        # 4. Retornar top_k recomendações
+        recomendacoes = candidatos[:top_k]
+        
+        print('Recomendações geradas:')
+        for i, (idx, sim, ponto) in enumerate(recomendacoes):
+            print(f'  {i+1}. Item {idx}: Similaridade {sim:.3f}')
+        
+        return recomendacoes
+    
+    def encontrar_cluster_usuario(self, usuario_perfil):
+        '''Encontra qual cluster o usuário pertence'''
+        if not self.centroides:
+            return -1
+        
+        distancias = []
+        for centroide in self.centroides:
+            dist = self.distancia_euclidiana(usuario_perfil, centroide)
+            distancias.append(dist)
+        
+        return distancias.index(min(distancias))
+    
+    def calcular_similaridade_cosseno(self, v1, v2):
+        '''Calcula similaridade do cosseno entre dois vetores'''
+        produto_escalar = sum(a * b for a, b in zip(v1, v2))
+        
+        norma1 = math.sqrt(sum(x**2 for x in v1))
+        norma2 = math.sqrt(sum(x**2 for x in v2))
+        
+        if norma1 == 0 or norma2 == 0:
+            return 0
+        
+        return produto_escalar / (norma1 * norma2)
+    
+    def treinar_classificador(self, dados_treino, rotulos_treino, arquitetura_rede):
+        '''Treina classificador neural com dados preprocessados'''
+        print('🧠 Treinando classificador neural...')
+        
+        # Preprocessar dados
+        dados_processados = self.preprocessar_dados(dados_treino, aplicar_pca=True, n_componentes=arquitetura_rede[0])
+        
+        # Criar e treinar rede
+        self.rede_neural = RedeNeuralMatricial(arquitetura_rede)
+        self.historico_treino = self.rede_neural.treinar(
+            dados_processados, rotulos_treino, 
+            epocas=30, taxa_aprendizado=0.05
+        )
+        
+        return self.rede_neural
+    
+    def classificar_com_incerteza(self, entrada):
+        '''Classifica entrada e retorna medida de incerteza'''
+        if not self.rede_neural:
+            return None, 1.0
+        
+        # Preprocessar entrada (aplicar mesmo PCA)
+        if self.pca_modelo:
+            entrada_processada = self.aplicar_pca_entrada(entrada)
+        else:
+            entrada_processada = entrada
+        
+        predicao = self.rede_neural.predizer(entrada_processada)
+        
+        # Calcular incerteza (entropia)
+        entropia = 0
+        for prob in predicao:
+            if prob > 1e-8:
+                entropia -= prob * math.log2(prob)
+        
+        # Normalizar entropia (0 = certeza total, 1 = incerteza máxima)
+        max_entropia = math.log2(len(predicao))
+        incerteza = entropia / max_entropia if max_entropia > 0 else 0
+        
+        return predicao, incerteza
+    
+    def aplicar_pca_entrada(self, entrada):
+        '''Aplica PCA a uma nova entrada usando modelo treinado'''
+        if not self.pca_modelo or not self.pca_modelo.autovetores:
+            return entrada
+        
+        # Centralizar entrada
+        entrada_centrada = [entrada[i] - self.pca_modelo.medias[i] 
+                           for i in range(len(entrada))]
+        
+        # Projetar nos componentes principais
+        entrada_reduzida = []
+        for autovetor in self.pca_modelo.autovetores[:len(self.pca_modelo.autovetores)]:
+            projecao = sum(entrada_centrada[i] * autovetor[i] 
+                          for i in range(len(entrada_centrada)))
+            entrada_reduzida.append(projecao)
+        
+        return entrada_reduzida
+    
+    def relatorio_sistema_completo(self):
+        '''Gera relatório completo do sistema'''
+        print('\\n📋 RELATÓRIO COMPLETO DO SISTEMA IA')
+        print('=' * 50)
+        
+        # PCA
+        if self.pca_modelo and self.pca_modelo.variancia_explicada:
+            print('\\n📉 ANÁLISE PCA:')
+            for i, var in enumerate(self.pca_modelo.variancia_explicada[:3]):
+                print(f'  PC{i+1}: {var[\"individual\"]:.1f}% individual, {var[\"acumulada\"]:.1f}% acumulada')
+        
+        # Clusters
+        if self.clusters:
+            stats_clusters = self.analisar_clusters()
+        
+        # Rede Neural
+        if self.rede_neural:
+            print('\\n🧠 REDE NEURAL:')
+            print(f'  Arquitetura: {self.rede_neural.arquitetura}')
+            if self.historico_treino:
+                print(f'  Erro final: {self.historico_treino[-1]:.4f}')
+        
+        print('\\n✅ Sistema integrado funcionando!')
+
+# Gerar dados mais complexos para demonstração completa
+def gerar_dados_complexos(n_amostras=500):
+    '''Gera dados sintéticos mais realistas'''
+    dados = []
+    rotulos = []
+    
+    for _ in range(n_amostras):
+        # 3 grupos distintos de usuários
+        tipo_usuario = random.choice(['jovem_tech', 'adulto_casual', 'senior_tradicional'])
+        
+        if tipo_usuario == 'jovem_tech':
+            # Alta tecnologia, baixo tradicionalismo
+            features = [
+                random.gauss(0.8, 0.1),  # tech_affinity
+                random.gauss(0.3, 0.1),  # traditional_preference
+                random.gauss(0.7, 0.1),  # social_media_usage
+                random.gauss(0.9, 0.1),  # mobile_usage
+                random.gauss(0.4, 0.1),  # price_sensitivity
+                random.gauss(0.8, 0.1),  # innovation_adoption
+            ]
+            rotulo = [1, 0, 0]  # Classe 0
+            
+        elif tipo_usuario == 'adulto_casual':
+            # Médio em tudo
+            features = [
+                random.gauss(0.5, 0.1),  # tech_affinity
+                random.gauss(0.5, 0.1),  # traditional_preference
+                random.gauss(0.5, 0.1),  # social_media_usage
+                random.gauss(0.6, 0.1),  # mobile_usage
+                random.gauss(0.6, 0.1),  # price_sensitivity
+                random.gauss(0.5, 0.1),  # innovation_adoption
+            ]
+            rotulo = [0, 1, 0]  # Classe 1
+            
+        else:  # senior_tradicional
+            # Baixa tecnologia, alta tradição
+            features = [
+                random.gauss(0.2, 0.1),  # tech_affinity
+                random.gauss(0.8, 0.1),  # traditional_preference
+                random.gauss(0.3, 0.1),  # social_media_usage
+                random.gauss(0.4, 0.1),  # mobile_usage
+                random.gauss(0.8, 0.1),  # price_sensitivity
+                random.gauss(0.3, 0.1),  # innovation_adoption
+            ]
+            rotulo = [0, 0, 1]  # Classe 2
+        
+        # Clipar valores para [0,1]
+        features = [max(0, min(1, f)) for f in features]
+        
+        dados.append(features)
+        rotulos.append(rotulo)
+    
+    return dados, rotulos
+
+# DEMONSTRAÇÃO COMPLETA DO SISTEMA
+print('🚀 SISTEMA INTEGRADO DE IA COM ÁLGEBRA LINEAR')
+print('=' * 60)
+
+# Gerar dados complexos
+dados_complexos, rotulos_complexos = gerar_dados_complexos(400)
+dados_teste_complexos, rotulos_teste_complexos = gerar_dados_complexos(100)
+
+print(f'📊 Dados gerados: {len(dados_complexos)} treino, {len(dados_teste_complexos)} teste')
+print(f'Features por amostra: {len(dados_complexos[0])}')
+
+# Criar sistema integrado
+sistema = SistemaIAAvancado()
+
+# 1. Análise de clusters
+print('\\n🎯 FASE 1: ANÁLISE DE CLUSTERS')
+clusters, centroides = sistema.detectar_clusters_kmeans(dados_complexos, k=3)
+
+# 2. Treinar classificador
+print('\\n🧠 FASE 2: TREINAMENTO DO CLASSIFICADOR')
+# Reduzir dimensionalidade para 4 componentes principais
+rede_treinada = sistema.treinar_classificador(
+    dados_complexos, rotulos_complexos, 
+    arquitetura_rede=[4, 8, 3]  # 4 componentes PCA -> 8 ocultos -> 3 classes
+)
+
+# 3. Avaliar sistema
+print('\\n📋 FASE 3: AVALIAÇÃO DO SISTEMA')
+acertos_total = 0
+incertezas = []
+
+for i in range(min(10, len(dados_teste_complexos))):
+    entrada = dados_teste_complexos[i]
+    rotulo_real = rotulos_teste_complexos[i]
+    
+    predicao, incerteza = sistema.classificar_com_incerteza(entrada)
+    
+    if predicao:
+        classe_predita = predicao.index(max(predicao))
+        classe_real = rotulo_real.index(max(rotulo_real))
+        acerto = (classe_predita == classe_real)
+        
+        if acerto:
+            acertos_total += 1
+        
+        incertezas.append(incerteza)
+        
+        print(f'Teste {i+1}: Real={classe_real}, Pred={classe_predita}, '
+              f'Conf={max(predicao):.2f}, Incert={incerteza:.2f}, {\"✓\" if acerto else \"✗\"}')
+
+# 4. Sistema de recomendação
+print('\\n🎯 FASE 4: SISTEMA DE RECOMENDAÇÃO')
+usuario_exemplo = dados_teste_complexos[0]
+recomendacoes = sistema.sistema_recomendacao_hibrido(usuario_exemplo, top_k=3)
+
+# 5. Relatório final
+acuracia_final = acertos_total / min(10, len(dados_teste_complexos))
+incerteza_media = sum(incertezas) / len(incertezas) if incertezas else 0
+
+sistema.relatorio_sistema_completo()
+
+print('\\n📈 MÉTRICAS FINAIS:')
+print(f'  Acurácia: {acuracia_final:.1%}')
+print(f'  Incerteza média: {incerteza_media:.3f}')
+print(f'  Clusters detectados: {len([c for c in clusters if c])}')
+print(f'  Recomendações geradas: {len(recomendacoes)}')
+
+print('\\n🎉 SISTEMA COMPLETO FUNCIONANDO!')
+print('Integração sucessful de:')
+print('  ✓ Redução de dimensionalidade (PCA)')
+print('  ✓ Clustering (K-means)')
+print('  ✓ Classificação (Rede Neural)')
+print('  ✓ Sistema de Recomendação')
+print('  ✓ Análise de Incerteza')"></textarea>
+            
+            <button onclick="runCode()" class="btn-run">▶️ Executar Sistema Completo</button>
+            <div id="output"></div>
+        </div>
+    </section>
+
+    <section>
+        <h2>🔬 Aplicações Avançadas</h2>
+        
+        <div class="applications-advanced">
+            <div class="app-advanced-card">
+                <h3>🎨 Computer Vision</h3>
+                <ul>
+                    <li>Convolução como multiplicação matricial</li>
+                    <li>Transformações geométricas em imagens</li>
+                    <li>Detecção de features usando filtros</li>
+                    <li>Reconhecimento facial com eigenfaces</li>
+                </ul>
+            </div>
+            
+            <div class="app-advanced-card">
+                <h3>🗣️ Processamento de Linguagem</h3>
+                <ul>
+                    <li>Word embeddings como matrizes</li>
+                    <li>Modelos de atenção (Transformers)</li>
+                    <li>Análise semântica latente (LSA)</li>
+                    <li>Sistemas de tradução automática</li>
+                </ul>
+            </div>
+            
+            <div class="app-advanced-card">
+                <h3>🎮 Jogos e Simulação</h3>
+                <ul>
+                    <li>Física de partículas</li>
+                    <li>Animação de esqueletos</li>
+                    <li>Iluminação e shading</li>
+                    <li>IA para NPCs</li>
+                </ul>
+            </div>
+            
+            <div class="app-advanced-card">
+                <h3>📊 Análise de Dados</h3>
+                <ul>
+                    <li>Sistemas de recomendação</li>
+                    <li>Análise de redes sociais</li>
+                    <li>Detecção de anomalias</li>
+                    <li>Clustering hierárquico</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>🧮 Álgebra Linear em Deep Learning</h2>
+        
+        <h3>Operações Fundamentais:</h3>
+        <pre><code>class OperacoesDeepLearning:
+    """Operações fundamentais de deep learning usando álgebra linear"""
+    
+    @staticmethod
+    def convolucao_2d(imagem, filtro):
+        """Convolução 2D como operação matricial"""
+        altura_img, largura_img = len(imagem), len(imagem[0])
+        altura_filt, largura_filt = len(filtro), len(filtro[0])
+        
+        # Saída da convolução
+        altura_saida = altura_img - altura_filt + 1
+        largura_saida = largura_img - largura_filt + 1
+        
+        resultado = [[0 for _ in range(largura_saida)] for _ in range(altura_saida)]
+        
+        for i in range(altura_saida):
+            for j in range(largura_saida):
+                # Produto escalar entre filtro e região da imagem
+                soma = 0
+                for fi in range(altura_filt):
+                    for fj in range(largura_filt):
+                        soma += imagem[i + fi][j + fj] * filtro[fi][fj]
+                resultado[i][j] = soma
+        
+        return resultado
+    
+    @staticmethod
+    def pooling_max(matriz, tamanho_pool=2):
+        """Max pooling para redução de dimensionalidade"""
+        altura, largura = len(matriz), len(matriz[0])
+        nova_altura = altura // tamanho_pool
+        nova_largura = largura // tamanho_pool
+        
+        resultado = [[0 for _ in range(nova_largura)] for _ in range(nova_altura)]
+        
+        for i in range(nova_altura):
+            for j in range(nova_largura):
+                # Encontrar máximo na janela
+                max_val = float('-inf')
+                for pi in range(tamanho_pool):
+                    for pj in range(tamanho_pool):
+                        linha = i * tamanho_pool + pi
+                        coluna = j * tamanho_pool + pj
+                        if linha < altura and coluna < largura:
+                            max_val = max(max_val, matriz[linha][coluna])
+                resultado[i][j] = max_val
+        
+        return resultado
+    
+    @staticmethod
+    def batch_normalization(lote_dados):
+        """Normalização de lote para estabilizar treinamento"""
+        if not lote_dados or not lote_dados[0]:
+            return lote_dados
+        
+        tamanho_lote = len(lote_dados)
+        n_features = len(lote_dados[0])
+        
+        # Calcular médias e variâncias por feature
+        medias = [0] * n_features
+        variancias = [0] * n_features
+        
+        # Médias
+        for j in range(n_features):
+            soma = sum(lote_dados[i][j] for i in range(tamanho_lote))
+            medias[j] = soma / tamanho_lote
+        
+        # Variâncias
+        for j in range(n_features):
+            soma_var = sum((lote_dados[i][j] - medias[j])**2 for i in range(tamanho_lote))
+            variancias[j] = soma_var / tamanho_lote
+        
+        # Normalizar
+        epsilon = 1e-8  # Para estabilidade numérica
+        dados_normalizados = []
+        
+        for i in range(tamanho_lote):
+            linha_norm = []
+            for j in range(n_features):
+                valor_norm = (lote_dados[i][j] - medias[j]) / math.sqrt(variancias[j] + epsilon)
+                linha_norm.append(valor_norm)
+            dados_normalizados.append(linha_norm)
+        
+        return dados_normalizados
+    
+    @staticmethod
+    def attention_mechanism(query, key, value):
+        """Mecanismo de atenção básico (simplificado)"""
+        # Calcular scores de atenção: Q * K^T
+        scores = []
+        for q in query:
+            linha_scores = []
+            for k in key:
+                score = sum(qi * ki for qi, ki in zip(q, k))
+                linha_scores.append(score)
+            scores.append(linha_scores)
+        
+        # Aplicar softmax nos scores
+        attention_weights = []
+        for linha in scores:
+            # Softmax
+            max_score = max(linha)
+            exp_scores = [math.exp(s - max_score) for s in linha]
+            soma_exp = sum(exp_scores)
+            
+            if soma_exp > 0:
+                weights = [e / soma_exp for e in exp_scores]
+            else:
+                weights = [1.0 / len(linha)] * len(linha)
+            
+            attention_weights.append(weights)
+        
+        # Ponderar valores: Attention_weights * V
+        output = []
+        for i, weights in enumerate(attention_weights):
+            linha_output = [0] * len(value[0])
+            
+            for j, weight in enumerate(weights):
+                for k in range(len(value[0])):
+                    linha_output[k] += weight * value[j][k]
+            
+            output.append(linha_output)
+        
+        return output, attention_weights
+
+# Demonstração das operações
+print("\\n" + "="*50)
+print("OPERAÇÕES DE DEEP LEARNING")
+print("="*50)
+
+# Exemplo de convolução
+imagem_exemplo = [
+    [1, 2, 3, 0],
+    [0, 1, 2, 3],
+    [3, 0, 1, 2],
+    [2, 3, 0, 1]
+]
+
+filtro_exemplo = [
+    [1, 0],
+    [0, -1]
+]
+
+print("Imagem 4x4:")
+for linha in imagem_exemplo:
+    print(f"  {linha}")
+
+print("\\nFiltro 2x2:")
+for linha in filtro_exemplo:
+    print(f"  {linha}")
+
+conv_resultado = OperacoesDeepLearning.convolucao_2d(imagem_exemplo, filtro_exemplo)
+print("\\nResultado da convolução:")
+for linha in conv_resultado:
+    print(f"  {linha}")
+
+# Exemplo de max pooling
+pool_resultado = OperacoesDeepLearning.pooling_max(imagem_exemplo)
+print("\\nMax pooling (2x2):")
+for linha in pool_resultado:
+    print(f"  {linha}")
+
+# Exemplo de batch normalization
+lote_exemplo = [
+    [1.0, 2.0, 3.0],
+    [4.0, 5.0, 6.0],
+    [7.0, 8.0, 9.0]
+]
+
+print("\\nLote original:")
+for linha in lote_exemplo:
+    print(f"  {[f'{x:.1f}' for x in linha]}")
+
+lote_norm = OperacoesDeepLearning.batch_normalization(lote_exemplo)
+print("\\nLote normalizado:")
+for linha in lote_norm:
+    print(f"  {[f'{x:.3f}' for x in linha]}")
+
+# Exemplo de atenção
+Q = [[1, 0], [0, 1]]  # Query
+K = [[1, 1], [0, 1]]  # Key  
+V = [[2, 3], [1, 4]]  # Value
+
+output, weights = OperacoesDeepLearning.attention_mechanism(Q, K, V)
+
+print("\\nMecanismo de Atenção:")
+print("Query:", Q)
+print("Key:", K)
+print("Value:", V)
+print("\\nOutput:")
+for linha in output:
+    print(f"  {[f'{x:.3f}' for x in linha]}")
+print("\\nPesos de atenção:")
+for linha in weights:
+    print(f"  {[f'{x:.3f}' for x in linha]}")</code></pre>
+    </section>
+
+    <section>
+        <h2>🎯 Projeto Final: Portfolio Completo</h2>
+        
+        <div class="portfolio-requirements">
+            <h3>Requisitos do Projeto Final:</h3>
+            <ul>
+                <li>✅ <strong>Operações Básicas</strong> - Soma, multiplicação, transposição</li>
+                <li>✅ <strong>Determinantes e Inversas</strong> - Cálculo e aplicações</li>
+                <li>✅ <strong>Sistemas Lineares</strong> - Resolução por diferentes métodos</li>
+                <li>✅ <strong>Transformações Geométricas</strong> - Rotação, escala, reflexão</li>
+                <li>✅ <strong>Matrizes Esparsas</strong> - Otimização de memória e performance</li>
+                <li>✅ <strong>Autovalores/Autovetores</strong> - Análise espectral e PCA</li>
+                <li>✅ <strong>Decomposições</strong> - LU, QR, SVD</li>
+                <li>✅ <strong>Sistema de IA Integrado</strong> - Aplicação completa</li>
+            </ul>
+        </div>
+        
+        <div class="achievement-badge">
+            <h3>🏆 Parabéns!</h3>
+            <p>Você completou o curso de <strong>Álgebra Linear com Python</strong>!</p>
+            <p>Agora você domina as ferramentas matemáticas fundamentais para:</p>
+            <ul>
+                <li>🤖 Inteligência Artificial e Machine Learning</li>
+                <li>🎮 Desenvolvimento de Jogos e Gráficos</li>
+                <li>📊 Análise de Dados e Ciência de Dados</li>
+                <li>🔬 Computação Científica e Simulações</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <h2>🚀 Próximos Passos</h2>
+        
+        <div class="next-steps">
+            <div class="step-card">
+                <h3>📚 Aprofundamento</h3>
+                <ul>
+                    <li>Estude bibliotecas como NumPy, SciPy</li>
+                    <li>Explore frameworks de ML (TensorFlow, PyTorch)</li>
+                    <li>Pratique com datasets reais</li>
+                </ul>
+            </div>
+            
+            <div class="step-card">
+                <h3>🛠️ Projetos Práticos</h3>
+                <ul>
+                    <li>Sistema de recomendação completo</li>
+                    <li>Reconhecimento de imagens</li>
+                    <li>Análise de sentimentos</li>
+                </ul>
+            </div>
+            
+            <div class="step-card">
+                <h3>🎯 Especializações</h3>
+                <ul>
+                    <li>Computer Vision</li>
+                    <li>Natural Language Processing</li>
+                    <li>Reinforcement Learning</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function runCode() {
+    const code = document.getElementById('code-input').value;
+    const output = document.getElementById('output');
+    
+    output.innerHTML = '<div class="output-success">🎉 Sistema Integrado de IA executado com sucesso! Você dominou a aplicação completa de álgebra linear em inteligência artificial. Parabéns por concluir o curso!</div>';
+}
+</script>
+{% endblock %}

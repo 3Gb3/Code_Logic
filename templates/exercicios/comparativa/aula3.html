@@ -1,0 +1,96 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 3 - Estrutura elif | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 3 – Estrutura elif{% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Compreender quando usar elif</li>
+            <li>Criar condições múltiplas e sequenciais</li>
+            <li>Otimizar código com estruturas elif</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>💡 O que é elif?</h2>
+        <p>A palavra-chave <code>elif</code> (abreviação de "else if") permite testar múltiplas condições em sequência.</p>
+        <p>É muito útil quando você tem várias possibilidades mutuamente exclusivas.</p>
+        
+        <blockquote>
+            <strong>Exemplo do mundo real:</strong> "Se a nota for maior que 9, é excelente; senão, se for maior que 7, é bom; senão, se for maior que 5, é regular; senão, é insuficiente."
+        </blockquote>
+    </section>
+
+    <section>
+        <h2>🔧 Sintaxe do elif</h2>
+        <pre><code>if condição1:
+    # código se condição1 for verdadeira
+elif condição2:
+    # código se condição2 for verdadeira
+elif condição3:
+    # código se condição3 for verdadeira
+else:
+    # código se nenhuma condição for verdadeira</code></pre>
+    </section>
+
+    <section>
+        <h2>📝 Exemplo Prático: Sistema de Notas</h2>
+        <pre><code>nota = float(input("Digite sua nota: "))
+
+if nota >= 9:
+    print("Excelente! 🌟")
+elif nota >= 7:
+    print("Bom trabalho! 👍")
+elif nota >= 5:
+    print("Regular, pode melhorar 📚")
+else:
+    print("Precisa estudar mais 💪")</code></pre>
+    </section>
+
+    <section>
+        <h2>⚠️ Pontos Importantes</h2>
+        <ul>
+            <li>O Python testa as condições em ordem</li>
+            <li>Quando uma condição é verdadeira, as outras não são testadas</li>
+            <li>Você pode ter quantos elif quiser</li>
+            <li>O else é sempre opcional</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>🎮 Exercício Prático</h2>
+        <div class="exercise-box">
+            <h3>Sistema de Classificação Etária</h3>
+            <p>Crie um programa que receba a idade de uma pessoa e classifique em:</p>
+            <ul>
+                <li>0-12 anos: "Criança"</li>
+                <li>13-17 anos: "Adolescente"</li>
+                <li>18-59 anos: "Adulto"</li>
+                <li>60+ anos: "Idoso"</li>
+            </ul>
+            
+            <textarea id="code-input" placeholder="# Digite seu código aqui
+idade = int(input('Digite sua idade: '))
+
+# Complete o código..."></textarea>
+            
+            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
+            <div id="output"></div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function runCode() {
+    const code = document.getElementById('code-input').value;
+    const output = document.getElementById('output');
+    
+    // Simulação de execução (aqui você integraria com um interpretador Python real)
+    output.innerHTML = '<div class="output-success">Código executado! Verifique se está funcionando com diferentes idades.</div>';
+}
+</script>
+{% endblock %}

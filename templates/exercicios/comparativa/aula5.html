@@ -1,0 +1,142 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 5 - Condições Aninhadas | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 5 – Condições Aninhadas{% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Entender o conceito de if aninhados</li>
+            <li>Organizar condições complexas</li>
+            <li>Evitar código confuso e melhorar legibilidade</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>🏗️ O que são Condições Aninhadas?</h2>
+        <p>São estruturas if-else colocadas dentro de outras estruturas if-else, criando múltiplos níveis de decisão.</p>
+        
+        <h3>Estrutura Básica:</h3>
+        <pre><code>if condicao1:
+    if condicao2:
+        # Executado se ambas forem True
+        print("Condições 1 e 2 são verdadeiras")
+    else:
+        # Executado se apenas condicao1 for True
+        print("Apenas condição 1 é verdadeira")
+else:
+    print("Condição 1 é falsa")</code></pre>
+    </section>
+
+    <section>
+        <h2>📝 Exemplo Prático: Sistema de Notas</h2>
+        <pre><code>nota = float(input("Digite sua nota: "))
+
+if nota >= 7:
+    print("Aprovado!")
+    if nota >= 9:
+        print("Parabéns! Excelente desempenho!")
+    elif nota >= 8:
+        print("Muito bom!")
+    else:
+        print("Bom trabalho!")
+else:
+    print("Reprovado.")
+    if nota >= 5:
+        print("Você pode fazer recuperação.")
+    else:
+        print("Precisa refazer a matéria.")</code></pre>
+    </section>
+
+    <section>
+        <h2>⚖️ Quando Usar vs Operadores Lógicos</h2>
+        
+        <h3>✅ Use Condições Aninhadas quando:</h3>
+        <ul>
+            <li>As condições internas dependem da externa</li>
+            <li>Cada nível precisa de ações diferentes</li>
+            <li>A lógica fica mais clara dividida em etapas</li>
+        </ul>
+        
+        <h3>✅ Use Operadores Lógicos quando:</h3>
+        <ul>
+            <li>Todas as condições são independentes</li>
+            <li>A ação é a mesma para diferentes combinações</li>
+            <li>A condição é simples</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>🔄 Comparação: Aninhado vs Lógico</h2>
+        
+        <h3>Versão com Operadores Lógicos:</h3>
+        <pre><code>if idade >= 18 and tem_carteira and tem_carro:
+    print("Pode dirigir sozinho")</code></pre>
+    
+        <h3>Versão Aninhada (mais detalhada):</h3>
+        <pre><code>if idade >= 18:
+    print("Maior de idade ✓")
+    if tem_carteira:
+        print("Tem carteira ✓")
+        if tem_carro:
+            print("Pode dirigir sozinho!")
+        else:
+            print("Precisa de um carro")
+    else:
+        print("Precisa tirar carteira")
+else:
+    print("Menor de idade")</code></pre>
+    </section>
+
+    <section>
+        <h2>🎮 Exercício Prático</h2>
+        <div class="exercise-box">
+            <h3>Sistema de Cadastro de Usuário</h3>
+            <p>Crie um sistema que valide o cadastro com condições aninhadas:</p>
+            <ul>
+                <li>Se idade ≥ 18: pode se cadastrar</li>
+                <li>Se tem email: verificar se tem @</li>
+                <li>Se senha tem ≥ 8 caracteres: cadastro completo</li>
+                <li>Senão: pedir senha mais forte</li>
+            </ul>
+            
+            <textarea id="code-input" placeholder="# Sistema de Cadastro
+idade = int(input('Idade: '))
+
+if idade >= 18:
+    print('Idade válida!')
+    email = input('Email: ')
+    # Continue o código...
+else:
+    print('Menor de idade não pode se cadastrar')"></textarea>
+            
+            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
+            <div id="output"></div>
+        </div>
+    </section>
+
+    <section>
+        <h2>💡 Dicas Importantes</h2>
+        <div class="tip-box">
+            <ul>
+                <li>🎯 Mantenha no máximo 3 níveis de aninhamento</li>
+                <li>📏 Use indentação correta (4 espaços por nível)</li>
+                <li>💭 Comente código complexo</li>
+                <li>🔄 Considere usar elif quando possível</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function runCode() {
+    const code = document.getElementById('code-input').value;
+    const output = document.getElementById('output');
+    
+    output.innerHTML = '<div class="output-success">Código executado! Teste diferentes cenários de cadastro.</div>';
+}
+</script>
+{% endblock %}

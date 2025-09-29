@@ -1,0 +1,382 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 3 - Métodos de Lista | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 3 – Métodos de Lista{% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Dominar os métodos fundamentais de listas</li>
+            <li>Adicionar e remover elementos eficientemente</li>
+            <li>Organizar e modificar listas dinamicamente</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>➕ Adicionando Elementos</h2>
+        
+        <h3>1. append() - Adicionar no Final</h3>
+        <pre><code>frutas = ["maçã", "banana"]
+print(f"Inicial: {frutas}")
+
+frutas.append("uva")
+print(f"Após append: {frutas}")  # ['maçã', 'banana', 'uva']
+
+# Adicionando múltiplos elementos
+frutas.append("pêra")
+frutas.append("manga")
+print(f"Final: {frutas}")  # ['maçã', 'banana', 'uva', 'pêra', 'manga']</code></pre>
+        
+        <h3>2. insert() - Adicionar em Posição Específica</h3>
+        <pre><code>cores = ["azul", "verde", "amarelo"]
+print(f"Inicial: {cores}")
+
+cores.insert(1, "vermelho")  # Inserir na posição 1
+print(f"Após insert: {cores}")  # ['azul', 'vermelho', 'verde', 'amarelo']
+
+cores.insert(0, "preto")  # Inserir no início
+print(f"No início: {cores}")  # ['preto', 'azul', 'vermelho', 'verde', 'amarelo']
+
+cores.insert(-1, "branco")  # Inserir antes do último
+print(f"Antes do último: {cores}")  # ['preto', 'azul', 'vermelho', 'verde', 'branco', 'amarelo']</code></pre>
+        
+        <h3>3. extend() - Adicionar Múltiplos Elementos</h3>
+        <pre><code>numeros = [1, 2, 3]
+print(f"Inicial: {numeros}")
+
+# extend() adiciona cada elemento individualmente
+numeros.extend([4, 5, 6])
+print(f"Após extend: {numeros}")  # [1, 2, 3, 4, 5, 6]
+
+# Diferença entre append e extend
+lista1 = [1, 2, 3]
+lista2 = [1, 2, 3]
+
+lista1.append([4, 5, 6])  # Adiciona a lista como um elemento
+lista2.extend([4, 5, 6])  # Adiciona cada elemento da lista
+
+print(f"append: {lista1}")  # [1, 2, 3, [4, 5, 6]]
+print(f"extend: {lista2}")  # [1, 2, 3, 4, 5, 6]</code></pre>
+    </section>
+
+    <section>
+        <h2>➖ Removendo Elementos</h2>
+        
+        <h3>1. remove() - Remove Primeira Ocorrência</h3>
+        <pre><code>animais = ["gato", "cachorro", "gato", "pássaro"]
+print(f"Inicial: {animais}")
+
+animais.remove("gato")  # Remove o primeiro "gato"
+print(f"Após remove: {animais}")  # ['cachorro', 'gato', 'pássaro']
+
+# Cuidado: remove() gera erro se elemento não existir
+try:
+    animais.remove("elefante")
+except ValueError:
+    print("Elemento 'elefante' não encontrado")</code></pre>
+        
+        <h3>2. pop() - Remove e Retorna Elemento</h3>
+        <pre><code>pilha = [1, 2, 3, 4, 5]
+print(f"Inicial: {pilha}")
+
+# pop() sem parâmetro remove o último elemento
+ultimo = pilha.pop()
+print(f"Removido: {ultimo}")  # 5
+print(f"Pilha: {pilha}")  # [1, 2, 3, 4]
+
+# pop() com índice remove elemento específico
+segundo = pilha.pop(1)  # Remove elemento no índice 1
+print(f"Removido: {segundo}")  # 2
+print(f"Pilha: {pilha}")  # [1, 3, 4]
+
+# Usando pop() em fila (primeiro elemento)
+primeiro = pilha.pop(0)
+print(f"Primeiro removido: {primeiro}")  # 1
+print(f"Fila: {pilha}")  # [3, 4]</code></pre>
+        
+        <h3>3. clear() - Remove Todos os Elementos</h3>
+        <pre><code>numeros = [1, 2, 3, 4, 5]
+print(f"Antes: {numeros}")
+
+numeros.clear()
+print(f"Depois: {numeros}")  # []
+print(f"Tamanho: {len(numeros)}")  # 0</code></pre>
+        
+        <h3>4. del - Remove por Índice ou Slice</h3>
+        <pre><code>letras = ['a', 'b', 'c', 'd', 'e', 'f']
+print(f"Inicial: {letras}")
+
+# Remover elemento específico
+del letras[2]  # Remove 'c'
+print(f"Após del: {letras}")  # ['a', 'b', 'd', 'e', 'f']
+
+# Remover slice
+del letras[1:3]  # Remove 'b' e 'd'
+print(f"Após del slice: {letras}")  # ['a', 'e', 'f']
+
+# Remover elementos alternados
+del letras[::2]  # Remove índices 0, 2, 4...
+print(f"Após del alternados: {letras}")  # ['e']</code></pre>
+    </section>
+
+    <section>
+        <h2>🔍 Métodos de Busca</h2>
+        
+        <h3>1. index() - Encontrar Posição</h3>
+        <pre><code>frutas = ["maçã", "banana", "uva", "banana", "pêra"]
+
+# Encontrar primeira ocorrência
+posicao = frutas.index("banana")
+print(f"Primeira banana na posição: {posicao}")  # 1
+
+# Busca com início e fim
+posicao2 = frutas.index("banana", 2)  # Buscar a partir do índice 2
+print(f"Segunda banana na posição: {posicao2}")  # 3
+
+# Busca segura
+def buscar_seguro(lista, elemento):
+    try:
+        return lista.index(elemento)
+    except ValueError:
+        return -1  # Não encontrado
+
+print(f"Posição de 'kiwi': {buscar_seguro(frutas, 'kiwi')}")  # -1</code></pre>
+        
+        <h3>2. count() - Contar Ocorrências</h3>
+        <pre><code>numeros = [1, 2, 3, 2, 4, 2, 5]
+
+count_2 = numeros.count(2)
+print(f"Número 2 aparece {count_2} vezes")  # 3
+
+count_6 = numeros.count(6)
+print(f"Número 6 aparece {count_6} vezes")  # 0
+
+# Contagem de elementos únicos
+def contar_unicos(lista):
+    contador = {}
+    for elemento in lista:
+        contador[elemento] = lista.count(elemento)
+    return contador
+
+contagem = contar_unicos(numeros)
+print(f"Contagem: {contagem}")  # {1: 1, 2: 3, 3: 1, 4: 1, 5: 1}</code></pre>
+    </section>
+
+    <section>
+        <h2>📊 Métodos de Organização</h2>
+        
+        <h3>1. sort() - Ordenar Lista</h3>
+        <pre><code>numeros = [3, 1, 4, 1, 5, 9, 2, 6]
+print(f"Original: {numeros}")
+
+# Ordenação crescente
+numeros.sort()
+print(f"Crescente: {numeros}")  # [1, 1, 2, 3, 4, 5, 6, 9]
+
+# Ordenação decrescente
+numeros.sort(reverse=True)
+print(f"Decrescente: {numeros}")  # [9, 6, 5, 4, 3, 2, 1, 1]
+
+# Ordenação de strings
+nomes = ["Carlos", "Ana", "Bruno", "Diana"]
+nomes.sort()
+print(f"Nomes ordenados: {nomes}")  # ['Ana', 'Bruno', 'Carlos', 'Diana']
+
+# Ordenação personalizada (por tamanho)
+palavras = ["python", "java", "c", "javascript"]
+palavras.sort(key=len)
+print(f"Por tamanho: {palavras}")  # ['c', 'java', 'python', 'javascript']</code></pre>
+        
+        <h3>2. reverse() - Inverter Lista</h3>
+        <pre><code>letras = ['a', 'b', 'c', 'd', 'e']
+print(f"Original: {letras}")
+
+letras.reverse()
+print(f"Invertida: {letras}")  # ['e', 'd', 'c', 'b', 'a']
+
+# Diferença entre reverse() e sort(reverse=True)
+numeros1 = [3, 1, 4, 2]
+numeros2 = [3, 1, 4, 2]
+
+numeros1.reverse()  # Apenas inverte ordem atual
+numeros2.sort(reverse=True)  # Ordena e depois inverte
+
+print(f"reverse(): {numeros1}")  # [2, 4, 1, 3]
+print(f"sort(reverse=True): {numeros2}")  # [4, 3, 2, 1]</code></pre>
+        
+        <h3>3. copy() - Copiar Lista</h3>
+        <pre><code>original = [1, 2, 3, 4, 5]
+
+# Cópia rasa (shallow copy)
+copia = original.copy()
+copia_slice = original[:]  # Equivalente
+copia_list = list(original)  # Equivalente
+
+print(f"Original: {original}")
+print(f"Cópia: {copia}")
+
+# Modificar cópia não afeta original
+copia.append(6)
+print(f"Após modificar cópia:")
+print(f"Original: {original}")  # [1, 2, 3, 4, 5]
+print(f"Cópia: {copia}")  # [1, 2, 3, 4, 5, 6]
+
+# CUIDADO: Atribuição não cria cópia!
+nao_copia = original  # Mesma referência
+nao_copia.append(7)
+print(f"Original após 'não cópia': {original}")  # [1, 2, 3, 4, 5, 7]</code></pre>
+    </section>
+
+    <section>
+        <h2>🎮 Exercício Prático</h2>
+        <div class="exercise-box">
+            <h3>Sistema de Gerenciamento de Tarefas</h3>
+            <p>Crie um sistema que permita:</p>
+            <ul>
+                <li>Adicionar tarefas no final e em posições específicas</li>
+                <li>Remover tarefas por nome ou posição</li>
+                <li>Reorganizar a lista (ordenar, inverter)</li>
+                <li>Buscar e contar tarefas</li>
+            </ul>
+            
+            <textarea id="code-input" placeholder="# Sistema de Gerenciamento de Tarefas
+tarefas = []
+
+def adicionar_tarefa(nome, posicao=None):
+    if posicao is None:
+        tarefas.append(nome)
+        print(f'✅ Tarefa "{nome}" adicionada no final')
+    else:
+        tarefas.insert(posicao, nome)
+        print(f'✅ Tarefa "{nome}" adicionada na posição {posicao}')
+
+def remover_tarefa(identificador):
+    if isinstance(identificador, int):
+        # Remover por posição
+        if 0 <= identificador < len(tarefas):
+            removida = tarefas.pop(identificador)
+            print(f'❌ Tarefa "{removida}" removida da posição {identificador}')
+        else:
+            print('Posição inválida!')
+    else:
+        # Remover por nome
+        if identificador in tarefas:
+            tarefas.remove(identificador)
+            print(f'❌ Tarefa "{identificador}" removida')
+        else:
+            print(f'Tarefa "{identificador}" não encontrada!')
+
+def listar_tarefas():
+    if not tarefas:
+        print('📋 Nenhuma tarefa cadastrada')
+        return
+    
+    print('📋 LISTA DE TAREFAS:')
+    for i, tarefa in enumerate(tarefas, 1):
+        print(f'{i}. {tarefa}')
+
+def buscar_tarefa(nome):
+    if nome in tarefas:
+        posicao = tarefas.index(nome)
+        count = tarefas.count(nome)
+        print(f'🔍 "{nome}" encontrada na posição {posicao} ({count} ocorrência(s))')
+    else:
+        print(f'🔍 "{nome}" não encontrada')
+
+# Testando o sistema
+print('🚀 SISTEMA DE TAREFAS INICIADO')
+
+# Adicionando tarefas
+adicionar_tarefa('Estudar Python')
+adicionar_tarefa('Fazer exercícios')
+adicionar_tarefa('Ler documentação')
+adicionar_tarefa('Fazer projeto', 1)  # Inserir na posição 1
+
+listar_tarefas()
+
+# Buscando tarefa
+buscar_tarefa('Estudar Python')
+
+# Removendo tarefa
+remover_tarefa('Fazer exercícios')
+remover_tarefa(0)  # Remove por posição
+
+listar_tarefas()
+
+# Organizando
+print('\n📊 Organizando tarefas...')
+tarefas_copia = tarefas.copy()
+tarefas_copia.sort()
+print(f'Ordenadas: {tarefas_copia}')
+
+tarefas.reverse()
+print(f'Invertidas: {tarefas}')"></textarea>
+            
+            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
+            <div id="output"></div>
+        </div>
+    </section>
+
+    <section>
+        <h2>⚡ Métodos Úteis Combinados</h2>
+        
+        <h3>1. Limpeza e Filtragem:</h3>
+        <pre><code>dados = [1, 2, '', 3, None, 4, 0, 5]
+print(f"Original: {dados}")
+
+# Remover elementos "falsy" (vazios, None, 0)
+limpos = []
+for item in dados:
+    if item:  # Se item é "truthy"
+        limpos.append(item)
+
+print(f"Limpos: {limpos}")  # [1, 2, 3, 4, 5]
+
+# Ou usando list comprehension
+limpos2 = [item for item in dados if item]
+print(f"Limpos (comprehension): {limpos2}")</code></pre>
+        
+        <h3>2. Remoção Segura em Loop:</h3>
+        <pre><code># CUIDADO: Não modifique lista durante iteração!
+numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+# ❌ ERRADO - pode pular elementos
+# for num in numeros:
+#     if num % 2 == 0:
+#         numeros.remove(num)
+
+# ✅ CORRETO - iterar de trás para frente
+for i in range(len(numeros) - 1, -1, -1):
+    if numeros[i] % 2 == 0:
+        numeros.pop(i)
+
+print(f"Apenas ímpares: {numeros}")  # [1, 3, 5, 7, 9]</code></pre>
+    </section>
+
+    <section>
+        <h2>💡 Dicas Importantes</h2>
+        <div class="tip-box">
+            <ul>
+                <li>➕ append() é mais rápido que insert() para adicionar no final</li>
+                <li>🔍 Sempre verifique se elemento existe antes de usar remove()</li>
+                <li>📊 sort() modifica a lista original; use sorted() para criar nova</li>
+                <li>📋 copy() cria cópia independente; atribuição não!</li>
+                <li>🔄 pop() é eficiente para pilhas; use deque para filas</li>
+                <li>⚠️ Não modifique lista durante iteração direta</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function runCode() {
+    const code = document.getElementById('code-input').value;
+    const output = document.getElementById('output');
+    
+    output.innerHTML = '<div class="output-success">Sistema de tarefas executado! Veja como os métodos de lista trabalham juntos.</div>';
+}
+</script>
+{% endblock %}

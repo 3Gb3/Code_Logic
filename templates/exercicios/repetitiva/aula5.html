@@ -1,0 +1,347 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 5 - Loops Aninhados | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 5 – Loops Aninhados{% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Entender loops dentro de outros loops</li>
+            <li>Criar padrões e matrizes</li>
+            <li>Resolver problemas bidimensionais</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>🔄 O que são Loops Aninhados?</h2>
+        <p>São loops colocados dentro de outros loops. Para cada iteração do loop externo, o loop interno executa completamente.</p>
+        
+        <h3>Estrutura Básica:</h3>
+        <pre><code>for i in range(linhas):        # Loop externo
+    for j in range(colunas):   # Loop interno
+        # código executado linhas × colunas vezes</code></pre>
+    </section>
+
+    <section>
+        <h2>📊 Exemplo Simples: Tabuada Completa</h2>
+        <pre><code>print("=== TABUADAS DE 1 A 5 ===\n")
+
+for numero in range(1, 6):        # Loop externo: números 1 a 5
+    print(f"Tabuada do {numero}:")
+    
+    for multiplicador in range(1, 11):  # Loop interno: 1 a 10
+        resultado = numero * multiplicador
+        print(f"{numero} x {multiplicador} = {resultado}")
+    
+    print("-" * 15)  # Separador</code></pre>
+    </section>
+
+    <section>
+        <h2>🎨 Criando Padrões</h2>
+        
+        <h3>1. Retângulo de Estrelas</h3>
+        <pre><code>linhas = 4
+colunas = 6
+
+for i in range(linhas):
+    for j in range(colunas):
+        print("*", end="")
+    print()  # Nova linha
+
+# Saída:
+# ******
+# ******
+# ******
+# ******</code></pre>
+    
+        <h3>2. Triângulo Crescente</h3>
+        <pre><code>altura = 5
+
+for i in range(1, altura + 1):
+    for j in range(i):
+        print("*", end="")
+    print()
+
+# Saída:
+# *
+# **
+# ***
+# ****
+# *****</code></pre>
+    
+        <h3>3. Triângulo com Números</h3>
+        <pre><code>altura = 4
+
+for i in range(1, altura + 1):
+    for j in range(1, i + 1):
+        print(j, end="")
+    print()
+
+# Saída:
+# 1
+# 12
+# 123
+# 1234</code></pre>
+    </section>
+
+    <section>
+        <h2>📋 Trabalhando com Matrizes</h2>
+        
+        <h3>1. Criando uma Matriz</h3>
+        <pre><code># Criar matriz 3x4 com zeros
+linhas = 3
+colunas = 4
+
+matriz = []
+for i in range(linhas):
+    linha = []
+    for j in range(colunas):
+        linha.append(0)
+    matriz.append(linha)
+
+print(matriz)
+# [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]</code></pre>
+    
+        <h3>2. Preenchendo uma Matriz</h3>
+        <pre><code>linhas = 3
+colunas = 3
+
+# Criar matriz com números sequenciais
+matriz = []
+numero = 1
+
+for i in range(linhas):
+    linha = []
+    for j in range(colunas):
+        linha.append(numero)
+        numero += 1
+    matriz.append(linha)
+
+# Exibir matriz formatada
+for linha in matriz:
+    for elemento in linha:
+        print(f"{elemento:2}", end=" ")
+    print()
+
+# Saída:
+#  1  2  3 
+#  4  5  6 
+#  7  8  9</code></pre>
+    </section>
+
+    <section>
+        <h2>🎮 Jogo da Velha - Exibindo Tabuleiro</h2>
+        <pre><code>tabuleiro = [
+    ['X', 'O', ' '],
+    [' ', 'X', 'O'],
+    ['O', ' ', 'X']
+]
+
+print("=== JOGO DA VELHA ===")
+print("   0   1   2")
+
+for i in range(3):
+    print(f"{i}  ", end="")
+    
+    for j in range(3):
+        print(f"{tabuleiro[i][j]}", end="")
+        
+        if j < 2:  # Não imprime | na última coluna
+            print(" | ", end="")
+    
+    print()  # Nova linha
+    
+    if i < 2:  # Não imprime linha na última linha
+        print("  -----------")
+
+# Saída:
+#    0   1   2
+# 0  X | O |  
+#   -----------
+# 1    | X | O
+#   -----------
+# 2  O |   | X</code></pre>
+    </section>
+
+    <section>
+        <h2>🎮 Exercício Prático</h2>
+        <div class="exercise-box">
+            <h3>Gerador de Padrões</h3>
+            <p>Crie um programa que gere diferentes padrões com loops aninhados:</p>
+            <ul>
+                <li>Triângulo decrescente</li>
+                <li>Pirâmide centralizada</li>
+                <li>Tabuleiro de xadrez</li>
+                <li>Matriz de multiplicação</li>
+            </ul>
+            
+            <textarea id="code-input" placeholder="# Gerador de Padrões
+print('🎨 Gerador de Padrões')
+print('1. Triângulo decrescente')
+print('2. Pirâmide centralizada')
+print('3. Tabuleiro de xadrez')
+print('4. Matriz de multiplicação')
+
+opcao = input('Escolha um padrão (1-4): ')
+
+if opcao == '1':
+    # Triângulo decrescente
+    altura = int(input('Altura do triângulo: '))
+    for i in range(altura, 0, -1):
+        for j in range(i):
+            print('*', end='')
+        print()
+
+elif opcao == '2':
+    # Pirâmide centralizada
+    altura = int(input('Altura da pirâmide: '))
+    # Complete o código...
+
+# Continue com outras opções..."></textarea>
+            
+            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
+            <div id="output"></div>
+        </div>
+    </section>
+
+    <section>
+        <h2>🔍 Busca em Matriz</h2>
+        <pre><code>matriz = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+
+numero_procurado = int(input("Que número você procura? "))
+encontrou = False
+
+for i in range(len(matriz)):
+    for j in range(len(matriz[i])):
+        if matriz[i][j] == numero_procurado:
+            print(f"✅ Número {numero_procurado} encontrado na posição ({i},{j})")
+            encontrou = True
+            break
+    
+    if encontrou:
+        break
+
+if not encontrou:
+    print(f"❌ Número {numero_procurado} não encontrado")</code></pre>
+    </section>
+
+    <section>
+        <h2>📊 Operações com Matrizes</h2>
+        
+        <h3>1. Soma de Duas Matrizes</h3>
+        <pre><code>matriz_a = [[1, 2], [3, 4]]
+matriz_b = [[5, 6], [7, 8]]
+
+resultado = []
+
+for i in range(len(matriz_a)):
+    linha = []
+    for j in range(len(matriz_a[i])):
+        soma = matriz_a[i][j] + matriz_b[i][j]
+        linha.append(soma)
+    resultado.append(linha)
+
+print("Matriz A + Matriz B:")
+for linha in resultado:
+    print(linha)</code></pre>
+    
+        <h3>2. Transposta de uma Matriz</h3>
+        <pre><code>matriz = [
+    [1, 2, 3],
+    [4, 5, 6]
+]
+
+# Criar matriz transposta
+linhas = len(matriz)
+colunas = len(matriz[0])
+
+transposta = []
+for j in range(colunas):
+    linha = []
+    for i in range(linhas):
+        linha.append(matriz[i][j])
+    transposta.append(linha)
+
+print("Matriz original:")
+for linha in matriz:
+    print(linha)
+
+print("\nMatriz transposta:")
+for linha in transposta:
+    print(linha)</code></pre>
+    </section>
+
+    <section>
+        <h2>🎯 Controle de Fluxo em Loops Aninhados</h2>
+        
+        <h3>Break em Loops Aninhados</h3>
+        <pre><code># break só afeta o loop mais interno
+for i in range(3):
+    print(f"Linha {i}:")
+    for j in range(5):
+        if j == 3:
+            print("Break!")
+            break  # Só sai do loop j
+        print(j, end=" ")
+    print()
+
+print("Programa continua...")</code></pre>
+    
+        <h3>Usando Flag para Sair de Ambos</h3>
+        <pre><code>encontrou = False
+
+for i in range(3):
+    for j in range(3):
+        if i == 1 and j == 1:
+            print(f"Encontrado em ({i},{j})")
+            encontrou = True
+            break
+    
+    if encontrou:
+        break  # Sai do loop externo também</code></pre>
+    </section>
+
+    <section>
+        <h2>⚡ Complexidade e Performance</h2>
+        <div class="performance-tip">
+            <h3>💡 Dica de Performance:</h3>
+            <p>Um loop aninhado com n×m iterações tem complexidade O(n×m). Para n=m=1000, são 1 milhão de operações!</p>
+            
+            <pre><code># Exemplo: matriz 1000x1000
+for i in range(1000):     # 1000 iterações
+    for j in range(1000): # 1000 iterações cada
+        # Total: 1.000.000 operações!</code></pre>
+        </div>
+    </section>
+
+    <section>
+        <h2>💡 Dicas Importantes</h2>
+        <div class="tip-box">
+            <ul>
+                <li>🎯 Loops aninhados = loop dentro de loop</li>
+                <li>📊 Úteis para matrizes e padrões 2D</li>
+                <li>⚡ Cuidado com a performance em loops grandes</li>
+                <li>🔍 Use flags para sair de múltiplos loops</li>
+                <li>📏 Mantenha indentação clara e consistente</li>
+                <li>🧪 Teste com valores pequenos primeiro</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function runCode() {
+    const code = document.getElementById('code-input').value;
+    const output = document.getElementById('output');
+    
+    output.innerHTML = '<div class="output-success">Gerador de padrões executado! Experimente diferentes opções e tamanhos.</div>';
+}
+</script>
+{% endblock %}

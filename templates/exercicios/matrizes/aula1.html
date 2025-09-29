@@ -1,0 +1,204 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 1 - Introdução às Matrizes | CodeLogic{% endblock %}
+{% block lesson_title %}Aula 1 - Introdução às Matrizes{% endblock %}
+
+{% block theory_content %}
+<div class="content-section">
+    <h2>🎯 Objetivos da Aula</h2>
+    <ul>
+        <li>Entender o conceito de matrizes (arrays 2D)</li>
+        <li>Aprender a criar matrizes em Python</li>
+        <li>Compreender índices bidimensionais</li>
+        <li>Praticar com exemplos visuais</li>
+    </ul>
+</div>
+
+<div class="content-section">
+    <h2>🏗️ O que são Matrizes?</h2>
+    <p>
+        Matrizes são estruturas de dados bidimensionais - como uma tabela com 
+        linhas e colunas. Em Python, criamos matrizes usando listas de listas.
+    </p>
+    
+    <div class="highlight-box">
+        <h3>💡 Analogia do Dia a Dia</h3>
+        <p>
+            Uma matriz é como um prédio de apartamentos:
+            <br>• Cada andar representa uma linha
+            <br>• Cada apartamento no andar representa uma coluna
+            <br>• Para encontrar um apartamento: Andar 2, Apartamento 3
+        </p>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>🔧 Criando Matrizes</h2>
+    
+    <div class="code-example">
+        <h3>Matriz 3x3 (3 linhas, 3 colunas):</h3>
+        <pre><code># Criando uma matriz 3x3
+matriz = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+
+# Visualização:
+# 1  2  3
+# 4  5  6
+# 7  8  9</code></pre>
+    </div>
+
+    <div class="code-example">
+        <h3>Diferentes tipos de matrizes:</h3>
+        <pre><code># Matriz de strings
+nomes = [
+    ["Ana", "João"],
+    ["Maria", "Pedro"],
+    ["Carlos", "Lucia"]
+]
+
+# Matriz mista
+dados = [
+    ["João", 25, True],
+    ["Maria", 30, False],
+    ["Pedro", 28, True]
+]</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>🔍 Acessando Elementos</h2>
+    
+    <div class="code-example">
+        <h3>Usando índices [linha][coluna]:</h3>
+        <pre><code>matriz = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+
+# Acessando elementos
+print(matriz[0][0])  # 1 (linha 0, coluna 0)
+print(matriz[0][1])  # 2 (linha 0, coluna 1)
+print(matriz[1][2])  # 6 (linha 1, coluna 2)
+print(matriz[2][0])  # 7 (linha 2, coluna 0)
+
+# Modificando elementos
+matriz[1][1] = 99    # Altera o 5 para 99</code></pre>
+    </div>
+
+    <div class="matrix-diagram">
+        <h3>📍 Diagrama de Índices:</h3>
+        <table class="matrix-table">
+            <tr><td></td><td>Col 0</td><td>Col 1</td><td>Col 2</td></tr>
+            <tr><td>Lin 0</td><td>[0][0] = 1</td><td>[0][1] = 2</td><td>[0][2] = 3</td></tr>
+            <tr><td>Lin 1</td><td>[1][0] = 4</td><td>[1][1] = 5</td><td>[1][2] = 6</td></tr>
+            <tr><td>Lin 2</td><td>[2][0] = 7</td><td>[2][1] = 8</td><td>[2][2] = 9</td></tr>
+        </table>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>📏 Dimensões da Matriz</h2>
+    
+    <div class="code-example">
+        <h3>Descobrindo o tamanho:</h3>
+        <pre><code>matriz = [
+    [1, 2, 3, 4],
+    [5, 6, 7, 8],
+    [9, 10, 11, 12]
+]
+
+# Número de linhas
+linhas = len(matriz)          # 3
+
+# Número de colunas (da primeira linha)
+colunas = len(matriz[0])      # 4
+
+print(f"Matriz {linhas}x{colunas}")  # Matriz 3x4</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>🎮 Exemplo Prático</h2>
+    
+    <div class="example-box">
+        <h3>Notas de Alunos:</h3>
+        <pre><code># Matriz de notas: [Matemática, Português, História]
+notas = [
+    [8.5, 7.0, 9.0],  # Aluno 1
+    [6.5, 8.5, 7.5],  # Aluno 2
+    [9.0, 9.5, 8.0]   # Aluno 3
+]
+
+# Acessando nota específica
+print(f"Nota do Aluno 1 em Matemática: {notas[0][0]}")
+print(f"Nota do Aluno 2 em Português: {notas[1][1]}")
+
+# Calculando média do Aluno 1
+media_aluno1 = sum(notas[0]) / len(notas[0])
+print(f"Média do Aluno 1: {media_aluno1:.1f}")</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>⚠️ Pontos Importantes</h2>
+    <ul>
+        <li><strong>Índices duplos:</strong> Sempre [linha][coluna]</li>
+        <li><strong>Começam em 0:</strong> Primeira linha e coluna são índice 0</li>
+        <li><strong>Tamanho consistente:</strong> Todas as linhas devem ter o mesmo número de colunas</li>
+        <li><strong>Aninhamento:</strong> É uma lista de listas</li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block exercise_content %}
+<div class="exercise-header">
+    <h2>🏋️‍♂️ Exercício Prático</h2>
+    <p>Crie uma matriz representando um tabuleiro de jogo da velha</p>
+</div>
+
+<div class="exercise-description">
+    <h3>📋 Instruções:</h3>
+    <ol>
+        <li>Crie uma matriz 3x3 chamada <code>tabuleiro</code></li>
+        <li>Preencha com "-" representando casas vazias</li>
+        <li>Coloque "X" na posição [0][0] (canto superior esquerdo)</li>
+        <li>Coloque "O" na posição [1][1] (centro)</li>
+        <li>Imprima a matriz linha por linha</li>
+    </ol>
+</div>
+
+<div class="exercise-hints">
+    <h3>💡 Dicas:</h3>
+    <ul>
+        <li>Use listas de listas: [[...], [...], [...]]</li>
+        <li>Lembre-se: [linha][coluna]</li>
+        <li>Use um loop para imprimir cada linha</li>
+        <li>Primeiro índice é sempre 0</li>
+    </ul>
+</div>
+
+<div class="expected-output">
+    <h3>📤 Resultado Esperado:</h3>
+    <pre>X - -
+- O -
+- - -</pre>
+</div>
+{% endblock %}
+
+{% block starter_code %}
+# Exercício: Tabuleiro de Jogo da Velha
+# Complete o código abaixo
+
+# Criar matriz 3x3 com "-"
+tabuleiro = [
+    ["-", "-", "-"],
+    ["-", "-", "-"],
+    ["-", "-", "-"]
+]
+
+# Seu código aqui
+{% endblock %}

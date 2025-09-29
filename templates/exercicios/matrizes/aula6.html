@@ -1,0 +1,650 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 6 - Operações Avançadas com Matrizes | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 6 – Operações Avançadas com Matrizes{% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Implementar operações matemáticas avançadas com matrizes</li>
+            <li>Trabalhar com determinantes e matrizes inversas</li>
+            <li>Aplicar transformações lineares</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>🧮 Determinante de Matriz</h2>
+        <p>O determinante é um valor escalar que pode ser calculado a partir de uma matriz quadrada e codifica certas propriedades da transformação linear.</p>
+        
+        <h3>Determinante 2x2:</h3>
+        <pre><code>def determinante_2x2(matriz):
+    """Calcula determinante de matriz 2x2"""
+    if len(matriz) != 2 or len(matriz[0]) != 2:
+        raise ValueError("Matriz deve ser 2x2")
+    
+    a, b = matriz[0][0], matriz[0][1]
+    c, d = matriz[1][0], matriz[1][1]
+    
+    return a * d - b * c
+
+# Exemplo
+matriz_2x2 = [
+    [3, 2],
+    [1, 4]
+]
+
+det = determinante_2x2(matriz_2x2)
+print(f"Determinante: {det}")  # 3*4 - 2*1 = 10</code></pre>
+        
+        <h3>Determinante 3x3 (Regra de Sarrus):</h3>
+        <pre><code>def determinante_3x3(matriz):
+    """Calcula determinante de matriz 3x3 usando regra de Sarrus"""
+    if len(matriz) != 3 or len(matriz[0]) != 3:
+        raise ValueError("Matriz deve ser 3x3")
+    
+    # Diagonal principal e paralelas (sentido positivo)
+    diag_pos = (matriz[0][0] * matriz[1][1] * matriz[2][2] +
+                matriz[0][1] * matriz[1][2] * matriz[2][0] +
+                matriz[0][2] * matriz[1][0] * matriz[2][1])
+    
+    # Diagonal secundária e paralelas (sentido negativo)
+    diag_neg = (matriz[0][2] * matriz[1][1] * matriz[2][0] +
+                matriz[0][0] * matriz[1][2] * matriz[2][1] +
+                matriz[0][1] * matriz[1][0] * matriz[2][2])
+    
+    return diag_pos - diag_neg
+
+def determinante_cofatores(matriz):
+    """Calcula determinante usando expansão por cofatores"""
+    n = len(matriz)
+    
+    if n == 1:
+        return matriz[0][0]
+    
+    if n == 2:
+        return determinante_2x2(matriz)
+    
+    det = 0
+    for j in range(n):
+        # Criar submatriz removendo linha 0 e coluna j
+        submatriz = []
+        for i in range(1, n):
+            linha = []
+            for k in range(n):
+                if k != j:
+                    linha.append(matriz[i][k])
+            submatriz.append(linha)
+        
+        # Cofator: (-1)^(i+j) * M_ij
+        cofator = ((-1) ** j) * determinante_cofatores(submatriz)
+        det += matriz[0][j] * cofator
+    
+    return det
+
+# Teste
+matriz_3x3 = [
+    [2, -3, 1],
+    [2, 0, -1],
+    [1, 4, 5]
+]
+
+det_sarrus = determinante_3x3(matriz_3x3)
+det_cofatores = determinante_cofatores(matriz_3x3)
+
+print(f"Determinante (Sarrus): {det_sarrus}")
+print(f"Determinante (Cofatores): {det_cofatores}")</code></pre>
+    </section>
+
+    <section>
+        <h2>🔄 Matriz Transposta e Adjunta</h2>
+        
+        <h3>Transposta:</h3>
+        <pre><code>def transposta(matriz):
+    """Calcula a transposta de uma matriz"""
+    linhas = len(matriz)
+    colunas = len(matriz[0])
+    
+    # Transposta: trocar linhas por colunas
+    resultado = []
+    for j in range(colunas):
+        nova_linha = []
+        for i in range(linhas):
+            nova_linha.append(matriz[i][j])
+        resultado.append(nova_linha)
+    
+    return resultado
+
+def eh_simetrica(matriz):
+    """Verifica se matriz é simétrica (A = A^T)"""
+    if len(matriz) != len(matriz[0]):
+        return False  # Deve ser quadrada
+    
+    trans = transposta(matriz)
+    
+    for i in range(len(matriz)):
+        for j in range(len(matriz[0])):
+            if matriz[i][j] != trans[i][j]:
+                return False
+    
+    return True
+
+# Teste
+matriz_A = [
+    [1, 2, 3],
+    [4, 5, 6]
+]
+
+trans_A = transposta(matriz_A)
+print("Matriz A:")
+for linha in matriz_A:
+    print(linha)
+
+print("\\nTransposta de A:")
+for linha in trans_A:
+    print(linha)
+
+# Matriz simétrica
+simetrica = [
+    [1, 2, 3],
+    [2, 4, 5],
+    [3, 5, 6]
+]
+
+print(f"\\nÉ simétrica: {eh_simetrica(simetrica)}")</code></pre>
+        
+        <h3>Matriz Adjunta (Cofatores):</h3>
+        <pre><code>def matriz_cofatores(matriz):
+    """Calcula a matriz de cofatores"""
+    n = len(matriz)
+    cofatores = []
+    
+    for i in range(n):
+        linha_cofatores = []
+        for j in range(n):
+            # Criar submatriz removendo linha i e coluna j
+            submatriz = []
+            for k in range(n):
+                if k != i:
+                    linha_sub = []
+                    for l in range(n):
+                        if l != j:
+                            linha_sub.append(matriz[k][l])
+                    submatriz.append(linha_sub)
+            
+            # Cofator: (-1)^(i+j) * det(submatriz)
+            sinal = (-1) ** (i + j)
+            cofator = sinal * determinante_cofatores(submatriz)
+            linha_cofatores.append(cofator)
+        
+        cofatores.append(linha_cofatores)
+    
+    return cofatores
+
+def matriz_adjunta(matriz):
+    """Calcula a matriz adjunta (transposta da matriz de cofatores)"""
+    cofatores = matriz_cofatores(matriz)
+    return transposta(cofatores)
+
+# Teste
+matriz_teste = [
+    [1, 2, 3],
+    [0, 1, 4],
+    [5, 6, 0]
+]
+
+cofatores = matriz_cofatores(matriz_teste)
+adjunta = matriz_adjunta(matriz_teste)
+
+print("Matriz de cofatores:")
+for linha in cofatores:
+    print([round(x, 2) for x in linha])
+
+print("\\nMatriz adjunta:")
+for linha in adjunta:
+    print([round(x, 2) for x in linha])</code></pre>
+    </section>
+
+    <section>
+        <h2>↩️ Matriz Inversa</h2>
+        
+        <h3>Método da Adjunta:</h3>
+        <pre><code>def matriz_inversa(matriz):
+    """Calcula a matriz inversa usando o método da adjunta"""
+    det = determinante_cofatores(matriz)
+    
+    if abs(det) < 1e-10:  # Verificar se é próximo de zero
+        raise ValueError("Matriz não invertível (determinante = 0)")
+    
+    adj = matriz_adjunta(matriz)
+    n = len(matriz)
+    
+    # Inversa = (1/det) * adjunta
+    inversa = []
+    for i in range(n):
+        linha = []
+        for j in range(n):
+            linha.append(adj[i][j] / det)
+        inversa.append(linha)
+    
+    return inversa
+
+def multiplicar_matrizes(A, B):
+    """Multiplica duas matrizes"""
+    linhas_A = len(A)
+    colunas_A = len(A[0])
+    colunas_B = len(B[0])
+    
+    if colunas_A != len(B):
+        raise ValueError("Incompatível para multiplicação")
+    
+    resultado = []
+    for i in range(linhas_A):
+        linha = []
+        for j in range(colunas_B):
+            soma = 0
+            for k in range(colunas_A):
+                soma += A[i][k] * B[k][j]
+            linha.append(soma)
+        resultado.append(linha)
+    
+    return resultado
+
+def matriz_identidade(n):
+    """Cria matriz identidade nxn"""
+    identidade = []
+    for i in range(n):
+        linha = []
+        for j in range(n):
+            linha.append(1 if i == j else 0)
+        identidade.append(linha)
+    return identidade
+
+# Teste
+matriz_original = [
+    [2, -1, 0],
+    [-1, 2, -1],
+    [0, -1, 2]
+]
+
+try:
+    inversa = matriz_inversa(matriz_original)
+    print("Matriz original:")
+    for linha in matriz_original:
+        print([round(x, 3) for x in linha])
+    
+    print("\\nMatriz inversa:")
+    for linha in inversa:
+        print([round(x, 3) for x in linha])
+    
+    # Verificar: A * A^(-1) = I
+    produto = multiplicar_matrizes(matriz_original, inversa)
+    print("\\nVerificação (A * A^(-1)):")
+    for linha in produto:
+        print([round(x, 3) for x in linha])
+
+except ValueError as e:
+    print(f"Erro: {e}")</code></pre>
+    </section>
+
+    <section>
+        <h2>🎮 Exercício Prático</h2>
+        <div class="exercise-box">
+            <h3>Sistema de Transformações Geométricas</h3>
+            <p>Implemente um sistema que aplica transformações geométricas usando matrizes:</p>
+            <ul>
+                <li>Rotação, reflexão e escala de pontos</li>
+                <li>Composição de transformações</li>
+                <li>Transformações inversas</li>
+            </ul>
+            
+            <textarea id="code-input" placeholder="import math
+
+class TransformadorGeometrico:
+    def __init__(self):
+        '''Sistema para aplicar transformações geométricas com matrizes'''
+        pass
+    
+    @staticmethod
+    def matriz_rotacao(angulo_graus):
+        '''Cria matriz de rotação para ângulo em graus'''
+        angulo_rad = math.radians(angulo_graus)
+        cos_a = math.cos(angulo_rad)
+        sin_a = math.sin(angulo_rad)
+        
+        return [
+            [cos_a, -sin_a, 0],
+            [sin_a, cos_a, 0],
+            [0, 0, 1]
+        ]
+    
+    @staticmethod
+    def matriz_translacao(dx, dy):
+        '''Cria matriz de translação'''
+        return [
+            [1, 0, dx],
+            [0, 1, dy],
+            [0, 0, 1]
+        ]
+    
+    @staticmethod
+    def matriz_escala(sx, sy):
+        '''Cria matriz de escala'''
+        return [
+            [sx, 0, 0],
+            [0, sy, 0],
+            [0, 0, 1]
+        ]
+    
+    @staticmethod
+    def matriz_reflexao_x():
+        '''Reflexão em relação ao eixo X'''
+        return [
+            [1, 0, 0],
+            [0, -1, 0],
+            [0, 0, 1]
+        ]
+    
+    @staticmethod
+    def matriz_reflexao_y():
+        '''Reflexão em relação ao eixo Y'''
+        return [
+            [-1, 0, 0],
+            [0, 1, 0],
+            [0, 0, 1]
+        ]
+    
+    @staticmethod
+    def multiplicar_matrizes(A, B):
+        '''Multiplica duas matrizes'''
+        linhas_A = len(A)
+        colunas_A = len(A[0])
+        colunas_B = len(B[0])
+        
+        resultado = []
+        for i in range(linhas_A):
+            linha = []
+            for j in range(colunas_B):
+                soma = sum(A[i][k] * B[k][j] for k in range(colunas_A))
+                linha.append(soma)
+            resultado.append(linha)
+        
+        return resultado
+    
+    @staticmethod
+    def aplicar_transformacao(pontos, matriz_transformacao):
+        '''Aplica transformação aos pontos'''
+        pontos_transformados = []
+        
+        for x, y in pontos:
+            # Coordenadas homogêneas [x, y, 1]
+            ponto_homogeneo = [[x], [y], [1]]
+            
+            # Aplicar transformação
+            resultado = TransformadorGeometrico.multiplicar_matrizes(
+                matriz_transformacao, ponto_homogeneo
+            )
+            
+            # Converter de volta para coordenadas cartesianas
+            novo_x = resultado[0][0]
+            novo_y = resultado[1][0]
+            pontos_transformados.append((round(novo_x, 2), round(novo_y, 2)))
+        
+        return pontos_transformados
+    
+    @staticmethod
+    def compor_transformacoes(*matrizes):
+        '''Compõe múltiplas transformações em uma única matriz'''
+        resultado = matrizes[0]
+        
+        for matriz in matrizes[1:]:
+            resultado = TransformadorGeometrico.multiplicar_matrizes(matriz, resultado)
+        
+        return resultado
+    
+    def demonstrar_transformacoes(self):
+        '''Demonstra diferentes transformações'''
+        # Pontos originais (quadrado)
+        pontos_originais = [(0, 0), (2, 0), (2, 2), (0, 2)]
+        
+        print('🔲 TRANSFORMAÇÕES GEOMÉTRICAS')
+        print('=' * 35)
+        print(f'Pontos originais: {pontos_originais}')
+        
+        # 1. Rotação de 45 graus
+        print('\\n🔄 ROTAÇÃO 45°:')
+        matriz_rot_45 = self.matriz_rotacao(45)
+        pontos_rotacionados = self.aplicar_transformacao(pontos_originais, matriz_rot_45)
+        print(f'Após rotação: {pontos_rotacionados}')
+        
+        # 2. Escala 2x em X, 0.5x em Y
+        print('\\n📏 ESCALA (2x, 0.5x):')
+        matriz_escala = self.matriz_escala(2, 0.5)
+        pontos_escalados = self.aplicar_transformacao(pontos_originais, matriz_escala)
+        print(f'Após escala: {pontos_escalados}')
+        
+        # 3. Reflexão no eixo X
+        print('\\n🪞 REFLEXÃO EIXO X:')
+        matriz_reflexao = self.matriz_reflexao_x()
+        pontos_refletidos = self.aplicar_transformacao(pontos_originais, matriz_reflexao)
+        print(f'Após reflexão: {pontos_refletidos}')
+        
+        # 4. Translação
+        print('\\n➡️ TRANSLAÇÃO (3, -1):')
+        matriz_translacao = self.matriz_translacao(3, -1)
+        pontos_transladados = self.aplicar_transformacao(pontos_originais, matriz_translacao)
+        print(f'Após translação: {pontos_transladados}')
+        
+        # 5. Transformação composta: rotação + escala + translação
+        print('\\n🔗 TRANSFORMAÇÃO COMPOSTA:')
+        print('(Rotação 30° + Escala 1.5x + Translação (1,1))')
+        
+        matriz_rot_30 = self.matriz_rotacao(30)
+        matriz_escala_15 = self.matriz_escala(1.5, 1.5)
+        matriz_trans_11 = self.matriz_translacao(1, 1)
+        
+        # Compor transformações (ordem: translação, escala, rotação)
+        matriz_composta = self.compor_transformacoes(
+            matriz_trans_11, matriz_escala_15, matriz_rot_30
+        )
+        
+        pontos_compostos = self.aplicar_transformacao(pontos_originais, matriz_composta)
+        print(f'Resultado final: {pontos_compostos}')
+        
+        return {
+            'originais': pontos_originais,
+            'rotacionados': pontos_rotacionados,
+            'escalados': pontos_escalados,
+            'refletidos': pontos_refletidos,
+            'transladados': pontos_transladados,
+            'compostos': pontos_compostos
+        }
+    
+    def calcular_determinante_3x3(self, matriz):
+        '''Calcula determinante de matriz 3x3'''
+        a00, a01, a02 = matriz[0]
+        a10, a11, a12 = matriz[1]
+        a20, a21, a22 = matriz[2]
+        
+        det = (a00 * (a11 * a22 - a12 * a21) -
+               a01 * (a10 * a22 - a12 * a20) +
+               a02 * (a10 * a21 - a11 * a20))
+        
+        return det
+    
+    def analisar_transformacao(self, matriz):
+        '''Analisa propriedades de uma transformação'''
+        det = self.calcular_determinante_3x3(matriz)
+        
+        analise = {
+            'determinante': round(det, 4),
+            'preserva_area': abs(det) == 1,
+            'inverte_orientacao': det < 0,
+            'singular': abs(det) < 1e-10
+        }
+        
+        if analise['singular']:
+            analise['tipo'] = 'Transformação singular (não invertível)'
+        elif abs(det) == 1:
+            analise['tipo'] = 'Transformação rígida (preserva área)'
+        elif det > 1:
+            analise['tipo'] = 'Transformação que expande área'
+        else:
+            analise['tipo'] = 'Transformação que contrai área'
+        
+        return analise
+
+# Testando o sistema
+transformador = TransformadorGeometrico()
+
+# Demonstração completa
+resultados = transformador.demonstrar_transformacoes()
+
+# Análise de diferentes transformações
+print('\\n📊 ANÁLISE DE TRANSFORMAÇÕES:')
+
+transformacoes_teste = {
+    'Rotação 90°': transformador.matriz_rotacao(90),
+    'Escala 2x': transformador.matriz_escala(2, 2),
+    'Reflexão X': transformador.matriz_reflexao_x(),
+    'Escala não-uniforme': transformador.matriz_escala(3, 0.5)
+}
+
+for nome, matriz in transformacoes_teste.items():
+    analise = transformador.analisar_transformacao(matriz)
+    print(f'\\n{nome}:')
+    print(f'  Determinante: {analise[\"determinante\"]}')
+    print(f'  Tipo: {analise[\"tipo\"]}')
+    print(f'  Preserva área: {analise[\"preserva_area\"]}')
+    print(f'  Inverte orientação: {analise[\"inverte_orientacao\"]}')
+
+# Demonstração de transformação inversa
+print('\\n↩️ TRANSFORMAÇÃO INVERSA:')
+matriz_original = transformador.matriz_rotacao(45)
+ponto_teste = [(1, 0)]
+
+# Aplicar transformação
+ponto_transformado = transformador.aplicar_transformacao(ponto_teste, matriz_original)
+print(f'Ponto original: {ponto_teste[0]}')
+print(f'Após rotação 45°: {ponto_transformado[0]}')
+
+# Aplicar transformação inversa (rotação -45°)
+matriz_inversa = transformador.matriz_rotacao(-45)
+ponto_de_volta = transformador.aplicar_transformacao(ponto_transformado, matriz_inversa)
+print(f'Após rotação -45°: {ponto_de_volta[0]}')
+print(f'Voltou ao original: {abs(ponto_de_volta[0][0] - ponto_teste[0][0]) < 0.001}')"></textarea>
+            
+            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
+            <div id="output"></div>
+        </div>
+    </section>
+
+    <section>
+        <h2>🔢 Sistemas Lineares</h2>
+        
+        <h3>Regra de Cramer:</h3>
+        <pre><code>def resolver_cramer(A, b):
+    """Resolve sistema Ax = b usando regra de Cramer"""
+    n = len(A)
+    det_A = determinante_cofatores(A)
+    
+    if abs(det_A) < 1e-10:
+        raise ValueError("Sistema não tem solução única")
+    
+    solucao = []
+    
+    for i in range(n):
+        # Criar matriz substituindo coluna i por b
+        A_i = []
+        for j in range(n):
+            linha = []
+            for k in range(n):
+                if k == i:
+                    linha.append(b[j])
+                else:
+                    linha.append(A[j][k])
+            A_i.append(linha)
+        
+        det_A_i = determinante_cofatores(A_i)
+        x_i = det_A_i / det_A
+        solucao.append(round(x_i, 6))
+    
+    return solucao
+
+# Exemplo: 2x + 3y = 7, x - y = 1
+A = [[2, 3], [1, -1]]
+b = [7, 1]
+
+solucao = resolver_cramer(A, b)
+print(f"Solução: x = {solucao[0]}, y = {solucao[1]}")
+
+# Verificação
+x, y = solucao
+eq1 = 2*x + 3*y
+eq2 = x - y
+print(f"Verificação: 2x + 3y = {eq1}, x - y = {eq2}")</code></pre>
+    </section>
+
+    <section>
+        <h2>📊 Propriedades de Matrizes</h2>
+        
+        <table class="properties-table">
+            <tr>
+                <th>Propriedade</th>
+                <th>Condição</th>
+                <th>Significado</th>
+            </tr>
+            <tr>
+                <td>Invertível</td>
+                <td>det(A) ≠ 0</td>
+                <td>Existe A⁻¹</td>
+            </tr>
+            <tr>
+                <td>Singular</td>
+                <td>det(A) = 0</td>
+                <td>Não invertível</td>
+            </tr>
+            <tr>
+                <td>Ortogonal</td>
+                <td>A·Aᵀ = I</td>
+                <td>Preserva ângulos</td>
+            </tr>
+            <tr>
+                <td>Simétrica</td>
+                <td>A = Aᵀ</td>
+                <td>Reflexão pela diagonal</td>
+            </tr>
+            <tr>
+                <td>Idempotente</td>
+                <td>A² = A</td>
+                <td>Projeção</td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h2>💡 Aplicações Práticas</h2>
+        <div class="tip-box">
+            <ul>
+                <li>🎮 <strong>Gráficos</strong> - transformações 2D/3D, rotações, escalas</li>
+                <li>🤖 <strong>Robótica</strong> - cinemática, transformações de coordenadas</li>
+                <li>📊 <strong>Análise de Dados</strong> - PCA, regressão linear</li>
+                <li>🔬 <strong>Física</strong> - mecânica quântica, eletromagnetismo</li>
+                <li>💰 <strong>Economia</strong> - modelos input-output, otimização</li>
+                <li>🧠 <strong>IA</strong> - redes neurais, deep learning</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function runCode() {
+    const code = document.getElementById('code-input').value;
+    const output = document.getElementById('output');
+    
+    output.innerHTML = '<div class="output-success">Transformador geométrico executado! Veja como matrizes realizam transformações complexas.</div>';
+}
+</script>
+{% endblock %}

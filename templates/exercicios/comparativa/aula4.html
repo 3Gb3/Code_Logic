@@ -1,0 +1,100 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 4 - Operadores Lógicos | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 4 – Operadores Lógicos{% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Entender os operadores and, or e not</li>
+            <li>Combinar múltiplas condições</li>
+            <li>Usar parênteses para agrupar condições</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>💡 Operadores Lógicos em Python</h2>
+        <p>Os operadores lógicos permitem combinar ou modificar condições:</p>
+        
+        <h3>🔗 Operador <code>and</code></h3>
+        <p>Retorna True apenas se AMBAS as condições forem verdadeiras.</p>
+        <pre><code>idade >= 18 and tem_carteira == True</code></pre>
+        
+        <h3>🔀 Operador <code>or</code></h3>
+        <p>Retorna True se PELO MENOS UMA das condições for verdadeira.</p>
+        <pre><code>dia == "sábado" or dia == "domingo"</code></pre>
+        
+        <h3>🚫 Operador <code>not</code></h3>
+        <p>Inverte o valor lógico (True vira False e vice-versa).</p>
+        <pre><code>not chovendo</code></pre>
+    </section>
+
+    <section>
+        <h2>📊 Tabela Verdade</h2>
+        <table>
+            <tr><th>A</th><th>B</th><th>A and B</th><th>A or B</th><th>not A</th></tr>
+            <tr><td>True</td><td>True</td><td>True</td><td>True</td><td>False</td></tr>
+            <tr><td>True</td><td>False</td><td>False</td><td>True</td><td>False</td></tr>
+            <tr><td>False</td><td>True</td><td>False</td><td>True</td><td>True</td></tr>
+            <tr><td>False</td><td>False</td><td>False</td><td>False</td><td>True</td></tr>
+        </table>
+    </section>
+
+    <section>
+        <h2>📝 Exemplos Práticos</h2>
+        
+        <h3>Exemplo 1: Sistema de Login</h3>
+        <pre><code>usuario = input("Usuário: ")
+senha = input("Senha: ")
+
+if usuario == "admin" and senha == "123456":
+    print("Login realizado com sucesso!")
+else:
+    print("Usuário ou senha incorretos.")</code></pre>
+    
+        <h3>Exemplo 2: Desconto em Loja</h3>
+        <pre><code>idade = int(input("Sua idade: "))
+eh_estudante = input("É estudante? (s/n): ") == "s"
+
+if idade >= 60 or eh_estudante:
+    print("Você tem direito a 15% de desconto!")
+else:
+    print("Sem desconto disponível.")</code></pre>
+    </section>
+
+    <section>
+        <h2>🎮 Exercício Prático</h2>
+        <div class="exercise-box">
+            <h3>Sistema de Acesso ao Cinema</h3>
+            <p>Crie um programa que determine se uma pessoa pode assistir a um filme:</p>
+            <ul>
+                <li>Filme +18: pessoa deve ter 18+ anos</li>
+                <li>Filme +16: pessoa deve ter 16+ anos OU estar acompanhada</li>
+                <li>Filme livre: qualquer idade</li>
+            </ul>
+            
+            <textarea id="code-input" placeholder="# Digite seu código aqui
+idade = int(input('Sua idade: '))
+classificacao = input('Classificação do filme (18/16/livre): ')
+acompanhado = input('Está acompanhado? (s/n): ') == 's'
+
+# Complete o código..."></textarea>
+            
+            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
+            <div id="output"></div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function runCode() {
+    const code = document.getElementById('code-input').value;
+    const output = document.getElementById('output');
+    
+    output.innerHTML = '<div class="output-success">Código executado! Teste com diferentes idades e situações.</div>';
+}
+</script>
+{% endblock %}

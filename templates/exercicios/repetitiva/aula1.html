@@ -1,0 +1,160 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 1 - Introdução aos Loops | CodeLogic{% endblock %}
+{% block lesson_title %}Aula 1 - Introdução aos Loops{% endblock %}
+
+{% block theory_content %}
+<div class="content-section">
+    <h2>🎯 Objetivos da Aula</h2>
+    <ul>
+        <li>Entender o conceito de repetição (loops)</li>
+        <li>Conhecer os tipos de loops em Python</li>
+        <li>Aprender quando usar cada tipo de loop</li>
+        <li>Praticar com exemplos básicos</li>
+    </ul>
+</div>
+
+<div class="content-section">
+    <h2>🔄 O que são Loops?</h2>
+    <p>
+        Loops (ou estruturas de repetição) permitem executar um bloco de código 
+        várias vezes, evitando repetição desnecessária no código.
+    </p>
+    
+    <div class="highlight-box">
+        <h3>💡 Analogia do Dia a Dia</h3>
+        <p>
+            Imagine que você precisa escovar os dentes:
+            <br><br>
+            <strong>ENQUANTO</strong> não estiver limpo, <strong>REPITA:</strong>
+            <br>1. Aplique pasta de dente
+            <br>2. Escove por 30 segundos
+            <br>3. Enxágue
+        </p>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>🔧 Tipos de Loops em Python</h2>
+    
+    <div class="loop-types">
+        <div class="loop-type">
+            <h3>🔢 Loop for</h3>
+            <p>Usado quando sabemos quantas vezes queremos repetir</p>
+            <pre><code>for i in range(5):
+    print(f"Repetição {i}")</code></pre>
+        </div>
+
+        <div class="loop-type">
+            <h3>⏰ Loop while</h3>
+            <p>Usado quando repetimos enquanto uma condição for verdadeira</p>
+            <pre><code>contador = 0
+while contador < 5:
+    print(f"Contador: {contador}")
+    contador += 1</code></pre>
+        </div>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>🎮 Exemplos Práticos</h2>
+    
+    <div class="example-box">
+        <h3>Exemplo 1: Contagem com for</h3>
+        <pre><code>print("Contagem de 1 a 5:")
+for numero in range(1, 6):
+    print(numero)</code></pre>
+        <p><strong>Resultado:</strong></p>
+        <pre>Contagem de 1 a 5:
+1
+2
+3
+4
+5</pre>
+    </div>
+
+    <div class="example-box">
+        <h3>Exemplo 2: Tabuada com for</h3>
+        <pre><code>numero = 3
+print(f"Tabuada do {numero}:")
+for i in range(1, 11):
+    resultado = numero * i
+    print(f"{numero} x {i} = {resultado}")</code></pre>
+        <p><strong>Resultado:</strong> Tabuada completa do 3</p>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>🧮 A função range()</h2>
+    <p>A função <code>range()</code> é muito usada com loops for:</p>
+    
+    <ul>
+        <li><code>range(5)</code> → 0, 1, 2, 3, 4</li>
+        <li><code>range(1, 6)</code> → 1, 2, 3, 4, 5</li>
+        <li><code>range(0, 10, 2)</code> → 0, 2, 4, 6, 8</li>
+    </ul>
+</div>
+
+<div class="content-section">
+    <h2>⚠️ Pontos Importantes</h2>
+    <ul>
+        <li><strong>Indentação:</strong> O código dentro do loop deve estar indentado</li>
+        <li><strong>Condição de parada:</strong> Todo loop precisa ter um fim</li>
+        <li><strong>Loop infinito:</strong> Cuidado para não criar loops que nunca param</li>
+        <li><strong>Performance:</strong> Loops podem ser lentos com muitas repetições</li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block exercise_content %}
+<div class="exercise-header">
+    <h2>🏋️‍♂️ Exercício Prático</h2>
+    <p>Crie um programa que imprima os números de 1 a 10</p>
+</div>
+
+<div class="exercise-description">
+    <h3>📋 Instruções:</h3>
+    <ol>
+        <li>Use um loop <code>for</code> com <code>range()</code></li>
+        <li>Imprima cada número de 1 a 10</li>
+        <li>Adicione uma mensagem antes da contagem</li>
+        <li>Adicione uma mensagem após a contagem</li>
+    </ol>
+</div>
+
+<div class="exercise-hints">
+    <h3>💡 Dicas:</h3>
+    <ul>
+        <li>Use <code>range(1, 11)</code> para números de 1 a 10</li>
+        <li>Lembre-se da indentação dentro do loop</li>
+        <li>Use <code>print()</code> para as mensagens</li>
+    </ul>
+</div>
+
+<div class="expected-output">
+    <h3>📤 Resultado Esperado:</h3>
+    <pre>Iniciando contagem:
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+Contagem finalizada!</pre>
+</div>
+{% endblock %}
+
+{% block starter_code %}
+# Exercício: Contagem de 1 a 10
+# Complete o código abaixo
+
+print("Iniciando contagem:")
+
+# Seu código aqui (loop for)
+
+print("Contagem finalizada!")
+{% endblock %}

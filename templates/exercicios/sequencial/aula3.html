@@ -1,0 +1,121 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 3 - Entrada de Dados com input() | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 3 – Entrada de Dados com input(){% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Aprender a receber dados do usuário</li>
+            <li>Entender a função input()</li>
+            <li>Trabalhar com conversão de tipos</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>⌨️ A Função input()</h2>
+        <p>A função <code>input()</code> permite que o programa "converse" com o usuário, pedindo informações.</p>
+        
+        <h3>Sintaxe básica:</h3>
+        <pre><code>variavel = input("Mensagem para o usuário: ")</code></pre>
+        
+        <h3>Exemplo:</h3>
+        <pre><code>nome = input("Digite seu nome: ")
+print("Olá,", nome)</code></pre>
+        
+        <blockquote>
+            <strong>Importante:</strong> O input() SEMPRE retorna uma string (texto), mesmo que o usuário digite números!
+        </blockquote>
+    </section>
+
+    <section>
+        <h2>🔄 Conversão de Tipos</h2>
+        <p>Para trabalhar com números digitados pelo usuário, precisamos converter:</p>
+        
+        <h3>Convertendo para inteiro:</h3>
+        <pre><code>idade_texto = input("Digite sua idade: ")
+idade = int(idade_texto)
+# ou direto:
+idade = int(input("Digite sua idade: "))</code></pre>
+        
+        <h3>Convertendo para float:</h3>
+        <pre><code>altura = float(input("Digite sua altura: "))</code></pre>
+        
+        <h3>Funções de conversão:</h3>
+        <ul>
+            <li><code>int()</code> - converte para número inteiro</li>
+            <li><code>float()</code> - converte para número decimal</li>
+            <li><code>str()</code> - converte para texto</li>
+            <li><code>bool()</code> - converte para True/False</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>💡 Exemplos Práticos</h2>
+        
+        <h3>Exemplo 1: Calculando a idade em dias</h3>
+        <pre><code>nome = input("Qual é o seu nome? ")
+idade = int(input("Quantos anos você tem? "))
+dias = idade * 365
+
+print(f"Olá {nome}!")
+print(f"Você já viveu aproximadamente {dias} dias.")</code></pre>
+        
+        <h3>Exemplo 2: Calculadora simples</h3>
+        <pre><code>num1 = float(input("Digite o primeiro número: "))
+num2 = float(input("Digite o segundo número: "))
+soma = num1 + num2
+
+print(f"A soma é: {soma}")</code></pre>
+    </section>
+
+    <section>
+        <h2>⚠️ Cuidados com Conversões</h2>
+        <p>Se o usuário digitar algo inválido, o programa pode dar erro:</p>
+        
+        <h3>❌ Erro comum:</h3>
+        <pre><code>idade = int(input("Digite sua idade: "))
+# Se usuário digitar "abc", dará erro!</code></pre>
+        
+        <p>Por enquanto, vamos assumir que o usuário sempre digitará corretamente. Mais tarde aprenderemos a tratar erros.</p>
+    </section>
+{% endblock %}
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    
+    <p><strong>Tarefa 1:</strong> Crie um programa que:</p>
+    <ul>
+        <li>Peça o nome do usuário</li>
+        <li>Peça a idade do usuário</li>
+        <li>Peça a altura do usuário</li>
+        <li>Exiba todas as informações de forma organizada</li>
+    </ul>
+    
+    <p><strong>Tarefa 2:</strong> Crie uma mini calculadora que:</p>
+    <ul>
+        <li>Peça dois números</li>
+        <li>Calcule e exiba: soma, subtração, multiplicação e divisão</li>
+    </ul>
+    
+    <p><strong>Dica:</strong> Use f-strings para formatar a saída: <code>f"Texto {variavel}"</code></p>
+    
+    <p><strong>Exemplo de saída esperada:</strong></p>
+    <pre><code>Nome: João Silva
+Idade: 25 anos
+Altura: 1.80 metros
+
+Calculadora:
+5.0 + 3.0 = 8.0
+5.0 - 3.0 = 2.0
+5.0 * 3.0 = 15.0
+5.0 / 3.0 = 1.67</code></pre>
+{% endblock %}
+
+{% block initial_code %}# Exemplo básico
+nome = input("Digite seu nome: ")
+print(f"Olá, {nome}!")
+
+# Agora tente criar o programa completo{% endblock %}

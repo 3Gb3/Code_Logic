@@ -1,0 +1,142 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 5 - Formatação de Saída e f-strings | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 5 – Formatação de Saída e f-strings{% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Aprender diferentes formas de formatar texto</li>
+            <li>Dominar o uso de f-strings</li>
+            <li>Controlar casas decimais e alinhamento</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>📝 Métodos de Formatação</h2>
+        
+        <h3>1. Concatenação simples:</h3>
+        <pre><code>nome = "João"
+idade = 25
+print("Olá " + nome + ", você tem " + str(idade) + " anos")</code></pre>
+        
+        <h3>2. Vírgulas no print():</h3>
+        <pre><code>print("Olá", nome, ", você tem", idade, "anos")</code></pre>
+        
+        <h3>3. F-strings (Recomendado!):</h3>
+        <pre><code>print(f"Olá {nome}, você tem {idade} anos")</code></pre>
+    </section>
+
+    <section>
+        <h2>🌟 F-strings - Formatação Moderna</h2>
+        <p>F-strings são a forma mais legível e eficiente de formatar texto em Python.</p>
+        
+        <h3>Sintaxe básica:</h3>
+        <pre><code>f"Texto {variavel} mais texto"</code></pre>
+        
+        <h3>Exemplos:</h3>
+        <pre><code>nome = "Maria"
+nota = 8.75
+aprovado = True
+
+print(f"Aluna: {nome}")
+print(f"Nota: {nota}")
+print(f"Aprovada: {aprovado}")
+print(f"Status: {nome} {'passou' if aprovado else 'não passou'}")</code></pre>
+    </section>
+
+    <section>
+        <h2>🎨 Formatação Avançada</h2>
+        
+        <h3>Controlando casas decimais:</h3>
+        <pre><code>pi = 3.14159265
+print(f"Pi com 2 casas: {pi:.2f}")       # 3.14
+print(f"Pi com 4 casas: {pi:.4f}")       # 3.1416</code></pre>
+        
+        <h3>Alinhamento e largura:</h3>
+        <pre><code>nome = "Ana"
+print(f"|{nome:10}|")        # |Ana       | (esquerda)
+print(f"|{nome:>10}|")       # |       Ana| (direita)
+print(f"|{nome:^10}|")       # |   Ana    | (centro)</code></pre>
+        
+        <h3>Preenchimento com zeros:</h3>
+        <pre><code>numero = 42
+print(f"Número: {numero:05d}")  # 00042</code></pre>
+        
+        <h3>Formatação de percentual:</h3>
+        <pre><code>taxa = 0.1567
+print(f"Taxa: {taxa:.2%}")      # 15.67%</code></pre>
+    </section>
+
+    <section>
+        <h2>💰 Exemplo Prático: Relatório de Vendas</h2>
+        <pre><code>produto = "Notebook"
+preco = 2599.99
+desconto = 0.15
+preco_final = preco * (1 - desconto)
+
+print("=" * 40)
+print(f"{'RELATÓRIO DE VENDAS':^40}")
+print("=" * 40)
+print(f"Produto.....: {produto}")
+print(f"Preço orig..: R$ {preco:8.2f}")
+print(f"Desconto....: {desconto:6.1%}")
+print(f"Preço final.: R$ {preco_final:8.2f}")
+print("=" * 40)</code></pre>
+    </section>
+
+    <section>
+        <h2>🔤 Métodos de String Úteis</h2>
+        <pre><code>texto = "python programming"
+print(f"Original: {texto}")
+print(f"Maiúsculo: {texto.upper()}")
+print(f"Minúsculo: {texto.lower()}")
+print(f"Capitalizado: {texto.capitalize()}")
+print(f"Título: {texto.title()}")
+print(f"Centralizado: {texto.center(30, '-')}")
+print(f"Substituído: {texto.replace('python', 'Python')}")</code></pre>
+    </section>
+{% endblock %}
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    
+    <p><strong>Tarefa 1:</strong> Sistema de Notas</p>
+    <ul>
+        <li>Peça nome do aluno e 3 notas</li>
+        <li>Calcule a média</li>
+        <li>Exiba um relatório formatado com alinhamento</li>
+    </ul>
+    
+    <p><strong>Tarefa 2:</strong> Calculadora de Troco</p>
+    <ul>
+        <li>Peça valor da compra e valor pago</li>
+        <li>Calcule troco</li>
+        <li>Exiba como se fosse um cupom fiscal</li>
+    </ul>
+    
+    <p><strong>Exemplo de saída esperada:</strong></p>
+    <pre><code>========================================
+              BOLETIM ESCOLAR
+========================================
+Aluno.......: João Silva
+Nota 1......: 8.50
+Nota 2......: 7.25
+Nota 3......: 9.00
+Média.......: 8.25
+Situação....: APROVADO
+========================================</code></pre>
+{% endblock %}
+
+{% block initial_code %}nome = "Python"
+versao = 3.11
+popularidade = 0.85
+
+# Exemplo de formatação
+print(f"Linguagem: {nome}")
+print(f"Versão: {versao:.1f}")
+print(f"Popularidade: {popularidade:.1%}")
+
+# Agora crie seus programas{% endblock %}

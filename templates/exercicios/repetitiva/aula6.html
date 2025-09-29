@@ -1,0 +1,364 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 6 - Iterando Strings | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 6 – Iterando Strings{% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Iterar sobre strings de diferentes formas</li>
+            <li>Manipular caracteres e palavras</li>
+            <li>Criar algoritmos de processamento de texto</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>🔤 Iterando Caractere por Caractere</h2>
+        
+        <h3>Método Simples:</h3>
+        <pre><code>palavra = "Python"
+
+print("Caracteres da palavra:")
+for letra in palavra:
+    print(letra)
+
+# Saída: P y t h o n (cada um em uma linha)</code></pre>
+    
+        <h3>Com Índices:</h3>
+        <pre><code>palavra = "Python"
+
+print("Posição e caractere:")
+for i in range(len(palavra)):
+    print(f"Posição {i}: {palavra[i]}")
+
+# Saída:
+# Posição 0: P
+# Posição 1: y
+# Posição 2: t
+# etc...</code></pre>
+    </section>
+
+    <section>
+        <h2>🔍 Analisando Strings</h2>
+        
+        <h3>1. Contando Caracteres</h3>
+        <pre><code>frase = "Python é incrível!"
+
+vogais = "aeiouAEIOU"
+consoantes = "bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ"
+
+cont_vogais = 0
+cont_consoantes = 0
+cont_espacos = 0
+cont_especiais = 0
+
+for char in frase:
+    if char in vogais:
+        cont_vogais += 1
+    elif char in consoantes:
+        cont_consoantes += 1
+    elif char == " ":
+        cont_espacos += 1
+    else:
+        cont_especiais += 1
+
+print(f"Vogais: {cont_vogais}")
+print(f"Consoantes: {cont_consoantes}")
+print(f"Espaços: {cont_espacos}")
+print(f"Especiais: {cont_especiais}")</code></pre>
+    
+        <h3>2. Verificando Palíndromo</h3>
+        <pre><code>def eh_palindromo(palavra):
+    # Remove espaços e converte para minúscula
+    palavra_limpa = palavra.replace(" ", "").lower()
+    
+    tamanho = len(palavra_limpa)
+    
+    for i in range(tamanho // 2):
+        if palavra_limpa[i] != palavra_limpa[tamanho - 1 - i]:
+            return False
+    
+    return True
+
+# Testes
+palavras = ["arara", "python", "ovo", "A man a plan a canal Panama"]
+
+for palavra in palavras:
+    resultado = "é" if eh_palindromo(palavra) else "não é"
+    print(f"'{palavra}' {resultado} um palíndromo")</code></pre>
+    </section>
+
+    <section>
+        <h2>📝 Manipulação de Texto</h2>
+        
+        <h3>1. Invertendo String</h3>
+        <pre><code>texto = "Hello World"
+
+# Método 1: Loop tradicional
+texto_invertido = ""
+for char in texto:
+    texto_invertido = char + texto_invertido
+
+print(f"Original: {texto}")
+print(f"Invertido: {texto_invertido}")
+
+# Método 2: Usando índices
+texto_invertido2 = ""
+for i in range(len(texto) - 1, -1, -1):
+    texto_invertido2 += texto[i]
+
+print(f"Invertido 2: {texto_invertido2}")</code></pre>
+    
+        <h3>2. Removendo Caracteres</h3>
+        <pre><code>frase = "Pr0gr4m4nd0 3m Pyth0n!"
+
+# Remover números
+sem_numeros = ""
+for char in frase:
+    if not char.isdigit():
+        sem_numeros += char
+
+print(f"Original: {frase}")
+print(f"Sem números: {sem_numeros}")
+
+# Remover espaços
+sem_espacos = ""
+for char in frase:
+    if char != " ":
+        sem_espacos += char
+
+print(f"Sem espaços: {sem_espacos}")</code></pre>
+    </section>
+
+    <section>
+        <h2>📊 Iterando sobre Palavras</h2>
+        
+        <h3>1. Separando por Espaços</h3>
+        <pre><code>frase = "Python é uma linguagem incrível"
+
+palavras = frase.split()
+
+print("Palavras encontradas:")
+for i, palavra in enumerate(palavras, 1):
+    print(f"{i}. {palavra} ({len(palavra)} caracteres)")
+
+# Estatísticas
+print(f"\nTotal de palavras: {len(palavras)}")
+print(f"Palavra mais longa: {max(palavras, key=len)}")
+print(f"Palavra mais curta: {min(palavras, key=len)}")</code></pre>
+    
+        <h3>2. Contando Palavras</h3>
+        <pre><code>texto = "python é ótimo python é fácil python é poderoso"
+
+palavras = texto.split()
+contador = {}
+
+for palavra in palavras:
+    if palavra in contador:
+        contador[palavra] += 1
+    else:
+        contador[palavra] = 1
+
+print("Frequência das palavras:")
+for palavra, freq in contador.items():
+    print(f"'{palavra}': {freq} vezes")</code></pre>
+    </section>
+
+    <section>
+        <h2>🎮 Exercício Prático</h2>
+        <div class="exercise-box">
+            <h3>Analisador de Texto</h3>
+            <p>Crie um programa que analise um texto e forneça:</p>
+            <ul>
+                <li>Número de caracteres, palavras e frases</li>
+                <li>Palavra mais frequente</li>
+                <li>Porcentagem de vogais e consoantes</li>
+                <li>Verificar se contém palavras proibidas</li>
+            </ul>
+            
+            <textarea id="code-input" placeholder="# Analisador de Texto
+texto = input('Digite um texto para análise: ')
+
+# 1. Estatísticas básicas
+num_caracteres = len(texto)
+num_palavras = len(texto.split())
+num_frases = texto.count('.') + texto.count('!') + texto.count('?')
+
+print(f'📊 Estatísticas:')
+print(f'Caracteres: {num_caracteres}')
+print(f'Palavras: {num_palavras}')
+print(f'Frases: {num_frases}')
+
+# 2. Análise de caracteres
+vogais = 'aeiouAEIOU'
+cont_vogais = 0
+cont_consoantes = 0
+
+for char in texto:
+    if char.isalpha():
+        if char in vogais:
+            cont_vogais += 1
+        else:
+            cont_consoantes += 1
+
+# Continue a análise..."></textarea>
+            
+            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
+            <div id="output"></div>
+        </div>
+    </section>
+
+    <section>
+        <h2>🔐 Cifra de César</h2>
+        <pre><code>def cifra_cesar(texto, deslocamento):
+    resultado = ""
+    
+    for char in texto:
+        if char.isalpha():
+            # Determina se é maiúscula ou minúscula
+            if char.isupper():
+                base = ord('A')
+            else:
+                base = ord('a')
+            
+            # Aplica o deslocamento
+            char_num = ord(char) - base
+            char_cifrado = (char_num + deslocamento) % 26
+            novo_char = chr(char_cifrado + base)
+            
+            resultado += novo_char
+        else:
+            # Mantém caracteres não-alfabéticos
+            resultado += char
+    
+    return resultado
+
+# Teste
+mensagem = "Python é demais!"
+deslocamento = 3
+
+mensagem_cifrada = cifra_cesar(mensagem, deslocamento)
+mensagem_decifrada = cifra_cesar(mensagem_cifrada, -deslocamento)
+
+print(f"Original: {mensagem}")
+print(f"Cifrada: {mensagem_cifrada}")
+print(f"Decifrada: {mensagem_decifrada}")</code></pre>
+    </section>
+
+    <section>
+        <h2>🎨 Formatação e Estilização</h2>
+        
+        <h3>1. Alternando Maiúscula/Minúscula</h3>
+        <pre><code>texto = "python programming"
+
+resultado = ""
+maiuscula = True
+
+for char in texto:
+    if char.isalpha():
+        if maiuscula:
+            resultado += char.upper()
+        else:
+            resultado += char.lower()
+        maiuscula = not maiuscula
+    else:
+        resultado += char
+
+print(f"Original: {texto}")
+print(f"Alternado: {resultado}")
+# Saída: PyThOn PrOgRaMmInG</code></pre>
+    
+        <h3>2. Criando Bordas</h3>
+        <pre><code>def criar_borda(texto, char="*"):
+    linhas = texto.split('\n')
+    largura_max = max(len(linha) for linha in linhas)
+    
+    # Linha superior
+    print(char * (largura_max + 4))
+    
+    # Linhas do texto
+    for linha in linhas:
+        espacos = largura_max - len(linha)
+        print(f"{char} {linha}{' ' * espacos} {char}")
+    
+    # Linha inferior
+    print(char * (largura_max + 4))
+
+# Teste
+criar_borda("Python\né\nincrível!")
+
+# Saída:
+# ***********
+# * Python  *
+# * é       *
+# * incrível! *
+# ***********</code></pre>
+    </section>
+
+    <section>
+        <h2>🔍 Busca em Strings</h2>
+        
+        <h3>1. Encontrar Todas as Posições</h3>
+        <pre><code>texto = "Python é ótimo, Python é fácil, Python é poderoso"
+busca = "Python"
+
+posicoes = []
+for i in range(len(texto) - len(busca) + 1):
+    if texto[i:i+len(busca)] == busca:
+        posicoes.append(i)
+
+print(f"'{busca}' encontrado nas posições: {posicoes}")
+
+# Verificação
+for pos in posicoes:
+    print(f"Posição {pos}: {texto[pos:pos+len(busca)]}")</code></pre>
+    
+        <h3>2. Busca Insensível a Maiúsculas</h3>
+        <pre><code>def buscar_palavra(texto, palavra):
+    texto_lower = texto.lower()
+    palavra_lower = palavra.lower()
+    
+    encontradas = []
+    palavras = texto.split()
+    
+    for i, p in enumerate(palavras):
+        if p.lower() == palavra_lower:
+            encontradas.append(i)
+    
+    return encontradas
+
+# Teste
+frase = "Python é ótimo! python é fácil. PYTHON é poderoso."
+palavra = "python"
+
+posicoes = buscar_palavra(frase, palavra)
+print(f"'{palavra}' encontrado {len(posicoes)} vezes")</code></pre>
+    </section>
+
+    <section>
+        <h2>💡 Dicas Importantes</h2>
+        <div class="tip-box">
+            <ul>
+                <li>🔤 Strings são sequências - podem ser iteradas</li>
+                <li>📍 Use enumerate() para obter posição e caractere</li>
+                <li>🔍 Métodos como .isalpha(), .isdigit() são úteis</li>
+                <li>📊 split() divide strings em listas de palavras</li>
+                <li>🔄 join() reconstrói strings a partir de listas</li>
+                <li>⚡ Para strings grandes, considere usar geradores</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function runCode() {
+    const code = document.getElementById('code-input').value;
+    const output = document.getElementById('output');
+    
+    output.innerHTML = '<div class="output-success">Analisador de texto executado! Teste com diferentes textos e observe as estatísticas.</div>';
+}
+</script>
+{% endblock %}

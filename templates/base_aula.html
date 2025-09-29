@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CodeLogic{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='sequencial/base_aula.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/code_logic.ico') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/code_logic.ico') }}" alt="CodeLogic">
+                <h1>CodeLogic</h1>
+            </div>
+            <nav class="nav-menu">
+                <a href="/dashboard" class="nav-link">Dashboard</a>
+                <a href="/dashboard" class="nav-link">Aulas</a>
+                <a href="#" class="nav-link" onclick="logout()">Sair</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="lesson-header">
+            <h1 class="lesson-title">{% block lesson_title %}{% endblock %}</h1>
+            <div class="tab-container">
+                <button type="button" class="tab-btn active" data-tab="content" title="Conteúdo da Aula" aria-label="Aba de Conteúdo">📚 Conteúdo</button>
+                <button type="button" class="tab-btn" data-tab="exercise" title="Exercício Prático" aria-label="Aba de Exercício">💻 Exercício</button>
+            </div>
+        </div>
+
+        <div class="lesson-body">
+            <!-- Conteúdo da aula -->
+            <div id="content-tab" class="tab-content active">
+                <div class="content-container">
+                    {% block lesson_content %}{% endblock %}
+                </div>
+            </div>
+
+            <!-- Exercício -->
+            <div id="exercise-tab" class="tab-content">
+                <div class="exercise-container">
+                    <div class="exercise-description">
+                        <h3>🎯 Exercício Prático</h3>
+                        {% block exercise_description %}{% endblock %}
+                    </div>
+                    
+                    <div class="code-editor-container">
+                        <div class="editor-header">
+                            <span>Editor Python</span>
+                            <div class="editor-buttons">
+                                <button type="button" id="run-code" class="run-btn" title="Executar Código" aria-label="Executar código Python">▶️ Executar</button>
+                                <button type="button" id="check-code" class="check-btn" title="Verificar Resposta" aria-label="Verificar resposta do exercício">✅ Verificar Resposta</button>
+                            </div>
+                        </div>
+                        <textarea id="code-editor" name="code-editor" placeholder="Digite seu código Python aqui..." aria-label="Editor de código Python">{% block initial_code %}print("Hello, World!"){% endblock %}</textarea>
+                        
+                        <div class="output-container">
+                            <div class="output-header">Resultado:</div>
+                            <div id="output" class="output-content"></div>
+                        </div>
+                        
+                        <!-- Feedback da IA -->
+                        <div id="ai-feedback" class="ai-feedback-container">
+                            <div class="feedback-header">
+                                <span id="feedback-title">📝 Avaliação Automática</span>
+                                <span id="feedback-score" class="feedback-score"></span>
+                            </div>
+                            <div id="feedback-content" class="feedback-content"></div>
+                            <div id="feedback-suggestions" class="feedback-suggestions"></div>
+                            
+                            <!-- Botão Concluído - aparece apenas quando a resposta está correta -->
+                            <div id="complete-lesson-container" class="complete-lesson-container">
+                                <button type="button" id="complete-lesson-btn" class="complete-btn">
+                                    ✅ Marcar Aula como Concluída
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+    <script>
+        // Configuração do CodeMirror
+        const editor = CodeMirror.fromTextArea(document.getElementById('code-editor'), {
+            mode: 'python',
+            theme: 'monokai',
+            lineNumbers: true,
+            indentUnit: 4,
+            lineWrapping: true,
+            autoCloseBrackets: true,
+            matchBrackets: true
+        });
+
+        // Alternância entre abas
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabName = btn.getAttribute('data-tab');
+                
+                // Remove active de todas as abas
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Ativa a aba selecionada
+                btn.classList.add('active');
+                document.getElementById(tabName + '-tab').classList.add('active');
+                
+                // Refresh do editor quando mudar para exercício
+                if (tabName === 'exercise') {
+                    setTimeout(() => editor.refresh(), 100);
+                }
+            });
+        });
+
+        // Execução de código
+        document.getElementById('run-code').addEventListener('click', async () => {
+            const code = editor.getValue();
+            const output = document.getElementById('output');
+            const runBtn = document.getElementById('run-code');
+            
+            // Feedback visual
+            runBtn.textContent = '⏳ Executando...';
+            runBtn.disabled = true;
+            output.innerHTML = '<div class="loading">Executando código...</div>';
+            
+            try {
+                const response = await fetch('/api/execute', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ code: code })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    output.innerHTML = `
+                        <div class="success">
+                            <strong>✅ Sucesso!</strong>
+                            <pre class="output-text">${result.output || 'Código executado sem saída.'}</pre>
+                        </div>
+                    `;
+                } else {
+                    output.innerHTML = `
+                        <div class="error">
+                            <strong>❌ Erro:</strong>
+                            <pre class="error-text">${result.error}</pre>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                output.innerHTML = `
+                    <div class="error">
+                        <strong>❌ Erro de conexão:</strong>
+                        <pre class="error-text">${error.message}</pre>
+                    </div>
+                `;
+            } finally {
+                runBtn.textContent = '▶️ Executar';
+                runBtn.disabled = false;
+            }
+        });
+
+        // Correção automática
+        document.getElementById('check-code').addEventListener('click', async () => {
+            const code = editor.getValue();
+            const checkBtn = document.getElementById('check-code');
+            const feedbackContainer = document.getElementById('ai-feedback');
+            
+            // Feedback visual
+            checkBtn.textContent = '🤖 Verificando...';
+            checkBtn.disabled = true;
+            
+            // Mostra container de feedback
+            feedbackContainer.classList.add('show');
+            document.getElementById('feedback-content').innerHTML = '<div class="loading">Analisando seu código...</div>';
+            
+            try {
+                // Pega a descrição do exercício do template
+                const exerciseDescription = getExerciseDescription();
+                const lessonNumber = getLessonNumber();
+                
+                const response = await fetch('/api/correct', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        code: code,
+                        exercise_description: exerciseDescription,
+                        lesson_number: lessonNumber
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayFeedback(result.correction);
+                } else {
+                    document.getElementById('feedback-content').innerHTML = `
+                        <div class="error">
+                            <strong>❌ Erro na verificação:</strong>
+                            <p>${result.error}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('feedback-content').innerHTML = `
+                    <div class="error">
+                        <strong>❌ Erro de conexão:</strong>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            } finally {
+                checkBtn.textContent = '✅ Verificar Resposta';
+                checkBtn.disabled = false;
+            }
+        });
+
+        // Função para exibir feedback da IA
+        function displayFeedback(correction) {
+            const feedbackTitle = document.getElementById('feedback-title');
+            const feedbackScore = document.getElementById('feedback-score');
+            const feedbackContent = document.getElementById('feedback-content');
+            const feedbackSuggestions = document.getElementById('feedback-suggestions');
+            const completeLessonContainer = document.getElementById('complete-lesson-container');
+            
+            // Atualiza título baseado no resultado
+            if (correction.correct === true) {
+                feedbackTitle.textContent = '🎉 Resposta Correta!';
+                feedbackTitle.className = 'feedback-title correct';
+                // Mostra botão de concluir apenas se a resposta estiver correta
+                completeLessonContainer.style.display = 'block';
+            } else if (correction.correct === false) {
+                feedbackTitle.textContent = '🤔 Precisa Melhorar';
+                feedbackTitle.className = 'feedback-title incorrect';
+                completeLessonContainer.style.display = 'none';
+            } else {
+                feedbackTitle.textContent = '📝 Análise Concluída';
+                feedbackTitle.className = 'feedback-title neutral';
+                completeLessonContainer.style.display = 'none';
+            }
+            
+            // Exibe pontuação
+            feedbackScore.textContent = `${correction.score}/100`;
+            feedbackScore.className = `feedback-score ${correction.score >= 70 ? 'good' : correction.score >= 40 ? 'average' : 'poor'}`;
+            
+            // Exibe feedback principal
+            feedbackContent.innerHTML = `
+                <div class="feedback-message ${correction.correct ? 'success' : 'warning'}">
+                    <p>${correction.feedback}</p>
+                </div>
+            `;
+            
+            // Exibe sugestões se houver
+            if (correction.suggestions && correction.suggestions.length > 0) {
+                const suggestionsHtml = correction.suggestions.map(suggestion => 
+                    `<li>💡 ${suggestion}</li>`
+                ).join('');
+                
+                feedbackSuggestions.innerHTML = `
+                    <div class="suggestions-container">
+                        <h4>💭 Dicas para Melhorar:</h4>
+                        <ul>${suggestionsHtml}</ul>
+                    </div>
+                `;
+            } else {
+                feedbackSuggestions.innerHTML = '';
+            }
+        }
+
+        // Funcionalidade do botão "Marcar como Concluída"
+        document.getElementById('complete-lesson-btn').addEventListener('click', async () => {
+            const completeBtn = document.getElementById('complete-lesson-btn');
+            const lessonNumber = getLessonNumber();
+            
+            try {
+                completeBtn.textContent = '⏳ Salvando...';
+                completeBtn.disabled = true;
+                
+                // Pega o usuário logado do localStorage (mais confiável neste contexto)
+                const userId = localStorage.getItem('userId');
+                const userName = localStorage.getItem('userName');
+                
+                if (!userId) {
+                    alert('Erro: Usuário não encontrado. Faça login novamente.');
+                    window.location.href = '/';
+                    return;
+                }
+                
+                console.log(`🎯 Marcando aula ${lessonNumber} como concluída para usuário:`, userName);
+                
+                const response = await fetch('/api/complete-lesson', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        lesson_number: lessonNumber,
+                        user_id: userId,
+                        module: getModuleName()
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    completeBtn.textContent = '✅ Aula Concluída!';
+                    completeBtn.classList.add('completed');
+                    
+                    console.log('✅ Aula marcada como concluída:', result);
+                    
+                    // Mostra mensagem de sucesso
+                    showSuccessMessage(`Parabéns! Aula ${lessonNumber} concluída. Progresso: ${result.total_completed}/10 aulas.`);
+                    
+                    // Redireciona de volta para o lobby do módulo após alguns segundos
+                    setTimeout(() => {
+                        const moduleName = getModuleName();
+                        console.log(`Redirecionando para o lobby do módulo: ${moduleName}`);
+                        window.location.href = `/aulas/${moduleName}`;
+                    }, 2000);
+                    
+                } else {
+                    console.error('❌ Erro do servidor:', result.error);
+                    completeBtn.textContent = '❌ Erro ao salvar';
+                    alert(`Erro ao salvar progresso: ${result.error}`);
+                    setTimeout(() => {
+                        completeBtn.textContent = '✅ Marcar como Concluída';
+                        completeBtn.disabled = false;
+                    }, 2000);
+                }
+                
+            } catch (error) {
+                console.error('❌ Erro ao marcar aula como concluída:', error);
+                completeBtn.textContent = '❌ Erro de conexão';
+                alert(`Erro de conexão: ${error.message}`);
+                setTimeout(() => {
+                    completeBtn.textContent = '✅ Marcar como Concluída';
+                    completeBtn.disabled = false;
+                }, 2000);
+            }
+        });
+
+        // Função para mostrar mensagem de sucesso
+        function showSuccessMessage(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success-notification';
+            successDiv.innerHTML = `
+                <div class="success-content">
+                    <span class="success-icon">🎉</span>
+                    <span class="success-text">${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(successDiv);
+            
+            // Remove a mensagem após 5 segundos
+            setTimeout(() => {
+                successDiv.remove();
+            }, 5000);
+        }
+
+        // Função para obter descrição do exercício (implementada em cada aula)
+        function getExerciseDescription() {
+            // Esta função será sobrescrita em cada template de aula específica
+            return document.querySelector('.exercise-description')?.textContent || 'Exercício de programação Python';
+        }
+
+        // Função para obter número da aula
+        function getLessonNumber() {
+            // Extrai o número da aula da URL ou do contexto
+            const pathname = window.location.pathname;
+            const match = pathname.match(/(\d+)/);
+            return match ? parseInt(match[1]) : 1;
+        }
+
+        // Função para obter módulo da aula
+        function getModuleName() {
+            const pathname = window.location.pathname;
+            if (pathname.includes('sequencial')) return 'sequencial';
+            if (pathname.includes('comparativa')) return 'comparativa';
+            if (pathname.includes('repetitiva')) return 'repetitiva';
+            if (pathname.includes('vetores')) return 'vetores';
+            if (pathname.includes('matrizes')) return 'matrizes';
+            return 'sequencial'; // default
+        }
+
+        // Função de logout
+        function logout() {
+            localStorage.clear();
+            window.location.href = '/';
+        }
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

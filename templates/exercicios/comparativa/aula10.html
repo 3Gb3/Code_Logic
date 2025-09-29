@@ -1,0 +1,448 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 10 - Projeto Final Comparativa | CodeLogic{% endblock %}
+{% block lesson_title %}Aula 10 - Projeto Final: Sistema de Avaliação{% endblock %}
+
+{% block theory_content %}
+<div class="content-section">
+    <h2>🎯 Objetivos do Projeto</h2>
+    <ul>
+        <li>Integrar todos os conceitos de estruturas comparativas</li>
+        <li>Criar um sistema completo de avaliação</li>
+        <li>Aplicar múltiplas condições e lógica complexa</li>
+        <li>Desenvolver um projeto real e útil</li>
+    </ul>
+</div>
+
+<div class="content-section">
+    <h2>🏗️ Visão Geral do Projeto</h2>
+    <p>
+        Vamos criar um <strong>Sistema de Avaliação Escolar</strong> que calcula médias,
+        determina aprovação/reprovação, classifica desempenho e gera relatórios.
+    </p>
+    
+    <div class="highlight-box">
+        <h3>📋 Funcionalidades do Sistema:</h3>
+        <ul>
+            <li>📊 Calcular médias ponderadas</li>
+            <li>✅ Determinar status de aprovação</li>
+            <li>🏆 Classificar níveis de desempenho</li>
+            <li>📈 Gerar estatísticas da turma</li>
+            <li>🎯 Sugerir melhorias individuais</li>
+        </ul>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>📏 Critérios de Avaliação</h2>
+    
+    <div class="code-example">
+        <h3>Sistema de Notas e Pesos:</h3>
+        <pre><code># Critérios de avaliação
+CRITERIOS = {
+    'provas': {'peso': 0.4, 'min_aprovacao': 6.0},
+    'trabalhos': {'peso': 0.3, 'min_aprovacao': 7.0},
+    'participacao': {'peso': 0.2, 'min_aprovacao': 8.0},
+    'frequencia': {'peso': 0.1, 'min_frequencia': 75.0}
+}
+
+# Classificações de desempenho
+CLASSIFICACOES = {
+    'excelente': {'min': 9.0, 'cor': '🟢'},
+    'bom': {'min': 7.5, 'cor': '🟡'},
+    'regular': {'min': 6.0, 'cor': '🟠'},
+    'insuficiente': {'min': 0.0, 'cor': '🔴'}
+}</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>🧮 Função de Cálculo de Média</h2>
+    
+    <div class="code-example">
+        <h3>Média Ponderada Complexa:</h3>
+        <pre><code>def calcular_media_aluno(notas_aluno):
+    """
+    Calcula média ponderada considerando diferentes critérios
+    """
+    provas = notas_aluno.get('provas', [])
+    trabalhos = notas_aluno.get('trabalhos', [])
+    participacao = notas_aluno.get('participacao', 0)
+    frequencia = notas_aluno.get('frequencia', 0)
+    
+    # Calcular médias por categoria
+    media_provas = sum(provas) / len(provas) if provas else 0
+    media_trabalhos = sum(trabalhos) / len(trabalhos) if trabalhos else 0
+    
+    # Aplicar pesos
+    media_final = (
+        media_provas * CRITERIOS['provas']['peso'] +
+        media_trabalhos * CRITERIOS['trabalhos']['peso'] +
+        participacao * CRITERIOS['participacao']['peso'] +
+        (frequencia / 100) * 10 * CRITERIOS['frequencia']['peso']
+    )
+    
+    return round(media_final, 2)</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>✅ Sistema de Aprovação</h2>
+    
+    <div class="code-example">
+        <h3>Lógica Complexa de Aprovação:</h3>
+        <pre><code>def avaliar_aprovacao(aluno_dados):
+    """
+    Determina status de aprovação com múltiplas condições
+    """
+    media = calcular_media_aluno(aluno_dados)
+    frequencia = aluno_dados.get('frequencia', 0)
+    
+    # Condições de aprovação
+    media_suficiente = media >= 6.0
+    frequencia_suficiente = frequencia >= 75.0
+    
+    # Verificações específicas por categoria
+    provas_ok = True
+    if aluno_dados.get('provas'):
+        media_provas = sum(aluno_dados['provas']) / len(aluno_dados['provas'])
+        provas_ok = media_provas >= CRITERIOS['provas']['min_aprovacao']
+    
+    trabalhos_ok = True
+    if aluno_dados.get('trabalhos'):
+        media_trabalhos = sum(aluno_dados['trabalhos']) / len(aluno_dados['trabalhos'])
+        trabalhos_ok = media_trabalhos >= CRITERIOS['trabalhos']['min_aprovacao']
+    
+    participacao_ok = aluno_dados.get('participacao', 0) >= CRITERIOS['participacao']['min_aprovacao']
+    
+    # Lógica de decisão
+    if media_suficiente and frequencia_suficiente and provas_ok:
+        if trabalhos_ok and participacao_ok:
+            return "APROVADO", "✅"
+        elif media >= 7.0:
+            return "APROVADO_CONDICIONAL", "⚠️"
+        else:
+            return "RECUPERACAO", "📚"
+    elif media >= 5.0 and frequencia_suficiente:
+        return "RECUPERACAO", "📚"
+    else:
+        return "REPROVADO", "❌"</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>🏆 Sistema de Classificação</h2>
+    
+    <div class="code-example">
+        <h3>Classificação de Desempenho:</h3>
+        <pre><code>def classificar_desempenho(media):
+    """
+    Classifica o desempenho do aluno
+    """
+    if media >= CLASSIFICACOES['excelente']['min']:
+        return 'EXCELENTE', CLASSIFICACOES['excelente']['cor']
+    elif media >= CLASSIFICACOES['bom']['min']:
+        return 'BOM', CLASSIFICACOES['bom']['cor']
+    elif media >= CLASSIFICACOES['regular']['min']:
+        return 'REGULAR', CLASSIFICACOES['regular']['cor']
+    else:
+        return 'INSUFICIENTE', CLASSIFICACOES['insuficiente']['cor']
+
+def gerar_sugestoes(aluno_dados, media):
+    """
+    Gera sugestões personalizadas baseadas no desempenho
+    """
+    sugestoes = []
+    
+    # Análise de provas
+    if aluno_dados.get('provas'):
+        media_provas = sum(aluno_dados['provas']) / len(aluno_dados['provas'])
+        if media_provas < 7.0:
+            sugestoes.append("📚 Foque mais nos estudos para provas")
+        elif media_provas < 6.0:
+            sugestoes.append("🆘 Procure ajuda para melhorar nas provas")
+    
+    # Análise de trabalhos
+    if aluno_dados.get('trabalhos'):
+        media_trabalhos = sum(aluno_dados['trabalhos']) / len(aluno_dados['trabalhos'])
+        if media_trabalhos < 8.0:
+            sugestoes.append("💼 Dedique mais tempo aos trabalhos")
+    
+    # Análise de participação
+    participacao = aluno_dados.get('participacao', 0)
+    if participacao < 8.0:
+        sugestoes.append("🗣️ Participe mais ativamente das aulas")
+    
+    # Análise de frequência
+    frequencia = aluno_dados.get('frequencia', 0)
+    if frequencia < 85:
+        sugestoes.append("📅 Melhore sua frequência às aulas")
+    
+    # Sugestões gerais baseadas na média
+    if media < 6.0:
+        sugestoes.append("🎯 Estabeleça um plano de estudos estruturado")
+    elif media < 8.0:
+        sugestoes.append("⬆️ Você está no caminho certo, continue evoluindo!")
+    else:
+        sugestoes.append("🌟 Excelente trabalho! Mantenha o nível!")
+    
+    return sugestoes</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>📊 Relatório Individual</h2>
+    
+    <div class="code-example">
+        <h3>Geração de Relatório Completo:</h3>
+        <pre><code>def gerar_relatorio_aluno(nome, aluno_dados):
+    """
+    Gera relatório completo do aluno
+    """
+    media = calcular_media_aluno(aluno_dados)
+    status, emoji_status = avaliar_aprovacao(aluno_dados)
+    classificacao, emoji_classe = classificar_desempenho(media)
+    sugestoes = gerar_sugestoes(aluno_dados, media)
+    
+    print(f"\n{'='*50}")
+    print(f"📋 RELATÓRIO DE AVALIAÇÃO - {nome.upper()}")
+    print(f"{'='*50}")
+    
+    print(f"\n📊 NOTAS E MÉDIAS:")
+    if aluno_dados.get('provas'):
+        print(f"   Provas: {aluno_dados['provas']} → Média: {sum(aluno_dados['provas'])/len(aluno_dados['provas']):.1f}")
+    if aluno_dados.get('trabalhos'):
+        print(f"   Trabalhos: {aluno_dados['trabalhos']} → Média: {sum(aluno_dados['trabalhos'])/len(aluno_dados['trabalhos']):.1f}")
+    print(f"   Participação: {aluno_dados.get('participacao', 0):.1f}")
+    print(f"   Frequência: {aluno_dados.get('frequencia', 0):.1f}%")
+    
+    print(f"\n🎯 RESULTADO FINAL:")
+    print(f"   Média Final: {media}")
+    print(f"   Status: {status} {emoji_status}")
+    print(f"   Classificação: {classificacao} {emoji_classe}")
+    
+    print(f"\n💡 SUGESTÕES DE MELHORIA:")
+    for i, sugestao in enumerate(sugestoes, 1):
+        print(f"   {i}. {sugestao}")
+    
+    print(f"\n{'='*50}")
+    
+    return {
+        'nome': nome,
+        'media': media,
+        'status': status,
+        'classificacao': classificacao
+    }</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>📈 Estatísticas da Turma</h2>
+    
+    <div class="code-example">
+        <h3>Análise Estatística:</h3>
+        <pre><code>def gerar_estatisticas_turma(turma_dados):
+    """
+    Gera estatísticas gerais da turma
+    """
+    medias = []
+    aprovados = 0
+    reprovados = 0
+    recuperacao = 0
+    
+    classificacoes = {'EXCELENTE': 0, 'BOM': 0, 'REGULAR': 0, 'INSUFICIENTE': 0}
+    
+    for nome, dados in turma_dados.items():
+        media = calcular_media_aluno(dados)
+        medias.append(media)
+        
+        status, _ = avaliar_aprovacao(dados)
+        if status in ['APROVADO', 'APROVADO_CONDICIONAL']:
+            aprovados += 1
+        elif status == 'RECUPERACAO':
+            recuperacao += 1
+        else:
+            reprovados += 1
+        
+        classificacao, _ = classificar_desempenho(media)
+        classificacoes[classificacao] += 1
+    
+    # Calcular estatísticas
+    media_turma = sum(medias) / len(medias) if medias else 0
+    maior_media = max(medias) if medias else 0
+    menor_media = min(medias) if medias else 0
+    
+    print(f"\n{'='*50}")
+    print(f"📊 ESTATÍSTICAS DA TURMA")
+    print(f"{'='*50}")
+    
+    print(f"\n📈 MÉDIAS:")
+    print(f"   Média da Turma: {media_turma:.2f}")
+    print(f"   Maior Média: {maior_media:.2f}")
+    print(f"   Menor Média: {menor_media:.2f}")
+    
+    print(f"\n✅ STATUS DE APROVAÇÃO:")
+    total_alunos = len(turma_dados)
+    print(f"   Aprovados: {aprovados}/{total_alunos} ({(aprovados/total_alunos)*100:.1f}%)")
+    print(f"   Recuperação: {recuperacao}/{total_alunos} ({(recuperacao/total_alunos)*100:.1f}%)")
+    print(f"   Reprovados: {reprovados}/{total_alunos} ({(reprovados/total_alunos)*100:.1f}%)")
+    
+    print(f"\n🏆 CLASSIFICAÇÕES:")
+    for classe, quantidade in classificacoes.items():
+        percentual = (quantidade/total_alunos)*100 if total_alunos > 0 else 0
+        print(f"   {classe}: {quantidade}/{total_alunos} ({percentual:.1f}%)")
+    
+    print(f"\n{'='*50}")</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>🔍 Principais Conceitos Aplicados</h2>
+    <ul>
+        <li><strong>If/Elif/Else:</strong> Lógica de classificação e aprovação</li>
+        <li><strong>Operadores Lógicos:</strong> Condições complexas (and, or, not)</li>
+        <li><strong>Operadores de Comparação:</strong> Verificação de limites e critérios</li>
+        <li><strong>Condições Aninhadas:</strong> Múltiplos níveis de verificação</li>
+        <li><strong>Operador Ternário:</strong> Atribuições condicionais simples</li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block exercise_content %}
+<div class="exercise-header">
+    <h2>🏋️‍♂️ Projeto Final</h2>
+    <p>Complete o Sistema de Avaliação Escolar</p>
+</div>
+
+<div class="exercise-description">
+    <h3>📋 Sua Missão:</h3>
+    <ol>
+        <li>Implemente a função <code>calcular_media_aluno()</code></li>
+        <li>Complete a função <code>avaliar_aprovacao()</code></li>
+        <li>Adicione mais critérios de classificação</li>
+        <li>Crie um sistema de bonificação por participação</li>
+        <li>Teste com os dados fornecidos</li>
+        <li>Analise os resultados e sugestões</li>
+    </ol>
+</div>
+
+<div class="exercise-data">
+    <h3>👥 Dados da Turma para Teste:</h3>
+    <pre>Ana: Provas [8.5, 7.0, 9.0], Trabalhos [9.0, 8.5], Participação 9.0, Frequência 95%
+João: Provas [6.0, 5.5, 7.0], Trabalhos [7.0, 6.5], Participação 7.0, Frequência 80%
+Maria: Provas [9.5, 9.0, 8.5], Trabalhos [10.0, 9.5], Participação 10.0, Frequência 98%
+Pedro: Provas [4.0, 5.0, 3.5], Trabalhos [5.0, 4.5], Participação 5.0, Frequência 65%</pre>
+</div>
+
+<div class="exercise-requirements">
+    <h3>🎯 Funcionalidades Obrigatórias:</h3>
+    <ul>
+        <li>Cálculo correto de média ponderada</li>
+        <li>Avaliação de aprovação com múltiplas condições</li>
+        <li>Sistema de bonificação (extra: +0.5 se participação > 9.0)</li>
+        <li>Relatório individual completo</li>
+        <li>Estatísticas da turma</li>
+    </ul>
+</div>
+
+<div class="exercise-hints">
+    <h3>💡 Dicas Importantes:</h3>
+    <ul>
+        <li>Use operadores lógicos para combinar condições</li>
+        <li>Aplique if/elif/else para múltiplas verificações</li>
+        <li>Considere casos especiais (listas vazias, valores None)</li>
+        <li>Use formatação de strings para relatórios legíveis</li>
+    </ul>
+</div>
+
+<div class="expected-output">
+    <h3>📤 Resultado Esperado:</h3>
+    <pre>📋 RELATÓRIO DE AVALIAÇÃO - ANA
+Média Final: 8.43
+Status: APROVADO ✅
+Classificação: BOM 🟡
+
+📋 RELATÓRIO DE AVALIAÇÃO - PEDRO  
+Média Final: 4.23
+Status: REPROVADO ❌
+Classificação: INSUFICIENTE 🔴
+
+📊 ESTATÍSTICAS DA TURMA
+Média da Turma: 6.89
+Aprovados: 2/4 (50.0%)</pre>
+</div>
+{% endblock %}
+
+{% block starter_code %}
+# Projeto Final: Sistema de Avaliação Escolar
+# Complete as funções abaixo
+
+# Critérios e configurações
+CRITERIOS = {
+    'provas': {'peso': 0.4, 'min_aprovacao': 6.0},
+    'trabalhos': {'peso': 0.3, 'min_aprovacao': 7.0},
+    'participacao': {'peso': 0.2, 'min_aprovacao': 8.0},
+    'frequencia': {'peso': 0.1, 'min_frequencia': 75.0}
+}
+
+def calcular_media_aluno(notas_aluno):
+    """
+    Calcula média ponderada do aluno
+    Considere bonificação: +0.5 se participação > 9.0
+    """
+    # Seu código aqui
+    pass
+
+def avaliar_aprovacao(aluno_dados):
+    """
+    Determina status: APROVADO, RECUPERACAO, REPROVADO
+    Use múltiplas condições com operadores lógicos
+    """
+    # Seu código aqui
+    pass
+
+def classificar_desempenho(media):
+    """
+    Retorna classificação: EXCELENTE (9+), BOM (7.5+), REGULAR (6+), INSUFICIENTE
+    """
+    # Seu código aqui
+    pass
+
+# Dados da turma para teste
+turma = {
+    'Ana': {
+        'provas': [8.5, 7.0, 9.0],
+        'trabalhos': [9.0, 8.5],
+        'participacao': 9.0,
+        'frequencia': 95
+    },
+    'João': {
+        'provas': [6.0, 5.5, 7.0],
+        'trabalhos': [7.0, 6.5],
+        'participacao': 7.0,
+        'frequencia': 80
+    },
+    'Maria': {
+        'provas': [9.5, 9.0, 8.5],
+        'trabalhos': [10.0, 9.5],
+        'participacao': 10.0,
+        'frequencia': 98
+    },
+    'Pedro': {
+        'provas': [4.0, 5.0, 3.5],
+        'trabalhos': [5.0, 4.5],
+        'participacao': 5.0,
+        'frequencia': 65
+    }
+}
+
+# Teste seu sistema
+print("=== SISTEMA DE AVALIAÇÃO ESCOLAR ===")
+
+for nome, dados in turma.items():
+    print(f"\n📋 Aluno: {nome}")
+    # media = calcular_media_aluno(dados)
+    # status, emoji = avaliar_aprovacao(dados)
+    # classificacao, cor = classificar_desempenho(media)
+    # print(f"Média: {media} | Status: {status} {emoji} | Classe: {classificacao} {cor}")
+{% endblock %}

@@ -1,0 +1,195 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula {{ aula_num }} - {{ modulo }} | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula {{ aula_num }} – {{ modulo }}{% endblock %}
+
+{% block lesson_content %}
+    <section class="aula-em-desenvolvimento">
+        <div class="desenvolvimento-container">
+            <div class="desenvolvimento-icon">
+                🚧
+            </div>
+            <h2>Aula em Desenvolvimento</h2>
+            <p class="desenvolvimento-texto">
+                Esta aula está sendo preparada com carinho para você! 
+                <br>Em breve teremos conteúdo completo sobre <strong>{{ modulo }}</strong>.
+            </p>
+            
+            <div class="desenvolvimento-info">
+                <h3>📚 O que você encontrará aqui:</h3>
+                <ul>
+                    <li>✨ Explicações claras e didáticas</li>
+                    <li>💻 Exemplos práticos de código</li>
+                    <li>🎯 Exercícios interativos</li>
+                    <li>🏆 Desafios progressivos</li>
+                </ul>
+            </div>
+
+            <div class="desenvolvimento-acoes">
+                <button onclick="voltarModulo()" class="btn-voltar">
+                    ← Voltar ao Módulo
+                </button>
+                <button onclick="proximaAula()" class="btn-proxima hidden">
+                    Próxima Aula →
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .aula-em-desenvolvimento {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .desenvolvimento-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .desenvolvimento-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .desenvolvimento-container h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        .desenvolvimento-texto {
+            font-size: 18px;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .desenvolvimento-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .desenvolvimento-info h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .desenvolvimento-info ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .desenvolvimento-info li {
+            padding: 8px 0;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .desenvolvimento-acoes {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-voltar, .btn-proxima {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-voltar {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-voltar:hover {
+            background: #7f8c8d;
+            transform: translateY(-2px);
+        }
+
+        .btn-proxima {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-proxima:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .desenvolvimento-container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .desenvolvimento-icon {
+                font-size: 60px;
+            }
+            
+            .desenvolvimento-container h2 {
+                font-size: 24px;
+            }
+            
+            .desenvolvimento-acoes {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn-voltar, .btn-proxima {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+    </style>
+
+    <script>
+        function voltarModulo() {
+            // Extrai o módulo da URL atual
+            const path = window.location.pathname;
+            const moduloMatch = path.match(/\/exercicios\/(\w+)\//);
+            
+            if (moduloMatch) {
+                const modulo = moduloMatch[1];
+                window.location.href = `/dashboard`;
+            } else {
+                window.location.href = '/dashboard';
+            }
+        }
+
+        function proximaAula() {
+            // Esta função pode ser implementada quando houver navegação entre aulas
+            alert('Próxima aula em desenvolvimento!');
+        }
+
+        // Verificar se há aulas específicas disponíveis
+        document.addEventListener('DOMContentLoaded', function() {
+            // Pode adicionar lógica aqui para verificar aulas disponíveis
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aulas Sequenciais - CodeLogic</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/code_logic.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='aulas/aulas.css') }}">
+    
+    <!-- Sobrescrever estilo da tela de carregamento para combinar com outros módulos -->
+    <style>
+        .loading-screen {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        }
+        
+        .loading-content {
+            color: white !important;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3) !important;
+            border-top: 4px solid white !important;
+        }
+    </style>
+    
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+        import { firebaseConfig } from "/static/js/firebase-config.js";
+
+        console.log("Inicializando Firebase...");
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        console.log("Firebase inicializado");
+
+        let userLoaded = false;
+        let redirectTimeout = null;
+
+        // Função para cancelar redirecionamento se usuário for encontrado
+        function cancelRedirect() {
+            if (redirectTimeout) {
+                clearTimeout(redirectTimeout);
+                redirectTimeout = null;
+                console.log("Redirecionamento cancelado - usuário encontrado");
+            }
+        }
+
+        // Debug: verifica localStorage
+        console.log("🔍 Estado do localStorage:");
+        console.log("- userName:", localStorage.getItem("userName"));
+        console.log("- userId:", localStorage.getItem("userId"));
+        
+        // Função para verificar autenticação de forma mais robusta
+        async function verifyAuth() {
+            console.log("🔍 Verificando autenticação...");
+            
+            // PRIMEIRO: Verifica se há dados salvos
+            const savedUserName = localStorage.getItem("userName");
+            const savedUserId = localStorage.getItem("userId");
+            
+            if (!savedUserName || !savedUserId) {
+                console.log("❌ Dados de usuário não encontrados no localStorage");
+                alert("Sua sessão expirou. Faça login novamente.");
+                window.location.href = "/";
+                return;
+            }
+            
+            console.log("📱 Dados salvos encontrados:", savedUserName, "ID:", savedUserId);
+            
+            // SEGUNDO: Verifica várias vezes se o Firebase Auth detecta o usuário
+            let attempts = 0;
+            const maxAttempts = 8; // 4 segundos total
+            
+            const checkInterval = setInterval(() => {
+                attempts++;
+                console.log(`🔍 Tentativa ${attempts}/${maxAttempts} - Verificando Firebase Auth...`);
+                
+                const user = auth.currentUser;
+                if (user) {
+                    console.log("✅ Firebase Auth OK - Usuário:", user.uid);
+                    clearInterval(checkInterval);
+                    cancelRedirect();
+                    
+                    if (!userLoaded) {
+                        userLoaded = true;
+                        loadUserProgress(user.uid);
+                    }
+                    return;
+                }
+                
+                if (attempts >= maxAttempts) {
+                    console.log("⚠️ Firebase Auth não funcionou - usando fallback");
+                    clearInterval(checkInterval);
+                    
+                    // TERCEIRO: Usa dados salvos como fallback
+                    console.log("🚨 Carregando com dados salvos...");
+                    cancelRedirect();
+                    loadUserProgressFallback(savedUserId, savedUserName);
+                }
+            }, 500); // Verifica a cada 500ms
+        }
+        
+        // Função fallback para carregar dados quando Firebase Auth falha
+        async function loadUserProgressFallback(userId, userName) {
+            try {
+                console.log("📊 Carregando progresso via fallback para:", userName);
+                
+                // Tenta carregar progresso via API
+                const response = await fetch('/api/get-progress/' + userId + '/sequencial');
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log("✅ Progresso carregado:", data);
+                    
+                    const completedLessons = data.aulas_concluidas || [];
+                    const liberatedLessons = data.aulas_liberadas || [1];
+                    
+                    updateLessonStates(completedLessons, liberatedLessons);
+                    updateProgressBar(completedLessons.length, completedLessons.length, 10);
+                    showContent();
+                } else {
+                    console.log("⚠️ API não disponível - carregando interface básica");
+                    // Carrega interface básica mesmo sem progresso
+                    updateLessonStates([], [1]); // Primeira aula disponível
+                    updateProgressBar(0, 0, 10);
+                    showContent();
+                }
+            } catch (error) {
+                console.log("❌ Erro no fallback:", error);
+                // Carrega interface básica mesmo com erro
+                updateLessonStates([], [1]);
+                updateProgressBar(0, 0, 10);
+                showContent();
+            }
+        }
+
+        // Configuração de timeout de segurança (mais longo)
+        function setupSafetyTimeout() {
+            redirectTimeout = setTimeout(() => {
+                if (!userLoaded && !auth.currentUser) {
+                    console.log("⏰ Timeout de segurança - redirecionando");
+                    window.location.href = "/";
+                }
+            }, 8000); // 8 segundos de tolerância total
+        }
+
+        // Quando a página carrega
+        window.addEventListener('load', () => {
+            console.log("Página carregada");
+            
+            // Verifica se há dados de usuário salvos como fallback
+            const savedUserName = localStorage.getItem("userName");
+            if (savedUserName) {
+                console.log("📝 Dados de usuário salvos encontrados:", savedUserName);
+                // Se há dados salvos, dá mais tempo para o Firebase
+                setupSafetyTimeout();
+            } else {
+                console.log("❌ Nenhum dado de usuário salvo");
+                // Se não há dados salvos, redirecionamento mais rápido
+                redirectTimeout = setTimeout(() => {
+                    if (!userLoaded) {
+                        console.log("⏰ Sem dados salvos - redirecionando");
+                        window.location.href = "/";
+                    }
+                }, 3000); // 3 segundos se não há dados
+            }
+            
+            // Aguarda um pouco e inicia verificação
+            setTimeout(() => {
+                verifyAuth();
+            }, 1000);
+        });
+
+        // onAuthStateChanged como backup
+        onAuthStateChanged(auth, (user) => {
+            console.log("🔄 onAuthStateChanged:", user ? "Logado" : "Não logado");
+            if (user && !userLoaded) {
+                console.log("✅ Usuário detectado via onAuthStateChanged:", user.uid);
+                cancelRedirect();
+                userLoaded = true;
+                loadUserProgress(user.uid);
+            }
+        });
+
+        // Função para mostrar conteúdo e esconder loading
+        function showContent() {
+            document.getElementById('loading-screen').style.display = 'none';
+            document.getElementById('main-content').classList.add('show');
+        }
+
+        // Função para inicializar progresso do usuário
+        async function initUserProgress(userId) {
+            try {
+                console.log("Inicializando progresso para:", userId);
+                const response = await fetch('/api/init-progress', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ user_id: userId })
+                });
+                const result = await response.json();
+                console.log("Inicialização:", result);
+                return result.success;
+            } catch (error) {
+                console.error('Erro ao inicializar progresso:', error);
+                return false;
+            }
+        }
+
+        // Função para carregar progresso do usuário
+        async function loadUserProgress(userId) {
+            try {
+                console.log("Carregando progresso para:", userId);
+                
+                // Primeiro inicializa o progresso (se não existir)
+                await initUserProgress(userId);
+                
+                const response = await fetch(`/api/get-progress/${userId}/sequencial`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    const { aulas_concluidas, aulas_liberadas, next_lesson } = result;
+                    console.log("Progresso carregado:", result);
+                    console.log("Aulas concluídas:", aulas_concluidas);
+                    console.log("Aulas liberadas:", aulas_liberadas);
+                    console.log("Próxima aula:", next_lesson);
+                    
+                    updateLessonStates(aulas_concluidas, aulas_liberadas);
+                    updateProgressBar(result.progress_percentage, result.total_completed, 10);
+                } else {
+                    console.error('Erro ao carregar progresso:', result.error);
+                    // Se não conseguir carregar, só a primeira aula fica disponível
+                    updateLessonStates([], [1]);
+                    updateProgressBar(0, 0, 10);
+                }
+                
+                // Mostra o conteúdo após carregar
+                showContent();
+                
+            } catch (error) {
+                console.error('Erro ao carregar progresso:', error);
+                updateLessonStates([], [1]);
+                updateProgressBar(0, 0, 10);
+                showContent();
+            }
+        }
+
+        // Função para verificar se o usuário está realmente logado
+        function checkAuthStatus() {
+            return new Promise((resolve) => {
+                const unsubscribe = onAuthStateChanged(auth, (user) => {
+                    unsubscribe();
+                    resolve(user);
+                });
+            });
+        }
+
+        // Função para atualizar estados visuais das aulas
+        function updateLessonStates(aulasConcluidasArray, aulasLiberadas) {
+            const aulasCoercluidas = new Set(aulasConcluidasArray || []);
+            const aulasLiberadasSet = new Set(aulasLiberadas || [1]); // Primeira aula sempre liberada por padrão
+            
+            console.log("Atualizando estado das aulas:");
+            console.log("Concluídas:", aulasConcluidasArray);
+            console.log("Liberadas:", aulasLiberadas);
+            
+            for (let i = 1; i <= 10; i++) {
+                const aulaCard = document.getElementById(`aula-${i}`);
+                const aulaLink = aulaCard.querySelector('.aula-link');
+                const aulaStatus = aulaCard.querySelector('.aula-status');
+                
+                // Remove todas as classes de estado
+                aulaCard.classList.remove('completed', 'available', 'locked');
+                
+                if (aulasCoercluidas.has(i)) {
+                    // Aula concluída - verde
+                    aulaCard.classList.add('completed');
+                    aulaStatus.textContent = '✅ Concluída';
+                    aulaLink.style.pointerEvents = 'auto';
+                    aulaLink.style.opacity = '1';
+                    console.log(`Aula ${i}: Concluída`);
+                } else if (aulasLiberadasSet.has(i)) {
+                    // Aula liberada e disponível - azul
+                    aulaCard.classList.add('available');
+                    aulaStatus.textContent = '🔓 Disponível';
+                    aulaLink.style.pointerEvents = 'auto';
+                    aulaLink.style.opacity = '1';
+                    console.log(`Aula ${i}: Disponível`);
+                } else {
+                    // Aula bloqueada - cinza
+                    aulaCard.classList.add('locked');
+                    aulaStatus.textContent = '🔒 Bloqueada';
+                    aulaLink.style.pointerEvents = 'none';
+                    aulaLink.style.opacity = '0.5';
+                    console.log(`Aula ${i}: Bloqueada`);
+                }
+            }
+        }
+
+        // Função de logout
+        window.logout = function() {
+            localStorage.clear();
+            window.location.href = '/';
+        }
+    </script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/code_logic.ico') }}" alt="CodeLogic">
+                <h1>CodeLogic</h1>
+            </div>
+            <nav class="nav-menu">
+                <a href="/dashboard" class="nav-link">Dashboard</a>
+                <a href="/dashboard" class="nav-link active">Aulas</a>
+                <a href="#" onclick="logout()" class="nav-link">Sair</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Loading Screen -->
+        <div id="loading-screen" class="loading-screen">
+            <div class="loading-content">
+                <div class="spinner"></div>
+                <p>Carregando suas aulas...</p>
+            </div>
+        </div>
+
+        <!-- Content (hidden initially) -->
+        <div id="main-content" class="content-wrapper">
+            <div class="content-header">
+                <h1>📚 Aulas Sequenciais</h1>
+                <p class="subtitle">Aprenda programação Python passo a passo</p>
+            </div>
+
+        <!-- Aulas Grid -->
+        <div class="aulas-grid">
+            <div id="aula-1" class="aula-card locked">
+                <a href="/exercicios/sequencial/aula/1" class="aula-link">
+                    <div class="aula-number">01</div>
+                    <div class="aula-info">
+                        <h3>Introdução ao Python</h3>
+                        <p>Primeiros passos com a linguagem Python</p>
+                        <div class="aula-status">🔒 Bloqueada</div>
+                    </div>
+                </a>
+            </div>
+
+            <div id="aula-2" class="aula-card locked">
+                <a href="/exercicios/sequencial/aula/2" class="aula-link">
+                    <div class="aula-number">02</div>
+                    <div class="aula-info">
+                        <h3>Variáveis e Tipos</h3>
+                        <p>Trabalhando com diferentes tipos de dados</p>
+                        <div class="aula-status">🔒 Bloqueada</div>
+                    </div>
+                </a>
+            </div>
+
+            <div id="aula-3" class="aula-card locked">
+                <a href="/exercicios/sequencial/aula/3" class="aula-link">
+                    <div class="aula-number">03</div>
+                    <div class="aula-info">
+                        <h3>Operadores</h3>
+                        <p>Operações aritméticas e lógicas</p>
+                        <div class="aula-status">🔒 Bloqueada</div>
+                    </div>
+                </a>
+            </div>
+
+            <div id="aula-4" class="aula-card locked">
+                <a href="/exercicios/sequencial/aula/4" class="aula-link">
+                    <div class="aula-number">04</div>
+                    <div class="aula-info">
+                        <h3>Entrada e Saída</h3>
+                        <p>Interação com o usuário</p>
+                        <div class="aula-status">🔒 Bloqueada</div>
+                    </div>
+                </a>
+            </div>
+
+            <div id="aula-5" class="aula-card locked">
+                <a href="/exercicios/sequencial/aula/5" class="aula-link">
+                    <div class="aula-number">05</div>
+                    <div class="aula-info">
+                        <h3>Strings</h3>
+                        <p>Manipulação de texto</p>
+                        <div class="aula-status">🔒 Bloqueada</div>
+                    </div>
+                </a>
+            </div>
+
+            <div id="aula-6" class="aula-card locked">
+                <a href="/exercicios/sequencial/aula/6" class="aula-link">
+                    <div class="aula-number">06</div>
+                    <div class="aula-info">
+                        <h3>Matemática</h3>
+                        <p>Cálculos e funções matemáticas</p>
+                        <div class="aula-status">🔒 Bloqueada</div>
+                    </div>
+                </a>
+            </div>
+
+            <div id="aula-7" class="aula-card locked">
+                <a href="/exercicios/sequencial/aula/7" class="aula-link">
+                    <div class="aula-number">07</div>
+                    <div class="aula-info">
+                        <h3>Formatação</h3>
+                        <p>Formatação de saídas</p>
+                        <div class="aula-status">🔒 Bloqueada</div>
+                    </div>
+                </a>
+            </div>
+
+            <div id="aula-8" class="aula-card locked">
+                <a href="/exercicios/sequencial/aula/8" class="aula-link">
+                    <div class="aula-number">08</div>
+                    <div class="aula-info">
+                        <h3>Conversões</h3>
+                        <p>Conversão entre tipos de dados</p>
+                        <div class="aula-status">🔒 Bloqueada</div>
+                    </div>
+                </a>
+            </div>
+
+            <div id="aula-9" class="aula-card locked">
+                <a href="/exercicios/sequencial/aula/9" class="aula-link">
+                    <div class="aula-number">09</div>
+                    <div class="aula-info">
+                        <h3>Boas Práticas</h3>
+                        <p>Código limpo e organizado</p>
+                        <div class="aula-status">🔒 Bloqueada</div>
+                    </div>
+                </a>
+            </div>
+
+            <div id="aula-10" class="aula-card locked">
+                <a href="/exercicios/sequencial/aula/10" class="aula-link">
+                    <div class="aula-number">10</div>
+                    <div class="aula-info">
+                        <h3>Projeto Final</h3>
+                        <p>Aplicando todos os conceitos</p>
+                        <div class="aula-status">🔒 Bloqueada</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="progress-section">
+            <h2>📊 Seu Progresso</h2>
+            <div class="progress-info">
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill progress-0"></div>
+                </div>
+                <div class="progress-text">
+                    <span id="progress-text">Carregando progresso...</span>
+                </div>
+            </div>
+        </div>
+        </div> <!-- Fecha content-wrapper -->
+    </main>
+
+    <script>
+        // Atualiza a barra de progresso quando o progresso é carregado
+        function updateProgressBar(percentage, completed, total) {
+            const progressFill = document.getElementById('progress-fill');
+            const progressText = document.getElementById('progress-text');
+            
+            // Remove classes antigas
+            progressFill.className = 'progress-fill';
+            
+            // Adiciona nova classe baseada na porcentagem
+            if (percentage >= 100) {
+                progressFill.classList.add('progress-100');
+            } else if (percentage >= 90) {
+                progressFill.classList.add('progress-90');
+            } else if (percentage >= 80) {
+                progressFill.classList.add('progress-80');
+            } else if (percentage >= 70) {
+                progressFill.classList.add('progress-70');
+            } else if (percentage >= 60) {
+                progressFill.classList.add('progress-60');
+            } else if (percentage >= 50) {
+                progressFill.classList.add('progress-50');
+            } else if (percentage >= 40) {
+                progressFill.classList.add('progress-40');
+            } else if (percentage >= 30) {
+                progressFill.classList.add('progress-30');
+            } else if (percentage >= 20) {
+                progressFill.classList.add('progress-20');
+            } else if (percentage >= 10) {
+                progressFill.classList.add('progress-10');
+            } else {
+                progressFill.classList.add('progress-0');
+            }
+            
+            progressText.textContent = `${completed}/${total} aulas concluídas (${Math.round(percentage)}%)`;
+        }
+
+        // Modifica a função loadUserProgress para atualizar também a barra
+        const originalLoadUserProgress = window.loadUserProgress;
+        window.loadUserProgress = async function(userId) {
+            try {
+                const response = await fetch(`/api/get-progress/${userId}/sequencial`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    const { aulas_concluidas, aulas_liberadas, next_lesson, progress_percentage, total_completed } = result;
+                    updateLessonStates(aulas_concluidas, aulas_liberadas);
+                    updateProgressBar(progress_percentage, total_completed, 10);
+                } else {
+                    console.error('Erro ao carregar progresso:', result.error);
+                    updateLessonStates([], [1]);
+                    updateProgressBar(0, 0, 10);
+                }
+                
+            } catch (error) {
+                console.error('Erro ao carregar progresso:', error);
+                updateLessonStates([], [1]);
+                updateProgressBar(0, 0, 10);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,400 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 4 - Busca em Matrizes | CodeLogic{% endblock %}
+{% block lesson_title %}Aula 4 - Busca em Matrizes{% endblock %}
+
+{% block theory_content %}
+<div class="content-section">
+    <h2>🎯 Objetivos da Aula</h2>
+    <ul>
+        <li>Implementar algoritmos de busca em matrizes</li>
+        <li>Aprender busca linear e por padrões</li>
+        <li>Trabalhar com coordenadas e posicionamento</li>
+        <li>Otimizar buscas em matrizes ordenadas</li>
+    </ul>
+</div>
+
+<div class="content-section">
+    <h2>🔍 Busca Linear</h2>
+    <p>
+        A busca linear percorre toda a matriz elemento por elemento até encontrar
+        o valor procurado ou chegar ao final.
+    </p>
+    
+    <div class="code-example">
+        <h3>Busca Simples:</h3>
+        <pre><code>def buscar_elemento(matriz, valor):
+    for i in range(len(matriz)):
+        for j in range(len(matriz[0])):
+            if matriz[i][j] == valor:
+                return (i, j)  # Retorna posição (linha, coluna)
+    return None  # Não encontrado
+
+# Exemplo de uso
+matriz = [
+    [1, 5, 9],
+    [3, 7, 2],
+    [8, 4, 6]
+]
+
+posicao = buscar_elemento(matriz, 7)
+if posicao:
+    print(f"Elemento 7 encontrado na posição {posicao}")
+else:
+    print("Elemento não encontrado")</code></pre>
+    </div>
+
+    <div class="code-example">
+        <h3>Busca com Múltiplas Ocorrências:</h3>
+        <pre><code>def buscar_todas_ocorrencias(matriz, valor):
+    posicoes = []
+    for i in range(len(matriz)):
+        for j in range(len(matriz[0])):
+            if matriz[i][j] == valor:
+                posicoes.append((i, j))
+    return posicoes
+
+# Matriz com valores repetidos
+matriz_rep = [
+    [1, 3, 3],
+    [2, 3, 1],
+    [3, 2, 1]
+]
+
+todas_pos = buscar_todas_ocorrencias(matriz_rep, 3)
+print(f"Valor 3 encontrado em: {todas_pos}")
+# [(0, 1), (0, 2), (1, 1), (2, 0)]</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>📍 Busca por Coordenadas</h2>
+    
+    <div class="code-example">
+        <h3>Busca em Área Específica:</h3>
+        <pre><code>def buscar_em_regiao(matriz, valor, linha_ini, linha_fim, col_ini, col_fim):
+    posicoes = []
+    for i in range(linha_ini, linha_fim + 1):
+        for j in range(col_ini, col_fim + 1):
+            if i < len(matriz) and j < len(matriz[0]):
+                if matriz[i][j] == valor:
+                    posicoes.append((i, j))
+    return posicoes
+
+# Buscar apenas no quadrante superior esquerdo (2x2)
+resultado = buscar_em_regiao(matriz, 1, 0, 1, 0, 1)
+print(f"Valor 1 no quadrante superior: {resultado}")</code></pre>
+    </div>
+
+    <div class="code-example">
+        <h3>Busca por Vizinhança:</h3>
+        <pre><code>def buscar_vizinhos(matriz, linha, coluna, valor):
+    """Busca valor nas 8 posições ao redor de uma coordenada"""
+    vizinhos = []
+    direcoes = [(-1,-1), (-1,0), (-1,1), (0,-1), (0,1), (1,-1), (1,0), (1,1)]
+    
+    for dl, dc in direcoes:
+        nova_linha = linha + dl
+        nova_coluna = coluna + dc
+        
+        # Verificar limites
+        if (0 <= nova_linha < len(matriz) and 
+            0 <= nova_coluna < len(matriz[0])):
+            if matriz[nova_linha][nova_coluna] == valor:
+                vizinhos.append((nova_linha, nova_coluna))
+    
+    return vizinhos
+
+# Buscar valor 2 ao redor da posição (1,1)
+vizinhos = buscar_vizinhos(matriz, 1, 1, 2)
+print(f"Vizinhos com valor 2: {vizinhos}")</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>🔢 Busca em Matriz Ordenada</h2>
+    
+    <div class="code-example">
+        <h3>Busca em Matriz Ordenada por Linha:</h3>
+        <pre><code>def buscar_matriz_ordenada(matriz, valor):
+    """Matriz onde cada linha está ordenada"""
+    for i in range(len(matriz)):
+        # Busca binária em cada linha
+        linha = matriz[i]
+        esquerda, direita = 0, len(linha) - 1
+        
+        while esquerda <= direita:
+            meio = (esquerda + direita) // 2
+            if linha[meio] == valor:
+                return (i, meio)
+            elif linha[meio] < valor:
+                esquerda = meio + 1
+            else:
+                direita = meio - 1
+    
+    return None
+
+# Matriz com linhas ordenadas
+matriz_ord = [
+    [1, 4, 7, 11],
+    [2, 5, 8, 12],
+    [3, 6, 9, 16]
+]
+
+pos = buscar_matriz_ordenada(matriz_ord, 8)
+print(f"Valor 8 encontrado em: {pos}")</code></pre>
+    </div>
+
+    <div class="code-example">
+        <h3>Busca em Matriz Totalmente Ordenada:</h3>
+        <pre><code>def buscar_matriz_sorted(matriz, valor):
+    """Busca eficiente em matriz ordenada linha e coluna"""
+    if not matriz or not matriz[0]:
+        return None
+    
+    linha = 0
+    coluna = len(matriz[0]) - 1  # Começa no canto superior direito
+    
+    while linha < len(matriz) and coluna >= 0:
+        elemento_atual = matriz[linha][coluna]
+        
+        if elemento_atual == valor:
+            return (linha, coluna)
+        elif elemento_atual > valor:
+            coluna -= 1  # Move para esquerda
+        else:
+            linha += 1   # Move para baixo
+    
+    return None
+
+# Matriz totalmente ordenada
+matriz_sorted = [
+    [1,  4,  7,  11],
+    [2,  5,  8,  12],
+    [3,  6,  9,  16],
+    [10, 13, 14, 17]
+]
+
+resultado = buscar_matriz_sorted(matriz_sorted, 6)
+print(f"Busca otimizada - valor 6: {resultado}")</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>🎯 Busca por Padrões</h2>
+    
+    <div class="code-example">
+        <h3>Busca por Sequência Horizontal:</h3>
+        <pre><code>def buscar_sequencia_horizontal(matriz, sequencia):
+    """Busca uma sequência de valores em linhas"""
+    encontradas = []
+    tam_seq = len(sequencia)
+    
+    for i in range(len(matriz)):
+        for j in range(len(matriz[0]) - tam_seq + 1):
+            # Verifica se a sequência coincide
+            match = True
+            for k in range(tam_seq):
+                if matriz[i][j + k] != sequencia[k]:
+                    match = False
+                    break
+            
+            if match:
+                encontradas.append((i, j))
+    
+    return encontradas
+
+# Buscar sequência [1, 2, 3]
+matriz_seq = [
+    [1, 2, 3, 4],
+    [5, 1, 2, 3],
+    [1, 2, 4, 5]
+]
+
+seq_pos = buscar_sequencia_horizontal(matriz_seq, [1, 2, 3])
+print(f"Sequência [1,2,3] encontrada em: {seq_pos}")</code></pre>
+    </div>
+
+    <div class="code-example">
+        <h3>Busca por Maior Elemento em Cada Linha:</h3>
+        <pre><code>def maior_por_linha(matriz):
+    """Encontra o maior elemento e sua posição em cada linha"""
+    resultados = []
+    
+    for i in range(len(matriz)):
+        maior_valor = matriz[i][0]
+        maior_posicao = (i, 0)
+        
+        for j in range(1, len(matriz[i])):
+            if matriz[i][j] > maior_valor:
+                maior_valor = matriz[i][j]
+                maior_posicao = (i, j)
+        
+        resultados.append((maior_valor, maior_posicao))
+    
+    return resultados
+
+maiores = maior_por_linha(matriz)
+for linha, (valor, pos) in enumerate(maiores):
+    print(f"Linha {linha}: maior = {valor} na posição {pos}")</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>🎮 Exemplo Prático: Jogo da Velha</h2>
+    
+    <div class="example-box">
+        <h3>Verificar Vitória:</h3>
+        <pre><code>def verificar_vitoria(tabuleiro, jogador):
+    """Verifica se um jogador venceu no jogo da velha"""
+    
+    # Verificar linhas
+    for i in range(3):
+        if all(tabuleiro[i][j] == jogador for j in range(3)):
+            return True, f"Linha {i}"
+    
+    # Verificar colunas
+    for j in range(3):
+        if all(tabuleiro[i][j] == jogador for i in range(3)):
+            return True, f"Coluna {j}"
+    
+    # Verificar diagonal principal
+    if all(tabuleiro[i][i] == jogador for i in range(3)):
+        return True, "Diagonal principal"
+    
+    # Verificar diagonal secundária
+    if all(tabuleiro[i][2-i] == jogador for i in range(3)):
+        return True, "Diagonal secundária"
+    
+    return False, "Sem vitória"
+
+# Tabuleiro de exemplo
+tabuleiro = [
+    ['X', 'O', 'X'],
+    ['O', 'X', 'O'],
+    ['O', 'X', 'X']
+]
+
+vitoria, como = verificar_vitoria(tabuleiro, 'X')
+print(f"Jogador X venceu: {vitoria} - {como}")</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>⚡ Otimizações</h2>
+    <ul>
+        <li><strong>Early return:</strong> Pare a busca quando encontrar</li>
+        <li><strong>Limites:</strong> Verifique limites antes de acessar</li>
+        <li><strong>Matriz ordenada:</strong> Use busca binária quando possível</li>
+        <li><strong>Direções inteligentes:</strong> Comece pelo canto que faz mais sentido</li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block exercise_content %}
+<div class="exercise-header">
+    <h2>🏋️‍♂️ Exercício Prático</h2>
+    <p>Sistema de Busca em Grade de Palavras</p>
+</div>
+
+<div class="exercise-description">
+    <h3>📋 Instruções:</h3>
+    <ol>
+        <li>Crie uma grade de letras 5x5</li>
+        <li>Implemente busca de palavras na horizontal</li>
+        <li>Implemente busca de palavras na vertical</li>
+        <li>Implemente busca de palavras na diagonal</li>
+        <li>Encontre todas as ocorrências de uma palavra</li>
+        <li>Retorne as coordenadas de início e direção</li>
+    </ol>
+</div>
+
+<div class="exercise-data">
+    <h3>📊 Grade de Letras:</h3>
+    <pre>C A S A L
+O D R O N
+D A T O S
+E R A T O
+S A N T A</pre>
+</div>
+
+<div class="exercise-requirements">
+    <h3>🔍 Palavras para Buscar:</h3>
+    <ul>
+        <li>CASA (horizontal)</li>
+        <li>CODE (vertical)</li>
+        <li>DATA (horizontal)</li>
+        <li>SANTA (horizontal)</li>
+        <li>Qualquer outra palavra que encontrar</li>
+    </ul>
+</div>
+
+<div class="exercise-hints">
+    <h3>💡 Dicas:</h3>
+    <ul>
+        <li>Para horizontal: percorra colunas dentro de cada linha</li>
+        <li>Para vertical: percorra linhas dentro de cada coluna</li>
+        <li>Para diagonal: use incrementos [+1,+1] ou [+1,-1]</li>
+        <li>Verifique limites antes de acessar posições</li>
+    </ul>
+</div>
+
+<div class="expected-output">
+    <h3>📤 Resultado Esperado:</h3>
+    <pre>Palavra 'CASA' encontrada:
+- Posição (0,0) direção horizontal
+
+Palavra 'CODE' encontrada:
+- Posição (0,0) direção vertical
+
+Palavra 'DATA' encontrada:
+- Posição (2,0) direção horizontal</pre>
+</div>
+{% endblock %}
+
+{% block starter_code %}
+# Exercício: Busca em Grade de Palavras
+# Complete o código abaixo
+
+grade = [
+    ['C', 'A', 'S', 'A', 'L'],
+    ['O', 'D', 'R', 'O', 'N'],
+    ['D', 'A', 'T', 'O', 'S'],
+    ['E', 'R', 'A', 'T', 'O'],
+    ['S', 'A', 'N', 'T', 'A']
+]
+
+def buscar_horizontal(grade, palavra):
+    """Busca palavra na horizontal"""
+    # Seu código aqui
+    pass
+
+def buscar_vertical(grade, palavra):
+    """Busca palavra na vertical"""
+    # Seu código aqui
+    pass
+
+def buscar_diagonal(grade, palavra):
+    """Busca palavra nas diagonais"""
+    # Seu código aqui
+    pass
+
+def buscar_palavra(grade, palavra):
+    """Busca palavra em todas as direções"""
+    resultados = []
+    
+    # Usar as funções acima
+    # horizontal = buscar_horizontal(grade, palavra)
+    # vertical = buscar_vertical(grade, palavra)
+    # diagonal = buscar_diagonal(grade, palavra)
+    
+    return resultados
+
+# Teste com as palavras
+palavras = ['CASA', 'CODE', 'DATA', 'SANTA']
+for palavra in palavras:
+    print(f"Buscando '{palavra}':")
+    # resultado = buscar_palavra(grade, palavra)
+    # print(resultado)
+    print()
+{% endblock %}

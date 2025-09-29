@@ -1,0 +1,470 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 9 - Algoritmos com Loops | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 9 – Algoritmos com Loops{% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Implementar algoritmos clássicos usando loops</li>
+            <li>Entender busca e ordenação</li>
+            <li>Resolver problemas algorítmicos comuns</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>🔍 Algoritmos de Busca</h2>
+        
+        <h3>1. Busca Linear</h3>
+        <p>Percorre a lista elemento por elemento até encontrar o valor procurado.</p>
+        <pre><code>def busca_linear(lista, valor):
+    """Busca um valor na lista e retorna sua posição"""
+    for i in range(len(lista)):
+        if lista[i] == valor:
+            return i  # Retorna a posição
+    return -1  # Não encontrado
+
+# Teste
+numeros = [64, 34, 25, 12, 22, 11, 90]
+valor_procurado = 22
+
+posicao = busca_linear(numeros, valor_procurado)
+if posicao != -1:
+    print(f"✅ Valor {valor_procurado} encontrado na posição {posicao}")
+else:
+    print(f"❌ Valor {valor_procurado} não encontrado")</code></pre>
+        
+        <h3>2. Busca com Múltiplas Ocorrências</h3>
+        <pre><code>def buscar_todas_posicoes(lista, valor):
+    """Encontra todas as posições onde o valor aparece"""
+    posicoes = []
+    
+    for i in range(len(lista)):
+        if lista[i] == valor:
+            posicoes.append(i)
+    
+    return posicoes
+
+# Teste
+numeros = [1, 3, 5, 3, 7, 3, 9]
+valor = 3
+
+posicoes = buscar_todas_posicoes(numeros, valor)
+print(f"Valor {valor} encontrado nas posições: {posicoes}")
+# Saída: [1, 3, 5]</code></pre>
+    </section>
+
+    <section>
+        <h2>📊 Algoritmos de Ordenação</h2>
+        
+        <h3>1. Bubble Sort</h3>
+        <p>Compara elementos adjacentes e os troca se estiverem fora de ordem.</p>
+        <pre><code>def bubble_sort(lista):
+    """Ordena a lista usando bubble sort"""
+    n = len(lista)
+    
+    # Número de passadas
+    for i in range(n):
+        trocou = False
+        
+        # Última posição já está ordenada
+        for j in range(0, n - i - 1):
+            # Trocar se o elemento atual > próximo
+            if lista[j] > lista[j + 1]:
+                lista[j], lista[j + 1] = lista[j + 1], lista[j]
+                trocou = True
+        
+        # Se não houve troca, a lista já está ordenada
+        if not trocou:
+            break
+    
+    return lista
+
+# Teste
+numeros = [64, 34, 25, 12, 22, 11, 90]
+print(f"Original: {numeros}")
+
+ordenados = bubble_sort(numeros.copy())
+print(f"Ordenado: {ordenados}")</code></pre>
+        
+        <h3>2. Selection Sort</h3>
+        <p>Encontra o menor elemento e o coloca na primeira posição, depois repete para o restante.</p>
+        <pre><code>def selection_sort(lista):
+    """Ordena a lista usando selection sort"""
+    n = len(lista)
+    
+    for i in range(n):
+        # Assumir que o primeiro elemento é o menor
+        min_idx = i
+        
+        # Encontrar o menor elemento no restante
+        for j in range(i + 1, n):
+            if lista[j] < lista[min_idx]:
+                min_idx = j
+        
+        # Trocar o menor encontrado com o primeiro elemento
+        lista[i], lista[min_idx] = lista[min_idx], lista[i]
+    
+    return lista
+
+# Teste
+numeros = [64, 34, 25, 12, 22, 11, 90]
+print(f"Original: {numeros}")
+
+ordenados = selection_sort(numeros.copy())
+print(f"Ordenado: {ordenados}")</code></pre>
+    </section>
+
+    <section>
+        <h2>🔢 Algoritmos Matemáticos</h2>
+        
+        <h3>1. Números Primos</h3>
+        <pre><code>def eh_primo(n):
+    """Verifica se um número é primo"""
+    if n < 2:
+        return False
+    
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0:
+            return False
+    
+    return True
+
+def listar_primos(limite):
+    """Lista todos os primos até um limite"""
+    primos = []
+    
+    for num in range(2, limite + 1):
+        if eh_primo(num):
+            primos.append(num)
+    
+    return primos
+
+# Teste
+limite = 50
+primos = listar_primos(limite)
+print(f"Números primos até {limite}:")
+print(primos)</code></pre>
+        
+        <h3>2. Sequência de Fibonacci</h3>
+        <pre><code>def fibonacci(n):
+    """Gera os primeiros n números da sequência de Fibonacci"""
+    if n <= 0:
+        return []
+    elif n == 1:
+        return [0]
+    elif n == 2:
+        return [0, 1]
+    
+    fib = [0, 1]
+    
+    for i in range(2, n):
+        proximo = fib[i-1] + fib[i-2]
+        fib.append(proximo)
+    
+    return fib
+
+# Teste
+n = 15
+fib_sequence = fibonacci(n)
+print(f"Primeiros {n} números de Fibonacci:")
+print(fib_sequence)</code></pre>
+        
+        <h3>3. Máximo Divisor Comum (MDC)</h3>
+        <pre><code>def mdc(a, b):
+    """Calcula o MDC usando algoritmo de Euclides"""
+    while b != 0:
+        resto = a % b
+        a = b
+        b = resto
+    
+    return a
+
+def mdc_lista(numeros):
+    """Calcula o MDC de uma lista de números"""
+    resultado = numeros[0]
+    
+    for i in range(1, len(numeros)):
+        resultado = mdc(resultado, numeros[i])
+        
+        # Se MDC = 1, pode parar
+        if resultado == 1:
+            break
+    
+    return resultado
+
+# Teste
+nums = [48, 18, 24]
+print(f"MDC de {nums}: {mdc_lista(nums)}")</code></pre>
+    </section>
+
+    <section>
+        <h2>🎮 Exercício Prático</h2>
+        <div class="exercise-box">
+            <h3>Kit de Algoritmos</h3>
+            <p>Implemente estes algoritmos usando loops:</p>
+            <ul>
+                <li>Encontrar o maior e menor elemento</li>
+                <li>Calcular média, mediana e moda</li>
+                <li>Verificar se uma lista está ordenada</li>
+                <li>Remover duplicatas mantendo ordem</li>
+            </ul>
+            
+            <textarea id="code-input" placeholder="# Kit de Algoritmos
+def encontrar_maior_menor(lista):
+    '''Encontra maior e menor elemento'''
+    if not lista:
+        return None, None
+    
+    maior = menor = lista[0]
+    
+    for num in lista[1:]:
+        if num > maior:
+            maior = num
+        if num < menor:
+            menor = num
+    
+    return maior, menor
+
+def calcular_estatisticas(lista):
+    '''Calcula média, mediana e moda'''
+    if not lista:
+        return None, None, None
+    
+    # Média
+    soma = sum(lista)
+    media = soma / len(lista)
+    
+    # Mediana
+    lista_ordenada = sorted(lista)
+    n = len(lista_ordenada)
+    if n % 2 == 0:
+        mediana = (lista_ordenada[n//2 - 1] + lista_ordenada[n//2]) / 2
+    else:
+        mediana = lista_ordenada[n//2]
+    
+    # Moda (valor mais frequente)
+    frequencias = {}
+    for num in lista:
+        frequencias[num] = frequencias.get(num, 0) + 1
+    
+    moda = max(frequencias, key=frequencias.get)
+    
+    return media, mediana, moda
+
+# Continue implementando os outros algoritmos...
+
+# Teste com dados
+dados = [5, 2, 8, 2, 9, 1, 5, 5, 7]
+print(f'Dados: {dados}')
+
+maior, menor = encontrar_maior_menor(dados)
+print(f'Maior: {maior}, Menor: {menor}')
+
+media, mediana, moda = calcular_estatisticas(dados)
+print(f'Média: {media:.2f}, Mediana: {mediana}, Moda: {moda}')"></textarea>
+            
+            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
+            <div id="output"></div>
+        </div>
+    </section>
+
+    <section>
+        <h2>🎨 Algoritmos de Padrões</h2>
+        
+        <h3>1. Gerador de Sequências</h3>
+        <pre><code>def sequencia_aritmetica(primeiro, razao, n):
+    """Gera progressão aritmética"""
+    sequencia = []
+    termo = primeiro
+    
+    for i in range(n):
+        sequencia.append(termo)
+        termo += razao
+    
+    return sequencia
+
+def sequencia_geometrica(primeiro, razao, n):
+    """Gera progressão geométrica"""
+    sequencia = []
+    termo = primeiro
+    
+    for i in range(n):
+        sequencia.append(termo)
+        termo *= razao
+    
+    return sequencia
+
+# Teste
+print("PA (2, 3, 10 termos):", sequencia_aritmetica(2, 3, 10))
+print("PG (2, 3, 8 termos):", sequencia_geometrica(2, 3, 8))</code></pre>
+        
+        <h3>2. Validação de Padrões</h3>
+        <pre><code>def eh_palindromo_numerico(numero):
+    """Verifica se um número é palíndromo"""
+    str_num = str(numero)
+    tamanho = len(str_num)
+    
+    for i in range(tamanho // 2):
+        if str_num[i] != str_num[tamanho - 1 - i]:
+            return False
+    
+    return True
+
+def eh_numero_perfeito(n):
+    """Verifica se um número é perfeito (soma dos divisores = número)"""
+    if n <= 1:
+        return False
+    
+    soma_divisores = 0
+    
+    for i in range(1, n):
+        if n % i == 0:
+            soma_divisores += i
+    
+    return soma_divisores == n
+
+# Teste
+print("123 é palíndromo?", eh_palindromo_numerico(123))
+print("121 é palíndromo?", eh_palindromo_numerico(121))
+print("6 é número perfeito?", eh_numero_perfeito(6))  # 1+2+3=6
+print("28 é número perfeito?", eh_numero_perfeito(28))  # 1+2+4+7+14=28</code></pre>
+    </section>
+
+    <section>
+        <h2>🏆 Algoritmos de Otimização</h2>
+        
+        <h3>1. Problema da Mochila (versão simples)</h3>
+        <pre><code>def mochila_gulosa(pesos, valores, capacidade):
+    """Resolve problema da mochila com algoritmo guloso"""
+    # Calcular relação valor/peso
+    n = len(pesos)
+    itens = []
+    
+    for i in range(n):
+        relacao = valores[i] / pesos[i]
+        itens.append((relacao, i, pesos[i], valores[i]))
+    
+    # Ordenar por relação valor/peso (decrescente)
+    itens.sort(reverse=True)
+    
+    peso_total = 0
+    valor_total = 0
+    itens_selecionados = []
+    
+    for relacao, idx, peso, valor in itens:
+        if peso_total + peso <= capacidade:
+            peso_total += peso
+            valor_total += valor
+            itens_selecionados.append(idx)
+    
+    return itens_selecionados, peso_total, valor_total
+
+# Teste
+pesos = [10, 20, 30]
+valores = [60, 100, 120]
+capacidade = 50
+
+selecionados, peso, valor = mochila_gulosa(pesos, valores, capacidade)
+print(f"Itens selecionados: {selecionados}")
+print(f"Peso total: {peso}, Valor total: {valor}")</code></pre>
+        
+        <h3>2. Busca do Maior Subarray</h3>
+        <pre><code>def maior_subarray(lista):
+    """Encontra o subarray contíguo com maior soma"""
+    if not lista:
+        return 0, 0, 0  # soma, inicio, fim
+    
+    max_soma = lista[0]
+    soma_atual = lista[0]
+    inicio = 0
+    fim = 0
+    temp_inicio = 0
+    
+    for i in range(1, len(lista)):
+        if soma_atual < 0:
+            soma_atual = lista[i]
+            temp_inicio = i
+        else:
+            soma_atual += lista[i]
+        
+        if soma_atual > max_soma:
+            max_soma = soma_atual
+            inicio = temp_inicio
+            fim = i
+    
+    return max_soma, inicio, fim
+
+# Teste
+numeros = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+soma, inicio, fim = maior_subarray(numeros)
+print(f"Lista: {numeros}")
+print(f"Maior subarray: posições {inicio} a {fim}")
+print(f"Valores: {numeros[inicio:fim+1]}")
+print(f"Soma máxima: {soma}")</code></pre>
+    </section>
+
+    <section>
+        <h2>⚡ Análise de Complexidade</h2>
+        
+        <table class="complexity-table">
+            <tr>
+                <th>Algoritmo</th>
+                <th>Complexidade de Tempo</th>
+                <th>Complexidade de Espaço</th>
+            </tr>
+            <tr>
+                <td>Busca Linear</td>
+                <td>O(n)</td>
+                <td>O(1)</td>
+            </tr>
+            <tr>
+                <td>Bubble Sort</td>
+                <td>O(n²)</td>
+                <td>O(1)</td>
+            </tr>
+            <tr>
+                <td>Selection Sort</td>
+                <td>O(n²)</td>
+                <td>O(1)</td>
+            </tr>
+            <tr>
+                <td>Teste de Primalidade</td>
+                <td>O(√n)</td>
+                <td>O(1)</td>
+            </tr>
+            <tr>
+                <td>Fibonacci (iterativo)</td>
+                <td>O(n)</td>
+                <td>O(n)</td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h2>💡 Dicas de Otimização</h2>
+        <div class="tip-box">
+            <ul>
+                <li>🎯 Sempre considere o caso base primeiro</li>
+                <li>⚡ Use break/continue para evitar iterações desnecessárias</li>
+                <li>📊 Para listas grandes, considere algoritmos mais eficientes</li>
+                <li>🔍 Cache resultados quando possível</li>
+                <li>🧪 Teste com diferentes tamanhos de entrada</li>
+                <li>📏 Meça o tempo de execução para comparar algoritmos</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function runCode() {
+    const code = document.getElementById('code-input').value;
+    const output = document.getElementById('output');
+    
+    output.innerHTML = '<div class="output-success">Kit de algoritmos executado! Teste com diferentes conjuntos de dados.</div>';
+}
+</script>
+{% endblock %}

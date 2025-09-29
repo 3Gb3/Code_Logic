@@ -1,0 +1,212 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 9 - Operadores Lógicos e de Comparação | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 9 – Operadores Lógicos e de Comparação{% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Entender operadores de comparação</li>
+            <li>Aprender operadores lógicos</li>
+            <li>Construir expressões booleanas complexas</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>⚖️ Operadores de Comparação</h2>
+        <p>Comparam valores e retornam True ou False:</p>
+        
+        <pre><code>a = 10
+b = 5
+
+print(a == b)    # False (igual)
+print(a != b)    # True  (diferente)
+print(a > b)     # True  (maior)
+print(a < b)     # False (menor)
+print(a >= b)    # True  (maior ou igual)
+print(a <= b)    # False (menor ou igual)</code></pre>
+        
+        <h3>Comparação com strings:</h3>
+        <pre><code>nome1 = "Ana"
+nome2 = "Bruno"
+
+print(nome1 == nome2)    # False
+print(nome1 != nome2)    # True
+print(nome1 < nome2)     # True (ordem alfabética)</code></pre>
+    </section>
+
+    <section>
+        <h2>🔗 Operadores Lógicos</h2>
+        
+        <h3>and - E lógico (ambos devem ser verdadeiros):</h3>
+        <pre><code>idade = 25
+tem_carteira = True
+
+pode_dirigir = idade >= 18 and tem_carteira
+print(pode_dirigir)  # True</code></pre>
+        
+        <h3>or - OU lógico (pelo menos um deve ser verdadeiro):</h3>
+        <pre><code>tem_dinheiro = True
+tem_cartao = False
+
+pode_comprar = tem_dinheiro or tem_cartao
+print(pode_comprar)  # True</code></pre>
+        
+        <h3>not - NÃO lógico (inverte o valor):</h3>
+        <pre><code>chovendo = False
+vai_sair = not chovendo
+print(vai_sair)  # True</code></pre>
+    </section>
+
+    <section>
+        <h2>📋 Tabela Verdade</h2>
+        
+        <h3>Operador AND:</h3>
+        <pre><code>True  and True   = True
+True  and False  = False
+False and True   = False
+False and False  = False</code></pre>
+        
+        <h3>Operador OR:</h3>
+        <pre><code>True  or True   = True
+True  or False  = True
+False or True   = True
+False or False  = False</code></pre>
+        
+        <h3>Operador NOT:</h3>
+        <pre><code>not True  = False
+not False = True</code></pre>
+    </section>
+
+    <section>
+        <h2>🎯 Precedência de Operadores</h2>
+        <p>Ordem de avaliação (do maior para menor precedência):</p>
+        <ol>
+            <li>Parênteses: <code>()</code></li>
+            <li>NOT: <code>not</code></li>
+            <li>Comparação: <code>==, !=, <, >, <=, >=</code></li>
+            <li>AND: <code>and</code></li>
+            <li>OR: <code>or</code></li>
+        </ol>
+        
+        <h3>Exemplos:</h3>
+        <pre><code>resultado = True or False and False  # True (and primeiro)
+resultado = (True or False) and False  # False (parênteses primeiro)
+
+idade = 20
+tem_id = True
+resultado = idade >= 18 and tem_id  # True</code></pre>
+    </section>
+
+    <section>
+        <h2>💡 Exemplos Práticos</h2>
+        
+        <h3>Sistema de Login:</h3>
+        <pre><code>usuario_correto = "admin"
+senha_correta = "123456"
+
+usuario = input("Usuário: ")
+senha = input("Senha: ")
+
+login_valido = usuario == usuario_correto and senha == senha_correta
+
+if login_valido:
+    print("Login realizado com sucesso!")
+else:
+    print("Usuário ou senha incorretos!")</code></pre>
+        
+        <h3>Validação de Idade para Categorias:</h3>
+        <pre><code>idade = int(input("Digite sua idade: "))
+
+crianca = idade >= 0 and idade <= 12
+adolescente = idade >= 13 and idade <= 17
+adulto = idade >= 18 and idade <= 59
+idoso = idade >= 60
+
+print(f"Criança: {crianca}")
+print(f"Adolescente: {adolescente}")
+print(f"Adulto: {adulto}")
+print(f"Idoso: {idoso}")</code></pre>
+        
+        <h3>Verificação de Ano Bissexto:</h3>
+        <pre><code>ano = int(input("Digite um ano: "))
+
+# Um ano é bissexto se:
+# - É divisível por 4 E não por 100, OU
+# - É divisível por 400
+bissexto = (ano % 4 == 0 and ano % 100 != 0) or (ano % 400 == 0)
+
+if bissexto:
+    print(f"{ano} é um ano bissexto!")
+else:
+    print(f"{ano} não é um ano bissexto.")</code></pre>
+    </section>
+
+    <section>
+        <h2>🔍 Operadores de Pertencimento</h2>
+        <p>Verificam se um elemento está presente:</p>
+        
+        <pre><code># in - está presente
+texto = "Python Programming"
+print("Python" in texto)    # True
+print("Java" in texto)      # False
+
+# not in - não está presente
+print("Java" not in texto)  # True
+
+# Com listas
+frutas = ["maçã", "banana", "laranja"]
+print("banana" in frutas)   # True</code></pre>
+    </section>
+{% endblock %}
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    
+    <p><strong>Tarefa 1:</strong> Sistema de Acesso</p>
+    <ul>
+        <li>Peça idade, se tem carteira de identidade e se é funcionário</li>
+        <li>Acesso permitido se: idade ≥ 18 E (tem identidade OU é funcionário)</li>
+        <li>Exiba se o acesso foi permitido ou negado</li>
+    </ul>
+    
+    <p><strong>Tarefa 2:</strong> Calculadora de Desconto</p>
+    <ul>
+        <li>Peça valor da compra e se é cliente VIP</li>
+        <li>Desconto de 10% se: compra ≥ R$ 100 OU é cliente VIP</li>
+        <li>Desconto de 20% se: compra ≥ R$ 100 E é cliente VIP</li>
+        <li>Calcule e exiba o valor final</li>
+    </ul>
+    
+    <p><strong>Tarefa 3:</strong> Classificador de Triângulos</p>
+    <ul>
+        <li>Peça 3 lados de um triângulo</li>
+        <li>Verifique se pode formar um triângulo (cada lado < soma dos outros dois)</li>
+        <li>Classifique: equilátero (3 lados iguais), isósceles (2 iguais) ou escaleno</li>
+    </ul>
+    
+    <p><strong>Exemplo de saída esperada:</strong></p>
+    <pre><code>=== SISTEMA DE ACESSO ===
+Idade: 20
+Tem identidade: sim
+É funcionário: não
+Resultado: ACESSO PERMITIDO
+(Motivo: Idade ≥ 18 E tem identidade)</code></pre>
+{% endblock %}
+
+{% block initial_code %}idade = 20
+tem_carteira = True
+
+# Exemplo: Pode dirigir?
+pode_dirigir = idade >= 18 and tem_carteira
+print(f"Pode dirigir: {pode_dirigir}")
+
+# Exemplo: Operador OR
+tem_dinheiro = False
+tem_cartao = True
+pode_comprar = tem_dinheiro or tem_cartao
+print(f"Pode comprar: {pode_comprar}")
+
+# Agora implemente os exercícios{% endblock %}

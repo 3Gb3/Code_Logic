@@ -1,0 +1,261 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 3 - Loop while | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 3 – Loop while{% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Entender a diferença entre for e while</li>
+            <li>Usar while para repetições condicionais</li>
+            <li>Evitar loops infinitos</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>🔄 O que é um Loop while?</h2>
+        <p>O loop <code>while</code> executa um bloco de código enquanto uma condição for verdadeira.</p>
+        
+        <h3>Sintaxe:</h3>
+        <pre><code>while condicao:
+    # código a ser repetido
+    # alterar variável da condição</code></pre>
+        
+        <h3>⚠️ Importante:</h3>
+        <p>Sempre certifique-se de que a condição pode se tornar falsa, senão terá um loop infinito!</p>
+    </section>
+
+    <section>
+        <h2>📊 For vs While</h2>
+        
+        <h3>Use <code>for</code> quando:</h3>
+        <ul>
+            <li>Sabe quantas vezes vai repetir</li>
+            <li>Itera sobre uma sequência conhecida</li>
+            <li>Quer simplicidade</li>
+        </ul>
+        
+        <h3>Use <code>while</code> quando:</h3>
+        <ul>
+            <li>Não sabe quantas vezes vai repetir</li>
+            <li>A repetição depende de uma condição</li>
+            <li>Quer controle mais flexível</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>📝 Exemplos Básicos</h2>
+        
+        <h3>Exemplo 1: Contagem Simples</h3>
+        <pre><code>contador = 1
+
+while contador <= 5:
+    print(f"Contagem: {contador}")
+    contador += 1  # IMPORTANTE: incrementar
+
+print("Fim da contagem!")</code></pre>
+    
+        <h3>Exemplo 2: Validação de Entrada</h3>
+        <pre><code>idade = -1
+
+while idade < 0 or idade > 120:
+    idade = int(input("Digite sua idade (0-120): "))
+    
+    if idade < 0 or idade > 120:
+        print("Idade inválida! Tente novamente.")
+
+print(f"Idade válida: {idade} anos")</code></pre>
+    </section>
+
+    <section>
+        <h2>🎮 Menu Interativo</h2>
+        <pre><code>opcao = ""
+
+while opcao != "4":
+    print("\n=== MENU ===")
+    print("1. Ver saldo")
+    print("2. Depositar")
+    print("3. Sacar")
+    print("4. Sair")
+    
+    opcao = input("Escolha uma opção: ")
+    
+    if opcao == "1":
+        print("💰 Seu saldo é R$ 1000")
+    elif opcao == "2":
+        valor = float(input("Valor para depositar: "))
+        print(f"✅ Depositado R$ {valor}")
+    elif opcao == "3":
+        valor = float(input("Valor para sacar: "))
+        print(f"💸 Sacado R$ {valor}")
+    elif opcao == "4":
+        print("👋 Obrigado por usar nosso sistema!")
+    else:
+        print("❌ Opção inválida!")
+
+print("Sistema encerrado.")</code></pre>
+    </section>
+
+    <section>
+        <h2>🎯 Acumuladores e Contadores</h2>
+        
+        <h3>Somando Números até Digitar 0</h3>
+        <pre><code>soma = 0
+numero = -1  # Valor inicial diferente de 0
+
+print("Digite números para somar (0 para parar):")
+
+while numero != 0:
+    numero = int(input("Digite um número: "))
+    
+    if numero != 0:
+        soma += numero
+
+print(f"A soma total é: {soma}")</code></pre>
+    
+        <h3>Contando Tentativas</h3>
+        <pre><code>senha_correta = "123456"
+tentativas = 0
+max_tentativas = 3
+
+while tentativas < max_tentativas:
+    senha = input("Digite a senha: ")
+    tentativas += 1
+    
+    if senha == senha_correta:
+        print("✅ Acesso liberado!")
+        break
+    else:
+        restantes = max_tentativas - tentativas
+        if restantes > 0:
+            print(f"❌ Senha incorreta. {restantes} tentativas restantes.")
+        else:
+            print("🔒 Acesso bloqueado - muitas tentativas!")</code></pre>
+    </section>
+
+    <section>
+        <h2>🎮 Exercício Prático</h2>
+        <div class="exercise-box">
+            <h3>Jogo de Adivinhação</h3>
+            <p>Crie um jogo onde:</p>
+            <ul>
+                <li>O computador "pensa" em um número de 1 a 100</li>
+                <li>O usuário tenta adivinhar</li>
+                <li>Dê dicas: "muito alto" ou "muito baixo"</li>
+                <li>Conte quantas tentativas foram necessárias</li>
+                <li>Continue até acertar</li>
+            </ul>
+            
+            <textarea id="code-input" placeholder="import random
+
+# O computador escolhe um número
+numero_secreto = random.randint(1, 100)
+tentativas = 0
+acertou = False
+
+print('🎯 Jogo de Adivinhação!')
+print('Adivinhe o número de 1 a 100')
+
+while not acertou:
+    tentativas += 1
+    palpite = int(input(f'Tentativa {tentativas}: '))
+    
+    # Complete o código..."></textarea>
+            
+            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
+            <div id="output"></div>
+        </div>
+    </section>
+
+    <section>
+        <h2>⚠️ Evitando Loops Infinitos</h2>
+        
+        <h3>❌ Problema Comum:</h3>
+        <pre><code># CUIDADO! Loop infinito
+contador = 1
+while contador <= 5:
+    print(contador)
+    # Esqueceu de incrementar!</code></pre>
+    
+        <h3>✅ Solução:</h3>
+        <pre><code>contador = 1
+while contador <= 5:
+    print(contador)
+    contador += 1  # SEMPRE incremente!</code></pre>
+    
+        <h3>🛟 Salvaguarda de Emergência:</h3>
+        <pre><code>contador = 0
+limite_seguranca = 1000
+
+while True:  # Loop "infinito"
+    contador += 1
+    
+    # Sua lógica aqui
+    if condicao_de_parada:
+        break
+    
+    # Salvaguarda
+    if contador > limite_seguranca:
+        print("⚠️ Loop interrompido por segurança")
+        break</code></pre>
+    </section>
+
+    <section>
+        <h2>🔍 Validação com while</h2>
+        <pre><code>def validar_email():
+    """Valida email até estar correto"""
+    while True:
+        email = input("Digite seu email: ")
+        
+        if "@" in email and "." in email:
+            print("✅ Email válido!")
+            return email
+        else:
+            print("❌ Email inválido. Deve conter @ e .")
+
+def validar_idade():
+    """Valida idade até estar correta"""
+    while True:
+        try:
+            idade = int(input("Digite sua idade: "))
+            
+            if 0 <= idade <= 120:
+                return idade
+            else:
+                print("❌ Idade deve estar entre 0 e 120")
+                
+        except ValueError:
+            print("❌ Digite apenas números")
+
+# Uso
+email_usuario = validar_email()
+idade_usuario = validar_idade()
+print(f"Email: {email_usuario}, Idade: {idade_usuario}")</code></pre>
+    </section>
+
+    <section>
+        <h2>💡 Dicas Importantes</h2>
+        <div class="tip-box">
+            <ul>
+                <li>🔄 Sempre modifique a variável da condição dentro do loop</li>
+                <li>⚠️ Teste se a condição pode se tornar falsa</li>
+                <li>🛟 Use salvaguardas para evitar loops infinitos</li>
+                <li>🎯 Prefira while para validações e menus</li>
+                <li>📊 Use contadores e acumuladores quando necessário</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function runCode() {
+    const code = document.getElementById('code-input').value;
+    const output = document.getElementById('output');
+    
+    output.innerHTML = '<div class="output-success">Jogo executado! Teste sua sorte em adivinhar o número.</div>';
+}
+</script>
+{% endblock %}

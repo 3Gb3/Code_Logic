@@ -1,0 +1,287 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 2 - Indexação e Slicing | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 2 – Indexação e Slicing{% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Acessar elementos individuais das listas</li>
+            <li>Usar índices positivos e negativos</li>
+            <li>Extrair partes de listas com slicing</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>📍 Indexação em Listas</h2>
+        <p>Cada elemento da lista tem uma posição (índice) que permite acessá-lo diretamente.</p>
+        
+        <h3>Índices Positivos:</h3>
+        <pre><code>frutas = ["maçã", "banana", "uva", "pêra", "manga"]
+#         0       1        2      3       4
+
+print(frutas[0])  # maçã (primeiro elemento)
+print(frutas[2])  # uva (terceiro elemento)
+print(frutas[4])  # manga (último elemento)</code></pre>
+        
+        <h3>Índices Negativos:</h3>
+        <pre><code>frutas = ["maçã", "banana", "uva", "pêra", "manga"]
+#         -5      -4      -3     -2      -1
+
+print(frutas[-1])  # manga (último elemento)
+print(frutas[-2])  # pêra (penúltimo elemento)
+print(frutas[-5])  # maçã (primeiro elemento)</code></pre>
+    </section>
+
+    <section>
+        <h2>⚠️ Tratando Erros de Índice</h2>
+        <pre><code>numeros = [10, 20, 30]
+
+# Acesso seguro
+def acessar_elemento(lista, indice):
+    try:
+        return lista[indice]
+    except IndexError:
+        return f"Índice {indice} não existe na lista"
+
+print(acessar_elemento(numeros, 1))   # 20
+print(acessar_elemento(numeros, 5))   # Índice 5 não existe na lista
+
+# Verificação antes do acesso
+if 0 <= indice < len(numeros):
+    print(f"Elemento: {numeros[indice]}")
+else:
+    print("Índice inválido")</code></pre>
+    </section>
+
+    <section>
+        <h2>✂️ Slicing (Fatiamento)</h2>
+        <p>O slicing permite extrair partes de uma lista usando a sintaxe <code>[início:fim:passo]</code></p>
+        
+        <h3>Sintaxe Básica:</h3>
+        <pre><code>lista[início:fim]  # elementos do índice início até fim-1</code></pre>
+        
+        <h3>Exemplos:</h3>
+        <pre><code>numeros = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+# Slicing básico
+print(numeros[2:5])    # [2, 3, 4] (índices 2, 3, 4)
+print(numeros[1:4])    # [1, 2, 3] (índices 1, 2, 3)
+
+# Omitindo início ou fim
+print(numeros[:4])     # [0, 1, 2, 3] (do início até índice 3)
+print(numeros[6:])     # [6, 7, 8, 9] (do índice 6 até o fim)
+print(numeros[:])      # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] (cópia completa)</code></pre>
+    </section>
+
+    <section>
+        <h2>🔢 Slicing com Passo</h2>
+        <pre><code>numeros = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+# Com passo
+print(numeros[::2])    # [0, 2, 4, 6, 8] (todos, pulando de 2 em 2)
+print(numeros[1::2])   # [1, 3, 5, 7, 9] (do índice 1, pulando de 2 em 2)
+print(numeros[2:8:3])  # [2, 5] (do índice 2 ao 7, pulando de 3 em 3)
+
+# Passo negativo (reverso)
+print(numeros[::-1])   # [9, 8, 7, 6, 5, 4, 3, 2, 1, 0] (lista invertida)
+print(numeros[8:2:-2]) # [8, 6, 4] (do índice 8 ao 3, pulando de 2 em 2)</code></pre>
+    </section>
+
+    <section>
+        <h2>📝 Modificando Elementos</h2>
+        
+        <h3>Alterando Elemento Individual:</h3>
+        <pre><code>cores = ["azul", "verde", "amarelo"]
+print(f"Antes: {cores}")
+
+cores[1] = "vermelho"  # Trocar "verde" por "vermelho"
+print(f"Depois: {cores}")  # ['azul', 'vermelho', 'amarelo']</code></pre>
+        
+        <h3>Modificando com Slicing:</h3>
+        <pre><code>numeros = [1, 2, 3, 4, 5]
+print(f"Original: {numeros}")
+
+# Substituir múltiplos elementos
+numeros[1:4] = [20, 30, 40]
+print(f"Após substituição: {numeros}")  # [1, 20, 30, 40, 5]
+
+# Inserir elementos
+numeros[2:2] = [25, 35]  # Inserir na posição 2
+print(f"Após inserção: {numeros}")  # [1, 20, 25, 35, 30, 40, 5]
+
+# Remover elementos
+del numeros[2:4]  # Remove índices 2 e 3
+print(f"Após remoção: {numeros}")  # [1, 20, 30, 40, 5]</code></pre>
+    </section>
+
+    <section>
+        <h2>🎮 Exercício Prático</h2>
+        <div class="exercise-box">
+            <h3>Manipulador de Playlist</h3>
+            <p>Crie um programa que:</p>
+            <ul>
+                <li>Tenha uma playlist de músicas</li>
+                <li>Permita acessar música por posição</li>
+                <li>Extraia sublistas (top 3, últimas 5, etc.)</li>
+                <li>Inverta a ordem da playlist</li>
+            </ul>
+            
+            <textarea id="code-input" placeholder="# Manipulador de Playlist
+playlist = [
+    'Bohemian Rhapsody',
+    'Stairway to Heaven', 
+    'Hotel California',
+    'Imagine',
+    'Like a Rolling Stone',
+    'Billie Jean',
+    'Hey Jude',
+    'Smells Like Teen Spirit',
+    'What a Wonderful World',
+    'Yesterday'
+]
+
+print('🎵 PLAYLIST ORIGINAL:')
+for i, musica in enumerate(playlist, 1):
+    print(f'{i}. {musica}')
+
+# 1. Acessar primeira e última música
+primeira = playlist[0]
+ultima = playlist[-1]
+print(f'\n🥇 Primeira: {primeira}')
+print(f'🏁 Última: {ultima}')
+
+# 2. Top 3 músicas
+top_3 = playlist[:3]
+print(f'\n🏆 TOP 3:')
+for i, musica in enumerate(top_3, 1):
+    print(f'{i}. {musica}')
+
+# 3. Últimas 3 músicas
+ultimas_3 = playlist[-3:]
+print(f'\n📻 ÚLTIMAS 3:')
+for i, musica in enumerate(ultimas_3, 1):
+    print(f'{i}. {musica}')
+
+# 4. Músicas pares (posições 2, 4, 6...)
+musicas_pares = playlist[1::2]
+print(f'\n⚡ POSIÇÕES PARES:')
+for musica in musicas_pares:
+    print(f'- {musica}')
+
+# 5. Playlist invertida
+playlist_invertida = playlist[::-1]
+print(f'\n🔄 PLAYLIST INVERTIDA:')
+for i, musica in enumerate(playlist_invertida, 1):
+    print(f'{i}. {musica}')"></textarea>
+            
+            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
+            <div id="output"></div>
+        </div>
+    </section>
+
+    <section>
+        <h2>🔍 Operações Avançadas</h2>
+        
+        <h3>1. Encontrando Índices:</h3>
+        <pre><code>frutas = ["maçã", "banana", "uva", "banana", "pêra"]
+
+# Primeiro índice de um elemento
+indice = frutas.index("banana")
+print(f"Primeira banana está no índice: {indice}")  # 1
+
+# Todos os índices de um elemento
+def encontrar_todos_indices(lista, elemento):
+    indices = []
+    for i in range(len(lista)):
+        if lista[i] == elemento:
+            indices.append(i)
+    return indices
+
+todos_banana = encontrar_todos_indices(frutas, "banana")
+print(f"Todas as bananas estão nos índices: {todos_banana}")  # [1, 3]</code></pre>
+        
+        <h3>2. Comparando Listas:</h3>
+        <pre><code>lista1 = [1, 2, 3, 4, 5]
+lista2 = [1, 2, 3, 4, 5]
+lista3 = [1, 2, 3, 5, 4]
+
+print(lista1 == lista2)  # True (mesmos elementos, mesma ordem)
+print(lista1 == lista3)  # False (mesmos elementos, ordens diferentes)
+
+# Verificar se contém os mesmos elementos (sem considerar ordem)
+def mesmos_elementos(lista_a, lista_b):
+    return sorted(lista_a) == sorted(lista_b)
+
+print(mesmos_elementos(lista1, lista3))  # True</code></pre>
+    </section>
+
+    <section>
+        <h2>🎨 Padrões Úteis</h2>
+        
+        <h3>1. Dividir Lista em Partes:</h3>
+        <pre><code>numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+# Dividir em duas metades
+meio = len(numeros) // 2
+primeira_metade = numeros[:meio]
+segunda_metade = numeros[meio:]
+
+print(f"Primeira metade: {primeira_metade}")
+print(f"Segunda metade: {segunda_metade}")
+
+# Dividir em grupos de tamanho específico
+def dividir_em_grupos(lista, tamanho):
+    grupos = []
+    for i in range(0, len(lista), tamanho):
+        grupo = lista[i:i + tamanho]
+        grupos.append(grupo)
+    return grupos
+
+grupos = dividir_em_grupos(numeros, 3)
+print(f"Grupos de 3: {grupos}")  # [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10]]</code></pre>
+        
+        <h3>2. Filtrar com Slicing:</h3>
+        <pre><code>notas = [7.5, 8.0, 6.2, 9.1, 5.5, 8.8, 7.0, 9.5]
+
+# Primeiras 5 notas
+primeiras_5 = notas[:5]
+
+# Notas de posições pares
+posicoes_pares = notas[::2]
+
+# Últimas 3 notas em ordem inversa
+ultimas_3_invertidas = notas[-3:][::-1]
+
+print(f"Primeiras 5: {primeiras_5}")
+print(f"Posições pares: {posicoes_pares}")
+print(f"Últimas 3 invertidas: {ultimas_3_invertidas}")</code></pre>
+    </section>
+
+    <section>
+        <h2>💡 Dicas Importantes</h2>
+        <div class="tip-box">
+            <ul>
+                <li>📍 Índices começam em 0, não em 1</li>
+                <li>🔄 Índices negativos contam do fim para o início</li>
+                <li>✂️ Slicing não modifica a lista original</li>
+                <li>⚠️ Cuidado com IndexError ao acessar índices inexistentes</li>
+                <li>🎯 Use len(lista) para verificar o tamanho</li>
+                <li>🔍 Use in para verificar se elemento existe antes de buscar índice</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function runCode() {
+    const code = document.getElementById('code-input').value;
+    const output = document.getElementById('output');
+    
+    output.innerHTML = '<div class="output-success">Manipulador de playlist executado! Veja como indexação e slicing funcionam com dados reais.</div>';
+}
+</script>
+{% endblock %}

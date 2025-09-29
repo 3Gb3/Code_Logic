@@ -1,0 +1,188 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 7 - Expressões Condicionais | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 7 – Expressões Condicionais{% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Aprender o operador ternário em Python</li>
+            <li>Escrever condições de forma mais concisa</li>
+            <li>Usar expressões condicionais em atribuições</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>⚡ O que são Expressões Condicionais?</h2>
+        <p>Também conhecidas como "operador ternário", permitem escrever condições simples em uma única linha.</p>
+        
+        <h3>Sintaxe:</h3>
+        <pre><code>variavel = valor_se_true if condicao else valor_se_false</code></pre>
+        
+        <h3>Equivale a:</h3>
+        <pre><code>if condicao:
+    variavel = valor_se_true
+else:
+    variavel = valor_se_false</code></pre>
+    </section>
+
+    <section>
+        <h2>📝 Exemplos Básicos</h2>
+        
+        <h3>Exemplo 1: Determinando Status</h3>
+        <pre><code># Forma tradicional
+idade = 20
+if idade >= 18:
+    status = "Maior de idade"
+else:
+    status = "Menor de idade"
+
+# Com expressão condicional
+status = "Maior de idade" if idade >= 18 else "Menor de idade"
+print(status)  # Maior de idade</code></pre>
+    
+        <h3>Exemplo 2: Calculando Desconto</h3>
+        <pre><code>valor = 100
+eh_vip = True
+
+# Aplicar desconto de 20% se for VIP, senão 5%
+desconto = 0.20 if eh_vip else 0.05
+valor_final = valor * (1 - desconto)
+
+print(f"Valor final: R$ {valor_final}")  # R$ 80.0</code></pre>
+    </section>
+
+    <section>
+        <h2>🔢 Expressões Condicionais com Números</h2>
+        <pre><code># Encontrar o maior número
+a = 10
+b = 15
+maior = a if a > b else b
+print(f"Maior número: {maior}")
+
+# Determinar paridade
+numero = 7
+tipo = "par" if numero % 2 == 0 else "ímpar"
+print(f"{numero} é {tipo}")
+
+# Nota mínima para aprovação
+nota = 8.5
+resultado = "Aprovado" if nota >= 7 else "Reprovado"
+print(resultado)</code></pre>
+    </section>
+
+    <section>
+        <h2>📚 Expressões Condicionais Aninhadas</h2>
+        <p>⚠️ Use com moderação para manter legibilidade!</p>
+        
+        <pre><code># Classificação de notas
+nota = 8.5
+conceito = ("A" if nota >= 9 else 
+           "B" if nota >= 7 else 
+           "C" if nota >= 5 else "D")
+print(f"Conceito: {conceito}")
+
+# Melhor usar if-elif para casos complexos
+if nota >= 9:
+    conceito = "A"
+elif nota >= 7:
+    conceito = "B"
+elif nota >= 5:
+    conceito = "C"
+else:
+    conceito = "D"</code></pre>
+    </section>
+
+    <section>
+        <h2>🎨 Casos de Uso Práticos</h2>
+        
+        <h3>1. Formatação de Texto</h3>
+        <pre><code>produtos = 3
+mensagem = f"Você tem {produtos} produto{'s' if produtos != 1 else ''} no carrinho"
+print(mensagem)</code></pre>
+    
+        <h3>2. Valores Padrão</h3>
+        <pre><code>nome = input("Seu nome: ")
+nome_final = nome if nome.strip() else "Usuário Anônimo"
+print(f"Olá, {nome_final}!")</code></pre>
+    
+        <h3>3. Cálculos Condicionais</h3>
+        <pre><code>salario = 3000
+eh_funcionario = True
+bonus = salario * 0.1 if eh_funcionario else 0
+print(f"Bônus: R$ {bonus}")</code></pre>
+    </section>
+
+    <section>
+        <h2>🎮 Exercício Prático</h2>
+        <div class="exercise-box">
+            <h3>Calculadora de Preços com Descontos</h3>
+            <p>Use expressões condicionais para criar um sistema de preços:</p>
+            <ul>
+                <li>Cliente VIP: 15% de desconto</li>
+                <li>Compra acima de R$ 100: 10% de desconto</li>
+                <li>Primeira compra: 5% de desconto</li>
+                <li>Combine as condições usando expressões condicionais</li>
+            </ul>
+            
+            <textarea id="code-input" placeholder="# Calculadora de Preços
+valor_compra = float(input('Valor da compra: R$ '))
+eh_vip = input('É cliente VIP? (s/n): ').lower() == 's'
+primeira_compra = input('É primeira compra? (s/n): ').lower() == 's'
+
+# Use expressões condicionais para calcular descontos
+desconto_vip = 0.15 if eh_vip else 0
+desconto_valor = 0.10 if valor_compra > 100 else 0
+# Continue..."></textarea>
+            
+            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
+            <div id="output"></div>
+        </div>
+    </section>
+
+    <section>
+        <h2>⚖️ Quando Usar Expressões Condicionais</h2>
+        
+        <h3>✅ Use quando:</h3>
+        <ul>
+            <li>A condição é simples e clara</li>
+            <li>Há apenas dois resultados possíveis</li>
+            <li>A linha não fica muito longa</li>
+            <li>Melhora a legibilidade do código</li>
+        </ul>
+        
+        <h3>❌ Evite quando:</h3>
+        <ul>
+            <li>A condição é complexa</li>
+            <li>Há múltiplas condições aninhadas</li>
+            <li>A linha fica muito longa</li>
+            <li>Prejudica a legibilidade</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>💡 Dicas de Boas Práticas</h2>
+        <div class="tip-box">
+            <ul>
+                <li>📏 Mantenha expressões curtas e simples</li>
+                <li>🔤 Use parênteses para agrupar condições complexas</li>
+                <li>📖 Priorize sempre a legibilidade</li>
+                <li>🧪 Teste com diferentes valores</li>
+                <li>💭 Considere usar if tradicional para lógica complexa</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function runCode() {
+    const code = document.getElementById('code-input').value;
+    const output = document.getElementById('output');
+    
+    output.innerHTML = '<div class="output-success">Calculadora executada! Teste com diferentes valores e tipos de cliente.</div>';
+}
+</script>
+{% endblock %}

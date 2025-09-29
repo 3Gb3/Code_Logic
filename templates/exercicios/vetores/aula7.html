@@ -1,0 +1,578 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 7 - Tuplas | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 7 – Tuplas{% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Compreender o conceito e características das tuplas</li>
+            <li>Trabalhar com estruturas de dados imutáveis</li>
+            <li>Aplicar tuplas em situações práticas</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>📦 O que são Tuplas?</h2>
+        <p>Tuplas são estruturas de dados <strong>imutáveis</strong> que armazenam uma coleção ordenada de elementos. Uma vez criadas, não podem ser modificadas.</p>
+        
+        <h3>Características das Tuplas:</h3>
+        <ul>
+            <li>🔒 <strong>Imutáveis</strong> - não podem ser alteradas após criação</li>
+            <li>📋 <strong>Ordenadas</strong> - mantêm a ordem dos elementos</li>
+            <li>🔢 <strong>Indexadas</strong> - acesso por índice como listas</li>
+            <li>🔄 <strong>Permitem duplicatas</strong> - podem ter elementos repetidos</li>
+            <li>⚡ <strong>Mais rápidas</strong> que listas para acesso</li>
+        </ul>
+        
+        <h3>Criação de Tuplas:</h3>
+        <pre><code># Tupla vazia
+tupla_vazia = ()
+print(f"Tupla vazia: {tupla_vazia}")
+print(f"Tipo: {type(tupla_vazia)}")
+
+# Tupla com elementos
+cores = ("vermelho", "verde", "azul")
+numeros = (1, 2, 3, 4, 5)
+mista = ("Python", 3.9, True, 42)
+
+# Tupla de um elemento (cuidado com a vírgula!)
+um_elemento = (42,)  # Vírgula necessária
+nao_tupla = (42)     # Isso é apenas um int com parênteses!
+
+print(f"Um elemento: {um_elemento}, tipo: {type(um_elemento)}")
+print(f"Não é tupla: {nao_tupla}, tipo: {type(nao_tupla)}")
+
+# Criação sem parênteses
+coordenadas = 10, 20
+print(f"Coordenadas: {coordenadas}, tipo: {type(coordenadas)}")
+
+# Usando tuple()
+lista = [1, 2, 3]
+tupla_da_lista = tuple(lista)
+print(f"De lista para tupla: {tupla_da_lista}")</code></pre>
+    </section>
+
+    <section>
+        <h2>🔍 Acessando Elementos</h2>
+        
+        <h3>Indexação e Slicing:</h3>
+        <pre><code>frutas = ("maçã", "banana", "uva", "pêra", "manga")
+
+# Indexação positiva
+print(f"Primeira fruta: {frutas[0]}")    # maçã
+print(f"Terceira fruta: {frutas[2]}")    # uva
+
+# Indexação negativa
+print(f"Última fruta: {frutas[-1]}")     # manga
+print(f"Penúltima: {frutas[-2]}")        # pêra
+
+# Slicing
+print(f"Primeiras 3: {frutas[:3]}")      # ('maçã', 'banana', 'uva')
+print(f"Últimas 2: {frutas[-2:]}")       # ('pêra', 'manga')
+print(f"Do meio: {frutas[1:4]}")         # ('banana', 'uva', 'pêra')
+
+# Desempacotamento (unpacking)
+x, y, z = (10, 20, 30)
+print(f"x={x}, y={y}, z={z}")
+
+# Desempacotamento com asterisco
+primeiro, *meio, ultimo = frutas
+print(f"Primeiro: {primeiro}")
+print(f"Meio: {meio}")
+print(f"Último: {ultimo}")</code></pre>
+        
+        <h3>Iteração em Tuplas:</h3>
+        <pre><code>notas = (8.5, 7.2, 9.0, 6.8, 8.9)
+
+# Iteração simples
+print("Todas as notas:")
+for nota in notas:
+    print(f"  {nota}")
+
+# Com enumerate
+print("Notas com índice:")
+for i, nota in enumerate(notas):
+    print(f"  Nota {i+1}: {nota}")
+
+# Verificar se elemento existe
+if 9.0 in notas:
+    print("Nota 9.0 encontrada!")
+
+# Contar elementos
+print(f"Posições da nota 8.5: {notas.count(8.5)}")
+print(f"Primeira posição da nota 9.0: {notas.index(9.0)}")</code></pre>
+    </section>
+
+    <section>
+        <h2>🛠️ Métodos de Tuplas</h2>
+        <p>Tuplas têm apenas dois métodos, pois são imutáveis:</p>
+        
+        <h3>count() e index():</h3>
+        <pre><code>numeros = (1, 2, 3, 2, 4, 2, 5)
+
+# count() - conta ocorrências
+contador_2 = numeros.count(2)
+print(f"Número 2 aparece {contador_2} vezes")  # 3
+
+contador_6 = numeros.count(6)
+print(f"Número 6 aparece {contador_6} vezes")  # 0
+
+# index() - encontra primeira posição
+posicao = numeros.index(3)
+print(f"Número 3 está na posição {posicao}")   # 2
+
+primeira_pos_2 = numeros.index(2)
+print(f"Primeira posição do 2: {primeira_pos_2}")  # 1
+
+# index() com slice
+try:
+    pos_2_apos_3 = numeros.index(2, 3)  # Buscar 2 a partir da posição 3
+    print(f"Próximo 2 após posição 3: {pos_2_apos_3}")  # 3
+except ValueError:
+    print("Elemento não encontrado")</code></pre>
+    </section>
+
+    <section>
+        <h2>🔄 Operações com Tuplas</h2>
+        
+        <h3>Concatenação e Repetição:</h3>
+        <pre><code># Concatenação
+tupla1 = (1, 2, 3)
+tupla2 = (4, 5, 6)
+concatenada = tupla1 + tupla2
+print(f"Concatenada: {concatenada}")  # (1, 2, 3, 4, 5, 6)
+
+# Repetição
+repetida = (0, 1) * 3
+print(f"Repetida: {repetida}")  # (0, 1, 0, 1, 0, 1)
+
+# Comparação
+print(f"(1, 2) < (1, 3): {(1, 2) < (1, 3)}")    # True
+print(f"(1, 2) == (1, 2): {(1, 2) == (1, 2)}")  # True
+
+# Tamanho
+coordenadas = (10, 20, 30)
+print(f"Tamanho: {len(coordenadas)}")  # 3</code></pre>
+        
+        <h3>Convertendo Entre Tipos:</h3>
+        <pre><code># Lista para tupla
+lista = [1, 2, 3, 4, 5]
+tupla = tuple(lista)
+print(f"Lista → Tupla: {tupla}")
+
+# Tupla para lista
+volta_lista = list(tupla)
+print(f"Tupla → Lista: {volta_lista}")
+
+# String para tupla
+palavra = "Python"
+letras = tuple(palavra)
+print(f"String → Tupla: {letras}")  # ('P', 'y', 't', 'h', 'o', 'n')
+
+# Range para tupla
+numeros = tuple(range(5))
+print(f"Range → Tupla: {numeros}")  # (0, 1, 2, 3, 4)</code></pre>
+    </section>
+
+    <section>
+        <h2>🎮 Exercício Prático</h2>
+        <div class="exercise-box">
+            <h3>Sistema de Coordenadas e Pontos</h3>
+            <p>Crie um sistema para trabalhar com pontos em um plano cartesiano usando tuplas:</p>
+            <ul>
+                <li>Representar pontos como tuplas (x, y)</li>
+                <li>Calcular distâncias entre pontos</li>
+                <li>Verificar se pontos formam figuras geométricas</li>
+            </ul>
+            
+            <textarea id="code-input" placeholder="import math
+
+class SistemaCoordenadas:
+    @staticmethod
+    def criar_ponto(x, y):
+        '''Cria um ponto como tupla'''
+        return (x, y)
+    
+    @staticmethod
+    def distancia_euclidiana(ponto1, ponto2):
+        '''Calcula distância euclidiana entre dois pontos'''
+        x1, y1 = ponto1
+        x2, y2 = ponto2
+        return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+    
+    @staticmethod
+    def distancia_manhattan(ponto1, ponto2):
+        '''Calcula distância de Manhattan (soma das diferenças absolutas)'''
+        x1, y1 = ponto1
+        x2, y2 = ponto2
+        return abs(x2 - x1) + abs(y2 - y1)
+    
+    @staticmethod
+    def ponto_medio(ponto1, ponto2):
+        '''Calcula ponto médio entre dois pontos'''
+        x1, y1 = ponto1
+        x2, y2 = ponto2
+        return ((x1 + x2) / 2, (y1 + y2) / 2)
+    
+    @staticmethod
+    def quadrante(ponto):
+        '''Determina o quadrante do ponto'''
+        x, y = ponto
+        
+        if x > 0 and y > 0:
+            return 1
+        elif x < 0 and y > 0:
+            return 2
+        elif x < 0 and y < 0:
+            return 3
+        elif x > 0 and y < 0:
+            return 4
+        elif x == 0 and y != 0:
+            return 'Eixo Y'
+        elif y == 0 and x != 0:
+            return 'Eixo X'
+        else:
+            return 'Origem'
+    
+    @staticmethod
+    def eh_triangulo(ponto1, ponto2, ponto3):
+        '''Verifica se três pontos formam um triângulo'''
+        # Calcula as distâncias entre os pontos
+        d1 = SistemaCoordenadas.distancia_euclidiana(ponto1, ponto2)
+        d2 = SistemaCoordenadas.distancia_euclidiana(ponto2, ponto3)
+        d3 = SistemaCoordenadas.distancia_euclidiana(ponto3, ponto1)
+        
+        # Verifica a desigualdade triangular
+        return (d1 + d2 > d3) and (d2 + d3 > d1) and (d3 + d1 > d2)
+    
+    @staticmethod
+    def eh_retangulo(ponto1, ponto2, ponto3, ponto4):
+        '''Verifica se quatro pontos formam um retângulo'''
+        pontos = [ponto1, ponto2, ponto3, ponto4]
+        
+        # Calcula todas as distâncias possíveis
+        distancias = []
+        for i in range(4):
+            for j in range(i+1, 4):
+                dist = SistemaCoordenadas.distancia_euclidiana(pontos[i], pontos[j])
+                distancias.append(round(dist, 6))  # Arredondar para evitar erros de float
+        
+        # Ordena as distâncias
+        distancias.sort()
+        
+        # Em um retângulo: 4 lados iguais dois a dois + 2 diagonais iguais
+        # Então devemos ter: [lado1, lado1, lado2, lado2, diagonal, diagonal]
+        return (distancias[0] == distancias[1] and 
+                distancias[2] == distancias[3] and 
+                distancias[4] == distancias[5])
+    
+    @staticmethod
+    def area_triangulo(ponto1, ponto2, ponto3):
+        '''Calcula área do triângulo formado por três pontos'''
+        x1, y1 = ponto1
+        x2, y2 = ponto2
+        x3, y3 = ponto3
+        
+        # Fórmula: |x1(y2-y3) + x2(y3-y1) + x3(y1-y2)| / 2
+        area = abs(x1*(y2-y3) + x2*(y3-y1) + x3*(y1-y2)) / 2
+        return area
+    
+    @staticmethod
+    def ordenar_por_distancia_origem(pontos):
+        '''Ordena pontos por distância da origem'''
+        origem = (0, 0)
+        return sorted(pontos, key=lambda p: SistemaCoordenadas.distancia_euclidiana(p, origem))
+
+# Testando o sistema
+sistema = SistemaCoordenadas()
+
+print('📍 SISTEMA DE COORDENADAS')
+print('=' * 30)
+
+# Criando pontos
+pontos = [
+    sistema.criar_ponto(3, 4),
+    sistema.criar_ponto(-2, 1),
+    sistema.criar_ponto(0, -3),
+    sistema.criar_ponto(5, 0),
+    sistema.criar_ponto(-1, -2)
+]
+
+print('\\n📋 PONTOS CRIADOS:')
+for i, ponto in enumerate(pontos):
+    x, y = ponto
+    quadrante = sistema.quadrante(ponto)
+    print(f'  P{i+1}: ({x}, {y}) - Quadrante: {quadrante}')
+
+# Calculando distâncias
+print('\\n📏 DISTÂNCIAS:')
+p1, p2 = pontos[0], pontos[1]
+dist_euclidiana = sistema.distancia_euclidiana(p1, p2)
+dist_manhattan = sistema.distancia_manhattan(p1, p2)
+ponto_medio = sistema.ponto_medio(p1, p2)
+
+print(f'Entre {p1} e {p2}:')
+print(f'  Euclidiana: {dist_euclidiana:.2f}')
+print(f'  Manhattan: {dist_manhattan:.2f}')
+print(f'  Ponto médio: ({ponto_medio[0]:.1f}, {ponto_medio[1]:.1f})')
+
+# Verificando formas geométricas
+print('\\n🔺 ANÁLISE DE TRIÂNGULO:')
+triangulo = pontos[:3]
+eh_triangulo = sistema.eh_triangulo(*triangulo)
+if eh_triangulo:
+    area = sistema.area_triangulo(*triangulo)
+    print(f'Pontos {triangulo} formam um triângulo')
+    print(f'Área do triângulo: {area:.2f}')
+else:
+    print(f'Pontos {triangulo} NÃO formam um triângulo')
+
+# Verificando retângulo
+print('\\n⬜ ANÁLISE DE RETÂNGULO:')
+retangulo_pontos = [(0, 0), (0, 3), (4, 3), (4, 0)]
+eh_retangulo = sistema.eh_retangulo(*retangulo_pontos)
+print(f'Pontos {retangulo_pontos}')
+print(f'Formam retângulo: {\"SIM\" if eh_retangulo else \"NÃO\"}')
+
+# Ordenando por distância da origem
+print('\\n🎯 ORDENAÇÃO POR DISTÂNCIA DA ORIGEM:')
+ordenados = sistema.ordenar_por_distancia_origem(pontos)
+origem = (0, 0)
+
+for i, ponto in enumerate(ordenados):
+    dist = sistema.distancia_euclidiana(ponto, origem)
+    print(f'  {i+1}º: {ponto} - Distância: {dist:.2f}')
+
+# Demonstrando imutabilidade das tuplas
+print('\\n🔒 DEMONSTRAÇÃO DE IMUTABILIDADE:')
+ponto_original = (10, 20)
+print(f'Ponto original: {ponto_original}')
+
+# Não podemos fazer: ponto_original[0] = 15  # Isso daria erro!
+# Em vez disso, criamos um novo ponto
+ponto_modificado = (15, ponto_original[1])
+print(f'Novo ponto: {ponto_modificado}')
+print(f'Ponto original permanece: {ponto_original}')
+
+# Tuplas aninhadas
+print('\\n🏗️ ESTRUTURAS COMPLEXAS COM TUPLAS:')
+linha_pontos = ((0, 0), (1, 1), (2, 2), (3, 3))
+print(f'Linha diagonal: {linha_pontos}')
+
+# Desempacotamento de múltiplos pontos
+x_coords, y_coords = zip(*linha_pontos)
+print(f'Coordenadas X: {x_coords}')
+print(f'Coordenadas Y: {y_coords}')"></textarea>
+            
+            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
+            <div id="output"></div>
+        </div>
+    </section>
+
+    <section>
+        <h2>🆚 Tuplas vs Listas</h2>
+        
+        <table class="comparison-table">
+            <tr>
+                <th>Aspecto</th>
+                <th>Tuplas</th>
+                <th>Listas</th>
+            </tr>
+            <tr>
+                <td>Mutabilidade</td>
+                <td>❌ Imutável</td>
+                <td>✅ Mutável</td>
+            </tr>
+            <tr>
+                <td>Performance</td>
+                <td>⚡ Mais rápida</td>
+                <td>🐌 Mais lenta</td>
+            </tr>
+            <tr>
+                <td>Uso de Memória</td>
+                <td>💾 Menor</td>
+                <td>💾 Maior</td>
+            </tr>
+            <tr>
+                <td>Métodos</td>
+                <td>📦 2 (count, index)</td>
+                <td>🛠️ Muitos</td>
+            </tr>
+            <tr>
+                <td>Uso como Chave</td>
+                <td>🗝️ Pode ser chave de dict</td>
+                <td>❌ Não pode</td>
+            </tr>
+            <tr>
+                <td>Quando Usar</td>
+                <td>📋 Dados que não mudam</td>
+                <td>📝 Dados que mudam</td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h2>🎯 Casos de Uso das Tuplas</h2>
+        
+        <h3>1. Coordenadas e Pontos:</h3>
+        <pre><code># Representar coordenadas
+ponto_2d = (10, 20)
+ponto_3d = (10, 20, 30)
+cor_rgb = (255, 128, 0)
+
+# Lista de coordenadas
+pontos = [(0, 0), (1, 1), (2, 4), (3, 9)]</code></pre>
+        
+        <h3>2. Retorno de Múltiplos Valores:</h3>
+        <pre><code>def dividir_com_resto(dividendo, divisor):
+    """Retorna quociente e resto"""
+    return dividendo // divisor, dividendo % divisor
+
+def estatisticas(numeros):
+    """Retorna min, max, média"""
+    return min(numeros), max(numeros), sum(numeros)/len(numeros)
+
+# Uso
+quociente, resto = dividir_com_resto(17, 5)
+minimo, maximo, media = estatisticas([1, 2, 3, 4, 5])</code></pre>
+        
+        <h3>3. Configurações e Constantes:</h3>
+        <pre><code># Configurações que não devem mudar
+RESOLUCOES = (
+    (1920, 1080),
+    (1366, 768),
+    (1024, 768)
+)
+
+# Dados de pessoa (registro)
+pessoa = ("João", "Silva", 30, "Engenheiro")
+nome, sobrenome, idade, profissao = pessoa</code></pre>
+        
+        <h3>4. Chaves de Dicionário:</h3>
+        <pre><code># Usando tuplas como chaves
+temperaturas = {
+    (2023, 1, 15): 25.5,    # (ano, mês, dia): temperatura
+    (2023, 1, 16): 26.0,
+    (2023, 1, 17): 24.8
+}
+
+# Matriz esparsa
+matriz_esparsa = {
+    (0, 0): 1,
+    (1, 2): 5,
+    (3, 1): 9
+}</code></pre>
+    </section>
+
+    <section>
+        <h2>🧩 Named Tuples</h2>
+        <p>Para tuplas com campos nomeados, use <code>namedtuple</code>:</p>
+        
+        <pre><code>from collections import namedtuple
+
+# Definir estrutura
+Pessoa = namedtuple('Pessoa', ['nome', 'idade', 'cidade'])
+
+# Criar instâncias
+joao = Pessoa('João', 30, 'São Paulo')
+maria = Pessoa('Maria', 25, 'Rio de Janeiro')
+
+# Acessar por nome ou índice
+print(f"Nome: {joao.nome}")        # João
+print(f"Idade: {joao[1]}")         # 30
+
+# Métodos úteis
+print(f"Campos: {joao._fields}")   # ('nome', 'idade', 'cidade')
+print(f"Como dict: {joao._asdict()}")
+
+# Criar nova instância com alteração
+joao_mais_velho = joao._replace(idade=31)
+print(f"João mais velho: {joao_mais_velho}")
+
+# Ponto 2D com métodos
+Ponto = namedtuple('Ponto', ['x', 'y'])
+
+def distancia(p1, p2):
+    return ((p1.x - p2.x)**2 + (p1.y - p2.y)**2)**0.5
+
+p1 = Ponto(0, 0)
+p2 = Ponto(3, 4)
+print(f"Distância: {distancia(p1, p2)}")  # 5.0</code></pre>
+    </section>
+
+    <section>
+        <h2>⚡ Performance e Otimização</h2>
+        
+        <h3>Comparação de Performance:</h3>
+        <pre><code>import time
+
+# Teste de criação
+def teste_criacao():
+    start = time.time()
+    
+    # Tuplas
+    for i in range(1000000):
+        t = (1, 2, 3, 4, 5)
+    
+    tempo_tupla = time.time() - start
+    
+    start = time.time()
+    
+    # Listas
+    for i in range(1000000):
+        l = [1, 2, 3, 4, 5]
+    
+    tempo_lista = time.time() - start
+    
+    print(f"Criação - Tupla: {tempo_tupla:.4f}s")
+    print(f"Criação - Lista: {tempo_lista:.4f}s")
+    print(f"Tupla é {tempo_lista/tempo_tupla:.2f}x mais rápida")
+
+# Teste de acesso
+def teste_acesso():
+    tupla = tuple(range(1000))
+    lista = list(range(1000))
+    
+    start = time.time()
+    for i in range(100000):
+        x = tupla[500]
+    tempo_tupla = time.time() - start
+    
+    start = time.time()
+    for i in range(100000):
+        x = lista[500]
+    tempo_lista = time.time() - start
+    
+    print(f"Acesso - Tupla: {tempo_tupla:.4f}s")
+    print(f"Acesso - Lista: {tempo_lista:.4f}s")</code></pre>
+    </section>
+
+    <section>
+        <h2>💡 Dicas Importantes</h2>
+        <div class="tip-box">
+            <ul>
+                <li>🔒 Use tuplas para dados que não devem mudar</li>
+                <li>⚡ Tuplas são mais rápidas que listas para acesso</li>
+                <li>🗝️ Tuplas podem ser chaves de dicionário</li>
+                <li>📦 Vírgula é crucial para tuplas de um elemento: (42,)</li>
+                <li>🎯 Use desempacotamento para múltiplos retornos</li>
+                <li>📋 Named tuples para estruturas mais legíveis</li>
+                <li>🔍 Use tuplas para coordenadas e pontos</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function runCode() {
+    const code = document.getElementById('code-input').value;
+    const output = document.getElementById('output');
+    
+    output.innerHTML = '<div class="output-success">Sistema de coordenadas executado! Veja como tuplas são perfeitas para dados imutáveis.</div>';
+}
+</script>
+{% endblock %}

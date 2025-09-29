@@ -1,0 +1,320 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 8 - List Comprehensions | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 8 – List Comprehensions{% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Criar listas de forma concisa e elegante</li>
+            <li>Usar filtros e transformações em uma linha</li>
+            <li>Entender quando usar list comprehensions</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>📝 O que são List Comprehensions?</h2>
+        <p>List comprehensions são uma forma concisa de criar listas baseadas em outras sequências.</p>
+        
+        <h3>Sintaxe Básica:</h3>
+        <pre><code>[expressao for item in sequencia]</code></pre>
+        
+        <h3>Comparação:</h3>
+        <div class="comparison">
+            <div class="traditional">
+                <h4>Forma Tradicional:</h4>
+                <pre><code>numeros = [1, 2, 3, 4, 5]
+quadrados = []
+
+for num in numeros:
+    quadrados.append(num ** 2)
+
+print(quadrados)  # [1, 4, 9, 16, 25]</code></pre>
+            </div>
+            <div class="comprehension">
+                <h4>List Comprehension:</h4>
+                <pre><code>numeros = [1, 2, 3, 4, 5]
+quadrados = [num ** 2 for num in numeros]
+
+print(quadrados)  # [1, 4, 9, 16, 25]</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>🔍 List Comprehensions com Filtros</h2>
+        
+        <h3>Sintaxe com Condição:</h3>
+        <pre><code>[expressao for item in sequencia if condicao]</code></pre>
+        
+        <h3>Exemplos:</h3>
+        
+        <h4>1. Números Pares:</h4>
+        <pre><code># Tradicional
+pares = []
+for i in range(1, 11):
+    if i % 2 == 0:
+        pares.append(i)
+
+# List comprehension
+pares = [i for i in range(1, 11) if i % 2 == 0]
+print(pares)  # [2, 4, 6, 8, 10]</code></pre>
+        
+        <h4>2. Filtrando Strings:</h4>
+        <pre><code>palavras = ["python", "java", "c++", "javascript", "go"]
+
+# Palavras com mais de 4 caracteres
+longas = [palavra for palavra in palavras if len(palavra) > 4]
+print(longas)  # ['python', 'javascript']
+
+# Palavras em maiúscula
+maiusculas = [palavra.upper() for palavra in palavras if len(palavra) <= 4]
+print(maiusculas)  # ['JAVA', 'C++']</code></pre>
+    </section>
+
+    <section>
+        <h2>🔄 Transformações Comuns</h2>
+        
+        <h3>1. Operações Matemáticas:</h3>
+        <pre><code>numeros = [1, 2, 3, 4, 5]
+
+# Quadrados
+quadrados = [x ** 2 for x in numeros]
+print(f"Quadrados: {quadrados}")
+
+# Cubos dos números pares
+cubos_pares = [x ** 3 for x in numeros if x % 2 == 0]
+print(f"Cubos pares: {cubos_pares}")
+
+# Convertendo temperaturas
+celsius = [0, 20, 30, 100]
+fahrenheit = [c * 9/5 + 32 for c in celsius]
+print(f"Fahrenheit: {fahrenheit}")</code></pre>
+        
+        <h3>2. Manipulação de Strings:</h3>
+        <pre><code>nomes = ["ana", "BRUNO", "Carlos", "diana"]
+
+# Capitalizar nomes
+nomes_capitalizados = [nome.capitalize() for nome in nomes]
+print(nomes_capitalizados)  # ['Ana', 'Bruno', 'Carlos', 'Diana']
+
+# Comprimentos dos nomes
+comprimentos = [len(nome) for nome in nomes]
+print(comprimentos)  # [3, 5, 6, 5]
+
+# Nomes que começam com vogal
+vogais = "aeiouAEIOU"
+nomes_vogal = [nome for nome in nomes if nome[0] in vogais]
+print(nomes_vogal)  # ['ana']</code></pre>
+    </section>
+
+    <section>
+        <h2>🎮 Exercício Prático</h2>
+        <div class="exercise-box">
+            <h3>Processador de Dados</h3>
+            <p>Use list comprehensions para resolver estes problemas:</p>
+            <ul>
+                <li>Extrair números pares de uma lista</li>
+                <li>Converter lista de strings em números</li>
+                <li>Filtrar e transformar dados de vendas</li>
+                <li>Criar tabela de multiplicação</li>
+            </ul>
+            
+            <textarea id="code-input" placeholder="# Processador de Dados
+import random
+
+# 1. Lista de números aleatórios
+numeros = [random.randint(1, 100) for _ in range(10)]
+print(f'Números gerados: {numeros}')
+
+# Extrair apenas números pares
+pares = [num for num in numeros if num % 2 == 0]
+print(f'Números pares: {pares}')
+
+# 2. Converter strings em números
+dados_texto = ['10', '25', '30', '45', '60']
+dados_numericos = [int(x) for x in dados_texto]
+print(f'Convertidos: {dados_numericos}')
+
+# 3. Dados de vendas (nome, quantidade, preco)
+vendas = [
+    ('Produto A', 10, 25.50),
+    ('Produto B', 5, 45.00),
+    ('Produto C', 15, 12.75)
+]
+
+# Calcular total de cada venda
+totais = [qtd * preco for nome, qtd, preco in vendas]
+print(f'Totais por produto: {totais}')
+
+# Produtos com vendas > R$ 200
+vendas_altas = [nome for nome, qtd, preco in vendas if qtd * preco > 200]
+print(f'Vendas altas: {vendas_altas}')
+
+# 4. Tabuada do 7
+tabuada_7 = [f'7 x {i} = {7 * i}' for i in range(1, 11)]
+print('Tabuada do 7:')
+for linha in tabuada_7:
+    print(linha)</textarea>
+            
+            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
+            <div id="output"></div>
+        </div>
+    </section>
+
+    <section>
+        <h2>🔄 List Comprehensions Aninhadas</h2>
+        
+        <h3>1. Matriz (Lista de Listas):</h3>
+        <pre><code># Criar matriz 3x3 com zeros
+matriz = [[0 for j in range(3)] for i in range(3)]
+print(matriz)
+# [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+
+# Matriz com números sequenciais
+matriz_num = [[i*3 + j + 1 for j in range(3)] for i in range(3)]
+print(matriz_num)
+# [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+
+# Achatar matriz (transformar em lista simples)
+achatada = [item for linha in matriz_num for item in linha]
+print(achatada)  # [1, 2, 3, 4, 5, 6, 7, 8, 9]</code></pre>
+        
+        <h3>2. Combinações:</h3>
+        <pre><code># Todas as combinações de duas listas
+cores = ["red", "blue", "green"]
+tamanhos = ["S", "M", "L"]
+
+produtos = [f"{cor}-{tamanho}" for cor in cores for tamanho in tamanhos]
+print(produtos)
+# ['red-S', 'red-M', 'red-L', 'blue-S', 'blue-M', ...]
+
+# Pares de coordenadas
+coordenadas = [(x, y) for x in range(3) for y in range(3)]
+print(coordenadas)
+# [(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), ...]</code></pre>
+    </section>
+
+    <section>
+        <h2>🎯 Casos Específicos</h2>
+        
+        <h3>1. Expressão Condicional (Ternário):</h3>
+        <pre><code>numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+# "par" ou "ímpar" para cada número
+tipos = ["par" if x % 2 == 0 else "ímpar" for x in numeros]
+print(tipos)
+
+# Aplicar transformação condicional
+processados = [x * 2 if x % 2 == 0 else x * 3 for x in numeros]
+print(processados)  # [3, 4, 9, 8, 15, 12, 21, 16, 27, 20]</code></pre>
+        
+        <h3>2. Filtros Múltiplos:</h3>
+        <pre><code>numeros = range(1, 51)
+
+# Números divisíveis por 3 E por 5
+div_3_e_5 = [x for x in numeros if x % 3 == 0 and x % 5 == 0]
+print(f"Divisíveis por 3 E 5: {div_3_e_5}")
+
+# Números divisíveis por 3 OU por 5
+div_3_ou_5 = [x for x in numeros if x % 3 == 0 or x % 5 == 0]
+print(f"Divisíveis por 3 OU 5: {div_3_ou_5[:10]}...")  # Primeiros 10</code></pre>
+    </section>
+
+    <section>
+        <h2>🚀 Outras Comprehensions</h2>
+        
+        <h3>Set Comprehension:</h3>
+        <pre><code># Cria um conjunto (sem duplicatas)
+numeros = [1, 2, 2, 3, 3, 4, 5]
+quadrados_unicos = {x ** 2 for x in numeros}
+print(quadrados_unicos)  # {1, 4, 9, 16, 25}</code></pre>
+        
+        <h3>Dict Comprehension:</h3>
+        <pre><code># Criar dicionário
+nomes = ["Ana", "Bruno", "Carlos"]
+comprimentos = {nome: len(nome) for nome in nomes}
+print(comprimentos)  # {'Ana': 3, 'Bruno': 5, 'Carlos': 6}
+
+# Inverter chave-valor
+invertido = {v: k for k, v in comprimentos.items()}
+print(invertido)  # {3: 'Ana', 5: 'Bruno', 6: 'Carlos'}</code></pre>
+        
+        <h3>Generator Expression:</h3>
+        <pre><code># Para economizar memória com sequências grandes
+quadrados_gen = (x ** 2 for x in range(1000000))  # Não cria lista na memória
+print(type(quadrados_gen))  # <class 'generator'>
+
+# Só consome memória quando iterado
+primeiros_5 = [next(quadrados_gen) for _ in range(5)]
+print(primeiros_5)  # [0, 1, 4, 9, 16]</code></pre>
+    </section>
+
+    <section>
+        <h2>⚖️ Quando Usar List Comprehensions</h2>
+        
+        <h3>✅ Use quando:</h3>
+        <ul>
+            <li>A lógica é simples e clara</li>
+            <li>Cabe em uma linha legível</li>
+            <li>Não há efeitos colaterais</li>
+            <li>É uma transformação ou filtro direto</li>
+        </ul>
+        
+        <h3>❌ Evite quando:</h3>
+        <ul>
+            <li>A lógica é complexa</li>
+            <li>Há múltiplas condições aninhadas</li>
+            <li>Prejudica a legibilidade</li>
+            <li>Há efeitos colaterais (print, gravação, etc.)</li>
+        </ul>
+        
+        <h3>Exemplo - Quando NÃO usar:</h3>
+        <pre><code># ❌ Muito complexo
+resultado = [
+    processo_complexo(x) if condicao_complicada(x) and outra_condicao(x)
+    else valor_alternativo(x) if terceira_condicao(x)
+    else valor_padrao
+    for x in lista_complicada
+    if filtro_complexo(x) and outro_filtro(x)
+]
+
+# ✅ Melhor usar loop tradicional
+resultado = []
+for x in lista_complicada:
+    if filtro_complexo(x) and outro_filtro(x):
+        if condicao_complicada(x) and outra_condicao(x):
+            resultado.append(processo_complexo(x))
+        elif terceira_condicao(x):
+            resultado.append(valor_alternativo(x))
+        else:
+            resultado.append(valor_padrao)</code></pre>
+    </section>
+
+    <section>
+        <h2>💡 Dicas Importantes</h2>
+        <div class="tip-box">
+            <ul>
+                <li>📝 List comprehensions são mais rápidas que loops for</li>
+                <li>🎯 Mantenha-as simples e legíveis</li>
+                <li>🔍 Use filtros (if) para selecionar elementos</li>
+                <li>🔄 Combine com map(), filter() quando apropriado</li>
+                <li>💾 Use generator expressions para grandes datasets</li>
+                <li>🧹 Evite efeitos colaterais dentro das comprehensions</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function runCode() {
+    const code = document.getElementById('code-input').value;
+    const output = document.getElementById('output');
+    
+    output.innerHTML = '<div class="output-success">Processador de dados executado! Veja como list comprehensions tornam o código mais conciso.</div>';
+}
+</script>
+{% endblock %}

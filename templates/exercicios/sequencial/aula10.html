@@ -1,0 +1,271 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 10 - Projeto Final: Sistema de Calculadora Científica | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 10 – Projeto Final: Sistema de Calculadora Científica{% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Aplicar todos os conceitos aprendidos</li>
+            <li>Criar um projeto prático e funcional</li>
+            <li>Integrar diferentes funcionalidades</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>🔧 Especificações do Projeto</h2>
+        <p>Vamos criar uma calculadora científica completa que inclua:</p>
+        
+        <h3>Funcionalidades Básicas:</h3>
+        <ul>
+            <li>Operações aritméticas (+, -, *, /, **)</li>
+            <li>Operações com parênteses</li>
+            <li>Histórico de cálculos</li>
+        </ul>
+        
+        <h3>Funcionalidades Científicas:</h3>
+        <ul>
+            <li>Funções trigonométricas (sin, cos, tan)</li>
+            <li>Logaritmos (log, ln)</li>
+            <li>Raiz quadrada e potências</li>
+            <li>Fatorial</li>
+        </ul>
+        
+        <h3>Funcionalidades Especiais:</h3>
+        <ul>
+            <li>Conversão de unidades (temperatura, comprimento)</li>
+            <li>Gerador de números aleatórios</li>
+            <li>Calculadora de estatística básica</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>📋 Estrutura do Menu</h2>
+        <pre><code>========================================
+    🧮 CALCULADORA CIENTÍFICA CODELOGIC
+========================================
+1. Operações Básicas
+2. Funções Científicas  
+3. Conversores
+4. Estatística
+5. Números Aleatórios
+6. Histórico
+7. Sair
+========================================</code></pre>
+    </section>
+
+    <section>
+        <h2>💡 Exemplos de Implementação</h2>
+        
+        <h3>Menu Principal:</h3>
+        <pre><code>import math
+import random
+
+def mostrar_menu():
+    print("=" * 40)
+    print("🧮 CALCULADORA CIENTÍFICA CODELOGIC")
+    print("=" * 40)
+    print("1. Operações Básicas")
+    print("2. Funções Científicas")
+    print("3. Conversores")
+    print("4. Estatística")
+    print("5. Números Aleatórios")
+    print("6. Histórico")
+    print("7. Sair")
+    print("=" * 40)
+
+# Lista para armazenar histórico
+historico = []</code></pre>
+        
+        <h3>Operações Básicas:</h3>
+        <pre><code>def operacoes_basicas():
+    print("\n📊 OPERAÇÕES BÁSICAS")
+    try:
+        num1 = float(input("Primeiro número: "))
+        operador = input("Operador (+, -, *, /, **): ")
+        num2 = float(input("Segundo número: "))
+        
+        if operador == "+":
+            resultado = num1 + num2
+        elif operador == "-":
+            resultado = num1 - num2
+        elif operador == "*":
+            resultado = num1 * num2
+        elif operador == "/":
+            if num2 != 0:
+                resultado = num1 / num2
+            else:
+                print("Erro: Divisão por zero!")
+                return
+        elif operador == "**":
+            resultado = num1 ** num2
+        else:
+            print("Operador inválido!")
+            return
+            
+        calculo = f"{num1} {operador} {num2} = {resultado}"
+        print(f"Resultado: {resultado}")
+        historico.append(calculo)
+        
+    except ValueError:
+        print("Erro: Digite apenas números!")</code></pre>
+        
+        <h3>Funções Científicas:</h3>
+        <pre><code>def funcoes_cientificas():
+    print("\n🔬 FUNÇÕES CIENTÍFICAS")
+    print("1. Trigonometria")
+    print("2. Logaritmos")
+    print("3. Raiz e Potência")
+    print("4. Fatorial")
+    
+    opcao = input("Escolha uma opção: ")
+    
+    if opcao == "1":
+        trigonometria()
+    elif opcao == "2":
+        logaritmos()
+    elif opcao == "3":
+        raiz_potencia()
+    elif opcao == "4":
+        fatorial()
+
+def trigonometria():
+    angulo = float(input("Ângulo em graus: "))
+    rad = math.radians(angulo)
+    
+    print(f"Seno: {math.sin(rad):.4f}")
+    print(f"Cosseno: {math.cos(rad):.4f}")
+    print(f"Tangente: {math.tan(rad):.4f}")
+    
+    historico.append(f"Trigonometria de {angulo}°")</code></pre>
+    </section>
+
+    <section>
+        <h2>🎨 Recursos Avançados</h2>
+        
+        <h3>Sistema de Conversões:</h3>
+        <pre><code>def conversores():
+    print("\n🔄 CONVERSORES")
+    print("1. Temperatura")
+    print("2. Comprimento")
+    print("3. Peso")
+    
+    opcao = input("Escolha: ")
+    
+    if opcao == "1":
+        valor = float(input("Temperatura em Celsius: "))
+        fahrenheit = (valor * 9/5) + 32
+        kelvin = valor + 273.15
+        print(f"{valor}°C = {fahrenheit}°F = {kelvin}K")
+        
+def estatistica():
+    print("\n📈 ESTATÍSTICA")
+    numeros = []
+    
+    while True:
+        entrada = input("Digite um número (ou 'fim'): ")
+        if entrada.lower() == 'fim':
+            break
+        try:
+            numeros.append(float(entrada))
+        except ValueError:
+            print("Número inválido!")
+    
+    if numeros:
+        media = sum(numeros) / len(numeros)
+        print(f"Média: {media:.2f}")
+        print(f"Maior: {max(numeros)}")
+        print(f"Menor: {min(numeros)}")
+        print(f"Soma: {sum(numeros)}")</code></pre>
+    </section>
+
+    <section>
+        <h2>🏆 Desafios Extras</h2>
+        <ul>
+            <li>Adicione validação completa de entrada</li>
+            <li>Implemente salvamento do histórico em arquivo</li>
+            <li>Crie uma função para limpar a tela</li>
+            <li>Adicione mais conversores (moeda, tempo)</li>
+            <li>Implemente uma calculadora de equações do 2º grau</li>
+        </ul>
+    </section>
+{% endblock %}
+
+{% block exercise_description %}
+    <h4>🎮 Projeto Final!</h4>
+    
+    <p><strong>Sua Missão:</strong> Criar a calculadora científica completa!</p>
+    
+    <p><strong>Requisitos Mínimos:</strong></p>
+    <ul>
+        <li>Menu interativo funcionando</li>
+        <li>Pelo menos 3 categorias de operações</li>
+        <li>Sistema de histórico</li>
+        <li>Tratamento de erros básico</li>
+        <li>Interface visual organizada</li>
+    </ul>
+    
+    <p><strong>Funcionalidades Obrigatórias:</strong></p>
+    <ol>
+        <li>Operações básicas (+, -, *, /, **)</li>
+        <li>Pelo menos 2 funções científicas</li>
+        <li>Pelo menos 1 conversor</li>
+        <li>Histórico de cálculos</li>
+        <li>Geração de números aleatórios</li>
+    </ol>
+    
+    <p><strong>Dicas de Implementação:</strong></p>
+    <ul>
+        <li>Use funções para organizar o código</li>
+        <li>Implemente o menu em um loop</li>
+        <li>Use try/except para tratar erros</li>
+        <li>Armazene o histórico em uma lista</li>
+        <li>Use formatação f-string para saídas bonitas</li>
+    </ul>
+    
+    <p><strong>🌟 Bônus:</strong> Adicione funcionalidades criativas extras!</p>
+{% endblock %}
+
+{% block initial_code %}import math
+import random
+
+# Estrutura básica da calculadora
+def mostrar_menu():
+    print("=" * 40)
+    print("🧮 CALCULADORA CIENTÍFICA CODELOGIC")
+    print("=" * 40)
+    print("1. Operações Básicas")
+    print("2. Funções Científicas")
+    print("3. Conversores")
+    print("4. Estatística")
+    print("5. Números Aleatórios")
+    print("6. Histórico")
+    print("7. Sair")
+    print("=" * 40)
+
+# Lista para histórico
+historico = []
+
+# Implemente suas funções aqui
+def operacoes_basicas():
+    print("Implementar operações básicas")
+
+def funcoes_cientificas():
+    print("Implementar funções científicas")
+
+# Loop principal
+while True:
+    mostrar_menu()
+    opcao = input("Escolha uma opção: ")
+    
+    if opcao == "1":
+        operacoes_basicas()
+    elif opcao == "7":
+        print("Obrigado por usar a Calculadora CodeLogic!")
+        break
+    else:
+        print("Opção inválida!")
+    
+    input("\nPressione Enter para continuar..."){% endblock %}

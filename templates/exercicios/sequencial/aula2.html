@@ -1,0 +1,153 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 2 - Variáveis e Tipos de Dados | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 2 – Variáveis e Tipos de Dados{% endblock %}
+
+{% block lesson_content %}
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Entender o conceito de variáveis</li>
+            <li>Conhecer os tipos básicos de dados em Python</li>
+            <li>Aprender a declarar e usar variáveis</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>📦 O que são Variáveis</h2>
+        <p>Variáveis são "caixinhas" na memória onde guardamos informações para usar depois.</p>
+        <p>Imagine uma variável como uma etiqueta colada em uma caixa:</p>
+        <ul>
+            <li>A <strong>etiqueta</strong> é o nome da variável</li>
+            <li>O <strong>conteúdo da caixa</strong> é o valor armazenado</li>
+        </ul>
+        
+        <h3>Exemplo:</h3>
+        <pre><code>nome = "João"
+idade = 25</code></pre>
+    </section>
+
+    <section>
+        <h2>🔢 Tipos Básicos de Dados</h2>
+        
+        <h3>1. String (str) - Texto</h3>
+        <p>Usado para armazenar texto. Sempre entre aspas.</p>
+        <pre><code>nome = "Maria"
+cidade = 'São Paulo'
+mensagem = "Olá, mundo!"</code></pre>
+        
+        <h3>2. Integer (int) - Números Inteiros</h3>
+        <p>Números sem vírgula (positivos, negativos ou zero).</p>
+        <pre><code>idade = 30
+pontos = -5
+zero = 0</code></pre>
+        
+        <h3>3. Float - Números Decimais</h3>
+        <p>Números com vírgula (usa ponto em Python).</p>
+        <pre><code>altura = 1.75
+preco = 29.90
+temperatura = -3.5</code></pre>
+        
+        <h3>4. Boolean (bool) - Verdadeiro/Falso</h3>
+        <p>Apenas dois valores possíveis: True ou False.</p>
+        <pre><code>aprovado = True
+chovendo = False</code></pre>
+    </section>
+
+    <section>
+        <h2>📝 Regras para Nomes de Variáveis</h2>
+        <ul>
+            <li>Deve começar com letra ou underscore (_)</li>
+            <li>Pode conter letras, números e underscores</li>
+            <li>Não pode ter espaços</li>
+            <li>Não pode ser uma palavra reservada do Python</li>
+            <li>Python diferencia maiúsculas de minúsculas</li>
+        </ul>
+        
+        <h3>✅ Válidos:</h3>
+        <pre><code>nome, idade, _privado, numero1, data_nascimento</code></pre>
+        
+        <h3>❌ Inválidos:</h3>
+        <pre><code>2nome, meu nome, class, if, nome-completo</code></pre>
+    </section>
+
+    <section>
+        <h2>🔍 Função type()</h2>
+        <p>Use type() para descobrir o tipo de uma variável:</p>
+        <pre><code>print(type("João"))    # &lt;class 'str'&gt;
+print(type(25))        # &lt;class 'int'&gt;
+print(type(1.75))      # &lt;class 'float'&gt;
+print(type(True))      # &lt;class 'bool'&gt;</code></pre>
+    </section>
+{% endblock %}
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    
+    <p><strong>Tarefa 1:</strong> Crie variáveis com diferentes tipos de dados:</p>
+    <ul>
+        <li>Uma string com seu nome</li>
+        <li>Um inteiro com sua idade</li>
+        <li>Um float com sua altura</li>
+        <li>Um boolean indicando se você gosta de programar</li>
+    </ul>
+    
+    <p><strong>Tarefa 2:</strong> Use print() para exibir todas as variáveis.</p>
+    
+    <p><strong>Tarefa 3:</strong> Use type() para mostrar o tipo de cada variável.</p>
+    
+    <p><strong>Exemplo de saída esperada:</strong></p>
+    <pre><code>Ana
+22
+1.65
+True
+&lt;class 'str'&gt;
+&lt;class 'int'&gt;
+&lt;class 'float'&gt;
+&lt;class 'bool'&gt;</code></pre>
+{% endblock %}
+
+{% block initial_code %}# Crie suas variáveis aqui
+nome = "Seu nome"
+idade = 20
+
+# Exiba as variáveis
+print(nome)
+print(idade){% endblock %}
+
+{% block extra_js %}
+<script>
+    // Descrição específica do exercício da Aula 2
+    function getExerciseDescription() {
+        return `Aula 2 - Variáveis e Tipos de Dados:
+
+TAREFAS:
+1. Crie 4 variáveis:
+   - Uma string com seu nome
+   - Um inteiro com sua idade  
+   - Um float com sua altura
+   - Um boolean indicando se você gosta de programar
+
+2. Use print() para exibir todas as variáveis
+
+3. Use type() para mostrar o tipo de cada variável
+
+CRITÉRIOS DE AVALIAÇÃO:
+- Deve criar exatamente 4 variáveis com os tipos corretos
+- Deve usar print() para exibir os valores
+- Deve usar type() para mostrar os tipos
+- Variáveis devem ter nomes descritivos
+
+EXEMPLO DE SAÍDA ESPERADA:
+Ana
+22
+1.65
+True
+<class 'str'>
+<class 'int'>
+<class 'float'>
+<class 'bool'>`;
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | CodeLogic</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard/dashboard.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/code_logic.ico') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/code_logic.ico') }}" alt="CodeLogic">
+                <h1>CodeLogic</h1>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-link" onclick="logout()">Sair</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="welcome-section">
+            <h1 id="welcome-msg">Bem-vindo ao CodeLogic!</h1>
+            <p class="subtitle">Sua jornada de aprendizado em programação</p>
+        </div>
+
+        <div class="modules-grid">
+            <div class="module-card" data-module="sequencial" onclick="abrirModulo('sequencial')">
+                <div class="module-icon">📚</div>
+                <h3>Programação Sequencial</h3>
+                <p>Aprenda os fundamentos da programação com Python</p>
+                <div class="progress-bar">
+                    <div id="sequencial-progress" class="progress-fill progress-0"></div>
+                </div>
+                <span id="sequencial-text" class="progress-text">Carregando progresso...</span>
+            </div>
+
+            <div class="module-card" data-module="comparativa" onclick="abrirModulo('comparativa')">
+                <div class="module-icon">🔄</div>
+                <h3>Estruturas Comparativas</h3>
+                <p>Domine condições e comparações (if/else)</p>
+                <div class="progress-bar">
+                    <div id="comparativa-progress" class="progress-fill progress-0"></div>
+                </div>
+                <span id="comparativa-text" class="progress-text">Carregando progresso...</span>
+            </div>
+
+            <div class="module-card" data-module="repetitiva" onclick="abrirModulo('repetitiva')">
+                <div class="module-icon">🔁</div>
+                <h3>Estruturas Repetitivas</h3>
+                <p>Aprenda loops e iterações (for/while)</p>
+                <div class="progress-bar">
+                    <div id="repetitiva-progress" class="progress-fill progress-0"></div>
+                </div>
+                <span id="repetitiva-text" class="progress-text">Carregando progresso...</span>
+            </div>
+
+            <div class="module-card" data-module="vetores" onclick="abrirModulo('vetores')">
+                <div class="module-icon">📊</div>
+                <h3>Vetores</h3>
+                <p>Trabalhe com listas e arrays</p>
+                <div class="progress-bar">
+                    <div id="vetores-progress" class="progress-fill progress-0"></div>
+                </div>
+                <span id="vetores-text" class="progress-text">Carregando progresso...</span>
+            </div>
+
+            <div class="module-card" data-module="matrizes" onclick="abrirModulo('matrizes')">
+                <div class="module-icon">�</div>
+                <h3>Matrizes</h3>
+                <p>Estruturas de dados bidimensionais</p>
+                <div class="progress-bar">
+                    <div id="matrizes-progress" class="progress-fill progress-0"></div>
+                </div>
+                <span id="matrizes-text" class="progress-text">Carregando progresso...</span>
+            </div>
+        </div>
+
+        <div class="stats-section">
+            <div class="stat-card">
+                <div id="total-lessons" class="stat-number">50</div>
+                <div class="stat-label">Aulas Disponíveis</div>
+            </div>
+            <div class="stat-card">
+                <div id="completed-count" class="stat-number">0</div>
+                <div class="stat-label">Concluídas</div>
+            </div>
+            <div class="stat-card">
+                <div id="remaining-count" class="stat-number">50</div>
+                <div class="stat-label">Restantes</div>
+            </div>
+            <div class="stat-card">
+                <div id="overall-progress" class="stat-number">0%</div>
+                <div class="stat-label">Progresso Geral</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+        import { firebaseConfig } from "/static/js/firebase-config.js";
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Função para abrir módulo
+        async function abrirModulo(modulo) {
+            const userId = localStorage.getItem('userId');
+            console.log('abrirModulo chamado:', modulo, 'userId:', userId);
+            
+            if (!userId) {
+                console.error('UserId não encontrado no localStorage');
+                window.location.href = "/";
+                return;
+            }
+
+            try {
+                // Verifica se o usuário pode acessar o módulo
+                const url = `/api/check-module-access/${userId}/${modulo}`;
+                console.log('Fazendo requisição para:', url);
+                
+                const response = await fetch(url);
+                const result = await response.json();
+                
+                console.log('Resposta da API:', result);
+                
+                if (result.can_access) {
+                    // Redireciona para o lobby do módulo
+                    const redirectUrl = `/aulas/${modulo}`;
+                    console.log('Redirecionando para:', redirectUrl);
+                    window.location.href = redirectUrl;
+                } else {
+                    console.log('Acesso negado:', result.message);
+                    alert(result.message || 'Você precisa completar os módulos anteriores primeiro!');
+                }
+            } catch (error) {
+                console.error('Erro ao verificar acesso ao módulo:', error);
+                alert('Erro ao acessar o módulo. Tente novamente.');
+            }
+        }
+        window.abrirModulo = abrirModulo;
+
+        // Função de logout
+        async function logout() {
+            try {
+                await signOut(auth);
+                localStorage.clear();
+                window.location.href = "/";
+            } catch (error) {
+                console.error("Erro ao fazer logout:", error);
+            }
+        }
+        window.logout = logout;
+
+        // Pega o usuário logado e busca o nome e progresso
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    // Tenta primeiro do localStorage
+                    let nome = localStorage.getItem("userName");
+                    
+                    if (!nome) {
+                        // Se não tem no localStorage, busca do Firestore
+                        const docRef = doc(db, "usuarios", user.uid);
+                        const docSnap = await getDoc(docRef);
+                        if (docSnap.exists()) {
+                            const data = docSnap.data();
+                            nome = data.nome || user.displayName || "usuário";
+                            localStorage.setItem("userName", nome);
+                        } else {
+                            nome = user.displayName || "usuário";
+                        }
+                    }
+                    
+                    // Salva também o userId para outras páginas
+                    localStorage.setItem("userId", user.uid);
+                    
+                    document.getElementById("welcome-msg").textContent = `Bem-vindo, ${nome}!`;
+                    
+                    // Carrega o progresso do usuário
+                    await loadUserProgress(user.uid);
+                    
+                } catch (error) {
+                    console.error("Erro ao buscar dados do usuário:", error);
+                    document.getElementById("welcome-msg").textContent = "Bem-vindo!";
+                }
+            } else {
+                // Usuário não está logado
+                window.location.href = "/";
+            }
+        });
+
+        // Função para inicializar progresso do usuário
+        async function initUserProgress(userId) {
+            try {
+                const response = await fetch('/api/init-progress', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ user_id: userId })
+                });
+                const result = await response.json();
+                return result.success;
+            } catch (error) {
+                console.error('Erro ao inicializar progresso:', error);
+                return false;
+            }
+        }
+
+        // Função para carregar progresso do usuário
+        async function loadUserProgress(userId) {
+            try {
+                console.log('Carregando progresso para usuário:', userId);
+                
+                // Primeiro inicializa o progresso (se não existir)
+                await initUserProgress(userId);
+                
+                // Carrega progresso de todos os módulos
+                const response = await fetch(`/api/get-all-progress/${userId}`);
+                const result = await response.json();
+                
+                console.log('Resposta da API get-all-progress:', result);
+                
+                if (result.success) {
+                    const modules = result.modules;
+                    const globalStats = result.global_stats;
+                    
+                    console.log('Dados dos módulos:', modules);
+                    console.log('Estatísticas globais:', globalStats);
+                    
+                    // Atualiza cada módulo
+                    for (const [moduleName, moduleData] of Object.entries(modules)) {
+                        console.log(`Atualizando módulo ${moduleName}:`, moduleData);
+                        updateModuleProgress(moduleName, moduleData);
+                    }
+                    
+                    // Atualiza estatísticas globais
+                    document.getElementById('completed-count').textContent = globalStats.total_completed;
+                    document.getElementById('remaining-count').textContent = globalStats.total_lessons - globalStats.total_completed;
+                    document.getElementById('overall-progress').textContent = `${Math.round(globalStats.progress_percentage)}%`;
+                    
+                } else {
+                    console.error('Erro ao carregar progresso:', result.error);
+                    // Fallback para todos os módulos
+                    ['sequencial', 'comparativa', 'repetitiva', 'vetores', 'matrizes'].forEach(module => {
+                        document.getElementById(`${module}-text`).textContent = '0/10 aulas concluídas';
+                    });
+                }
+                
+            } catch (error) {
+                console.error('Erro ao carregar progresso:', error);
+                // Fallback para todos os módulos
+                ['sequencial', 'comparativa', 'repetitiva', 'vetores', 'matrizes'].forEach(module => {
+                    document.getElementById(`${module}-text`).textContent = '0/10 aulas concluídas';
+                });
+            }
+        }
+
+        // Função para atualizar progresso de um módulo
+        function updateModuleProgress(moduleName, moduleData) {
+            console.log(`updateModuleProgress chamado para ${moduleName}:`, moduleData);
+            
+            const progressBar = document.getElementById(`${moduleName}-progress`);
+            const progressText = document.getElementById(`${moduleName}-text`);
+            const moduleCard = document.querySelector(`[data-module="${moduleName}"]`);
+            
+            console.log(`Elementos encontrados - progressBar: ${!!progressBar}, progressText: ${!!progressText}, moduleCard: ${!!moduleCard}`);
+            
+            if (!progressBar || !progressText || !moduleCard) {
+                console.error(`Elementos não encontrados para módulo ${moduleName}`);
+                return;
+            }
+            
+            const { total_completed, total_lessons, progress_percentage, aulas_liberadas } = moduleData;
+            
+            console.log(`Dados do módulo ${moduleName}: ${total_completed}/${total_lessons} (${progress_percentage}%)`);
+            
+            // Remove classes antigas de progresso
+            progressBar.className = 'progress-fill';
+            
+            // Adiciona classe baseada na porcentagem
+            const roundedProgress = Math.round(progress_percentage / 10) * 10;
+            progressBar.classList.add(`progress-${roundedProgress}`);
+            
+            // Atualiza texto do progresso
+            const progressTextContent = `${total_completed}/${total_lessons} aulas concluídas`;
+            progressText.textContent = progressTextContent;
+            
+            console.log(`Texto de progresso atualizado para ${moduleName}: ${progressTextContent}`);
+            
+            // Determina se o módulo está disponível
+            const isAvailable = aulas_liberadas && aulas_liberadas.length > 0;
+            
+            // Para sequencial, sempre disponível
+            // Para outros módulos, verifica se alguma aula está liberada
+            if (moduleName === 'sequencial' || isAvailable) {
+                moduleCard.classList.remove('disabled');
+                moduleCard.classList.add('available');
+            } else {
+                moduleCard.classList.add('disabled');
+                moduleCard.classList.remove('available');
+                progressText.textContent = 'Complete o módulo anterior para desbloquear';
+            }
+        }
+    </script>
+</body>
+</html>

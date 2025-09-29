@@ -1,0 +1,645 @@
+{% extends "base_aula.html" %}
+
+{% block title %}Aula 10 - Projeto Final Vetores | CodeLogic{% endblock %}
+{% block lesson_title %}Aula 10 - Projeto Final: Análise de Dados{% endblock %}
+
+{% block theory_content %}
+<div class="content-section">
+    <h2>🎯 Objetivos do Projeto</h2>
+    <ul>
+        <li>Integrar todas as operações com listas/vetores</li>
+        <li>Aplicar algoritmos de ordenação e busca</li>
+        <li>Trabalhar com análise estatística de dados</li>
+        <li>Criar visualizações simples em texto</li>
+    </ul>
+</div>
+
+<div class="content-section">
+    <h2>📊 Visão Geral do Projeto</h2>
+    <p>
+        Vamos criar um <strong>Sistema de Análise de Vendas</strong> que processa
+        dados de vendas, gera relatórios estatísticos e identifica padrões.
+    </p>
+    
+    <div class="highlight-box">
+        <h3>📈 Funcionalidades do Sistema:</h3>
+        <ul>
+            <li>📥 Importação e validação de dados</li>
+            <li>📊 Análise estatística completa</li>
+            <li>🔍 Busca e filtros avançados</li>
+            <li>📈 Gráficos em texto ASCII</li>
+            <li>📋 Relatórios personalizados</li>
+        </ul>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>🏗️ Estrutura de Dados</h2>
+    
+    <div class="code-example">
+        <h3>Classe Venda:</h3>
+        <pre><code>class Venda:
+    def __init__(self, produto, quantidade, preco, vendedor, data):
+        self.produto = produto
+        self.quantidade = quantidade
+        self.preco = preco
+        self.vendedor = vendedor
+        self.data = data
+        self.total = quantidade * preco
+    
+    def __str__(self):
+        return f"{self.produto} - {self.quantidade}x R${self.preco:.2f} = R${self.total:.2f}"
+    
+    def __repr__(self):
+        return self.__str__()
+
+class SistemaVendas:
+    def __init__(self):
+        self.vendas = []
+        self.vendedores = []
+        self.produtos = []
+    
+    def adicionar_venda(self, produto, quantidade, preco, vendedor, data):
+        """Adiciona uma venda ao sistema"""
+        venda = Venda(produto, quantidade, preco, vendedor, data)
+        self.vendas.append(venda)
+        
+        # Atualizar listas de controle
+        if vendedor not in self.vendedores:
+            self.vendedores.append(vendedor)
+        if produto not in self.produtos:
+            self.produtos.append(produto)
+    
+    def carregar_dados_exemplo(self):
+        """Carrega dados de exemplo para teste"""
+        dados_exemplo = [
+            ("Notebook", 2, 2500.00, "Ana", "2024-01-15"),
+            ("Mouse", 10, 45.00, "João", "2024-01-15"),
+            ("Teclado", 5, 120.00, "Ana", "2024-01-16"),
+            ("Monitor", 3, 800.00, "Maria", "2024-01-16"),
+            ("Notebook", 1, 2500.00, "João", "2024-01-17"),
+            ("Mouse", 15, 45.00, "Maria", "2024-01-17"),
+            ("Webcam", 8, 200.00, "Ana", "2024-01-18"),
+            ("Teclado", 12, 120.00, "João", "2024-01-18"),
+            ("Monitor", 2, 800.00, "Ana", "2024-01-19"),
+            ("Headset", 6, 150.00, "Maria", "2024-01-19")
+        ]
+        
+        for dados in dados_exemplo:
+            self.adicionar_venda(*dados)
+        
+        print(f"✅ {len(dados_exemplo)} vendas carregadas com sucesso!")</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>📊 Análises Estatísticas</h2>
+    
+    <div class="code-example">
+        <h3>Estatísticas Básicas:</h3>
+        <pre><code>def calcular_estatisticas(self):
+    """Calcula estatísticas gerais das vendas"""
+    if not self.vendas:
+        return "Nenhuma venda encontrada!"
+    
+    # Extrair valores para análise
+    valores_vendas = [venda.total for venda in self.vendas]
+    quantidades = [venda.quantidade for venda in self.vendas]
+    
+    # Estatísticas básicas
+    total_vendas = sum(valores_vendas)
+    media_vendas = total_vendas / len(valores_vendas)
+    
+    # Ordenar para calcular mediana
+    valores_ordenados = sorted(valores_vendas)
+    n = len(valores_ordenados)
+    
+    if n % 2 == 0:
+        mediana = (valores_ordenados[n//2 - 1] + valores_ordenados[n//2]) / 2
+    else:
+        mediana = valores_ordenados[n//2]
+    
+    # Máximo e mínimo
+    maior_venda = max(valores_vendas)
+    menor_venda = min(valores_vendas)
+    
+    # Quantidade total de itens vendidos
+    total_itens = sum(quantidades)
+    
+    return {
+        'total_vendas': total_vendas,
+        'media_vendas': media_vendas,
+        'mediana_vendas': mediana,
+        'maior_venda': maior_venda,
+        'menor_venda': menor_venda,
+        'numero_vendas': len(self.vendas),
+        'total_itens': total_itens
+    }
+
+def ranking_vendedores(self):
+    """Cria ranking de vendedores por performance"""
+    vendas_por_vendedor = {}
+    
+    # Agrupar vendas por vendedor
+    for venda in self.vendas:
+        if venda.vendedor not in vendas_por_vendedor:
+            vendas_por_vendedor[venda.vendedor] = {
+                'total_valor': 0,
+                'total_vendas': 0,
+                'total_itens': 0
+            }
+        
+        vendas_por_vendedor[venda.vendedor]['total_valor'] += venda.total
+        vendas_por_vendedor[venda.vendedor]['total_vendas'] += 1
+        vendas_por_vendedor[venda.vendedor]['total_itens'] += venda.quantidade
+    
+    # Converter para lista e ordenar por valor total
+    ranking = []
+    for vendedor, dados in vendas_por_vendedor.items():
+        ranking.append({
+            'vendedor': vendedor,
+            'total_valor': dados['total_valor'],
+            'total_vendas': dados['total_vendas'],
+            'total_itens': dados['total_itens'],
+            'media_por_venda': dados['total_valor'] / dados['total_vendas']
+        })
+    
+    # Ordenar por total de valor (decrescente)
+    ranking.sort(key=lambda x: x['total_valor'], reverse=True)
+    
+    return ranking</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>🔍 Sistema de Busca e Filtros</h2>
+    
+    <div class="code-example">
+        <h3>Filtros Avançados:</h3>
+        <pre><code>def buscar_por_produto(self, nome_produto):
+    """Busca vendas de um produto específico"""
+    vendas_encontradas = []
+    
+    for venda in self.vendas:
+        if nome_produto.lower() in venda.produto.lower():
+            vendas_encontradas.append(venda)
+    
+    return vendas_encontradas
+
+def filtrar_por_vendedor(self, vendedor):
+    """Filtra vendas por vendedor"""
+    return [venda for venda in self.vendas if venda.vendedor == vendedor]
+
+def filtrar_por_valor(self, valor_minimo, valor_maximo=None):
+    """Filtra vendas por faixa de valor"""
+    vendas_filtradas = []
+    
+    for venda in self.vendas:
+        if valor_maximo is None:
+            if venda.total >= valor_minimo:
+                vendas_filtradas.append(venda)
+        else:
+            if valor_minimo <= venda.total <= valor_maximo:
+                vendas_filtradas.append(venda)
+    
+    return vendas_filtradas
+
+def top_produtos(self, limite=5):
+    """Retorna os produtos mais vendidos"""
+    vendas_por_produto = {}
+    
+    # Agrupar por produto
+    for venda in self.vendas:
+        if venda.produto not in vendas_por_produto:
+            vendas_por_produto[venda.produto] = {
+                'quantidade_total': 0,
+                'valor_total': 0,
+                'numero_vendas': 0
+            }
+        
+        vendas_por_produto[venda.produto]['quantidade_total'] += venda.quantidade
+        vendas_por_produto[venda.produto]['valor_total'] += venda.total
+        vendas_por_produto[venda.produto]['numero_vendas'] += 1
+    
+    # Converter para lista e ordenar
+    produtos_ordenados = []
+    for produto, dados in vendas_por_produto.items():
+        produtos_ordenados.append({
+            'produto': produto,
+            'quantidade_total': dados['quantidade_total'],
+            'valor_total': dados['valor_total'],
+            'numero_vendas': dados['numero_vendas'],
+            'valor_medio': dados['valor_total'] / dados['numero_vendas']
+        })
+    
+    # Ordenar por quantidade total vendida
+    produtos_ordenados.sort(key=lambda x: x['quantidade_total'], reverse=True)
+    
+    return produtos_ordenados[:limite]</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>📈 Visualizações em ASCII</h2>
+    
+    <div class="code-example">
+        <h3>Gráfico de Barras Simples:</h3>
+        <pre><code>def gerar_grafico_vendedores(self):
+    """Gera gráfico de barras ASCII para vendedores"""
+    ranking = self.ranking_vendedores()
+    
+    if not ranking:
+        return "Nenhum dado para gráfico!"
+    
+    print("\n📊 GRÁFICO DE VENDAS POR VENDEDOR")
+    print("=" * 50)
+    
+    # Encontrar o maior valor para escalar
+    maior_valor = max(item['total_valor'] for item in ranking)
+    
+    # Gerar barras
+    for item in ranking:
+        vendedor = item['vendedor']
+        valor = item['total_valor']
+        
+        # Calcular tamanho da barra (máximo 30 caracteres)
+        tamanho_barra = int((valor / maior_valor) * 30)
+        barra = "█" * tamanho_barra
+        
+        print(f"{vendedor:10} |{barra:<30} R$ {valor:,.2f}")
+
+def gerar_histograma_vendas(self):
+    """Gera histograma de distribuição de vendas"""
+    valores = [venda.total for venda in self.vendas]
+    valores.sort()
+    
+    # Dividir em faixas
+    minimo = min(valores)
+    maximo = max(valores)
+    num_faixas = 5
+    tamanho_faixa = (maximo - minimo) / num_faixas
+    
+    faixas = []
+    for i in range(num_faixas):
+        inicio = minimo + (i * tamanho_faixa)
+        fim = inicio + tamanho_faixa
+        faixas.append({'inicio': inicio, 'fim': fim, 'count': 0})
+    
+    # Contar vendas por faixa
+    for valor in valores:
+        for i, faixa in enumerate(faixas):
+            if faixa['inicio'] <= valor <= faixa['fim'] or i == len(faixas) - 1:
+                faixa['count'] += 1
+                break
+    
+    print("\n📊 HISTOGRAMA DE DISTRIBUIÇÃO DE VENDAS")
+    print("=" * 50)
+    
+    maior_count = max(faixa['count'] for faixa in faixas)
+    
+    for faixa in faixas:
+        inicio = faixa['inicio']
+        fim = faixa['fim']
+        count = faixa['count']
+        
+        # Calcular barra
+        if maior_count > 0:
+            tamanho_barra = int((count / maior_count) * 20)
+        else:
+            tamanho_barra = 0
+        
+        barra = "█" * tamanho_barra
+        print(f"R${inicio:7.2f}-{fim:7.2f} |{barra:<20} ({count} vendas)")
+</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>🛠️ Algoritmos de Ordenação</h2>
+    
+    <div class="code-example">
+        <h3>Ordenação Personalizada:</h3>
+        <pre><code>def ordenar_vendas(self, criterio='valor', reverso=False):
+    """Ordena vendas por diferentes critérios"""
+    vendas_copia = self.vendas.copy()
+    
+    if criterio == 'valor':
+        vendas_copia.sort(key=lambda x: x.total, reverse=reverso)
+    elif criterio == 'quantidade':
+        vendas_copia.sort(key=lambda x: x.quantidade, reverse=reverso)
+    elif criterio == 'produto':
+        vendas_copia.sort(key=lambda x: x.produto, reverse=reverso)
+    elif criterio == 'vendedor':
+        vendas_copia.sort(key=lambda x: x.vendedor, reverse=reverso)
+    elif criterio == 'data':
+        vendas_copia.sort(key=lambda x: x.data, reverse=reverso)
+    
+    return vendas_copia
+
+def bubble_sort_customizado(self, lista_vendas, criterio='valor'):
+    """Implementação personalizada do Bubble Sort"""
+    n = len(lista_vendas)
+    comparacoes = 0
+    trocas = 0
+    
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            comparacoes += 1
+            
+            # Definir critério de comparação
+            if criterio == 'valor':
+                valor_j = lista_vendas[j].total
+                valor_j1 = lista_vendas[j + 1].total
+            elif criterio == 'quantidade':
+                valor_j = lista_vendas[j].quantidade
+                valor_j1 = lista_vendas[j + 1].quantidade
+            
+            if valor_j > valor_j1:
+                lista_vendas[j], lista_vendas[j + 1] = lista_vendas[j + 1], lista_vendas[j]
+                trocas += 1
+    
+    print(f"📊 Bubble Sort executado:")
+    print(f"   Comparações: {comparacoes}")
+    print(f"   Trocas: {trocas}")
+    
+    return lista_vendas</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>📋 Sistema de Relatórios</h2>
+    
+    <div class="code-example">
+        <h3>Relatório Completo:</h3>
+        <pre><code>def gerar_relatorio_completo(self):
+    """Gera relatório completo de análise"""
+    print("\n" + "=" * 60)
+    print("📋 RELATÓRIO COMPLETO DE VENDAS".center(60))
+    print("=" * 60)
+    
+    # Estatísticas gerais
+    stats = self.calcular_estatisticas()
+    print(f"\n📊 ESTATÍSTICAS GERAIS:")
+    print(f"   Total de Vendas: R$ {stats['total_vendas']:,.2f}")
+    print(f"   Número de Vendas: {stats['numero_vendas']}")
+    print(f"   Média por Venda: R$ {stats['media_vendas']:,.2f}")
+    print(f"   Mediana: R$ {stats['mediana_vendas']:,.2f}")
+    print(f"   Maior Venda: R$ {stats['maior_venda']:,.2f}")
+    print(f"   Menor Venda: R$ {stats['menor_venda']:,.2f}")
+    print(f"   Total de Itens: {stats['total_itens']}")
+    
+    # Top produtos
+    print(f"\n🏆 TOP 3 PRODUTOS MAIS VENDIDOS:")
+    top_3 = self.top_produtos(3)
+    for i, produto in enumerate(top_3, 1):
+        print(f"   {i}. {produto['produto']}: {produto['quantidade_total']} unidades")
+        print(f"      Valor Total: R$ {produto['valor_total']:,.2f}")
+    
+    # Ranking vendedores
+    print(f"\n👥 RANKING DE VENDEDORES:")
+    ranking = self.ranking_vendedores()
+    for i, vendedor in enumerate(ranking, 1):
+        print(f"   {i}. {vendedor['vendedor']}: R$ {vendedor['total_valor']:,.2f}")
+        print(f"      {vendedor['total_vendas']} vendas | Média: R$ {vendedor['media_por_venda']:,.2f}")
+    
+    # Análises avançadas
+    self.analise_tendencias()
+
+def analise_tendencias(self):
+    """Análise de tendências nos dados"""
+    print(f"\n📈 ANÁLISE DE TENDÊNCIAS:")
+    
+    # Vendas por data
+    vendas_por_data = {}
+    for venda in self.vendas:
+        if venda.data not in vendas_por_data:
+            vendas_por_data[venda.data] = 0
+        vendas_por_data[venda.data] += venda.total
+    
+    # Ordenar datas
+    datas_ordenadas = sorted(vendas_por_data.items())
+    
+    if len(datas_ordenadas) >= 2:
+        primeira_venda = datas_ordenadas[0][1]
+        ultima_venda = datas_ordenadas[-1][1]
+        
+        if ultima_venda > primeira_venda:
+            crescimento = ((ultima_venda - primeira_venda) / primeira_venda) * 100
+            print(f"   📈 Tendência de crescimento: +{crescimento:.1f}%")
+        else:
+            decrescimo = ((primeira_venda - ultima_venda) / primeira_venda) * 100
+            print(f"   📉 Tendência de decréscimo: -{decrescimo:.1f}%")
+    
+    # Produto com melhor performance
+    top_produto = self.top_produtos(1)[0]
+    print(f"   🌟 Produto destaque: {top_produto['produto']}")
+    print(f"      {top_produto['quantidade_total']} unidades vendidas")
+</code></pre>
+    </div>
+</div>
+
+<div class="content-section">
+    <h2>🔧 Conceitos de Vetores Aplicados</h2>
+    <ul>
+        <li><strong>Listas de objetos:</strong> Armazenamento de vendas complexas</li>
+        <li><strong>List comprehensions:</strong> Filtragem eficiente de dados</li>
+        <li><strong>Algoritmos de ordenação:</strong> Bubble sort e sort() nativo</li>
+        <li><strong>Operações estatísticas:</strong> Map, filter, reduce conceitual</li>
+        <li><strong>Agrupamento de dados:</strong> Dicionários como índices</li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block exercise_content %}
+<div class="exercise-header">
+    <h2>🏋️‍♂️ Projeto Final</h2>
+    <p>Complete o Sistema de Análise de Vendas</p>
+</div>
+
+<div class="exercise-description">
+    <h3>📋 Sua Missão:</h3>
+    <ol>
+        <li>Complete a função <code>calcular_estatisticas()</code></li>
+        <li>Implemente <code>buscar_vendas_personalizadas()</code></li>
+        <li>Crie função para análise de sazonalidade</li>
+        <li>Adicione validação de dados nas vendas</li>
+        <li>Implemente sistema de metas de vendas</li>
+        <li>Teste com diferentes cenários</li>
+    </ol>
+</div>
+
+<div class="exercise-requirements">
+    <h3>🎯 Funcionalidades Obrigatórias:</h3>
+    <ul>
+        <li><strong>Estatísticas:</strong> Média, mediana, moda, desvio padrão</li>
+        <li><strong>Busca Avançada:</strong> Múltiplos filtros simultâneos</li>
+        <li><strong>Sazonalidade:</strong> Análise por dias da semana</li>
+        <li><strong>Validação:</strong> Verificar dados inválidos</li>
+        <li><strong>Metas:</strong> Sistema de acompanhamento de metas</li>
+    </ul>
+</div>
+
+<div class="exercise-bonus">
+    <h3>🌟 Funcionalidades Bônus:</h3>
+    <ul>
+        <li>Previsão de vendas usando médias móveis</li>
+        <li>Detecção de outliers nas vendas</li>
+        <li>Sistema de comissões para vendedores</li>
+        <li>Exportação para CSV</li>
+    </ul>
+</div>
+
+<div class="exercise-hints">
+    <h3>💡 Dicas Importantes:</h3>
+    <ul>
+        <li>Use list comprehensions para filtros eficientes</li>
+        <li>Aplique lambda functions para ordenação</li>
+        <li>Agrupe dados usando dicionários</li>
+        <li>Valide entradas antes de processar</li>
+    </ul>
+</div>
+
+<div class="expected-output">
+    <h3>📤 Resultado Esperado:</h3>
+    <pre>📋 RELATÓRIO COMPLETO DE VENDAS
+═══════════════════════════════════
+📊 ESTATÍSTICAS GERAIS:
+   Total de Vendas: R$ 15,485.00
+   Número de Vendas: 10
+   Média por Venda: R$ 1,548.50
+   Mediana: R$ 675.00
+
+🏆 TOP 3 PRODUTOS MAIS VENDIDOS:
+   1. Mouse: 25 unidades
+   2. Teclado: 17 unidades  
+   3. Webcam: 8 unidades
+
+👥 RANKING DE VENDEDORES:
+   1. Ana: R$ 6,900.00
+   2. João: R$ 4,740.00
+   3. Maria: R$ 3,845.00</pre>
+</div>
+{% endblock %}
+
+{% block starter_code %}
+# Projeto Final: Sistema de Análise de Vendas
+# Complete as funções abaixo
+
+class Venda:
+    def __init__(self, produto, quantidade, preco, vendedor, data):
+        self.produto = produto
+        self.quantidade = quantidade
+        self.preco = preco
+        self.vendedor = vendedor
+        self.data = data
+        self.total = quantidade * preco
+
+class SistemaVendas:
+    def __init__(self):
+        self.vendas = []
+        self.vendedores = []
+        self.produtos = []
+        self.metas = {}  # Meta por vendedor
+    
+    def carregar_dados_exemplo(self):
+        """Carrega dados de exemplo"""
+        dados = [
+            ("Notebook", 2, 2500.00, "Ana", "2024-01-15"),
+            ("Mouse", 10, 45.00, "João", "2024-01-15"),
+            ("Teclado", 5, 120.00, "Ana", "2024-01-16"),
+            ("Monitor", 3, 800.00, "Maria", "2024-01-16"),
+            ("Notebook", 1, 2500.00, "João", "2024-01-17"),
+            ("Mouse", 15, 45.00, "Maria", "2024-01-17"),
+            ("Webcam", 8, 200.00, "Ana", "2024-01-18"),
+            ("Teclado", 12, 120.00, "João", "2024-01-18"),
+            ("Monitor", 2, 800.00, "Ana", "2024-01-19"),
+            ("Headset", 6, 150.00, "Maria", "2024-01-19")
+        ]
+        
+        for produto, qtd, preco, vendedor, data in dados:
+            venda = Venda(produto, qtd, preco, vendedor, data)
+            self.vendas.append(venda)
+            
+            if vendedor not in self.vendedores:
+                self.vendedores.append(vendedor)
+            if produto not in self.produtos:
+                self.produtos.append(produto)
+    
+    def calcular_estatisticas_avancadas(self):
+        """
+        Calcula estatísticas avançadas incluindo desvio padrão
+        Use list comprehensions e funções matemáticas
+        """
+        # Seu código aqui
+        pass
+    
+    def buscar_vendas_personalizadas(self, **filtros):
+        """
+        Busca personalizada com múltiplos filtros
+        Exemplo: buscar_vendas_personalizadas(vendedor="Ana", produto="Mouse", valor_min=100)
+        """
+        # Seu código aqui
+        pass
+    
+    def analisar_sazonalidade(self):
+        """
+        Analisa vendas por dia da semana
+        Retorna dicionário com estatísticas por dia
+        """
+        # Seu código aqui
+        pass
+    
+    def validar_dados(self):
+        """
+        Valida dados das vendas e retorna lista de problemas
+        Verifica: preços negativos, quantidades inválidas, etc.
+        """
+        # Seu código aqui
+        pass
+    
+    def definir_meta(self, vendedor, valor_meta):
+        """Define meta de vendas para um vendedor"""
+        self.metas[vendedor] = valor_meta
+    
+    def acompanhar_metas(self):
+        """
+        Acompanha progresso das metas
+        Retorna dicionário com progresso de cada vendedor
+        """
+        # Seu código aqui
+        pass
+
+# Sistema de teste
+def main():
+    print("📊 SISTEMA DE ANÁLISE DE VENDAS")
+    print("=" * 40)
+    
+    # Criar sistema e carregar dados
+    sistema = SistemaVendas()
+    sistema.carregar_dados_exemplo()
+    
+    # Definir metas
+    sistema.definir_meta("Ana", 5000.00)
+    sistema.definir_meta("João", 4000.00)
+    sistema.definir_meta("Maria", 3000.00)
+    
+    print(f"✅ Dados carregados: {len(sistema.vendas)} vendas")
+    
+    # Testar funcionalidades
+    print("\n🧪 TESTANDO FUNCIONALIDADES:")
+    
+    # Teste básico de estatísticas
+    valores = [venda.total for venda in sistema.vendas]
+    print(f"Total geral: R$ {sum(valores):,.2f}")
+    print(f"Média: R$ {sum(valores)/len(valores):,.2f}")
+    
+    # Teste suas funções aqui
+    # stats = sistema.calcular_estatisticas_avancadas()
+    # vendas_ana = sistema.buscar_vendas_personalizadas(vendedor="Ana")
+    # sazonalidade = sistema.analisar_sazonalidade()
+    # problemas = sistema.validar_dados()
+    # metas = sistema.acompanhar_metas()
+
+if __name__ == "__main__":
+    main()
+{% endblock %}
