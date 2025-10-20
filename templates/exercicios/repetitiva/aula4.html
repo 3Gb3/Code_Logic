@@ -264,57 +264,66 @@ print("Busca finalizada")</code></pre>
     </section>
 
     <section>
-        <h2>🚀 Otimização com break</h2>
-        <pre><code># Sem break - verifica todos os números
-def eh_primo_lento(n):
-    if n < 2:
-        return False
-    
-    divisores = 0
-    for i in range(2, n):
-        if n % i == 0:
-            divisores += 1
-    
-    return divisores == 0
+        <h2>🚀 Busca Eficiente com break</h2>
+        <pre><code># Verificar se número é primo
+numero = int(input("Digite um número: "))
 
-# Com break - para no primeiro divisor
-def eh_primo_rapido(n):
-    if n < 2:
-        return False
+if numero < 2:
+    print(f"{numero} não é primo")
+else:
+    eh_primo = True
     
-    for i in range(2, int(n**0.5) + 1):
-        if n % i == 0:
-            return False  # Equivale a break + return
+    # Testar divisores até a raiz quadrada
+    for i in range(2, int(numero ** 0.5) + 1):
+        if numero % i == 0:
+            eh_primo = False
+            print(f"Encontrou divisor: {i}")
+            break  # Para no primeiro divisor!
     
-    return True
-
-# Teste
-numero = 97
-print(f"{numero} é primo: {eh_primo_rapido(numero)}")</code></pre>
+    if eh_primo:
+        print(f"✅ {numero} é primo!")
+    else:
+        print(f"❌ {numero} não é primo")</code></pre>
     </section>
 
     <section>
         <h2>💡 Dicas Importantes</h2>
-        <div class="tip-box">
-            <ul>
-                <li>🛑 break sai completamente do loop</li>
-                <li>⏭️ continue pula apenas a iteração atual</li>
-                <li>🎯 Use break para buscas eficientes</li>
-                <li>🔍 Use continue para filtrar dados</li>
-                <li>🔄 Em loops aninhados, afetam apenas o loop mais interno</li>
-                <li>⚡ break pode melhorar muito a performance</li>
-            </ul>
-        </div>
+        <ul>
+            <li>🛑 break sai completamente do loop</li>
+            <li>⏭️ continue pula apenas a iteração atual</li>
+            <li>🎯 Use break para buscas eficientes</li>
+            <li>🔍 Use continue para filtrar dados</li>
+            <li>🔄 Em loops aninhados, afetam apenas o loop mais interno</li>
+            <li>⚡ break pode melhorar muito a performance</li>
+        </ul>
     </section>
 {% endblock %}
 
-{% block extra_js %}
-<script>
-function runCode() {
-    const code = document.getElementById('code-input').value;
-    const output = document.getElementById('output');
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
     
-    output.innerHTML = '<div class="output-success">Sistema de notas executado! Teste com diferentes valores e observe o comportamento do break/continue.</div>';
-}
-</script>
+    <p><strong>Tarefa:</strong> Validador de Senha com Tentativas</p>
+    <ul>
+        <li>Senha correta: "python123"</li>
+        <li>Usuário tem 5 tentativas</li>
+        <li>Use for para contar as tentativas</li>
+        <li>Use break quando acertar a senha</li>
+        <li>Mostre quantas tentativas usou</li>
+        <li>Bloqueie após 5 tentativas erradas</li>
+    </ul>
+    
+    <p><strong>Exemplo de saída esperada:</strong></p>
+    <pre><code>🔐 VALIDADOR DE SENHA
+Tentativa 1/5: errada
+❌ Senha incorreta!
+Tentativa 2/5: python123
+✅ Senha correta! Usou 2 tentativas.</code></pre>
 {% endblock %}
+
+{% block initial_code %}print("🔐 VALIDADOR DE SENHA")
+print()
+
+senha_correta = "python123"
+
+# SEU CÓDIGO AQUI
+# Use for range(5) e break para implementar{% endblock %}

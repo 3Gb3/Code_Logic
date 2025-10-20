@@ -1,142 +1,172 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 6 - Funções Matemáticas e Biblioteca Math | CodeLogic{% endblock %}
+{% block title %}Aula 6 - Operações Matemáticas Avançadas | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 6 – Funções Matemáticas e Biblioteca Math{% endblock %}
+{% block lesson_title %}Aula 6 – Operações Matemáticas Avançadas{% endblock %}
 
 {% block lesson_content %}
     <section>
         <h2>🎯 Objetivo</h2>
         <ul>
             <li>Conhecer funções matemáticas básicas do Python</li>
-            <li>Aprender a usar a biblioteca math</li>
+            <li>Trabalhar com potências e raízes</li>
             <li>Resolver problemas matemáticos com programação</li>
         </ul>
     </section>
 
     <section>
-        <h2>🔢 Funções Matemáticas Básicas</h2>
+        <h2>🔢 Funções Matemáticas Embutidas</h2>
         
-        <h3>Funções built-in (já disponíveis):</h3>
-        <pre><code>print(abs(-5))        # 5 (valor absoluto)
-print(round(3.7))     # 4 (arredondamento)
-print(round(3.14159, 2))  # 3.14 (2 casas decimais)
-print(max(5, 8, 2))   # 8 (maior valor)
-print(min(5, 8, 2))   # 2 (menor valor)
-print(sum([1,2,3,4])) # 10 (soma de lista)
-print(pow(2, 3))      # 8 (potência: 2³)</code></pre>
-    </section>
+        <p>Python já vem com várias funções matemáticas úteis que não precisam de importação:</p>
+        
+        <h3>1. abs() - Valor Absoluto</h3>
+        <pre><code># Remove o sinal negativo
+numero = -15
+positivo = abs(numero)
+print(positivo)  # 15
 
-    <section>
-        <h2>📚 Biblioteca Math</h2>
-        <p>Para funções matemáticas avançadas, precisamos importar a biblioteca math:</p>
+# Útil para calcular distâncias
+ponto1 = 10
+ponto2 = 25
+distancia = abs(ponto2 - ponto1)
+print(f"Distância: {distancia}")  # 15</code></pre>
         
-        <pre><code>import math</code></pre>
-        
-        <h3>Constantes úteis:</h3>
-        <pre><code>print(math.pi)        # 3.141592653589793
-print(math.e)         # 2.718281828459045</code></pre>
-        
-        <h3>Funções de arredondamento:</h3>
-        <pre><code>print(math.ceil(3.2))   # 4 (arredonda para cima)
-print(math.floor(3.8))  # 3 (arredonda para baixo)
-print(math.trunc(3.9))  # 3 (remove decimais)</code></pre>
-        
-        <h3>Funções de potência e raiz:</h3>
-        <pre><code>print(math.sqrt(16))    # 4.0 (raiz quadrada)
-print(math.pow(2, 3))   # 8.0 (potência)
-print(math.log(10))     # 2.302... (logaritmo natural)
-print(math.log10(100))  # 2.0 (logaritmo base 10)</code></pre>
-        
-        <h3>Funções trigonométricas:</h3>
-        <pre><code># Ângulos em radianos
-print(math.sin(math.pi/2))  # 1.0
-print(math.cos(0))          # 1.0
-print(math.tan(math.pi/4))  # 1.0
+        <h3>2. round() - Arredondamento</h3>
+        <pre><code># Arredonda para o inteiro mais próximo
+print(round(3.7))      # 4
+print(round(3.2))      # 3
+print(round(3.5))      # 4
 
-# Convertendo graus para radianos
-angulo_graus = 90
-angulo_rad = math.radians(angulo_graus)
-print(math.sin(angulo_rad)) # 1.0</code></pre>
+# Arredonda com casas decimais
+pi = 3.14159
+print(round(pi, 2))    # 3.14
+print(round(pi, 3))    # 3.142</code></pre>
+        
+        <h3>3. max() e min() - Maior e Menor</h3>
+        <pre><code># Encontra o maior valor
+maior = max(5, 8, 2, 10, 3)
+print(f"Maior: {maior}")  # 10
+
+# Encontra o menor valor
+menor = min(5, 8, 2, 10, 3)
+print(f"Menor: {menor}")  # 2
+
+# Pode usar com variáveis
+nota1 = 7.5
+nota2 = 8.0
+nota3 = 6.5
+melhor_nota = max(nota1, nota2, nota3)
+print(f"Melhor nota: {melhor_nota}")  # 8.0</code></pre>
+        
+        <h3>4. pow() ou ** - Potenciação</h3>
+        <pre><code># Usando pow()
+resultado = pow(2, 3)    # 2³ = 8
+print(resultado)
+
+# Usando ** (mais comum)
+quadrado = 5 ** 2        # 5² = 25
+print(quadrado)
+
+cubo = 3 ** 3            # 3³ = 27
+print(cubo)
+
+# Raiz quadrada (potência fracionária)
+raiz = 16 ** 0.5         # √16 = 4.0
+print(raiz)</code></pre>
     </section>
 
     <section>
         <h2>🧮 Exemplos Práticos</h2>
         
-        <h3>Calculando distância entre pontos:</h3>
-        <pre><code>import math
+        <h3>Exemplo 1: Calculadora de Quadrados e Cubos</h3>
+        <pre><code>numero = int(input("Digite um número: "))
 
-x1, y1 = 0, 0    # Ponto 1
-x2, y2 = 3, 4    # Ponto 2
+quadrado = numero ** 2
+cubo = numero ** 3
 
-distancia = math.sqrt((x2-x1)**2 + (y2-y1)**2)
-print(f"Distância: {distancia:.2f}")</code></pre>
+print(f"{numero} ao quadrado = {quadrado}")
+print(f"{numero} ao cubo = {cubo}")</code></pre>
         
-        <h3>Área de um círculo:</h3>
-        <pre><code>import math
+        <h3>Exemplo 2: Média de Notas com Arredondamento</h3>
+        <pre><code>nota1 = float(input("Nota 1: "))
+nota2 = float(input("Nota 2: "))
+nota3 = float(input("Nota 3: "))
+
+media = (nota1 + nota2 + nota3) / 3
+media_arredondada = round(media, 2)
+
+print(f"Média: {media_arredondada}")
+print(f"Maior nota: {max(nota1, nota2, nota3)}")
+print(f"Menor nota: {min(nota1, nota2, nota3)}")</code></pre>
+        
+        <h3>Exemplo 3: Cálculo de Área do Círculo (aproximado)</h3>
+        <pre><code># Usando pi aproximado: 3.14159
+pi = 3.14159
 
 raio = float(input("Digite o raio: "))
-area = math.pi * raio ** 2
-circumferencia = 2 * math.pi * raio
+area = pi * (raio ** 2)
+circunferencia = 2 * pi * raio
 
-print(f"Área: {area:.2f}")
-print(f"Circunferência: {circumferencia:.2f}")</code></pre>
+print(f"Área: {round(area, 2)}")
+print(f"Circunferência: {round(circunferencia, 2)}")</code></pre>
         
-        <h3>Calculadora científica básica:</h3>
-        <pre><code>import math
+        <h3>Exemplo 4: Teorema de Pitágoras</h3>
+        <pre><code># Calcular hipotenusa de triângulo retângulo
+cateto1 = float(input("Cateto 1: "))
+cateto2 = float(input("Cateto 2: "))
 
-numero = float(input("Digite um número: "))
-print(f"Número: {numero}")
-print(f"Raiz quadrada: {math.sqrt(abs(numero)):.3f}")
-print(f"Logaritmo natural: {math.log(numero) if numero > 0 else 'Indefinido'}")
-print(f"Seno: {math.sin(numero):.3f}")
-print(f"Fatorial: {math.factorial(int(numero)) if numero >= 0 and numero == int(numero) else 'Indefinido'}")</code></pre>
+# c² = a² + b², então c = √(a² + b²)
+soma_quadrados = (cateto1 ** 2) + (cateto2 ** 2)
+hipotenusa = soma_quadrados ** 0.5
+
+print(f"Hipotenusa: {round(hipotenusa, 2)}")</code></pre>
     </section>
 
     <section>
-        <h2>⚠️ Cuidados Importantes</h2>
+        <h2>💡 Dicas Importantes</h2>
         <ul>
-            <li>Funções trigonométricas usam radianos, não graus</li>
-            <li>Logaritmo só funciona com números positivos</li>
-            <li>Raiz quadrada só funciona com números não negativos</li>
-            <li>Fatorial só funciona com números inteiros não negativos</li>
+            <li><strong>Raiz quadrada:</strong> Use exponenciação com 0.5: <code>numero ** 0.5</code></li>
+            <li><strong>Raiz cúbica:</strong> Use exponenciação com 1/3: <code>numero ** (1/3)</code></li>
+            <li><strong>Pi aproximado:</strong> Use 3.14159 para cálculos geométricos</li>
+            <li><strong>Sempre arredonde:</strong> Use round() para resultados limpos</li>
         </ul>
     </section>
 {% endblock %}
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
+    <h4>🎮 Exercício Prático</h4>
     
-    <p><strong>Tarefa 1:</strong> Calculadora de Geometria</p>
-    <ul>
-        <li>Peça o raio de um círculo</li>
-        <li>Calcule e exiba: área, circunferência e diâmetro</li>
-        <li>Use math.pi para maior precisão</li>
-    </ul>
+    <p><strong>Crie um programa que:</strong></p>
+    <ol>
+        <li>Peça ao usuário um número</li>
+        <li>Calcule e exiba:
+            <ul>
+                <li>O número ao quadrado</li>
+                <li>O número ao cubo</li>
+                <li>A raiz quadrada do número (use ** 0.5)</li>
+                <li>O valor absoluto do número</li>
+            </ul>
+        </li>
+        <li>Arredonde todos os resultados para 2 casas decimais</li>
+    </ol>
     
-    <p><strong>Tarefa 2:</strong> Equação do 2º Grau</p>
-    <ul>
-        <li>Peça os coeficientes a, b, c</li>
-        <li>Calcule o discriminante (delta = b² - 4ac)</li>
-        <li>Se delta ≥ 0, calcule e exiba as raízes</li>
-        <li>Use math.sqrt() para a raiz quadrada</li>
-    </ul>
+    <p><strong>Exemplo de saída:</strong></p>
+    <pre>Digite um número: 9
+Número: 9
+Quadrado: 81.0
+Cubo: 729.0
+Raiz quadrada: 3.0
+Valor absoluto: 9.0</pre>
     
-    <p><strong>Tarefa 3:</strong> Conversor de Coordenadas</p>
-    <ul>
-        <li>Peça coordenadas cartesianas (x, y)</li>
-        <li>Converta para coordenadas polares (r, θ)</li>
-        <li>Use math.sqrt() e math.atan2()</li>
-    </ul>
-    
-    <p><strong>Dica:</strong> Para importar math: <code>import math</code></p>
+    <p><strong>Dica:</strong> Use <code>abs()</code>, <code>round()</code> e <code>** 0.5</code></p>
 {% endblock %}
 
-{% block initial_code %}import math
+{% block initial_code %}# Exercício: Calculadora Matemática
+# Complete o código abaixo
 
-# Exemplo: Área de um círculo
-raio = 5
-area = math.pi * raio ** 2
-print(f"Área do círculo: {area:.2f}")
+numero = float(input("Digite um número: "))
 
-# Agora implemente os exercícios{% endblock %}
+# Seu código aqui
+# Calcule: quadrado, cubo, raiz quadrada e valor absoluto
+# Use round() para arredondar para 2 casas decimais
+{% endblock %}

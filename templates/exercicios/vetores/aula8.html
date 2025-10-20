@@ -8,7 +8,7 @@
     <section>
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Compreender o conceito de conjuntos (sets)</li>
+            <li>Compreender o conceito de sets (conjuntos)</li>
             <li>Trabalhar com coleções de elementos únicos</li>
             <li>Aplicar operações matemáticas de conjuntos</li>
         </ul>
@@ -22,391 +22,341 @@
         <ul>
             <li>🚫 <strong>Sem duplicatas</strong> - cada elemento aparece apenas uma vez</li>
             <li>🔄 <strong>Não ordenados</strong> - não mantêm ordem específica</li>
-            <li>✏️ <strong>Mutáveis</strong> - podem ser modificados após criação</li>
-            <li>⚡ <strong>Busca rápida</strong> - verificação de pertinência O(1)</li>
+            <li>✏️ <strong>Mutáveis</strong> - podem ser modificados</li>
+            <li>⚡ <strong>Busca rápida</strong> - verificação muito eficiente</li>
             <li>🧮 <strong>Operações matemáticas</strong> - união, interseção, diferença</li>
         </ul>
         
         <h3>Criação de Sets:</h3>
-        <pre><code># Set vazio
-set_vazio = set()  # Não use {} - isso cria dict vazio!
+        <pre><code># Set vazio (ATENÇÃO: usar set(), não {})
+set_vazio = set()
 print(f"Set vazio: {set_vazio}")
-print(f"Tipo: {type(set_vazio)}")
+
+# {} cria dicionário, não set!
+dicionario = {}
+print(f"Tipo de {{}}: {type(dicionario)}")  # dict
 
 # Set com elementos
-cores = {"vermelho", "verde", "azul"}
 numeros = {1, 2, 3, 4, 5}
-misto = {"Python", 3.9, True, 42}
+cores = {"vermelho", "verde", "azul"}
+misto = {1, "Python", 3.14, True}
 
-# Set elimina duplicatas automaticamente
+print(f"Números: {numeros}")
+print(f"Cores: {cores}")
+
+# Sets eliminam duplicatas automaticamente
 com_duplicatas = {1, 2, 2, 3, 3, 3, 4}
 print(f"Com duplicatas: {com_duplicatas}")  # {1, 2, 3, 4}
 
-# Criando set de uma lista
-lista = [1, 2, 2, 3, 3, 3, 4, 4]
+# Criar set a partir de lista
+lista = [1, 2, 2, 3, 3, 3, 4, 5, 5]
 set_da_lista = set(lista)
-print(f"Set da lista: {set_da_lista}")  # {1, 2, 3, 4}
-
-# Set de string (cada caractere é um elemento)
-letras = set("hello")
-print(f"Letras de 'hello': {letras}")  # {'h', 'e', 'l', 'o'}
-
-# Set comprehension
-quadrados = {x**2 for x in range(5)}
-print(f"Quadrados: {quadrados}")  # {0, 1, 4, 9, 16}</code></pre>
+print(f"Set da lista: {set_da_lista}")  # {1, 2, 3, 4, 5}</code></pre>
     </section>
 
     <section>
-        <h2>🔧 Operações Básicas</h2>
+        <h2>➕ Adicionando e Removendo Elementos</h2>
         
-        <h3>Adição e Remoção:</h3>
+        <h3>Adicionar Elementos:</h3>
         <pre><code>frutas = {"maçã", "banana", "uva"}
-print(f"Frutas iniciais: {frutas}")
+print(f"Inicial: {frutas}")
 
-# Adicionar elemento
-frutas.add("pêra")
+# add() - adicionar um elemento
+frutas.add("laranja")
 print(f"Após add: {frutas}")
 
-# Tentar adicionar duplicata (não faz nada)
+# Tentar adicionar duplicata (não tem efeito)
 frutas.add("maçã")
-print(f"Após add duplicata: {frutas}")
+print(f"Após add duplicata: {frutas}")  # Sem mudança
 
-# Adicionar múltiplos elementos
-frutas.update(["manga", "kiwi", "abacaxi"])
-print(f"Após update: {frutas}")
-
-# Remover elemento
-frutas.remove("banana")  # Gera erro se não existir
-print(f"Após remove: {frutas}")
-
-# Remover elemento (sem erro se não existir)
-frutas.discard("inexistente")
-frutas.discard("uva")
-print(f"Após discard: {frutas}")
-
-# Remover elemento aleatório
-elemento_removido = frutas.pop()
-print(f"Removido: {elemento_removido}")
-print(f"Restante: {frutas}")
-
-# Limpar set
-frutas_copia = frutas.copy()
-frutas.clear()
-print(f"Após clear: {frutas}")
-print(f"Cópia: {frutas_copia}")</code></pre>
+# update() - adicionar múltiplos elementos
+frutas.update(["pêra", "kiwi", "manga"])
+print(f"Após update: {frutas}")</code></pre>
         
-        <h3>Verificação de Pertinência:</h3>
+        <h3>Remover Elementos:</h3>
+        <pre><code>numeros = {1, 2, 3, 4, 5}
+print(f"Inicial: {numeros}")
+
+# remove() - remove elemento (erro se não existir)
+numeros.remove(3)
+print(f"Após remove(3): {numeros}")
+
+# discard() - remove elemento (não dá erro se não existir)
+numeros.discard(10)  # Não existe, mas não dá erro
+print(f"Após discard(10): {numeros}")
+
+# pop() - remove elemento aleatório
+removido = numeros.pop()
+print(f"Removido: {removido}")
+print(f"Após pop: {numeros}")
+
+# clear() - remove todos
+numeros_temp = {1, 2, 3}
+numeros_temp.clear()
+print(f"Após clear: {numeros_temp}")  # set()</code></pre>
+    </section>
+
+    <section>
+        <h2>🔍 Operações com Sets</h2>
+        
+        <h3>Verificar Pertinência:</h3>
         <pre><code>vogais = {"a", "e", "i", "o", "u"}
 
-# Verificar se elemento existe (muito rápido - O(1))
-print(f"'a' in vogais: {'a' in vogais}")      # True
-print(f"'b' in vogais: {'b' in vogais}")      # False
-print(f"'z' not in vogais: {'z' not in vogais}")  # True
+# Operador in (muito rápido em sets!)
+if "a" in vogais:
+    print("'a' é uma vogal")
 
-# Tamanho do set
-print(f"Número de vogais: {len(vogais)}")
+if "b" not in vogais:
+    print("'b' não é uma vogal")
 
-# Converter para lista/tupla se precisar de ordem
-lista_vogais = sorted(list(vogais))
-print(f"Vogais ordenadas: {lista_vogais}")</code></pre>
+# Verificar múltiplas letras
+letras = ["a", "b", "c"]
+for letra in letras:
+    if letra in vogais:
+        print(f"{letra} é vogal")
+    else:
+        print(f"{letra} é consoante")</code></pre>
+        
+        <h3>Tamanho e Conversão:</h3>
+        <pre><code>numeros = {1, 2, 3, 4, 5}
+
+# Tamanho
+print(f"Tamanho: {len(numeros)}")
+
+# Converter para lista (para ordenar, por exemplo)
+lista = list(numeros)
+lista.sort()
+print(f"Como lista ordenada: {lista}")
+
+# Converter para tupla
+tupla = tuple(numeros)
+print(f"Como tupla: {tupla}")</code></pre>
     </section>
 
     <section>
         <h2>🧮 Operações Matemáticas</h2>
         
-        <h3>União (∪):</h3>
-        <pre><code>conjunto_a = {1, 2, 3, 4}
-conjunto_b = {3, 4, 5, 6}
+        <h3>União (|):</h3>
+        <pre><code>set_a = {1, 2, 3, 4}
+set_b = {3, 4, 5, 6}
 
-# União - todos os elementos únicos
-uniao_metodo = conjunto_a.union(conjunto_b)
-uniao_operador = conjunto_a | conjunto_b
+# União: todos os elementos (sem duplicatas)
+uniao = set_a | set_b
+print(f"A: {set_a}")
+print(f"B: {set_b}")
+print(f"União (A | B): {uniao}")  # {1, 2, 3, 4, 5, 6}
 
-print(f"Conjunto A: {conjunto_a}")
-print(f"Conjunto B: {conjunto_b}")
-print(f"União (método): {uniao_metodo}")      # {1, 2, 3, 4, 5, 6}
-print(f"União (operador): {uniao_operador}")  # {1, 2, 3, 4, 5, 6}
-
-# União de múltiplos sets
-conjunto_c = {7, 8, 9}
-uniao_multipla = conjunto_a.union(conjunto_b, conjunto_c)
-print(f"União múltipla: {uniao_multipla}")    # {1, 2, 3, 4, 5, 6, 7, 8, 9}</code></pre>
+# Método union()
+uniao2 = set_a.union(set_b)
+print(f"União com método: {uniao2}")</code></pre>
         
-        <h3>Interseção (∩):</h3>
-        <pre><code># Interseção - elementos comuns
-intersecao_metodo = conjunto_a.intersection(conjunto_b)
-intersecao_operador = conjunto_a & conjunto_b
+        <h3>Interseção (&):</h3>
+        <pre><code>set_a = {1, 2, 3, 4}
+set_b = {3, 4, 5, 6}
 
-print(f"Interseção (método): {intersecao_metodo}")     # {3, 4}
-print(f"Interseção (operador): {intersecao_operador}") # {3, 4}
+# Interseção: elementos comuns
+intersecao = set_a & set_b
+print(f"Interseção (A & B): {intersecao}")  # {3, 4}
 
-# Verificar se há interseção
-tem_comum = not conjunto_a.isdisjoint(conjunto_b)
-print(f"Têm elementos em comum: {tem_comum}")  # True
-
-# Sets disjuntos (sem elementos comuns)
-set_1 = {1, 2, 3}
-set_2 = {4, 5, 6}
-print(f"Sets disjuntos: {set_1.isdisjoint(set_2)}")  # True</code></pre>
+# Método intersection()
+intersecao2 = set_a.intersection(set_b)
+print(f"Interseção com método: {intersecao2}")</code></pre>
         
-        <h3>Diferença (−):</h3>
-        <pre><code># Diferença - elementos em A mas não em B
-diferenca_metodo = conjunto_a.difference(conjunto_b)
-diferenca_operador = conjunto_a - conjunto_b
+        <h3>Diferença (-):</h3>
+        <pre><code>set_a = {1, 2, 3, 4}
+set_b = {3, 4, 5, 6}
 
-print(f"A - B (método): {diferenca_metodo}")     # {1, 2}
-print(f"A - B (operador): {diferenca_operador}") # {1, 2}
+# Diferença: elementos em A mas não em B
+diferenca = set_a - set_b
+print(f"Diferença (A - B): {diferenca}")  # {1, 2}
 
-# Diferença simétrica - elementos em A ou B, mas não em ambos
-dif_simetrica_metodo = conjunto_a.symmetric_difference(conjunto_b)
-dif_simetrica_operador = conjunto_a ^ conjunto_b
+# Diferença inversa
+diferenca2 = set_b - set_a
+print(f"Diferença (B - A): {diferenca2}")  # {5, 6}
 
-print(f"Diferença simétrica (método): {dif_simetrica_metodo}")     # {1, 2, 5, 6}
-print(f"Diferença simétrica (operador): {dif_simetrica_operador}") # {1, 2, 5, 6}</code></pre>
+# Método difference()
+diferenca3 = set_a.difference(set_b)
+print(f"Diferença com método: {diferenca3}")</code></pre>
         
-        <h3>Relações de Subconjunto:</h3>
+        <h3>Diferença Simétrica (^):</h3>
+        <pre><code>set_a = {1, 2, 3, 4}
+set_b = {3, 4, 5, 6}
+
+# Diferença simétrica: elementos que estão em apenas um dos sets
+dif_simetrica = set_a ^ set_b
+print(f"Diferença simétrica (A ^ B): {dif_simetrica}")  # {1, 2, 5, 6}
+
+# Método symmetric_difference()
+dif_simetrica2 = set_a.symmetric_difference(set_b)
+print(f"Diferença simétrica com método: {dif_simetrica2}")</code></pre>
+    </section>
+
+    <section>
+        <h2>📊 Subconjuntos e Superconjuntos</h2>
+        
         <pre><code>numeros = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 pares = {2, 4, 6, 8, 10}
 impares = {1, 3, 5, 7, 9}
-pequenos = {1, 2, 3}
+pequeno = {2, 4}
 
-# Subconjunto
-print(f"Pares ⊆ Números: {pares.issubset(numeros)}")        # True
-print(f"Pequenos ⊆ Números: {pequenos.issubset(numeros)}")  # True
-print(f"Pares ⊆ Ímpares: {pares.issubset(impares)}")        # False
+# issubset() - verificar se é subconjunto
+if pares.issubset(numeros):
+    print("Pares é subconjunto de números")
 
-# Superconjunto
-print(f"Números ⊇ Pares: {numeros.issuperset(pares)}")      # True
-print(f"Números ⊇ Ímpares: {numeros.issuperset(impares)}")  # True
+if pequeno.issubset(pares):
+    print("Pequeno é subconjunto de pares")
 
-# Subconjunto próprio (não igual)
-print(f"Pares ⊂ Números: {pares < numeros}")               # True
-print(f"Números ⊂ Números: {numeros < numeros}")           # False</code></pre>
+# issuperset() - verificar se é superconjunto
+if numeros.issuperset(pares):
+    print("Números é superconjunto de pares")
+
+# isdisjoint() - verificar se não têm elementos em comum
+if pares.isdisjoint(impares):
+    print("Pares e ímpares são disjuntos (sem elementos comuns)")</code></pre>
+    </section>
+
+    <section>
+        <h2>🔄 Percorrendo Sets</h2>
+        
+        <pre><code>frutas = {"maçã", "banana", "uva", "laranja", "pêra"}
+
+# Sets não são ordenados, então a ordem pode variar
+print("Frutas no set:")
+for fruta in frutas:
+    print(f"  - {fruta}")
+
+# Para percorrer em ordem, converter para lista ordenada
+frutas_ordenadas = sorted(frutas)
+print("\nFrutas em ordem alfabética:")
+for fruta in frutas_ordenadas:
+    print(f"  - {fruta}")</code></pre>
+    </section>
+
+    <section>
+        <h2>💡 Casos de Uso Práticos</h2>
+        
+        <h3>Remover Duplicatas:</h3>
+        <pre><code>numeros = [1, 2, 2, 3, 3, 3, 4, 5, 5]
+print(f"Lista com duplicatas: {numeros}")
+
+# Converter para set remove duplicatas
+sem_duplicatas = list(set(numeros))
+sem_duplicatas.sort()  # Reordenar
+print(f"Lista sem duplicatas: {sem_duplicatas}")</code></pre>
+        
+        <h3>Encontrar Elementos Únicos:</h3>
+        <pre><code>lista1 = [1, 2, 3, 4, 5]
+lista2 = [4, 5, 6, 7, 8]
+
+# Elementos únicos de lista1
+unicos_1 = set(lista1) - set(lista2)
+print(f"Únicos de lista1: {unicos_1}")  # {1, 2, 3}
+
+# Elementos únicos de lista2
+unicos_2 = set(lista2) - set(lista1)
+print(f"Únicos de lista2: {unicos_2}")  # {6, 7, 8}
+
+# Elementos comuns
+comuns = set(lista1) & set(lista2)
+print(f"Elementos comuns: {comuns}")  # {4, 5}</code></pre>
     </section>
 
     <section>
         <h2>🎮 Exercício Prático</h2>
         <div class="exercise-box">
-            <h3>Sistema de Análise de Dados com Sets</h3>
-            <p>Crie um sistema para analisar dados de usuários usando operações de conjuntos:</p>
+            <h3>Sistema de Análise de Cursos</h3>
+            <p>Crie um sistema que analise alunos matriculados em diferentes cursos:</p>
             <ul>
-                <li>Análise de preferências e interesses</li>
-                <li>Encontrar grupos com interesses similares</li>
-                <li>Identificar características únicas</li>
+                <li>Encontrar alunos que fazem múltiplos cursos</li>
+                <li>Identificar alunos exclusivos de cada curso</li>
+                <li>Calcular intersecções e diferenças entre turmas</li>
             </ul>
             
-            <textarea id="code-input" placeholder="class AnalisadorUsuarios:
-    def __init__(self):
-        # Dados dos usuários: {usuario: set(interesses)}
-        self.usuarios = {
-            'Ana': {'programação', 'música', 'cinema', 'livros', 'viagem'},
-            'Bruno': {'esportes', 'música', 'jogos', 'tecnologia', 'programação'},
-            'Carlos': {'arte', 'cinema', 'música', 'fotografia', 'design'},
-            'Diana': {'viagem', 'livros', 'fotografia', 'natureza', 'yoga'},
-            'Eduardo': {'esportes', 'programação', 'tecnologia', 'jogos', 'cinema'},
-            'Fernanda': {'yoga', 'natureza', 'arte', 'música', 'design'},
-            'Gabriel': {'tecnologia', 'programação', 'jogos', 'livros', 'música'},
-            'Helena': {'viagem', 'fotografia', 'natureza', 'arte', 'livros'}
-        }
-    
-    def todos_interesses(self):
-        '''Retorna set com todos os interesses únicos'''
-        todos = set()
-        for interesses in self.usuarios.values():
-            todos = todos.union(interesses)
-        return todos
-    
-    def usuarios_com_interesse(self, interesse):
-        '''Retorna usuários que têm determinado interesse'''
-        usuarios_interesse = set()
-        for usuario, interesses in self.usuarios.items():
-            if interesse in interesses:
-                usuarios_interesse.add(usuario)
-        return usuarios_interesse
-    
-    def interesses_comuns(self, usuario1, usuario2):
-        '''Encontra interesses comuns entre dois usuários'''
-        if usuario1 not in self.usuarios or usuario2 not in self.usuarios:
-            return set()
-        
-        return self.usuarios[usuario1].intersection(self.usuarios[usuario2])
-    
-    def usuarios_similares(self, usuario, min_comuns=2):
-        '''Encontra usuários com pelo menos min_comuns interesses em comum'''
-        if usuario not in self.usuarios:
-            return []
-        
-        similares = []
-        interesses_usuario = self.usuarios[usuario]
-        
-        for outro_usuario, outros_interesses in self.usuarios.items():
-            if outro_usuario != usuario:
-                comuns = interesses_usuario.intersection(outros_interesses)
-                if len(comuns) >= min_comuns:
-                    similares.append((outro_usuario, comuns))
-        
-        # Ordenar por número de interesses comuns (decrescente)
-        similares.sort(key=lambda x: len(x[1]), reverse=True)
-        return similares
-    
-    def interesses_exclusivos(self, usuario):
-        '''Encontra interesses únicos de um usuário'''
-        if usuario not in self.usuarios:
-            return set()
-        
-        interesses_usuario = self.usuarios[usuario]
-        todos_outros_interesses = set()
-        
-        for outro_usuario, outros_interesses in self.usuarios.items():
-            if outro_usuario != usuario:
-                todos_outros_interesses = todos_outros_interesses.union(outros_interesses)
-        
-        return interesses_usuario.difference(todos_outros_interesses)
-    
-    def grupos_por_interesse(self):
-        '''Agrupa usuários por interesse comum'''
-        todos_int = self.todos_interesses()
-        grupos = {}
-        
-        for interesse in todos_int:
-            usuarios_interesse = self.usuarios_com_interesse(interesse)
-            grupos[interesse] = usuarios_interesse
-        
-        return grupos
-    
-    def interesse_mais_popular(self):
-        '''Encontra o interesse mais popular'''
-        grupos = self.grupos_por_interesse()
-        mais_popular = max(grupos.items(), key=lambda x: len(x[1]))
-        return mais_popular[0], mais_popular[1]
-    
-    def usuarios_versateis(self, min_interesses=5):
-        '''Usuários com pelo menos min_interesses'''
-        versateis = {}
-        for usuario, interesses in self.usuarios.items():
-            if len(interesses) >= min_interesses:
-                versateis[usuario] = interesses
-        return versateis
-    
-    def sugerir_novos_interesses(self, usuario, max_sugestoes=3):
-        '''Sugere novos interesses baseado em usuários similares'''
-        if usuario not in self.usuarios:
-            return []
-        
-        interesses_usuario = self.usuarios[usuario]
-        sugestoes = set()
-        
-        # Pegar interesses de usuários similares
-        similares = self.usuarios_similares(usuario, 2)
-        
-        for similar_usuario, _ in similares:
-            interesses_similar = self.usuarios[similar_usuario]
-            novos_interesses = interesses_similar.difference(interesses_usuario)
-            sugestoes = sugestoes.union(novos_interesses)
-        
-        return list(sugestoes)[:max_sugestoes]
-    
-    def estatisticas_gerais(self):
-        '''Retorna estatísticas gerais do sistema'''
-        todos_int = self.todos_interesses()
-        grupos = self.grupos_por_interesse()
-        
-        return {
-            'total_usuarios': len(self.usuarios),
-            'total_interesses': len(todos_int),
-            'media_interesses_por_usuario': sum(len(i) for i in self.usuarios.values()) / len(self.usuarios),
-            'interesse_mais_popular': self.interesse_mais_popular()[0],
-            'usuarios_interesse_mais_popular': len(self.interesse_mais_popular()[1])
-        }
+            <textarea id="code-input" placeholder="# Sistema de Análise de Cursos
 
-# Testando o sistema
-analisador = AnalisadorUsuarios()
+# Alunos matriculados em cada curso
+python = {'Ana', 'Bruno', 'Carlos', 'Diana', 'Eduardo'}
+javascript = {'Bruno', 'Diana', 'Felipe', 'Gabriela', 'Helena'}
+java = {'Carlos', 'Eduardo', 'Felipe', 'Igor', 'Julia'}
 
-print('👥 ANÁLISE DE USUÁRIOS COM SETS')
-print('=' * 35)
+print('🎓 SISTEMA DE ANÁLISE DE CURSOS')
+print('=' * 60)
+
+# Total de alunos em cada curso
+print('\n📊 TOTAL DE ALUNOS POR CURSO:')
+print(f'Python: {len(python)} alunos')
+print(f'JavaScript: {len(javascript)} alunos')
+print(f'Java: {len(java)} alunos')
+
+# Todos os alunos (união)
+todos_alunos = python | javascript | java
+print(f'\n👥 Total de alunos únicos: {len(todos_alunos)}')
+print(f'Alunos: {sorted(todos_alunos)}')
+
+# Alunos que fazem Python E JavaScript
+python_e_js = python & javascript
+print(f'\n🔗 Alunos que fazem Python E JavaScript: {python_e_js}')
+
+# Alunos que fazem Python E Java
+python_e_java = python & java
+print(f'🔗 Alunos que fazem Python E Java: {python_e_java}')
+
+# Alunos que fazem JavaScript E Java
+js_e_java = javascript & java
+print(f'🔗 Alunos que fazem JavaScript E Java: {js_e_java}')
+
+# Alunos que fazem os 3 cursos
+tres_cursos = python & javascript & java
+if tres_cursos:
+    print(f'\n⭐ Alunos fazendo os 3 cursos: {tres_cursos}')
+else:
+    print(f'\n⭐ Nenhum aluno fazendo os 3 cursos')
+
+# Alunos exclusivos de Python
+exclusivos_python = python - javascript - java
+print(f'\n🎯 Alunos APENAS de Python: {exclusivos_python}')
+
+# Alunos exclusivos de JavaScript
+exclusivos_js = javascript - python - java
+print(f'🎯 Alunos APENAS de JavaScript: {exclusivos_js}')
+
+# Alunos exclusivos de Java
+exclusivos_java = java - python - javascript
+print(f'🎯 Alunos APENAS de Java: {exclusivos_java}')
+
+# Alunos que fazem pelo menos 2 cursos
+pelo_menos_2 = (python & javascript) | (python & java) | (javascript & java)
+print(f'\n📚 Alunos fazendo pelo menos 2 cursos: {pelo_menos_2}')
+print(f'Total: {len(pelo_menos_2)} alunos')
+
+# Verificar se algum aluno específico está matriculado
+aluno_busca = 'Bruno'
+print(f'\n🔍 BUSCAR ALUNO: {aluno_busca}')
+
+cursos_bruno = []
+if aluno_busca in python:
+    cursos_bruno.append('Python')
+if aluno_busca in javascript:
+    cursos_bruno.append('JavaScript')
+if aluno_busca in java:
+    cursos_bruno.append('Java')
+
+if cursos_bruno:
+    print(f'{aluno_busca} está matriculado em: {cursos_bruno}')
+    print(f'Total de cursos: {len(cursos_bruno)}')
+else:
+    print(f'{aluno_busca} não está matriculado em nenhum curso')
 
 # Estatísticas gerais
-print('\\n📊 ESTATÍSTICAS GERAIS:')
-stats = analisador.estatisticas_gerais()
-for chave, valor in stats.items():
-    if isinstance(valor, float):
-        print(f'  {chave.replace(\"_\", \" \").title()}: {valor:.1f}')
-    else:
-        print(f'  {chave.replace(\"_\", \" \").title()}: {valor}')
+print(f'\n📈 ESTATÍSTICAS GERAIS:')
+print(f'Total de alunos únicos: {len(todos_alunos)}')
+print(f'Alunos fazendo múltiplos cursos: {len(pelo_menos_2)}')
+print(f'Alunos fazendo apenas 1 curso: {len(todos_alunos) - len(pelo_menos_2)}')
 
-# Todos os interesses
-print('\\n🎯 TODOS OS INTERESSES:')
-todos = analisador.todos_interesses()
-print(f'  {sorted(todos)}')
-print(f'  Total: {len(todos)} interesses únicos')
-
-# Análise de usuário específico
-usuario_exemplo = 'Ana'
-print(f'\\n👤 ANÁLISE DO USUÁRIO {usuario_exemplo}:')
-interesses_ana = analisador.usuarios[usuario_exemplo]
-print(f'  Interesses: {interesses_ana}')
-
-# Usuários similares
-similares = analisador.usuarios_similares(usuario_exemplo)
-print(f'\\n🤝 USUÁRIOS SIMILARES A {usuario_exemplo}:')
-for similar, comuns in similares:
-    print(f'  {similar}: {comuns} ({len(comuns)} em comum)')
-
-# Interesses exclusivos
-exclusivos = analisador.interesses_exclusivos(usuario_exemplo)
-print(f'\\n⭐ INTERESSES EXCLUSIVOS DE {usuario_exemplo}:')
-print(f'  {exclusivos if exclusivos else \"Nenhum interesse exclusivo\"}')
-
-# Sugestões
-sugestoes = analisador.sugerir_novos_interesses(usuario_exemplo)
-print(f'\\n💡 SUGESTÕES PARA {usuario_exemplo}:')
-print(f'  {sugestoes}')
-
-# Interesse mais popular
-interesse_pop, usuarios_pop = analisador.interesse_mais_popular()
-print(f'\\n🏆 INTERESSE MAIS POPULAR:')
-print(f'  {interesse_pop}: {len(usuarios_pop)} usuários')
-print(f'  Usuários: {usuarios_pop}')
-
-# Análise de interesses comuns
-print(f'\\n🔗 INTERESSES COMUNS:')
-usuario1, usuario2 = 'Bruno', 'Eduardo'
-comuns = analisador.interesses_comuns(usuario1, usuario2)
-print(f'  Entre {usuario1} e {usuario2}: {comuns}')
-
-# Usuários versáteis
-print(f'\\n🌟 USUÁRIOS VERSÁTEIS (5+ interesses):')
-versateis = analisador.usuarios_versateis(5)
-for usuario, interesses in versateis.items():
-    print(f'  {usuario}: {len(interesses)} interesses')
-
-# Grupos por interesse
-print(f'\\n👥 GRUPOS POR INTERESSE:')
-grupos = analisador.grupos_por_interesse()
-for interesse, usuarios in sorted(grupos.items(), key=lambda x: len(x[1]), reverse=True)[:5]:
-    print(f'  {interesse}: {len(usuarios)} usuários - {usuarios}')
-
-# Demonstração de operações de sets
-print(f'\\n🧮 DEMONSTRAÇÃO DE OPERAÇÕES:')
-set_tecnicos = {'Ana', 'Bruno', 'Eduardo', 'Gabriel'}
-set_criativos = {'Carlos', 'Diana', 'Fernanda', 'Helena'}
-set_musicais = analisador.usuarios_com_interesse('música')
-
-print(f'Técnicos: {set_tecnicos}')
-print(f'Criativos: {set_criativos}')
-print(f'Musicais: {set_musicais}')
-
-# União
-todos_especiais = set_tecnicos.union(set_criativos)
-print(f'Técnicos ∪ Criativos: {todos_especiais}')
-
-# Interseção
-tecnicos_musicais = set_tecnicos.intersection(set_musicais)
-print(f'Técnicos ∩ Musicais: {tecnicos_musicais}')
-
-# Diferença
-apenas_tecnicos = set_tecnicos.difference(set_musicais)
-print(f'Apenas Técnicos (sem música): {apenas_tecnicos}')"></textarea>
+# Porcentagem
+if len(todos_alunos) > 0:
+    perc_multiplos = (len(pelo_menos_2) / len(todos_alunos)) * 100
+    print(f'Porcentagem fazendo múltiplos cursos: {perc_multiplos:.1f}%')"></textarea>
             
             <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
             <div id="output"></div>
@@ -414,218 +364,29 @@ print(f'Apenas Técnicos (sem música): {apenas_tecnicos}')"></textarea>
     </section>
 
     <section>
-        <h2>🔧 Sets Imutáveis (frozenset)</h2>
-        <p>Para sets que não podem ser modificados, use <code>frozenset</code>:</p>
-        
-        <pre><code># Criar frozenset
-numeros_imutaveis = frozenset([1, 2, 3, 4, 5])
-cores_imutaveis = frozenset({"vermelho", "verde", "azul"})
-
-print(f"Frozenset: {numeros_imutaveis}")
-print(f"Tipo: {type(numeros_imutaveis)}")
-
-# Operações de leitura funcionam normalmente
-print(f"3 in frozenset: {3 in numeros_imutaveis}")
-print(f"Tamanho: {len(numeros_imutaveis)}")
-
-# Operações matemáticas funcionam
-outro_set = {4, 5, 6, 7}
-uniao = numeros_imutaveis.union(outro_set)
-print(f"União: {uniao}")
-
-# ❌ Não é possível modificar
-# numeros_imutaveis.add(6)  # AttributeError!
-
-# Frozensets podem ser chaves de dicionário
-cache = {
-    frozenset([1, 2, 3]): "resultado_1",
-    frozenset([4, 5, 6]): "resultado_2"
-}
-
-chave = frozenset([1, 2, 3])
-print(f"Valor do cache: {cache[chave]}")
-
-# Set de frozensets (sets aninhados)
-grupos = {
-    frozenset(["Ana", "Bruno"]),
-    frozenset(["Carlos", "Diana"]),
-    frozenset(["Eduardo", "Fernanda"])
-}
-print(f"Grupos: {grupos}")</code></pre>
-    </section>
-
-    <section>
-        <h2>🚀 Casos de Uso Práticos</h2>
-        
-        <h3>1. Remoção de Duplicatas:</h3>
-        <pre><code># Remover duplicatas de lista mantendo tipo
-def remover_duplicatas(lista):
-    return list(set(lista))
-
-# Preservar ordem
-def remover_duplicatas_ordenado(lista):
-    visto = set()
-    resultado = []
-    for item in lista:
-        if item not in visto:
-            visto.add(item)
-            resultado.append(item)
-    return resultado
-
-numeros = [1, 2, 2, 3, 1, 4, 3, 5]
-print(f"Original: {numeros}")
-print(f"Sem duplicatas: {remover_duplicatas(numeros)}")
-print(f"Sem duplicatas (ordem): {remover_duplicatas_ordenado(numeros)}")</code></pre>
-        
-        <h3>2. Validação e Filtros:</h3>
-        <pre><code># Palavras proibidas
-palavras_proibidas = {"spam", "ofensivo", "proibido", "ilegal"}
-
-def texto_valido(texto):
-    palavras = set(texto.lower().split())
-    return palavras.isdisjoint(palavras_proibidas)
-
-# Permissões de usuário
-admin_permissoes = {"ler", "escrever", "deletar", "administrar"}
-user_permissoes = {"ler", "escrever"}
-
-def tem_permissao(usuario_perms, acao):
-    return acao in usuario_perms
-
-def pode_fazer_tudo(usuario_perms, acoes_necessarias):
-    acoes_set = set(acoes_necessarias)
-    return acoes_set.issubset(usuario_perms)
-
-print(f"Admin pode deletar: {tem_permissao(admin_permissoes, 'deletar')}")
-print(f"User pode administrar: {tem_permissao(user_permissoes, 'administrar')}")
-print(f"User pode ler e escrever: {pode_fazer_tudo(user_permissoes, ['ler', 'escrever'])}")</code></pre>
-        
-        <h3>3. Análise de Dados:</h3>
-        <pre><code># Análise de logs
-def analisar_ips(logs):
-    """Analisa IPs únicos em logs"""
-    ips_unicos = set()
-    ips_suspeitos = set()
-    
-    for entrada in logs:
-        ip = entrada['ip']
-        ips_unicos.add(ip)
-        
-        # IPs com muitas tentativas
-        if entrada['tentativas'] > 10:
-            ips_suspeitos.add(ip)
-    
-    return {
-        'total_ips': len(ips_unicos),
-        'ips_suspeitos': ips_suspeitos,
-        'ips_seguros': ips_unicos - ips_suspeitos
-    }
-
-# Exemplo de uso
-logs_exemplo = [
-    {'ip': '192.168.1.1', 'tentativas': 3},
-    {'ip': '10.0.0.1', 'tentativas': 15},
-    {'ip': '192.168.1.1', 'tentativas': 5},
-    {'ip': '172.16.0.1', 'tentativas': 2}
-]
-
-resultado = analisar_ips(logs_exemplo)
-print(f"Análise: {resultado}")</code></pre>
-    </section>
-
-    <section>
-        <h2>📊 Performance de Sets</h2>
-        
-        <table class="performance-table">
-            <tr>
-                <th>Operação</th>
-                <th>Set</th>
-                <th>Lista</th>
-                <th>Vantagem</th>
-            </tr>
-            <tr>
-                <td>Verificar pertinência</td>
-                <td>O(1)</td>
-                <td>O(n)</td>
-                <td>🚀 Set muito mais rápido</td>
-            </tr>
-            <tr>
-                <td>Adicionar elemento</td>
-                <td>O(1)</td>
-                <td>O(1)</td>
-                <td>⚖️ Similares</td>
-            </tr>
-            <tr>
-                <td>Remover duplicatas</td>
-                <td>O(n)</td>
-                <td>O(n²)</td>
-                <td>🚀 Set mais eficiente</td>
-            </tr>
-            <tr>
-                <td>União de coleções</td>
-                <td>O(n+m)</td>
-                <td>O(n×m)</td>
-                <td>🚀 Set otimizado</td>
-            </tr>
-        </table>
-    </section>
-
-    <section>
-        <h2>💡 Boas Práticas</h2>
+        <h2>💡 Dicas Importantes</h2>
         <div class="tip-box">
             <ul>
-                <li>🚫 Use sets para eliminar duplicatas rapidamente</li>
-                <li>⚡ Aproveite a busca O(1) para verificações de pertinência</li>
-                <li>🧮 Use operações matemáticas para análise de dados</li>
-                <li>🔒 Use frozenset quando precisar de imutabilidade</li>
-                <li>🎯 Sets são ideais para filtros e validações</li>
-                <li>📊 Considere sets para análise de relacionamentos</li>
-                <li>🔄 Lembre-se: sets não mantêm ordem!</li>
+                <li>🚫 Sets não permitem duplicatas - útil para remover repetições</li>
+                <li>⚡ Verificar se elemento está no set é muito rápido</li>
+                <li>🔄 Sets não têm ordem - não use se precisar de ordem específica</li>
+                <li>🧮 Use operações matemáticas (|, &, -, ^) para análise de dados</li>
+                <li>📊 <code>discard()</code> é mais seguro que <code>remove()</code></li>
+                <li>🎯 Sets são ideais para operações de conjunto e remoção de duplicatas</li>
             </ul>
         </div>
     </section>
 
     <section>
-        <h2>⚖️ Sets vs Outras Estruturas</h2>
-        
-        <table class="comparison-table">
-            <tr>
-                <th>Aspecto</th>
-                <th>Set</th>
-                <th>Lista</th>
-                <th>Dicionário</th>
-            </tr>
-            <tr>
-                <td>Duplicatas</td>
-                <td>❌ Não permite</td>
-                <td>✅ Permite</td>
-                <td>❌ Chaves únicas</td>
-            </tr>
-            <tr>
-                <td>Ordem</td>
-                <td>❌ Não ordenado</td>
-                <td>✅ Ordenada</td>
-                <td>✅ Ordenada (Python 3.7+)</td>
-            </tr>
-            <tr>
-                <td>Busca</td>
-                <td>⚡ O(1)</td>
-                <td>🐌 O(n)</td>
-                <td>⚡ O(1)</td>
-            </tr>
-            <tr>
-                <td>Indexação</td>
-                <td>❌ Não</td>
-                <td>✅ Sim</td>
-                <td>✅ Por chave</td>
-            </tr>
-            <tr>
-                <td>Operações Matemáticas</td>
-                <td>✅ Nativas</td>
-                <td>❌ Manuais</td>
-                <td>❌ Manuais</td>
-            </tr>
-        </table>
+        <h2>📚 Resumo</h2>
+        <p>Nesta aula você aprendeu:</p>
+        <ul>
+            <li>✅ O que são sets e suas características</li>
+            <li>✅ Como criar e manipular sets</li>
+            <li>✅ Operações matemáticas: união, interseção, diferença</li>
+            <li>✅ Trabalhar com subconjuntos e superconjuntos</li>
+            <li>✅ Casos práticos de uso de sets</li>
+        </ul>
     </section>
 {% endblock %}
 
@@ -635,7 +396,7 @@ function runCode() {
     const code = document.getElementById('code-input').value;
     const output = document.getElementById('output');
     
-    output.innerHTML = '<div class="output-success">Sistema de análise executado! Veja como sets são poderosos para análise de dados únicos.</div>';
+    output.innerHTML = '<div class="output-success">Sistema de cursos executado! Veja o poder das operações de conjuntos.</div>';
 }
 </script>
 {% endblock %}

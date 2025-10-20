@@ -8,15 +8,15 @@
     <section>
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Trabalhar com listas dentro de listas (matrizes)</li>
-            <li>Navegar e manipular estruturas bidimensionais</li>
-            <li>Implementar algoritmos para listas aninhadas</li>
+            <li>Trabalhar com listas dentro de listas</li>
+            <li>Acessar e modificar elementos em listas aninhadas</li>
+            <li>Percorrer estruturas bidimensionais com loops</li>
         </ul>
     </section>
 
     <section>
         <h2>📋 Conceito de Listas Aninhadas</h2>
-        <p>Listas aninhadas são listas que contêm outras listas como elementos, criando estruturas bidimensionais ou multidimensionais.</p>
+        <p>Listas aninhadas são listas que contêm outras listas como elementos.</p>
         
         <h3>Criação de Listas Aninhadas:</h3>
         <pre><code># Criação manual
@@ -26,41 +26,38 @@ matriz = [
     [7, 8, 9]
 ]
 
-# Usando list comprehension
-matriz_zeros = [[0 for j in range(3)] for i in range(3)]
-print(f"Matriz 3x3 de zeros: {matriz_zeros}")
+print("Matriz 3x3:")
+for linha in matriz:
+    print(linha)</code></pre>
+        
+        <h3>⚠️ Cuidado ao Criar com Repetição:</h3>
+        <pre><code># ❌ ERRADO: Todas as linhas referenciam a mesma lista!
+matriz_errada = [[0] * 3] * 3
+print(f"Matriz errada: {matriz_errada}")
 
-# ❌ CUIDADO: Não faça isso!
-matriz_errada = [[0] * 3] * 3  # Todas as linhas referenciam a mesma lista!
+# Modificar um elemento afeta todas as linhas
+matriz_errada[0][0] = 1
+print(f"Após modificar [0][0]: {matriz_errada}")  # Todas mudam!
 
 # ✅ CORRETO: Cada linha é uma lista separada
-matriz_correta = [[0] * 3 for _ in range(3)]
+matriz_correta = []
+for i in range(3):
+    linha = [0] * 3
+    matriz_correta.append(linha)
 
-# Demonstrar o problema
-matriz_errada[0][0] = 1
-print(f"Matriz errada: {matriz_errada}")  # Todas as linhas mudam!
+print(f"\nMatriz correta: {matriz_correta}")
 
+# Modificar um elemento afeta apenas uma linha
 matriz_correta[0][0] = 1
-print(f"Matriz correta: {matriz_correta}")  # Apenas primeira linha muda</code></pre>
+print(f"Após modificar [0][0]: {matriz_correta}")  # Apenas primeira linha muda</code></pre>
         
-        <h3>Listas Irregulares (Jagged Arrays):</h3>
-        <pre><code># Listas com tamanhos diferentes
+        <h3>Listas com Tamanhos Diferentes:</h3>
+        <pre><code># Listas irregulares (cada linha com tamanho diferente)
 triangulo = [
     [1],
     [1, 1],
     [1, 2, 1],
-    [1, 3, 3, 1],
-    [1, 4, 6, 4, 1]
-]
-
-# Calendário mensal
-calendario = [
-    ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
-    [None, None, 1, 2, 3, 4, 5],
-    [6, 7, 8, 9, 10, 11, 12],
-    [13, 14, 15, 16, 17, 18, 19],
-    [20, 21, 22, 23, 24, 25, 26],
-    [27, 28, 29, 30, 31, None, None]
+    [1, 3, 3, 1]
 ]
 
 print("Triângulo de Pascal:")
@@ -69,354 +66,398 @@ for linha in triangulo:
     </section>
 
     <section>
-        <h2>🔍 Acessando Elementos</h2>
+        <h2>🎯 Acessando Elementos</h2>
         
-        <h3>Indexação Bidimensional:</h3>
+        <h3>Acesso por Índices:</h3>
         <pre><code>matriz = [
     [10, 20, 30],
     [40, 50, 60],
     [70, 80, 90]
 ]
 
-# Acessar elemento específico - matriz[linha][coluna]
-print(f"Elemento [1][2]: {matriz[1][2]}")  # 60
-print(f"Primeira linha: {matriz[0]}")      # [10, 20, 30]
-print(f"Última linha: {matriz[-1]}")       # [70, 80, 90]
+# Acessar linha inteira
+primeira_linha = matriz[0]
+print(f"Primeira linha: {primeira_linha}")  # [10, 20, 30]
 
-# Acessar coluna (requer loop ou compreensão)
-primeira_coluna = [linha[0] for linha in matriz]
-print(f"Primeira coluna: {primeira_coluna}")  # [10, 40, 70]
+# Acessar elemento específico
+elemento = matriz[1][2]  # Linha 1, Coluna 2
+print(f"Elemento [1][2]: {elemento}")  # 60
 
-# Acessar diagonal principal
-diagonal = [matriz[i][i] for i in range(len(matriz))]
-print(f"Diagonal principal: {diagonal}")  # [10, 50, 90]</code></pre>
+# Acessar com índices negativos
+ultimo_da_ultima = matriz[-1][-1]
+print(f"Último elemento: {ultimo_da_ultima}")  # 90</code></pre>
         
-        <h3>Slicing em Listas Aninhadas:</h3>
-        <pre><code>dados = [
-    [1, 2, 3, 4, 5],
-    [6, 7, 8, 9, 10],
-    [11, 12, 13, 14, 15],
-    [16, 17, 18, 19, 20]
+        <h3>Verificação de Índices:</h3>
+        <pre><code>matriz = [
+    [1, 2, 3],
+    [4, 5, 6]
 ]
 
-# Slice de linhas
-primeiras_duas_linhas = dados[:2]
-print(f"Primeiras 2 linhas: {primeiras_duas_linhas}")
+# Acessar com segurança
+linha = 1
+coluna = 2
 
-# Slice de colunas em cada linha
-primeiras_tres_colunas = [linha[:3] for linha in dados]
-print(f"Primeiras 3 colunas: {primeiras_tres_colunas}")
-
-# Submatriz
-submatriz = [linha[1:4] for linha in dados[1:3]]
-print(f"Submatriz [1:3][1:4]: {submatriz}")  # [[7, 8, 9], [12, 13, 14]]</code></pre>
+if 0 <= linha < len(matriz):
+    if 0 <= coluna < len(matriz[linha]):
+        elemento = matriz[linha][coluna]
+        print(f"Elemento [linha][coluna]: {elemento}")
+    else:
+        print(f"Coluna {coluna} inválida")
+else:
+    print(f"Linha {linha} inválida")</code></pre>
     </section>
 
     <section>
-        <h2>🔄 Iteração em Listas Aninhadas</h2>
+        <h2>✏️ Modificando Elementos</h2>
         
-        <h3>Loops Aninhados:</h3>
+        <h3>Alterar Elemento Individual:</h3>
         <pre><code>notas = [
-    [8.5, 7.0, 9.0],
-    [6.5, 8.0, 7.5],
-    [9.0, 9.5, 8.5]
+    ["Ana", 7.5, 8.0],
+    ["Bruno", 6.5, 7.0],
+    ["Carlos", 8.5, 9.0]
 ]
 
-# Iterar por todos os elementos
-print("Todas as notas:")
-for i in range(len(notas)):
-    for j in range(len(notas[i])):
-        print(f"Aluno {i+1}, Prova {j+1}: {notas[i][j]}")
+print("Antes:")
+for aluno in notas:
+    print(aluno)
 
-# Iterar usando enumerate
-print("\nUsando enumerate:")
-for i, linha in enumerate(notas):
-    for j, nota in enumerate(linha):
-        print(f"Aluno {i+1}, Prova {j+1}: {nota}")
+# Alterar nota de Bruno
+notas[1][1] = 8.5  # Linha 1 (Bruno), coluna 1 (primeira nota)
 
-# Iterar apenas pelos valores
-print("\nApenas valores:")
-for linha in notas:
-    for nota in linha:
-        print(f"Nota: {nota}")</code></pre>
+print("\nDepois:")
+for aluno in notas:
+    print(aluno)</code></pre>
         
-        <h3>List Comprehensions Aninhadas:</h3>
-        <pre><code># Achatar lista aninhada
-matriz = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-achatada = [elemento for linha in matriz for elemento in linha]
-print(f"Lista achatada: {achatada}")  # [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        <h3>Modificar Linha Inteira:</h3>
+        <pre><code>tabuleiro = [
+    ['X', 'O', 'X'],
+    ['O', 'X', 'O'],
+    ['X', 'O', 'X']
+]
 
-# Aplicar operação a todos os elementos
-matriz_quadrada = [[x**2 for x in linha] for linha in matriz]
-print(f"Elementos ao quadrado: {matriz_quadrada}")
+print("Antes:")
+for linha in tabuleiro:
+    print(linha)
 
-# Filtrar elementos
-pares_matriz = [[x for x in linha if x % 2 == 0] for linha in matriz]
-print(f"Apenas pares: {pares_matriz}")
+# Substituir linha inteira
+tabuleiro[1] = [' ', ' ', ' ']
 
-# Transpor matriz
-transposta = [[linha[i] for linha in matriz] for i in range(len(matriz[0]))]
-print(f"Matriz transposta: {transposta}")</code></pre>
+print("\nDepois:")
+for linha in tabuleiro:
+    print(linha)</code></pre>
     </section>
 
     <section>
-        <h2>🛠️ Operações com Matrizes</h2>
+        <h2>🔄 Percorrendo Listas Aninhadas</h2>
         
-        <h3>Operações Básicas:</h3>
-        <pre><code>def criar_matriz(linhas, colunas, valor_inicial=0):
-    """Cria matriz com dimensões específicas"""
-    return [[valor_inicial for j in range(colunas)] for i in range(linhas)]
+        <h3>Loop com For Each:</h3>
+        <pre><code>matriz = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
 
-def dimensoes_matriz(matriz):
-    """Retorna dimensões da matriz"""
-    if not matriz:
-        return 0, 0
-    return len(matriz), len(matriz[0])
-
-def imprimir_matriz(matriz, titulo="Matriz"):
-    """Imprime matriz formatada"""
-    print(f"\n{titulo}:")
-    for linha in matriz:
-        print("  ", end="")
-        for elemento in linha:
-            print(f"{elemento:4}", end=" ")
-        print()
-
-# Testes
-matriz_3x4 = criar_matriz(3, 4, 5)
-linhas, colunas = dimensoes_matriz(matriz_3x4)
-print(f"Dimensões: {linhas}x{colunas}")
-imprimir_matriz(matriz_3x4, "Matriz 3x4 com valor 5")</code></pre>
+print("Percorrendo com for each:")
+for linha in matriz:
+    for elemento in linha:
+        print(elemento, end=' ')
+    print()  # Nova linha após cada linha da matriz</code></pre>
         
-        <h3>Somar Matrizes:</h3>
-        <pre><code>def somar_matrizes(matriz1, matriz2):
-    """Soma duas matrizes de mesma dimensão"""
-    # Verificar dimensões
-    if len(matriz1) != len(matriz2) or len(matriz1[0]) != len(matriz2[0]):
-        raise ValueError("Matrizes devem ter mesmas dimensões")
-    
-    resultado = []
-    for i in range(len(matriz1)):
-        linha_resultado = []
-        for j in range(len(matriz1[0])):
-            linha_resultado.append(matriz1[i][j] + matriz2[i][j])
-        resultado.append(linha_resultado)
-    
-    return resultado
+        <h3>Loop com Índices:</h3>
+        <pre><code>matriz = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
 
-# Com list comprehension
-def somar_matrizes_comp(m1, m2):
-    return [[m1[i][j] + m2[i][j] for j in range(len(m1[0]))] 
-            for i in range(len(m1))]
-
-# Teste
-A = [[1, 2], [3, 4]]
-B = [[5, 6], [7, 8]]
-soma = somar_matrizes(A, B)
-print(f"A + B = {soma}")  # [[6, 8], [10, 12]]</code></pre>
+print("Percorrendo com índices:")
+for i in range(len(matriz)):
+    for j in range(len(matriz[i])):
+        valor = matriz[i][j]
+        print(f"Posição ({i}, {j}) = {valor}")
+</code></pre>
         
-        <h3>Multiplicar Matrizes:</h3>
-        <pre><code>def multiplicar_matrizes(matriz1, matriz2):
-    """Multiplica duas matrizes"""
-    # Verificar se multiplicação é possível
-    if len(matriz1[0]) != len(matriz2):
-        raise ValueError("Número de colunas de A deve ser igual ao número de linhas de B")
-    
-    linhas_a = len(matriz1)
-    colunas_a = len(matriz1[0])
-    colunas_b = len(matriz2[0])
-    
-    # Criar matriz resultado
-    resultado = [[0 for j in range(colunas_b)] for i in range(linhas_a)]
-    
-    # Calcular produto
-    for i in range(linhas_a):
-        for j in range(colunas_b):
-            for k in range(colunas_a):
-                resultado[i][j] += matriz1[i][k] * matriz2[k][j]
-    
-    return resultado
+        <h3>Exibir em Formato de Tabela:</h3>
+        <pre><code>tabela = [
+    ["Produto", "Preço", "Qtd"],
+    ["Arroz", 5.50, 10],
+    ["Feijão", 7.00, 5],
+    ["Açúcar", 3.50, 8]
+]
 
-# Teste
-A = [[1, 2], [3, 4]]
-B = [[5, 6], [7, 8]]
-produto = multiplicar_matrizes(A, B)
-print(f"A × B = {produto}")  # [[19, 22], [43, 50]]</code></pre>
+print("TABELA DE PRODUTOS:")
+print("-" * 40)
+for linha in tabela:
+    for item in linha:
+        item_str = str(item)
+        espacos = 15 - len(item_str)
+        print(item_str + ' ' * espacos, end='')
+    print()
+print("-" * 40)</code></pre>
+    </section>
+
+    <section>
+        <h2>➕ Operações com Listas Aninhadas</h2>
+        
+        <h3>Somar Todos os Elementos:</h3>
+        <pre><code>numeros = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+
+soma_total = 0
+for linha in numeros:
+    for elemento in linha:
+        soma_total += elemento
+
+print(f"Soma total: {soma_total}")  # 45</code></pre>
+        
+        <h3>Encontrar Maior e Menor:</h3>
+        <pre><code>valores = [
+    [15, 8, 23],
+    [4, 16, 42],
+    [30, 11, 7]
+]
+
+# Encontrar maior
+maior = valores[0][0]
+pos_maior = [0, 0]
+
+for i in range(len(valores)):
+    for j in range(len(valores[i])):
+        if valores[i][j] > maior:
+            maior = valores[i][j]
+            pos_maior = [i, j]
+
+print(f"Maior valor: {maior} na posição {pos_maior}")
+
+# Encontrar menor
+menor = valores[0][0]
+pos_menor = [0, 0]
+
+for i in range(len(valores)):
+    for j in range(len(valores[i])):
+        if valores[i][j] < menor:
+            menor = valores[i][j]
+            pos_menor = [i, j]
+
+print(f"Menor valor: {menor} na posição {pos_menor}")</code></pre>
+        
+        <h3>Contar Ocorrências:</h3>
+        <pre><code>grid = [
+    ['X', 'O', 'X'],
+    ['O', 'X', 'O'],
+    ['X', 'X', 'O']
+]
+
+# Contar X e O
+count_x = 0
+count_o = 0
+
+for linha in grid:
+    for simbolo in linha:
+        if simbolo == 'X':
+            count_x += 1
+        elif simbolo == 'O':
+            count_o += 1
+
+print(f"X: {count_x} ocorrências")
+print(f"O: {count_o} ocorrências")</code></pre>
+    </section>
+
+    <section>
+        <h2>📊 Operações em Linhas e Colunas</h2>
+        
+        <h3>Somar por Linha:</h3>
+        <pre><code>vendas = [
+    [100, 150, 200],  # Semana 1
+    [120, 180, 210],  # Semana 2
+    [90, 160, 190]    # Semana 3
+]
+
+print("Vendas por semana:")
+for i in range(len(vendas)):
+    soma_semana = 0
+    for valor in vendas[i]:
+        soma_semana += valor
+    print(f"Semana {i + 1}: {soma_semana}")</code></pre>
+        
+        <h3>Somar por Coluna:</h3>
+        <pre><code>vendas = [
+    [100, 150, 200],  # Semana 1
+    [120, 180, 210],  # Semana 2
+    [90, 160, 190]    # Semana 3
+]
+
+# Número de colunas (produtos)
+num_colunas = len(vendas[0])
+
+print("Vendas por produto:")
+for coluna in range(num_colunas):
+    soma_produto = 0
+    for linha in range(len(vendas)):
+        soma_produto += vendas[linha][coluna]
+    print(f"Produto {coluna + 1}: {soma_produto}")</code></pre>
+        
+        <h3>Calcular Média por Aluno:</h3>
+        <pre><code>notas = [
+    ["Ana", 7.5, 8.0, 9.0],
+    ["Bruno", 6.5, 7.0, 8.5],
+    ["Carlos", 8.5, 9.0, 9.5]
+]
+
+print("Médias dos alunos:")
+for aluno in notas:
+    nome = aluno[0]
+    soma_notas = 0
+    count_notas = 0
+    
+    # Somar apenas as notas (a partir do índice 1)
+    for i in range(1, len(aluno)):
+        soma_notas += aluno[i]
+        count_notas += 1
+    
+    media = soma_notas / count_notas
+    print(f"{nome}: {media:.2f}")</code></pre>
     </section>
 
     <section>
         <h2>🎮 Exercício Prático</h2>
         <div class="exercise-box">
-            <h3>Jogo da Velha (Tic-Tac-Toe)</h3>
-            <p>Implemente um jogo da velha usando listas aninhadas para representar o tabuleiro:</p>
+            <h3>Sistema de Controle de Estoque</h3>
+            <p>Crie um sistema que gerencie estoque de produtos em diferentes depósitos:</p>
             <ul>
-                <li>Tabuleiro 3x3 representado por lista aninhada</li>
-                <li>Verificação de vitória em linhas, colunas e diagonais</li>
-                <li>Validação de jogadas e controle de turnos</li>
+                <li>Armazenar produtos e quantidades por depósito</li>
+                <li>Calcular estoque total de cada produto</li>
+                <li>Encontrar produto com maior/menor estoque</li>
+                <li>Verificar disponibilidade</li>
             </ul>
             
-            <textarea id="code-input" placeholder="class JogoDaVelha:
-    def __init__(self):
-        # Tabuleiro 3x3 vazio (None = posição vazia)
-        self.tabuleiro = [[None for j in range(3)] for i in range(3)]
-        self.jogador_atual = 'X'
-        self.jogo_acabou = False
-        self.vencedor = None
-    
-    def imprimir_tabuleiro(self):
-        '''Exibe o tabuleiro formatado'''
-        print('\n  0   1   2')
-        for i in range(3):
-            linha = f'{i} '
-            for j in range(3):
-                simbolo = self.tabuleiro[i][j] if self.tabuleiro[i][j] else ' '
-                linha += f'{simbolo}'
-                if j < 2:
-                    linha += ' | '
-            print(linha)
-            if i < 2:
-                print('  ---------')
-    
-    def posicao_valida(self, linha, coluna):
-        '''Verifica se a posição é válida e está vazia'''
-        if linha < 0 or linha > 2 or coluna < 0 or coluna > 2:
-            return False, 'Posição fora do tabuleiro!'
-        
-        if self.tabuleiro[linha][coluna] is not None:
-            return False, 'Posição já ocupada!'
-        
-        return True, 'Posição válida'
-    
-    def fazer_jogada(self, linha, coluna):
-        '''Executa uma jogada'''
-        if self.jogo_acabou:
-            return False, 'Jogo já terminou!'
-        
-        valida, mensagem = self.posicao_valida(linha, coluna)
-        if not valida:
-            return False, mensagem
-        
-        # Fazer a jogada
-        self.tabuleiro[linha][coluna] = self.jogador_atual
-        
-        # Verificar vitória
-        if self.verificar_vitoria():
-            self.jogo_acabou = True
-            self.vencedor = self.jogador_atual
-            return True, f'Jogador {self.jogador_atual} venceu!'
-        
-        # Verificar empate
-        if self.tabuleiro_cheio():
-            self.jogo_acabou = True
-            return True, 'Empate!'
-        
-        # Trocar jogador
-        self.jogador_atual = 'O' if self.jogador_atual == 'X' else 'X'
-        return True, f'Vez do jogador {self.jogador_atual}'
-    
-    def verificar_linha(self, linha):
-        '''Verifica se há vitória na linha'''
-        return (self.tabuleiro[linha][0] == self.tabuleiro[linha][1] == 
-                self.tabuleiro[linha][2] != None)
-    
-    def verificar_coluna(self, coluna):
-        '''Verifica se há vitória na coluna'''
-        return (self.tabuleiro[0][coluna] == self.tabuleiro[1][coluna] == 
-                self.tabuleiro[2][coluna] != None)
-    
-    def verificar_diagonal_principal(self):
-        '''Verifica diagonal principal (\\\\)'''
-        return (self.tabuleiro[0][0] == self.tabuleiro[1][1] == 
-                self.tabuleiro[2][2] != None)
-    
-    def verificar_diagonal_secundaria(self):
-        '''Verifica diagonal secundária (/)'''
-        return (self.tabuleiro[0][2] == self.tabuleiro[1][1] == 
-                self.tabuleiro[2][0] != None)
-    
-    def verificar_vitoria(self):
-        '''Verifica todas as condições de vitória'''
-        # Verificar linhas
-        for i in range(3):
-            if self.verificar_linha(i):
-                return True
-        
-        # Verificar colunas
-        for j in range(3):
-            if self.verificar_coluna(j):
-                return True
-        
-        # Verificar diagonais
-        if self.verificar_diagonal_principal() or self.verificar_diagonal_secundaria():
-            return True
-        
-        return False
-    
-    def tabuleiro_cheio(self):
-        '''Verifica se o tabuleiro está completamente preenchido'''
-        for linha in self.tabuleiro:
-            if None in linha:
-                return False
-        return True
-    
-    def reiniciar_jogo(self):
-        '''Reinicia o jogo'''
-        self.tabuleiro = [[None for j in range(3)] for i in range(3)]
-        self.jogador_atual = 'X'
-        self.jogo_acabou = False
-        self.vencedor = None
-    
-    def obter_posicoes_vazias(self):
-        '''Retorna lista de posições vazias'''
-        posicoes = []
-        for i in range(3):
-            for j in range(3):
-                if self.tabuleiro[i][j] is None:
-                    posicoes.append((i, j))
-        return posicoes
-
-# Simulando um jogo
-jogo = JogoDaVelha()
-
-print('🎮 JOGO DA VELHA')
-print('=' * 20)
-
-# Sequência de jogadas para demonstração
-jogadas = [
-    (1, 1),  # X no centro
-    (0, 0),  # O no canto
-    (0, 1),  # X na borda
-    (2, 1),  # O na borda
-    (2, 2),  # X no canto
-    (0, 2),  # O no canto - vitória!
+            <textarea id="code-input" placeholder="# Sistema de Controle de Estoque
+# Cada linha = depósito, cada coluna = produto
+# [Arroz, Feijão, Açúcar]
+estoque = [
+    [50, 30, 25],  # Depósito A
+    [40, 45, 30],  # Depósito B
+    [35, 20, 40]   # Depósito C
 ]
 
-for i, (linha, coluna) in enumerate(jogadas):
-    print(f'\\nJogada {i+1}: Jogador {jogo.jogador_atual} joga em ({linha}, {coluna})')
+produtos = ['Arroz', 'Feijão', 'Açúcar']
+depositos = ['A', 'B', 'C']
+
+print('📦 SISTEMA DE CONTROLE DE ESTOQUE')
+print('=' * 50)
+
+# Exibir estoque atual
+print('\nESTOQUE ATUAL:')
+print('Depósito    ', end='')
+for produto in produtos:
+    espaco = 12 - len(produto)
+    print(produto + ' ' * espaco, end='')
+print()
+print('-' * 50)
+
+for i in range(len(estoque)):
+    print(depositos[i] + ' ' * 11, end='')
+    for quantidade in estoque[i]:
+        qtd_str = str(quantidade)
+        espaco = 12 - len(qtd_str)
+        print(qtd_str + ' ' * espaco, end='')
+    print()
+
+# Calcular estoque total por produto
+print('\n📊 ESTOQUE TOTAL POR PRODUTO:')
+for j in range(len(produtos)):
+    total = 0
+    for i in range(len(estoque)):
+        total += estoque[i][j]
+    print(f'{produtos[j]}: {total} unidades')
+
+# Calcular estoque total por depósito
+print('\n🏢 ESTOQUE TOTAL POR DEPÓSITO:')
+for i in range(len(estoque)):
+    total = 0
+    for quantidade in estoque[i]:
+        total += quantidade
+    print(f'Depósito {depositos[i]}: {total} unidades')
+
+# Encontrar produto com maior estoque
+maior_estoque = 0
+produto_maior = ''
+for j in range(len(produtos)):
+    total = 0
+    for i in range(len(estoque)):
+        total += estoque[i][j]
     
-    sucesso, mensagem = jogo.fazer_jogada(linha, coluna)
-    print(f'Resultado: {mensagem}')
+    if total > maior_estoque:
+        maior_estoque = total
+        produto_maior = produtos[j]
+
+print(f'\n⭐ Produto com maior estoque: {produto_maior} ({maior_estoque} unidades)')
+
+# Encontrar produto com menor estoque
+menor_estoque = 9999
+produto_menor = ''
+for j in range(len(produtos)):
+    total = 0
+    for i in range(len(estoque)):
+        total += estoque[i][j]
     
-    jogo.imprimir_tabuleiro()
-    
-    if jogo.jogo_acabou:
-        if jogo.vencedor:
-            print(f'\\n🏆 Parabéns! Jogador {jogo.vencedor} venceu!')
-        else:
-            print(f'\\n🤝 Jogo empatou!')
+    if total < menor_estoque:
+        menor_estoque = total
+        produto_menor = produtos[j]
+
+print(f'⚠️  Produto com menor estoque: {produto_menor} ({menor_estoque} unidades)')
+
+# Verificar disponibilidade de um produto específico
+produto_busca = 'Arroz'
+print(f'\n🔍 DISPONIBILIDADE DE {produto_busca}:')
+
+# Encontrar índice do produto
+indice_produto = -1
+for i in range(len(produtos)):
+    if produtos[i] == produto_busca:
+        indice_produto = i
         break
 
-# Mostrar análise do tabuleiro
-print(f'\\n📊 ANÁLISE FINAL:')
-print(f'Posições vazias: {jogo.obter_posicoes_vazias()}')
-print(f'Tabuleiro cheio: {jogo.tabuleiro_cheio()}')
-print(f'Jogo acabou: {jogo.jogo_acabou}')
+if indice_produto >= 0:
+    for i in range(len(estoque)):
+        qtd = estoque[i][indice_produto]
+        print(f'  Depósito {depositos[i]}: {qtd} unidades')
+else:
+    print(f'  Produto não encontrado')
 
-# Demonstrar matriz de vitórias possíveis
-print(f'\\n🎯 PADRÕES DE VITÓRIA:')
-print('Linhas:', [[jogo.verificar_linha(i)] for i in range(3)])
-print('Colunas:', [[jogo.verificar_coluna(j)] for j in range(3)])
-print('Diagonais:', [jogo.verificar_diagonal_principal(), jogo.verificar_diagonal_secundaria()])"></textarea>
+# Simular venda (remover do estoque)
+print(f'\n💰 SIMULANDO VENDA:')
+deposito_venda = 0  # Depósito A
+produto_venda = 0   # Arroz
+quantidade_venda = 10
+
+print(f'Vendendo {quantidade_venda} unidades de {produtos[produto_venda]} do Depósito {depositos[deposito_venda]}')
+
+if estoque[deposito_venda][produto_venda] >= quantidade_venda:
+    estoque[deposito_venda][produto_venda] -= quantidade_venda
+    print(f'✅ Venda realizada! Estoque restante: {estoque[deposito_venda][produto_venda]} unidades')
+else:
+    print(f'❌ Estoque insuficiente! Disponível: {estoque[deposito_venda][produto_venda]} unidades')
+
+# Exibir estoque após venda
+print('\n📦 ESTOQUE APÓS VENDA:')
+print('Depósito    ', end='')
+for produto in produtos:
+    espaco = 12 - len(produto)
+    print(produto + ' ' * espaco, end='')
+print()
+print('-' * 50)
+
+for i in range(len(estoque)):
+    print(depositos[i] + ' ' * 11, end='')
+    for quantidade in estoque[i]:
+        qtd_str = str(quantidade)
+        espaco = 12 - len(qtd_str)
+        print(qtd_str + ' ' * espaco, end='')
+    print()"></textarea>
             
             <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
             <div id="output"></div>
@@ -424,158 +465,29 @@ print('Diagonais:', [jogo.verificar_diagonal_principal(), jogo.verificar_diagona
     </section>
 
     <section>
-        <h2>🧩 Algoritmos para Listas Aninhadas</h2>
-        
-        <h3>Busca em Matriz:</h3>
-        <pre><code>def buscar_elemento_matriz(matriz, elemento):
-    """Busca elemento em matriz e retorna todas as posições"""
-    posicoes = []
-    
-    for i in range(len(matriz)):
-        for j in range(len(matriz[i])):
-            if matriz[i][j] == elemento:
-                posicoes.append((i, j))
-    
-    return posicoes
-
-def buscar_em_matriz_ordenada(matriz, elemento):
-    """Busca em matriz onde cada linha está ordenada"""
-    for i in range(len(matriz)):
-        # Busca binária em cada linha
-        linha = matriz[i]
-        esquerda, direita = 0, len(linha) - 1
-        
-        while esquerda <= direita:
-            meio = (esquerda + direita) // 2
-            if linha[meio] == elemento:
-                return (i, meio)
-            elif linha[meio] < elemento:
-                esquerda = meio + 1
-            else:
-                direita = meio - 1
-    
-    return None
-
-# Teste
-matriz = [[1, 2, 3], [4, 2, 6], [7, 8, 2]]
-posicoes = buscar_elemento_matriz(matriz, 2)
-print(f"Elemento 2 encontrado em: {posicoes}")  # [(0, 1), (1, 1), (2, 2)]</code></pre>
-        
-        <h3>Rotação de Matriz:</h3>
-        <pre><code>def rotacionar_90_graus(matriz):
-    """Rotaciona matriz 90 graus no sentido horário"""
-    linhas = len(matriz)
-    colunas = len(matriz[0])
-    
-    # Nova matriz com dimensões trocadas
-    resultado = [[0 for j in range(linhas)] for i in range(colunas)]
-    
-    for i in range(linhas):
-        for j in range(colunas):
-            resultado[j][linhas - 1 - i] = matriz[i][j]
-    
-    return resultado
-
-def espelhar_horizontal(matriz):
-    """Espelha matriz horizontalmente"""
-    return [linha[::-1] for linha in matriz]
-
-def espelhar_vertical(matriz):
-    """Espelha matriz verticalmente"""
-    return matriz[::-1]
-
-# Teste
-original = [[1, 2, 3], [4, 5, 6]]
-rotacionada = rotacionar_90_graus(original)
-print(f"Original: {original}")
-print(f"Rotacionada 90°: {rotacionada}")  # [[4, 1], [5, 2], [6, 3]]</code></pre>
-    </section>
-
-    <section>
-        <h2>📊 Análise de Dados com Listas Aninhadas</h2>
-        
-        <h3>Operações Estatísticas:</h3>
-        <pre><code>def estatisticas_matriz(matriz):
-    """Calcula estatísticas da matriz"""
-    # Achatar matriz
-    todos_valores = [elemento for linha in matriz for elemento in linha]
-    
-    return {
-        'soma': sum(todos_valores),
-        'media': sum(todos_valores) / len(todos_valores),
-        'maximo': max(todos_valores),
-        'minimo': min(todos_valores),
-        'total_elementos': len(todos_valores)
-    }
-
-def soma_por_linha(matriz):
-    """Soma elementos de cada linha"""
-    return [sum(linha) for linha in matriz]
-
-def soma_por_coluna(matriz):
-    """Soma elementos de cada coluna"""
-    if not matriz:
-        return []
-    
-    num_colunas = len(matriz[0])
-    return [sum(linha[j] for linha in matriz) for j in range(num_colunas)]
-
-# Teste
-vendas = [
-    [100, 150, 200],  # Janeiro
-    [120, 180, 250],  # Fevereiro
-    [90, 160, 220]    # Março
-]
-
-print("Vendas por mês:")
-stats = estatisticas_matriz(vendas)
-print(f"Estatísticas: {stats}")
-
-print(f"Total por mês: {soma_por_linha(vendas)}")
-print(f"Total por produto: {soma_por_coluna(vendas)}")</code></pre>
-    </section>
-
-    <section>
-        <h2>💡 Boas Práticas</h2>
+        <h2>💡 Dicas Importantes</h2>
         <div class="tip-box">
             <ul>
-                <li>✅ Use list comprehension para criar listas aninhadas</li>
-                <li>❌ Evite [[0]*n]*m - cria referências duplicadas</li>
-                <li>🔍 Sempre verifique dimensões antes de operações</li>
-                <li>📊 Use enumerate() para acessar índices e valores</li>
-                <li>🎯 Considere NumPy para operações matemáticas complexas</li>
-                <li>🧠 Pense em performance para matrizes grandes</li>
+                <li>📋 Sempre crie cada linha separadamente para evitar referências compartilhadas</li>
+                <li>🎯 Use <code>len(matriz[i])</code> para pegar o tamanho de cada linha</li>
+                <li>🔢 Para acessar elemento: <code>matriz[linha][coluna]</code></li>
+                <li>🔄 Use loops aninhados para percorrer toda a estrutura</li>
+                <li>✔️ Sempre verifique índices antes de acessar para evitar erros</li>
+                <li>📊 Para somar colunas, percorra todas as linhas com o mesmo índice de coluna</li>
             </ul>
         </div>
     </section>
 
     <section>
-        <h2>🔧 Padrões Úteis</h2>
-        
-        <h3>Percorrer Vizinhos (8 direções):</h3>
-        <pre><code>def obter_vizinhos(matriz, linha, coluna):
-    """Obtém todos os vizinhos válidos de uma posição"""
-    linhas = len(matriz)
-    colunas = len(matriz[0])
-    
-    # 8 direções: cima, baixo, esquerda, direita e diagonais
-    direcoes = [(-1,-1), (-1,0), (-1,1), (0,-1), (0,1), (1,-1), (1,0), (1,1)]
-    
-    vizinhos = []
-    for dl, dc in direcoes:
-        nova_linha = linha + dl
-        nova_coluna = coluna + dc
-        
-        # Verificar se está dentro dos limites
-        if 0 <= nova_linha < linhas and 0 <= nova_coluna < colunas:
-            vizinhos.append((nova_linha, nova_coluna, matriz[nova_linha][nova_coluna]))
-    
-    return vizinhos
-
-# Teste
-grade = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-vizinhos_centro = obter_vizinhos(grade, 1, 1)
-print(f"Vizinhos do centro (5): {vizinhos_centro}")</code></pre>
+        <h2>📚 Resumo</h2>
+        <p>Nesta aula você aprendeu:</p>
+        <ul>
+            <li>✅ Criar listas aninhadas corretamente</li>
+            <li>✅ Acessar e modificar elementos com duplo índice</li>
+            <li>✅ Percorrer listas aninhadas com loops aninhados</li>
+            <li>✅ Realizar operações em linhas e colunas</li>
+            <li>✅ Trabalhar com estruturas bidimensionais (tabelas)</li>
+        </ul>
     </section>
 {% endblock %}
 
@@ -585,7 +497,7 @@ function runCode() {
     const code = document.getElementById('code-input').value;
     const output = document.getElementById('output');
     
-    output.innerHTML = '<div class="output-success">Jogo da Velha executado! Veja como listas aninhadas podem representar estruturas bidimensionais.</div>';
+    output.innerHTML = '<div class="output-success">Sistema de estoque executado! Veja como trabalhar com listas aninhadas em situações reais.</div>';
 }
 </script>
 {% endblock %}

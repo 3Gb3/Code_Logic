@@ -75,8 +75,11 @@ print(f"Matriz (problema): {matriz_errada}")
 matriz_errada[0][0] = 1
 print(f"Após modificar: {matriz_errada}")  # Todas as linhas mudam!
 
-# ✅ CORRETO: Criar cada sublista separadamente
-matriz_correta = [[0] * 3 for _ in range(3)]
+# ✅ CORRETO: Criar cada sublista separadamente usando loop
+matriz_correta = []
+for i in range(3):
+    linha = [0] * 3
+    matriz_correta.append(linha)
 print(f"Matriz correta: {matriz_correta}")
 
 matriz_correta[0][0] = 1
@@ -97,10 +100,11 @@ print(f"lista_a == lista_c: {lista_a == lista_c}")  # False (ordem diferente)
 print(f"lista_a == lista_d: {lista_a == lista_d}")  # False (tamanhos diferentes)
 
 # Verificar se contém os mesmos elementos (sem considerar ordem)
-def mesmo_conteudo(lista1, lista2):
-    return sorted(lista1) == sorted(lista2)
+lista_a_ordenada = sorted(lista_a)
+lista_c_ordenada = sorted(lista_c)
+mesmo_conteudo = lista_a_ordenada == lista_c_ordenada
 
-print(f"Mesmo conteúdo (a,c): {mesmo_conteudo(lista_a, lista_c)}")  # True</code></pre>
+print(f"Mesmo conteúdo (a,c): {mesmo_conteudo}")  # True</code></pre>
         
         <h3>Comparação Lexicográfica:</h3>
         <pre><code>numeros1 = [1, 2, 3]
@@ -128,77 +132,84 @@ print(f"'banana' in frutas: {'banana' in frutas}")  # True
 print(f"'kiwi' in frutas: {'kiwi' in frutas}")  # False
 print(f"'manga' not in frutas: {'manga' not in frutas}")  # True
 
-# Função para busca case-insensitive
-def busca_insensitive(lista, item):
-    item_lower = item.lower()
-    for elemento in lista:
-        if elemento.lower() == item_lower:
-            return True
-    return False
-
+# Busca case-insensitive (sem diferenciar maiúsculas/minúsculas)
 nomes = ["Ana", "BRUNO", "carlos"]
-print(f"'ana' existe: {busca_insensitive(nomes, 'ana')}")  # True</code></pre>
+item_busca = 'ana'
+item_lower = item_busca.lower()
+encontrado = False
+for elemento in nomes:
+    if elemento.lower() == item_lower:
+        encontrado = True
+        break
+
+print(f"'{item_busca}' existe: {encontrado}")  # True</code></pre>
         
         <h3>Verificando Sublistas:</h3>
-        <pre><code>def eh_sublista(pequena, grande):
-    """Verifica se 'pequena' é sublista de 'grande'"""
-    len_p = len(pequena)
-    len_g = len(grande)
-    
-    for i in range(len_g - len_p + 1):
-        if grande[i:i + len_p] == pequena:
-            return True
-    return False
-
+        <pre><code># Verifica se 'pequena' é sublista de 'grande'
 lista_grande = [1, 2, 3, 4, 5, 6, 7]
 sublista = [3, 4, 5]
 nao_sublista = [2, 4, 6]
 
-print(f"{sublista} é sublista: {eh_sublista(sublista, lista_grande)}")  # True
-print(f"{nao_sublista} é sublista: {eh_sublista(nao_sublista, lista_grande)}")  # False</code></pre>
+# Verificando se sublista existe
+len_p = len(sublista)
+len_g = len(lista_grande)
+eh_sublista = False
+
+for i in range(len_g - len_p + 1):
+    if lista_grande[i:i + len_p] == sublista:
+        eh_sublista = True
+        break
+
+print(f"{sublista} é sublista: {eh_sublista}")  # True
+
+# Verificando se nao_sublista existe
+len_p2 = len(nao_sublista)
+eh_sublista2 = False
+
+for i in range(len_g - len_p2 + 1):
+    if lista_grande[i:i + len_p2] == nao_sublista:
+        eh_sublista2 = True
+        break
+
+print(f"{nao_sublista} é sublista: {eh_sublista2}")  # False</code></pre>
     </section>
 
     <section>
         <h2>🧮 Operações Matemáticas</h2>
         
         <h3>Operações Elemento a Elemento:</h3>
-        <pre><code>def somar_listas(lista1, lista2):
-    """Soma listas elemento por elemento"""
-    if len(lista1) != len(lista2):
-        raise ValueError("Listas devem ter o mesmo tamanho")
-    
-    resultado = []
-    for i in range(len(lista1)):
-        resultado.append(lista1[i] + lista2[i])
-    
-    return resultado
-
-# Teste
+        <pre><code># Soma listas elemento por elemento
 numeros_a = [1, 2, 3, 4]
 numeros_b = [5, 6, 7, 8]
 
-soma = somar_listas(numeros_a, numeros_b)
-print(f"Soma: {soma}")  # [6, 8, 10, 12]
-
-# Com list comprehension e zip
-soma_zip = [a + b for a, b in zip(numeros_a, numeros_b)]
-print(f"Soma (zip): {soma_zip}")  # [6, 8, 10, 12]</code></pre>
+# Verificar se listas têm o mesmo tamanho
+if len(numeros_a) != len(numeros_b):
+    print("Erro: Listas devem ter o mesmo tamanho")
+else:
+    # Somar elemento por elemento
+    soma = []
+    for i in range(len(numeros_a)):
+        soma.append(numeros_a[i] + numeros_b[i])
+    
+    print(f"Soma: {soma}")  # [6, 8, 10, 12]</code></pre>
         
         <h3>Operações Escalares:</h3>
-        <pre><code>def multiplicar_escalar(lista, escalar):
-    """Multiplica todos os elementos da lista por um escalar"""
-    return [x * escalar for x in lista]
+        <pre><code>numeros = [1, 2, 3, 4, 5]
 
-def somar_escalar(lista, escalar):
-    """Soma um escalar a todos os elementos da lista"""
-    return [x + escalar for x in lista]
+# Multiplicar todos os elementos por um escalar (número)
+escalar_mult = 3
+multiplicados = []
+for x in numeros:
+    multiplicados.append(x * escalar_mult)
 
-numeros = [1, 2, 3, 4, 5]
-
-multiplicados = multiplicar_escalar(numeros, 3)
 print(f"Multiplicados por 3: {multiplicados}")  # [3, 6, 9, 12, 15]
 
-somados = somar_escalar(numeros, 10)
+# Somar um escalar a todos os elementos
+escalar_soma = 10
+somados = []
+for x in numeros:
+    somados.append(x + escalar_soma)
+
 print(f"Somados com 10: {somados}")  # [11, 12, 13, 14, 15]</code></pre>
     </section>
 
@@ -214,62 +225,7 @@ print(f"Somados com 10: {somados}")  # [11, 12, 13, 14, 15]</code></pre>
                 <li>Concatenação e comparação de vetores</li>
             </ul>
             
-            <textarea id="code-input" placeholder="import math
-
-class CalculadoraVetores:
-    @staticmethod
-    def somar(v1, v2):
-        '''Soma dois vetores elemento a elemento'''
-        if len(v1) != len(v2):
-            return None, 'Vetores devem ter o mesmo tamanho'
-        
-        resultado = [a + b for a, b in zip(v1, v2)]
-        return resultado, 'Soma realizada com sucesso'
-    
-    @staticmethod
-    def subtrair(v1, v2):
-        '''Subtrai v2 de v1 elemento a elemento'''
-        if len(v1) != len(v2):
-            return None, 'Vetores devem ter o mesmo tamanho'
-        
-        resultado = [a - b for a, b in zip(v1, v2)]
-        return resultado, 'Subtração realizada com sucesso'
-    
-    @staticmethod
-    def produto_escalar(v1, v2):
-        '''Calcula produto escalar entre dois vetores'''
-        if len(v1) != len(v2):
-            return None, 'Vetores devem ter o mesmo tamanho'
-        
-        resultado = sum(a * b for a, b in zip(v1, v2))
-        return resultado, 'Produto escalar calculado'
-    
-    @staticmethod
-    def multiplicar_por_escalar(vetor, escalar):
-        '''Multiplica vetor por um número'''
-        resultado = [x * escalar for x in vetor]
-        return resultado, f'Vetor multiplicado por {escalar}'
-    
-    @staticmethod
-    def magnitude(vetor):
-        '''Calcula a magnitude (comprimento) do vetor'''
-        soma_quadrados = sum(x ** 2 for x in vetor)
-        resultado = math.sqrt(soma_quadrados)
-        return resultado, 'Magnitude calculada'
-    
-    @staticmethod
-    def normalizar(vetor):
-        '''Normaliza o vetor (magnitude = 1)'''
-        mag, _ = CalculadoraVetores.magnitude(vetor)
-        if mag == 0:
-            return None, 'Não é possível normalizar vetor zero'
-        
-        resultado = [x / mag for x in vetor]
-        return resultado, 'Vetor normalizado'
-
-# Testando a calculadora
-calc = CalculadoraVetores()
-
+            <textarea id="code-input" placeholder="# 🧮 CALCULADORA DE VETORES (LISTAS)
 # Vetores de teste
 vetor_a = [3, 4, 5]
 vetor_b = [1, 2, 3]
@@ -279,28 +235,69 @@ print(f'Vetor A: {vetor_a}')
 print(f'Vetor B: {vetor_b}')
 print()
 
-# Testando operações
-soma, msg = calc.somar(vetor_a, vetor_b)
-print(f'➕ Soma: {soma} - {msg}')
+# ➕ SOMA elemento a elemento
+if len(vetor_a) != len(vetor_b):
+    print('Erro: Vetores devem ter o mesmo tamanho')
+else:
+    soma = []
+    for i in range(len(vetor_a)):
+        soma.append(vetor_a[i] + vetor_b[i])
+    print(f'➕ Soma: {soma}')
 
-subtracao, msg = calc.subtrair(vetor_a, vetor_b)
-print(f'➖ Subtração (A-B): {subtracao} - {msg}')
+# ➖ SUBTRAÇÃO elemento a elemento
+if len(vetor_a) != len(vetor_b):
+    print('Erro: Vetores devem ter o mesmo tamanho')
+else:
+    subtracao = []
+    for i in range(len(vetor_a)):
+        subtracao.append(vetor_a[i] - vetor_b[i])
+    print(f'➖ Subtração (A-B): {subtracao}')
 
-produto_esc, msg = calc.produto_escalar(vetor_a, vetor_b)
-print(f'✖️ Produto escalar: {produto_esc} - {msg}')
+# ✖️ PRODUTO ESCALAR (soma dos produtos)
+if len(vetor_a) != len(vetor_b):
+    print('Erro: Vetores devem ter o mesmo tamanho')
+else:
+    produto_escalar = 0
+    for i in range(len(vetor_a)):
+        produto_escalar += vetor_a[i] * vetor_b[i]
+    print(f'✖️ Produto escalar: {produto_escalar}')
 
-vetor_mult, msg = calc.multiplicar_por_escalar(vetor_a, 2)
-print(f'📊 A × 2: {vetor_mult} - {msg}')
+# 📊 MULTIPLICAÇÃO por escalar
+escalar = 2
+vetor_multiplicado = []
+for x in vetor_a:
+    vetor_multiplicado.append(x * escalar)
+print(f'📊 A × {escalar}: {vetor_multiplicado}')
 
-mag_a, msg = calc.magnitude(vetor_a)
-print(f'📏 Magnitude de A: {mag_a:.2f} - {msg}')
+# 📏 MAGNITUDE (comprimento do vetor)
+# Magnitude = raiz quadrada da soma dos quadrados
+soma_quadrados = 0
+for x in vetor_a:
+    soma_quadrados += x ** 2
+magnitude = soma_quadrados ** 0.5
+print(f'📏 Magnitude de A: {magnitude:.2f}')
 
-normalizado, msg = calc.normalizar(vetor_a)
-print(f'📐 A normalizado: {[round(x, 3) for x in normalizado]} - {msg}')
-
-# Verificando normalização
-mag_norm, _ = calc.magnitude(normalizado)
-print(f'📏 Magnitude do normalizado: {mag_norm:.6f}')"></textarea>
+# 📐 NORMALIZAÇÃO (vetor com magnitude = 1)
+if magnitude == 0:
+    print('Não é possível normalizar vetor zero')
+else:
+    normalizado = []
+    for x in vetor_a:
+        normalizado.append(x / magnitude)
+    
+    # Arredondar para exibição
+    normalizado_arredondado = []
+    for valor in normalizado:
+        normalizado_arredondado.append(round(valor, 3))
+    
+    print(f'📐 A normalizado: {normalizado_arredondado}')
+    
+    # Verificar magnitude do normalizado
+    soma_quad_norm = 0
+    for x in normalizado:
+        soma_quad_norm += x ** 2
+    mag_normalizado = soma_quad_norm ** 0.5
+    print(f'📏 Magnitude do normalizado: {mag_normalizado:.6f}')"></textarea>
             
             <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
             <div id="output"></div>
@@ -311,46 +308,46 @@ print(f'📏 Magnitude do normalizado: {mag_norm:.6f}')"></textarea>
         <h2>🔄 Operações Avançadas</h2>
         
         <h3>1. Interseção e União:</h3>
-        <pre><code>def intersecao(lista1, lista2):
-    """Elementos comuns (sem duplicatas)"""
-    return list(set(lista1) & set(lista2))
-
-def uniao(lista1, lista2):
-    """Todos os elementos únicos"""
-    return list(set(lista1) | set(lista2))
-
-def diferenca(lista1, lista2):
-    """Elementos em lista1 mas não em lista2"""
-    return list(set(lista1) - set(lista2))
-
-# Teste
+        <pre><code># Teste
 numeros1 = [1, 2, 3, 4, 5]
 numeros2 = [4, 5, 6, 7, 8]
 
 print(f"Lista 1: {numeros1}")
 print(f"Lista 2: {numeros2}")
-print(f"Interseção: {intersecao(numeros1, numeros2)}")  # [4, 5]
-print(f"União: {uniao(numeros1, numeros2)}")  # [1, 2, 3, 4, 5, 6, 7, 8]
-print(f"Diferença (1-2): {diferenca(numeros1, numeros2)}")  # [1, 2, 3]</code></pre>
+
+# Interseção: elementos comuns (sem duplicatas)
+conjunto1 = set(numeros1)
+conjunto2 = set(numeros2)
+intersecao = list(conjunto1 & conjunto2)
+print(f"Interseção: {intersecao}")  # [4, 5]
+
+# União: todos os elementos únicos
+uniao = list(conjunto1 | conjunto2)
+print(f"União: {uniao}")  # [1, 2, 3, 4, 5, 6, 7, 8]
+
+# Diferença: elementos em lista1 mas não em lista2
+diferenca = list(conjunto1 - conjunto2)
+print(f"Diferença (1-2): {diferenca}")  # [1, 2, 3]</code></pre>
         
         <h3>2. Rotação de Lista:</h3>
-        <pre><code>def rotacionar_esquerda(lista, n=1):
-    """Rotaciona lista n posições para a esquerda"""
-    if not lista:
-        return lista
-    
-    n = n % len(lista)  # Evitar rotações desnecessárias
-    return lista[n:] + lista[:n]
-
-def rotacionar_direita(lista, n=1):
-    """Rotaciona lista n posições para a direita"""
-    return rotacionar_esquerda(lista, -n)
-
-# Teste
+        <pre><code># Teste
 original = [1, 2, 3, 4, 5]
 print(f"Original: {original}")
-print(f"Esquerda 2: {rotacionar_esquerda(original, 2)}")  # [3, 4, 5, 1, 2]
-print(f"Direita 2: {rotacionar_direita(original, 2)}")   # [4, 5, 1, 2, 3]</code></pre>
+
+# Rotacionar n posições para a esquerda
+n = 2
+if original:
+    n = n % len(original)  # Evitar rotações desnecessárias
+    rotacao_esquerda = original[n:] + original[:n]
+    print(f"Esquerda {n}: {rotacao_esquerda}")  # [3, 4, 5, 1, 2]
+
+# Rotacionar n posições para a direita
+# Direita é o mesmo que esquerda com n negativo
+n_direita = 2
+if original:
+    n_ajustado = -n_direita % len(original)
+    rotacao_direita = original[n_ajustado:] + original[:n_ajustado]
+    print(f"Direita {n_direita}: {rotacao_direita}")   # [4, 5, 1, 2, 3]</code></pre>
     </section>
 
     <section>

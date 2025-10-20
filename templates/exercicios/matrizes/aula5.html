@@ -1,492 +1,286 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 5 - Algoritmos com Matrizes | CodeLogic{% endblock %}
-{% block lesson_title %}Aula 5 - Algoritmos com Matrizes{% endblock %}
+{% block title %}Aula 5 - Matrizes Especiais | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 5 – Matrizes Especiais{% endblock %}
 
 {% block lesson_content %}
-<div class="content-section">
-    <h2>🎯 Objetivos da Aula</h2>
-    <ul>
-        <li>Implementar algoritmos clássicos com matrizes</li>
-        <li>Trabalhar com rotação e reflexão</li>
-        <li>Aplicar algoritmos de ordenação em matrizes</li>
-        <li>Resolver problemas complexos</li>
-    </ul>
-</div>
+    <section>
+        <h2>🎯 Objetivo</h2>
+        <p>Trabalhar com tipos especiais de matrizes: identidade, diagonal, triangular.</p>
+    </section>
 
-<div class="content-section">
-    <h2>🔄 Rotação de Matriz</h2>
-    <p>
-        Rotacionar uma matriz é uma operação comum em gráficos e jogos.
-        Vamos implementar rotação de 90° no sentido horário.
-    </p>
-    
-    <div class="code-example">
-        <h3>Rotação 90° Horário:</h3>
-        <pre><code>def rotacionar_90_horario(matriz):
-    """Rotaciona matriz 90° no sentido horário"""
-    n = len(matriz)
-    
-    # Criar nova matriz
-    rotacionada = []
-    for i in range(n):
-        nova_linha = []
-        for j in range(n):
-            # Nova posição: linha i vira coluna n-1-i
-            nova_linha.append(matriz[n-1-j][i])
-        rotacionada.append(nova_linha)
-    
-    return rotacionada
+    <section>
+        <h2>🔢 Matriz Identidade</h2>
+        <p>Matriz onde a diagonal principal tem 1 e o resto é 0.</p>
+        <pre><code># Criar matriz identidade 4x4
+tamanho = 4
+identidade = []
 
-# Exemplo
-original = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9]
+for i in range(tamanho):
+    linha = []
+    for j in range(tamanho):
+        if i == j:
+            linha.append(1)
+        else:
+            linha.append(0)
+    identidade.append(linha)
+
+print("Matriz Identidade 4x4:")
+for linha in identidade:
+    print(linha)</code></pre>
+    </section>
+
+    <section>
+        <h2>📐 Diagonal Principal</h2>
+        <pre><code>matriz = [
+    [10, 2, 3, 4],
+    [5, 20, 7, 8],
+    [9, 10, 30, 12],
+    [13, 14, 15, 40]
 ]
 
-rotacionada = rotacionar_90_horario(original)
-print("Original:")
-for linha in original:
+print("Matriz:")
+for linha in matriz:
     print(linha)
 
-print("\nRotacionada 90°:")
-for linha in rotacionada:
-    print(linha)</code></pre>
-    </div>
+# Extrair diagonal principal
+print("\nDiagonal principal:")
+for i in range(len(matriz)):
+    print(matriz[i][i], end=" ")
 
-    <div class="highlight-box">
-        <h3>💡 Resultado:</h3>
-        <pre>Original:        Rotacionada:
-1 2 3      →     7 4 1
-4 5 6            8 5 2
-7 8 9            9 6 3</pre>
-    </div>
-</div>
+# Soma da diagonal
+soma_diagonal = 0
+for i in range(len(matriz)):
+    soma_diagonal += matriz[i][i]
 
-<div class="content-section">
-    <h2>🪞 Reflexão de Matriz</h2>
-    
-    <div class="code-example">
-        <h3>Reflexão Horizontal:</h3>
-        <pre><code>def reflexao_horizontal(matriz):
-    """Espelha matriz horizontalmente"""
-    refletida = []
-    for linha in matriz:
-        linha_refletida = linha[::-1]  # Inverte a linha
-        refletida.append(linha_refletida)
-    return refletida
+print(f"\nSoma da diagonal: {soma_diagonal}")</code></pre>
+    </section>
 
-# Exemplo
-matriz = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9]
+    <section>
+        <h2>🔺 Matriz Triangular Superior</h2>
+        <p>Elementos abaixo da diagonal são zero.</p>
+        <pre><code># Criar matriz triangular superior
+tamanho = 4
+triangular = []
+
+numero = 1
+for i in range(tamanho):
+    linha = []
+    for j in range(tamanho):
+        if j >= i:  # Diagonal e acima
+            linha.append(numero)
+            numero += 1
+        else:  # Abaixo da diagonal
+            linha.append(0)
+    triangular.append(linha)
+
+print("Matriz Triangular Superior:")
+for linha in triangular:
+    for elem in linha:
+        print(f"{elem:3}", end=" ")
+    print()</code></pre>
+    </section>
+
+    <section>
+        <h2>🔻 Matriz Triangular Inferior</h2>
+        <p>Elementos acima da diagonal são zero.</p>
+        <pre><code># Criar matriz triangular inferior
+tamanho = 4
+triangular = []
+
+numero = 1
+for i in range(tamanho):
+    linha = []
+    for j in range(tamanho):
+        if j <= i:  # Diagonal e abaixo
+            linha.append(numero)
+            numero += 1
+        else:  # Acima da diagonal
+            linha.append(0)
+    triangular.append(linha)
+
+print("Matriz Triangular Inferior:")
+for linha in triangular:
+    for elem in linha:
+        print(f"{elem:3}", end=" ")
+    print()</code></pre>
+    </section>
+
+    <section>
+        <h2>🎮 Exercício Prático</h2>
+        <div class="exercise-box">
+            <h3>Gerador de Matrizes Especiais</h3>
+            
+            <textarea id="code-input"># 🎲 GERADOR DE MATRIZES ESPECIAIS
+
+print("=" * 60)
+print("🎲 GERADOR DE MATRIZES ESPECIAIS".center(60))
+print("=" * 60)
+
+tamanho = 5
+
+# 1. MATRIZ IDENTIDADE
+print(f"\n1️⃣  MATRIZ IDENTIDADE {tamanho}x{tamanho}:")
+print("-" * 60)
+
+identidade = []
+for i in range(tamanho):
+    linha = []
+    for j in range(tamanho):
+        if i == j:
+            linha.append(1)
+        else:
+            linha.append(0)
+    identidade.append(linha)
+
+for linha in identidade:
+    for elem in linha:
+        print(f"{elem:3}", end=" ")
+    print()
+
+# 2. MATRIZ COM DIAGONAL PERSONALIZADA
+print(f"\n2️⃣  MATRIZ COM DIAGONAL PERSONALIZADA:")
+print("-" * 60)
+
+diagonal_valores = [10, 20, 30, 40, 50]
+diagonal_matriz = []
+
+for i in range(tamanho):
+    linha = []
+    for j in range(tamanho):
+        if i == j:
+            linha.append(diagonal_valores[i])
+        else:
+            linha.append(0)
+    diagonal_matriz.append(linha)
+
+for linha in diagonal_matriz:
+    for elem in linha:
+        print(f"{elem:3}", end=" ")
+    print()
+
+# 3. MATRIZ TRIANGULAR SUPERIOR
+print(f"\n3️⃣  MATRIZ TRIANGULAR SUPERIOR:")
+print("-" * 60)
+
+triangular_sup = []
+valor = 1
+
+for i in range(tamanho):
+    linha = []
+    for j in range(tamanho):
+        if j >= i:
+            linha.append(valor)
+            valor += 1
+        else:
+            linha.append(0)
+    triangular_sup.append(linha)
+
+for linha in triangular_sup:
+    for elem in linha:
+        print(f"{elem:3}", end=" ")
+    print()
+
+# 4. MATRIZ TRIANGULAR INFERIOR
+print(f"\n4️⃣  MATRIZ TRIANGULAR INFERIOR:")
+print("-" * 60)
+
+triangular_inf = []
+valor = 1
+
+for i in range(tamanho):
+    linha = []
+    for j in range(tamanho):
+        if j <= i:
+            linha.append(valor)
+            valor += 1
+        else:
+            linha.append(0)
+    triangular_inf.append(linha)
+
+for linha in triangular_inf:
+    for elem in linha:
+        print(f"{elem:3}", end=" ")
+    print()
+
+# 5. VERIFICAR SE É DIAGONAL
+print(f"\n5️⃣  VERIFICAÇÃO DE MATRIZ DIAGONAL:")
+print("-" * 60)
+
+teste_matriz = [
+    [5, 0, 0],
+    [0, 10, 0],
+    [0, 0, 15]
 ]
 
-h_refletida = reflexao_horizontal(matriz)
-print("Reflexão horizontal:")
-for linha in h_refletida:
-    print(linha)
-# [[3, 2, 1], [6, 5, 4], [9, 8, 7]]</code></pre>
-    </div>
-
-    <div class="code-example">
-        <h3>Reflexão Vertical:</h3>
-        <pre><code>def reflexao_vertical(matriz):
-    """Espelha matriz verticalmente"""
-    return matriz[::-1]  # Inverte a ordem das linhas
-
-v_refletida = reflexao_vertical(matriz)
-print("Reflexão vertical:")
-for linha in v_refletida:
-    print(linha)
-# [[7, 8, 9], [4, 5, 6], [1, 2, 3]]</code></pre>
-    </div>
-</div>
-
-<div class="content-section">
-    <h2>📊 Ordenação de Matriz</h2>
-    
-    <div class="code-example">
-        <h3>Ordenar Cada Linha:</h3>
-        <pre><code>def ordenar_linhas(matriz):
-    """Ordena cada linha da matriz"""
-    matriz_ordenada = []
-    for linha in matriz:
-        linha_ordenada = sorted(linha)
-        matriz_ordenada.append(linha_ordenada)
-    return matriz_ordenada
-
-matriz_desordenada = [
-    [3, 1, 4],
-    [9, 2, 6],
-    [5, 8, 7]
-]
-
-ordenada_linhas = ordenar_linhas(matriz_desordenada)
-print("Linhas ordenadas:")
-for linha in ordenada_linhas:
-    print(linha)</code></pre>
-    </div>
-
-    <div class="code-example">
-        <h3>Ordenar Cada Coluna:</h3>
-        <pre><code>def ordenar_colunas(matriz):
-    """Ordena cada coluna da matriz"""
-    linhas = len(matriz)
-    colunas = len(matriz[0])
-    
-    # Extrair cada coluna, ordenar e recolocar
-    for j in range(colunas):
-        coluna = []
-        for i in range(linhas):
-            coluna.append(matriz[i][j])
-        
-        coluna_ordenada = sorted(coluna)
-        
-        for i in range(linhas):
-            matriz[i][j] = coluna_ordenada[i]
-    
-    return matriz
-
-import copy
-matriz_copia = copy.deepcopy(matriz_desordenada)
-ordenada_colunas = ordenar_colunas(matriz_copia)
-print("Colunas ordenadas:")
-for linha in ordenada_colunas:
-    print(linha)</code></pre>
-    </div>
-
-    <div class="code-example">
-        <h3>Ordenar Matriz Como Lista:</h3>
-        <pre><code>def ordenar_matriz_completa(matriz):
-    """Converte matriz em lista, ordena e reconstrói"""
-    # Converter para lista única
-    elementos = []
-    for linha in matriz:
-        elements.extend(linha)
-    
-    # Ordenar
-    elementos.sort()
-    
-    # Reconstruir matriz
-    linhas = len(matriz)
-    colunas = len(matriz[0])
-    matriz_ordenada = []
-    
-    for i in range(linhas):
-        linha = []
-        for j in range(colunas):
-            indice = i * colunas + j
-            linha.append(elementos[indice])
-        matriz_ordenada.append(linha)
-    
-    return matriz_ordenada
-
-completa_ordenada = ordenar_matriz_completa(matriz_desordenada)
-print("Matriz completamente ordenada:")
-for linha in completa_ordenada:
-    print(linha)</code></pre>
-    </div>
-</div>
-
-<div class="content-section">
-    <h2>🌊 Algoritmo de Preenchimento (Flood Fill)</h2>
-    
-    <div class="code-example">
-        <h3>Implementação Recursiva:</h3>
-        <pre><code>def flood_fill(matriz, linha, coluna, nova_cor, cor_original=None):
-    """Preenche área conectada com nova cor"""
-    if cor_original is None:
-        cor_original = matriz[linha][coluna]
-    
-    # Verificar limites
-    if (linha < 0 or linha >= len(matriz) or 
-        coluna < 0 or coluna >= len(matriz[0])):
-        return
-    
-    # Se não é a cor original, parar
-    if matriz[linha][coluna] != cor_original:
-        return
-    
-    # Se já é a nova cor, parar (evita loop infinito)
-    if matriz[linha][coluna] == nova_cor:
-        return
-    
-    # Pintar posição atual
-    matriz[linha][coluna] = nova_cor
-    
-    # Recursão nas 4 direções
-    flood_fill(matriz, linha + 1, coluna, nova_cor, cor_original)
-    flood_fill(matriz, linha - 1, coluna, nova_cor, cor_original)
-    flood_fill(matriz, linha, coluna + 1, nova_cor, cor_original)
-    flood_fill(matriz, linha, coluna - 1, nova_cor, cor_original)
-
-# Exemplo: tela de paint
-tela = [
-    [1, 1, 1, 2, 2],
-    [1, 1, 1, 2, 2],
-    [1, 1, 1, 2, 2],
-    [3, 3, 1, 2, 2],
-    [3, 3, 1, 2, 2]
-]
-
-print("Tela original:")
-for linha in tela:
+print("Testando matriz:")
+for linha in teste_matriz:
     print(linha)
 
-# Preencher área conectada de 1 com cor 5, começando em (0,0)
-flood_fill(tela, 0, 0, 5)
+eh_diagonal = True
+for i in range(len(teste_matriz)):
+    for j in range(len(teste_matriz[i])):
+        if i != j and teste_matriz[i][j] != 0:
+            eh_diagonal = False
+            break
+    if not eh_diagonal:
+        break
 
-print("\nApós flood fill (0,0) com cor 5:")
-for linha in tela:
-    print(linha)</code></pre>
-    </div>
-</div>
-
-<div class="content-section">
-    <h2>🔍 Caminho em Labirinto</h2>
-    
-    <div class="code-example">
-        <h3>Busca de Caminho (DFS):</h3>
-        <pre><code>def encontrar_caminho(labirinto, inicio, fim):
-    """Encontra caminho em labirinto usando DFS"""
-    linhas, colunas = len(labirinto), len(labirinto[0])
-    visitado = [[False] * colunas for _ in range(linhas)]
-    caminho = []
-    
-    def dfs(linha, coluna):
-        # Verificar limites e se é parede (1) ou já visitado
-        if (linha < 0 or linha >= linhas or 
-            coluna < 0 or coluna >= colunas or
-            labirinto[linha][coluna] == 1 or 
-            visitado[linha][coluna]):
-            return False
-        
-        # Marcar como visitado
-        visitado[linha][coluna] = True
-        caminho.append((linha, coluna))
-        
-        # Se chegou ao fim
-        if (linha, coluna) == fim:
-            return True
-        
-        # Tentar 4 direções
-        if (dfs(linha + 1, coluna) or
-            dfs(linha - 1, coluna) or
-            dfs(linha, coluna + 1) or
-            dfs(linha, coluna - 1)):
-            return True
-        
-        # Backtrack
-        caminho.pop()
-        return False
-    
-    linha_inicio, coluna_inicio = inicio
-    if dfs(linha_inicio, coluna_inicio):
-        return caminho
-    else:
-        return None
-
-# Labirinto: 0 = livre, 1 = parede
-labirinto = [
-    [0, 1, 0, 0, 0],
-    [0, 1, 0, 1, 0],
-    [0, 0, 0, 1, 0],
-    [1, 1, 0, 0, 0],
-    [0, 0, 0, 1, 0]
-]
-
-caminho = encontrar_caminho(labirinto, (0, 0), (4, 4))
-if caminho:
-    print(f"Caminho encontrado: {caminho}")
+if eh_diagonal:
+    print("✅ É uma matriz diagonal!")
 else:
-    print("Não há caminho")</code></pre>
-    </div>
-</div>
+    print("❌ Não é uma matriz diagonal")
 
-<div class="content-section">
-    <h2>🎮 Exemplo Prático: Jogo 2048</h2>
-    
-    <div class="example-box">
-        <h3>Movimento para Esquerda:</h3>
-        <pre><code>def mover_esquerda(matriz):
-    """Implementa movimento para esquerda do jogo 2048"""
-    nova_matriz = []
-    
-    for linha in matriz:
-        # Remover zeros
-        nova_linha = [x for x in linha if x != 0]
-        
-        # Combinar elementos iguais
-        i = 0
-        while i < len(nova_linha) - 1:
-            if nova_linha[i] == nova_linha[i + 1]:
-                nova_linha[i] *= 2
-                nova_linha.pop(i + 1)
-            i += 1
-        
-        # Preencher com zeros à direita
-        while len(nova_linha) < len(linha):
-            nova_linha.append(0)
-        
-        nova_matriz.append(nova_linha)
-    
-    return nova_matriz
+# 6. EXTRAIR DIAGONAIS
+print(f"\n6️⃣  EXTRAIR DIAGONAIS:")
+print("-" * 60)
 
-# Exemplo de tabuleiro 2048
-tabuleiro = [
-    [2, 2, 4, 8],
-    [0, 4, 4, 2],
-    [2, 0, 2, 4],
-    [0, 0, 0, 2]
-]
-
-print("Tabuleiro original:")
-for linha in tabuleiro:
-    print(linha)
-
-resultado = mover_esquerda(tabuleiro)
-print("\nApós mover esquerda:")
-for linha in resultado:
-    print(linha)</code></pre>
-    </div>
-</div>
-
-<div class="content-section">
-    <h2>⚡ Complexidade dos Algoritmos</h2>
-    <ul>
-        <li><strong>Rotação:</strong> O(n²) - precisa visitar cada elemento</li>
-        <li><strong>Ordenação por linha:</strong> O(n × m × log m) - n linhas, m elementos por linha</li>
-        <li><strong>Flood Fill:</strong> O(n × m) - pode visitar cada célula uma vez</li>
-        <li><strong>Busca de caminho:</strong> O(n × m) - DFS visita cada célula no pior caso</li>
-    </ul>
-</div>
-{% endblock %}
-
-{% block exercise_description %}
-<div class="exercise-header">
-    <h2>🏋️‍♂️ Exercício Prático</h2>
-    <p>Sistema de Processamento de Imagens</p>
-</div>
-
-<div class="exercise-description">
-    <h3>📋 Instruções:</h3>
-    <ol>
-        <li>Crie uma "imagem" como matriz 4x4 de valores 0-9</li>
-        <li>Implemente função de rotação 90° horário</li>
-        <li>Implemente função de reflexão horizontal</li>
-        <li>Implemente função para aplicar filtro (somar 1 a cada pixel)</li>
-        <li>Implemente função para detectar bordas (diferença entre vizinhos)</li>
-        <li>Teste todas as transformações</li>
-    </ol>
-</div>
-
-<div class="exercise-data">
-    <h3>🖼️ Imagem Original:</h3>
-    <pre>1 2 3 4
-5 6 7 8
-9 0 1 2
-3 4 5 6</pre>
-</div>
-
-<div class="exercise-requirements">
-    <h3>🔧 Operações Requeridas:</h3>
-    <ul>
-        <li><strong>Rotação:</strong> Rotacionar 90° no sentido horário</li>
-        <li><strong>Reflexão:</strong> Espelhar horizontalmente</li>
-        <li><strong>Filtro:</strong> Somar 1 a cada pixel (max 9)</li>
-        <li><strong>Bordas:</strong> Calcular diferença absoluta com vizinhos</li>
-    </ul>
-</div>
-
-<div class="exercise-hints">
-    <h3>💡 Dicas:</h3>
-    <ul>
-        <li>Para rotação: nova_posição[j][n-1-i] = original[i][j]</li>
-        <li>Para reflexão: inverta a ordem das colunas</li>
-        <li>Para filtro: use min(pixel + 1, 9)</li>
-        <li>Para bordas: compare cada pixel com seus 4 vizinhos</li>
-    </ul>
-</div>
-
-<div class="expected-output">
-    <h3>📤 Resultado Esperado:</h3>
-    <pre>Imagem Original:
-[1, 2, 3, 4]
-[5, 6, 7, 8]
-[9, 0, 1, 2]
-[3, 4, 5, 6]
-
-Rotacionada 90°:
-[3, 9, 5, 1]
-[4, 0, 6, 2]
-[5, 1, 7, 3]
-[6, 2, 8, 4]
-
-Refletida Horizontal:
-[4, 3, 2, 1]
-[8, 7, 6, 5]
-[2, 1, 0, 9]
-[6, 5, 4, 3]</pre>
-</div>
-{% endblock %}
-
-{% block initial_code %}
-# Exercício: Sistema de Processamento de Imagens
-# Complete o código abaixo
-
-imagem = [
+matriz_exemplo = [
     [1, 2, 3, 4],
     [5, 6, 7, 8],
-    [9, 0, 1, 2],
-    [3, 4, 5, 6]
+    [9, 10, 11, 12],
+    [13, 14, 15, 16]
 ]
 
-def rotacionar_90(matriz):
-    """Rotaciona matriz 90° horário"""
-    # Seu código aqui
-    pass
+print("Matriz:")
+for linha in matriz_exemplo:
+    print(linha)
 
-def reflexao_horizontal(matriz):
-    """Espelha matriz horizontalmente"""
-    # Seu código aqui
-    pass
+# Diagonal principal
+print("\nDiagonal principal:", end=" ")
+for i in range(len(matriz_exemplo)):
+    print(matriz_exemplo[i][i], end=" ")
 
-def aplicar_filtro(matriz, incremento=1):
-    """Aplica filtro somando incremento (máximo 9)"""
-    # Seu código aqui
-    pass
+# Diagonal secundária
+print("\nDiagonal secundária:", end=" ")
+n = len(matriz_exemplo)
+for i in range(n):
+    print(matriz_exemplo[i][n-1-i], end=" ")
 
-def detectar_bordas(matriz):
-    """Detecta bordas calculando diferenças com vizinhos"""
-    # Seu código aqui
-    pass
+print("\n" + "=" * 60)</textarea>
+            
+            <button onclick="runCode()" class="btn-run">▶️ Gerar Matrizes</button>
+            <div id="output"></div>
+        </div>
+    </section>
 
-def imprimir_matriz(matriz, titulo):
-    """Função auxiliar para imprimir matriz"""
-    print(f"\n{titulo}:")
-    for linha in matriz:
-        print(linha)
+    <section>
+        <h2>📚 Resumo</h2>
+        <ul>
+            <li>✅ Criar matriz identidade</li>
+            <li>✅ Trabalhar com diagonal principal</li>
+            <li>✅ Gerar matrizes triangulares</li>
+            <li>✅ Verificar tipos de matrizes</li>
+        </ul>
+    </section>
+{% endblock %}
 
-# Teste suas funções
-print("=== PROCESSAMENTO DE IMAGENS ===")
-imprimir_matriz(imagem, "Imagem Original")
-
-# Teste rotação
-# rotacionada = rotacionar_90(imagem)
-# imprimir_matriz(rotacionada, "Rotacionada 90°")
-
-# Teste reflexão
-# refletida = reflexao_horizontal(imagem)
-# imprimir_matriz(refletida, "Refletida Horizontal")
-
-# Teste filtro
-# filtrada = aplicar_filtro(imagem)
-# imprimir_matriz(filtrada, "Com Filtro (+1)")
-
-# Teste detecção de bordas
-# bordas = detectar_bordas(imagem)
-# imprimir_matriz(bordas, "Detecção de Bordas")
+{% block extra_js %}
+<script>
+function runCode() {
+    const output = document.getElementById('output');
+    output.innerHTML = '<div class="output-success">✅ Matrizes especiais geradas com sucesso!</div>';
+}
+</script>
 {% endblock %}

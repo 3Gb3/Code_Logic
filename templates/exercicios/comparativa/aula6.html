@@ -28,142 +28,136 @@
     <section>
         <h2>📊 Tipos de Validação</h2>
         
-        <h3>1. Validação de Tipo</h3>
-        <pre><code>try:
-    idade = int(input("Digite sua idade: "))
-    if idade >= 0 and idade <= 120:
-        print(f"Idade válida: {idade}")
-    else:
-        print("Idade deve estar entre 0 e 120 anos")
-except ValueError:
-    print("Por favor, digite apenas números")</code></pre>
+        <h3>1. Validação de Intervalo</h3>
+        <pre><code>idade = int(input("Digite sua idade: "))
+
+if idade >= 0 and idade <= 120:
+    print(f"Idade válida: {idade}")
+else:
+    print("Idade deve estar entre 0 e 120 anos")</code></pre>
     
         <h3>2. Validação de Formato</h3>
         <pre><code>email = input("Digite seu email: ")
 
+# Verificar se tem @ e .
 if "@" in email and "." in email:
-    partes = email.split("@")
-    if len(partes) == 2 and len(partes[0]) > 0 and len(partes[1]) > 0:
+    # Verificar posições
+    pos_arroba = email.find("@")
+    pos_ponto = email.find(".", pos_arroba)
+    
+    if pos_arroba > 0 and pos_ponto > pos_arroba + 1:
         print("Email válido!")
     else:
         print("Formato de email inválido")
 else:
     print("Email deve conter @ e .")</code></pre>
     
-        <h3>3. Validação de Intervalo</h3>
+        <h3>3. Validação de Tamanho</h3>
+        <pre><code>nome = input("Digite seu nome: ")
+tamanho = len(nome)
+
+if tamanho >= 3 and tamanho <= 50:
+    print(f"Nome válido: {nome}")
+else:
+    print("Nome deve ter entre 3 e 50 caracteres")</code></pre>
+    </section>
+
+    <section>
+        <h2>🔐 Validação de Senha Simples</h2>
+        <pre><code>senha = input("Digite sua senha: ")
+tamanho_senha = len(senha)
+
+# Verificar tamanho mínimo
+if tamanho_senha >= 8:
+    print("Senha forte! ✅")
+    print(f"Sua senha tem {tamanho_senha} caracteres")
+else:
+    print("Senha fraca! ❌")
+    print("Senha deve ter pelo menos 8 caracteres")
+    faltam = 8 - tamanho_senha
+    print(f"Faltam {faltam} caracteres")</code></pre>
+    </section>
+
+    <section>
+        <h2>📞 Validação de Telefone</h2>
+        <pre><code>telefone = input("Digite seu telefone (apenas números): ")
+tamanho_tel = len(telefone)
+
+# Verificar se só tem números
+if telefone.isdigit():
+    # Verificar tamanho (10 ou 11 dígitos)
+    if tamanho_tel == 10 or tamanho_tel == 11:
+        print("Telefone válido! ✅")
+        if tamanho_tel == 11:
+            print("Telefone com DDD e 9º dígito")
+        else:
+            print("Telefone com DDD")
+    else:
+        print("Telefone deve ter 10 ou 11 dígitos")
+else:
+    print("Telefone deve conter apenas números")</code></pre>
+    </section>
+
+    <section>
+        <h2>🎮 Validação de Nota</h2>
         <pre><code>nota = float(input("Digite a nota (0-10): "))
 
-if 0 <= nota <= 10:
+if nota >= 0 and nota <= 10:
     print(f"Nota registrada: {nota}")
-else:
-    print("Nota deve estar entre 0 e 10")</code></pre>
-    </section>
-
-    <section>
-        <h2>🔐 Validação de Senha</h2>
-        <pre><code>senha = input("Digite sua senha: ")
-
-# Critérios de validação
-tem_minuscula = any(c.islower() for c in senha)
-tem_maiuscula = any(c.isupper() for c in senha)
-tem_numero = any(c.isdigit() for c in senha)
-tem_tamanho = len(senha) >= 8
-
-if tem_minuscula and tem_maiuscula and tem_numero and tem_tamanho:
-    print("Senha forte! ✅")
-else:
-    print("Senha deve ter:")
-    if not tem_tamanho:
-        print("- Pelo menos 8 caracteres")
-    if not tem_minuscula:
-        print("- Pelo menos uma letra minúscula")
-    if not tem_maiuscula:
-        print("- Pelo menos uma letra maiúscula")
-    if not tem_numero:
-        print("- Pelo menos um número")</code></pre>
-    </section>
-
-    <section>
-        <h2>📞 Validação de CPF Simplificada</h2>
-        <pre><code>cpf = input("Digite seu CPF (apenas números): ")
-
-# Remove espaços e caracteres especiais
-cpf_limpo = cpf.replace(".", "").replace("-", "").replace(" ", "")
-
-if len(cpf_limpo) == 11 and cpf_limpo.isdigit():
-    # Verifica se não são todos iguais (ex: 11111111111)
-    if len(set(cpf_limpo)) > 1:
-        print("CPF com formato válido!")
+    
+    # Feedback adicional
+    if nota >= 7:
+        print("Aprovado! 🎉")
+    elif nota >= 5:
+        print("Recuperação ⚠️")
     else:
-        print("CPF não pode ter todos os dígitos iguais")
+        print("Reprovado ❌")
 else:
-    print("CPF deve ter 11 dígitos numéricos")</code></pre>
-    </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Sistema de Cadastro Completo</h3>
-            <p>Crie um sistema que valide todos os dados de um usuário:</p>
-            <ul>
-                <li>Nome: deve ter pelo menos 2 caracteres</li>
-                <li>Idade: entre 16 e 100 anos</li>
-                <li>Email: formato válido com @ e .</li>
-                <li>Telefone: 10 ou 11 dígitos</li>
-            </ul>
-            
-            <textarea id="code-input" placeholder="# Sistema de Cadastro com Validação
-print('=== CADASTRO DE USUÁRIO ===')
-
-# Validação do Nome
-nome = input('Nome completo: ')
-if len(nome.strip()) >= 2:
-    print('Nome válido ✅')
-else:
-    print('Nome deve ter pelo menos 2 caracteres ❌')
-
-# Continue validando os outros campos..."></textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
-        <h2>🔄 Validação com Loop</h2>
-        <pre><code>while True:
-    try:
-        idade = int(input("Digite sua idade: "))
-        if 0 <= idade <= 120:
-            print(f"Idade {idade} registrada com sucesso!")
-            break
-        else:
-            print("Idade deve estar entre 0 e 120. Tente novamente.")
-    except ValueError:
-        print("Digite apenas números. Tente novamente.")</code></pre>
+    print("Nota inválida! Deve estar entre 0 e 10")</code></pre>
     </section>
 
     <section>
         <h2>💡 Dicas de Boas Práticas</h2>
-        <div class="tip-box">
-            <ul>
-                <li>📝 Sempre informe o formato esperado</li>
-                <li>🎯 Seja específico nas mensagens de erro</li>
-                <li>🔄 Permita que o usuário tente novamente</li>
-                <li>🧹 Limpe dados antes de validar (espaços, caracteres especiais)</li>
-                <li>⚡ Valide no momento da entrada, não só no final</li>
-            </ul>
-        </div>
+        <ul>
+            <li>📝 Sempre informe o formato esperado</li>
+            <li>🎯 Seja específico nas mensagens de erro</li>
+            <li>✅ Use comparações encadeadas (0 <= nota <= 10)</li>
+            <li>� Verifique tamanho com len()</li>
+            <li>⚡ Valide no momento da entrada</li>
+        </ul>
     </section>
 {% endblock %}
 
-{% block extra_js %}
-<script>
-function runCode() {
-    const code = document.getElementById('code-input').value;
-    const output = document.getElementById('output');
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
     
-    output.innerHTML = '<div class="output-success">Sistema de cadastro executado! Teste com dados válidos e inválidos.</div>';
-}
-</script>
+    <p><strong>Tarefa:</strong> Sistema de Validação de Cadastro</p>
+    <ul>
+        <li>Peça nome completo (deve ter mais de 5 caracteres)</li>
+        <li>Peça idade (deve estar entre 18 e 100)</li>
+        <li>Peça email (deve conter @ e .)</li>
+        <li>Peça senha (deve ter pelo menos 6 caracteres)</li>
+        <li>Para cada dado, mostre se é válido ou inválido</li>
+        <li>No final, mostre se o cadastro foi aceito ou negado</li>
+    </ul>
+    
+    <p><strong>Exemplo de saída esperada:</strong></p>
+    <pre><code>🔐 VALIDAÇÃO DE CADASTRO 🔐
+Nome: João Silva ✅
+Idade: 25 ✅
+Email: joao@email.com ✅
+Senha: segura123 ✅
+✅ CADASTRO APROVADO!</code></pre>
 {% endblock %}
+
+{% block initial_code %}print("🔐 VALIDAÇÃO DE CADASTRO 🔐")
+print()
+
+# Entrada de dados
+nome = input("Digite seu nome completo: ")
+idade = int(input("Digite sua idade: "))
+email = input("Digite seu email: ")
+senha = input("Digite sua senha: ")
+
+# SEU CÓDIGO AQUI
+# Valide cada campo e mostre o resultado final{% endblock %}

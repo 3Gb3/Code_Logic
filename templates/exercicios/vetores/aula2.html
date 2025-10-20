@@ -39,21 +39,19 @@ print(frutas[-5])  # maçã (primeiro elemento)</code></pre>
         <h2>⚠️ Tratando Erros de Índice</h2>
         <pre><code>numeros = [10, 20, 30]
 
-# Acesso seguro
-def acessar_elemento(lista, indice):
-    try:
-        return lista[indice]
-    except IndexError:
-        return f"Índice {indice} não existe na lista"
-
-print(acessar_elemento(numeros, 1))   # 20
-print(acessar_elemento(numeros, 5))   # Índice 5 não existe na lista
-
-# Verificação antes do acesso
+# Acesso seguro com verificação de índice
+indice = 1
 if 0 <= indice < len(numeros):
-    print(f"Elemento: {numeros[indice]}")
+    print(f"Elemento no índice {indice}: {numeros[indice]}")  # 20
 else:
-    print("Índice inválido")</code></pre>
+    print(f"Índice {indice} não existe na lista")
+
+# Tentando acessar índice inválido
+indice = 5
+if 0 <= indice < len(numeros):
+    print(f"Elemento no índice {indice}: {numeros[indice]}")
+else:
+    print(f"Índice {indice} não existe na lista")  # Esta mensagem será exibida</code></pre>
     </section>
 
     <section>
@@ -192,16 +190,13 @@ for i, musica in enumerate(playlist_invertida, 1):
 indice = frutas.index("banana")
 print(f"Primeira banana está no índice: {indice}")  # 1
 
-# Todos os índices de um elemento
-def encontrar_todos_indices(lista, elemento):
-    indices = []
-    for i in range(len(lista)):
-        if lista[i] == elemento:
-            indices.append(i)
-    return indices
+# Encontrar todos os índices de um elemento
+indices_banana = []
+for i in range(len(frutas)):
+    if frutas[i] == "banana":
+        indices_banana.append(i)
 
-todos_banana = encontrar_todos_indices(frutas, "banana")
-print(f"Todas as bananas estão nos índices: {todos_banana}")  # [1, 3]</code></pre>
+print(f"Todas as bananas estão nos índices: {indices_banana}")  # [1, 3]</code></pre>
         
         <h3>2. Comparando Listas:</h3>
         <pre><code>lista1 = [1, 2, 3, 4, 5]
@@ -212,10 +207,10 @@ print(lista1 == lista2)  # True (mesmos elementos, mesma ordem)
 print(lista1 == lista3)  # False (mesmos elementos, ordens diferentes)
 
 # Verificar se contém os mesmos elementos (sem considerar ordem)
-def mesmos_elementos(lista_a, lista_b):
-    return sorted(lista_a) == sorted(lista_b)
-
-print(mesmos_elementos(lista1, lista3))  # True</code></pre>
+lista1_ordenada = sorted(lista1)
+lista3_ordenada = sorted(lista3)
+tem_mesmos_elementos = lista1_ordenada == lista3_ordenada
+print(tem_mesmos_elementos)  # True</code></pre>
     </section>
 
     <section>
@@ -232,15 +227,13 @@ segunda_metade = numeros[meio:]
 print(f"Primeira metade: {primeira_metade}")
 print(f"Segunda metade: {segunda_metade}")
 
-# Dividir em grupos de tamanho específico
-def dividir_em_grupos(lista, tamanho):
-    grupos = []
-    for i in range(0, len(lista), tamanho):
-        grupo = lista[i:i + tamanho]
-        grupos.append(grupo)
-    return grupos
+# Dividir em grupos de tamanho específico (exemplo: grupos de 3)
+tamanho_grupo = 3
+grupos = []
+for i in range(0, len(numeros), tamanho_grupo):
+    grupo = numeros[i:i + tamanho_grupo]
+    grupos.append(grupo)
 
-grupos = dividir_em_grupos(numeros, 3)
 print(f"Grupos de 3: {grupos}")  # [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10]]</code></pre>
         
         <h3>2. Filtrar com Slicing:</h3>

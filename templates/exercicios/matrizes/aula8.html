@@ -1,933 +1,194 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 8 - Autovalores e Autovetores | CodeLogic{% endblock %}
+{% block title %}Aula 8 - Multiplicação Escalar | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 8 – Autovalores e Autovetores{% endblock %}
+{% block lesson_title %}Aula 8 – Multiplicação por Escalar{% endblock %}
 
 {% block lesson_content %}
     <section>
         <h2>🎯 Objetivo</h2>
-        <ul>
-            <li>Compreender o conceito de autovalores e autovetores</li>
-            <li>Implementar algoritmos de cálculo</li>
-            <li>Aplicar em análise de componentes principais (PCA)</li>
-        </ul>
+        <p>Aprender a multiplicar matrizes por um valor escalar (número).</p>
     </section>
 
     <section>
-        <h2>🔢 Conceitos Fundamentais</h2>
-        <p>Um autovetor de uma matriz é um vetor que, quando multiplicado pela matriz, resulta em um múltiplo de si mesmo. O fator de escala é chamado autovalor.</p>
-        
-        <div class="formula-box">
-            <h3>Equação Característica:</h3>
-            <p><strong>A·v = λ·v</strong></p>
-            <p>Onde:</p>
-            <ul>
-                <li>A = matriz quadrada</li>
-                <li>v = autovetor (vetor não-zero)</li>
-                <li>λ = autovalor (escalar)</li>
-            </ul>
-        </div>
-        
-        <h3>Implementação do Método da Potência:</h3>
-        <pre><code>import math
-import random
-
-def norma_vetor(vetor):
-    """Calcula norma euclidiana de um vetor"""
-    return math.sqrt(sum(x**2 for x in vetor))
-
-def normalizar_vetor(vetor):
-    """Normaliza vetor para norma unitária"""
-    norma = norma_vetor(vetor)
-    if norma == 0:
-        return vetor
-    return [x / norma for x in vetor]
-
-def multiplicar_matriz_vetor(matriz, vetor):
-    """Multiplica matriz por vetor"""
-    n = len(matriz)
-    resultado = [0] * n
-    
-    for i in range(n):
-        for j in range(n):
-            resultado[i] += matriz[i][j] * vetor[j]
-    
-    return resultado
-
-def produto_escalar(v1, v2):
-    """Produto escalar entre dois vetores"""
-    return sum(a * b for a, b in zip(v1, v2))
-
-def metodo_potencia(matriz, max_iter=1000, tolerancia=1e-6):
-    """
-    Encontra o maior autovalor e autovetor correspondente
-    usando o método da potência
-    """
-    n = len(matriz)
-    
-    # Vetor inicial aleatório
-    vetor = [random.random() for _ in range(n)]
-    vetor = normalizar_vetor(vetor)
-    
-    autovalor_anterior = 0
-    
-    for iteracao in range(max_iter):
-        # v_{k+1} = A * v_k
-        novo_vetor = multiplicar_matriz_vetor(matriz, vetor)
-        
-        # Calcular autovalor (quociente de Rayleigh)
-        autovalor = produto_escalar(vetor, novo_vetor) / produto_escalar(vetor, vetor)
-        
-        # Normalizar novo vetor
-        novo_vetor = normalizar_vetor(novo_vetor)
-        
-        # Verificar convergência
-        if abs(autovalor - autovalor_anterior) < tolerancia:
-            print(f"Convergiu em {iteracao + 1} iterações")
-            break
-        
-        vetor = novo_vetor
-        autovalor_anterior = autovalor
-    
-    return autovalor, vetor
-
-# Exemplo de uso
-matriz_exemplo = [
-    [4, -2],
-    [1,  1]
+        <h2>✖️ Multiplicação por Escalar</h2>
+        <p>Multiplicar cada elemento da matriz por um número.</p>
+        <pre><code>matriz = [
+    [2, 4, 6],
+    [8, 10, 12]
 ]
 
-print("Matriz exemplo:")
-for linha in matriz_exemplo:
-    print(linha)
+escalar = 3
 
-autovalor, autovetor = metodo_potencia(matriz_exemplo)
+# Multiplicar por 3
+resultado = []
 
-print(f"\\nMaior autovalor: {autovalor:.6f}")
-print(f"Autovetor correspondente: [{autovetor[0]:.6f}, {autovetor[1]:.6f}]")
+for i in range(len(matriz)):
+    linha = []
+    for j in range(len(matriz[i])):
+        produto = matriz[i][j] * escalar
+        linha.append(produto)
+    resultado.append(linha)
 
-# Verificação: A*v deve ser aproximadamente λ*v
-resultado = multiplicar_matriz_vetor(matriz_exemplo, autovetor)
-escalar_v = [autovalor * x for x in autovetor]
-
-print(f"\\nVerificação:")
-print(f"A*v = [{resultado[0]:.6f}, {resultado[1]:.6f}]")
-print(f"λ*v = [{escalar_v[0]:.6f}, {escalar_v[1]:.6f}]")
-print(f"Diferença: {norma_vetor([a - b for a, b in zip(resultado, escalar_v)]):.8f}")</code></pre>
-        
-        <h3>Método da Potência Inversa:</h3>
-        <pre><code>def resolver_sistema_gauss(A, b):
-    """Resolve sistema linear Ax = b usando eliminação gaussiana"""
-    n = len(A)
-    
-    # Criar matriz aumentada
-    M = [linha[:] + [b[i]] for i, linha in enumerate(A)]
-    
-    # Eliminação para frente
-    for i in range(n):
-        # Pivotamento parcial
-        max_linha = i
-        for k in range(i + 1, n):
-            if abs(M[k][i]) > abs(M[max_linha][i]):
-                max_linha = k
-        
-        M[i], M[max_linha] = M[max_linha], M[i]
-        
-        # Eliminação
-        for k in range(i + 1, n):
-            if M[i][i] != 0:
-                fator = M[k][i] / M[i][i]
-                for j in range(i, n + 1):
-                    M[k][j] -= fator * M[i][j]
-    
-    # Substituição para trás
-    x = [0] * n
-    for i in range(n - 1, -1, -1):
-        x[i] = M[i][n]
-        for j in range(i + 1, n):
-            x[i] -= M[i][j] * x[j]
-        if M[i][i] != 0:
-            x[i] /= M[i][i]
-    
-    return x
-
-def subtrair_matriz_escalar(matriz, escalar):
-    """Calcula A - σI (matriz menos escalar vezes identidade)"""
-    n = len(matriz)
-    resultado = [linha[:] for linha in matriz]  # Cópia
-    
-    for i in range(n):
-        resultado[i][i] -= escalar
-    
-    return resultado
-
-def potencia_inversa(matriz, sigma=0, max_iter=1000, tolerancia=1e-6):
-    """
-    Encontra autovalor mais próximo de sigma usando potência inversa
-    """
-    n = len(matriz)
-    
-    # Matriz A - σI
-    A_shift = subtrair_matriz_escalar(matriz, sigma)
-    
-    # Vetor inicial
-    vetor = [random.random() for _ in range(n)]
-    vetor = normalizar_vetor(vetor)
-    
-    autovalor_anterior = 0
-    
-    for iteracao in range(max_iter):
-        # Resolver (A - σI) * v_{k+1} = v_k
-        try:
-            novo_vetor = resolver_sistema_gauss(A_shift, vetor)
-            
-            # Normalizar
-            novo_vetor = normalizar_vetor(novo_vetor)
-            
-            # Calcular autovalor
-            Av = multiplicar_matriz_vetor(matriz, novo_vetor)
-            autovalor = produto_escalar(novo_vetor, Av)
-            
-            # Verificar convergência
-            if abs(autovalor - autovalor_anterior) < tolerancia:
-                print(f"Convergiu em {iteracao + 1} iterações")
-                break
-            
-            vetor = novo_vetor
-            autovalor_anterior = autovalor
-            
-        except:
-            print("Erro na resolução do sistema - matriz singular")
-            break
-    
-    return autovalor, vetor
-
-# Teste do método da potência inversa
-print("\\n" + "="*50)
-print("MÉTODO DA POTÊNCIA INVERSA")
-print("="*50)
-
-# Procurar autovalor próximo de 2
-autovalor_inv, autovetor_inv = potencia_inversa(matriz_exemplo, sigma=2)
-
-print(f"Autovalor próximo de 2: {autovalor_inv:.6f}")
-print(f"Autovetor: [{autovetor_inv[0]:.6f}, {autovetor_inv[1]:.6f}]")</code></pre>
-    </section>
-
-    <section>
-        <h2>🎨 Análise de Componentes Principais (PCA)</h2>
-        
-        <h3>Implementação Completa do PCA:</h3>
-        <pre><code>import math
-
-class AnalisePCA:
-    """Implementação da Análise de Componentes Principais"""
-    
-    def __init__(self):
-        self.dados_originais = None
-        self.dados_centrados = None
-        self.matriz_covariancia = None
-        self.autovalores = []
-        self.autovetores = []
-        self.componentes_principais = []
-        self.variancia_explicada = []
-    
-    def carregar_dados(self, dados):
-        """Carrega dados (lista de listas - cada linha é uma observação)"""
-        self.dados_originais = [linha[:] for linha in dados]
-        self.n_observacoes = len(dados)
-        self.n_variaveis = len(dados[0])
-    
-    def centralizar_dados(self):
-        """Centraliza dados subtraindo a média de cada variável"""
-        # Calcular médias
-        medias = []
-        for j in range(self.n_variaveis):
-            soma = sum(self.dados_originais[i][j] for i in range(self.n_observacoes))
-            medias.append(soma / self.n_observacoes)
-        
-        # Centralizar
-        self.dados_centrados = []
-        for i in range(self.n_observacoes):
-            linha_centrada = []
-            for j in range(self.n_variaveis):
-                linha_centrada.append(self.dados_originais[i][j] - medias[j])
-            self.dados_centrados.append(linha_centrada)
-        
-        self.medias = medias
-        return self.dados_centrados
-    
-    def calcular_matriz_covariancia(self):
-        """Calcula matriz de covariância"""
-        n = self.n_variaveis
-        self.matriz_covariancia = [[0 for _ in range(n)] for _ in range(n)]
-        
-        for i in range(n):
-            for j in range(n):
-                # Cov(X_i, X_j) = E[(X_i - μ_i)(X_j - μ_j)]
-                covariancia = 0
-                for k in range(self.n_observacoes):
-                    covariancia += (self.dados_centrados[k][i] * 
-                                  self.dados_centrados[k][j])
-                
-                self.matriz_covariancia[i][j] = covariancia / (self.n_observacoes - 1)
-        
-        return self.matriz_covariancia
-    
-    def encontrar_todos_autovalores(self, max_iter=1000):
-        """Encontra todos os autovalores usando deflação"""
-        n = self.n_variaveis
-        matriz_atual = [linha[:] for linha in self.matriz_covariancia]
-        
-        self.autovalores = []
-        self.autovetores = []
-        
-        for i in range(n):
-            # Encontrar maior autovalor da matriz atual
-            try:
-                autovalor, autovetor = metodo_potencia(matriz_atual, max_iter)
-                
-                self.autovalores.append(autovalor)
-                self.autovetores.append(autovetor)
-                
-                # Deflação: remover este autovalor/autovetor
-                matriz_atual = self._deflar_matriz(matriz_atual, autovalor, autovetor)
-                
-            except:
-                # Se falhar, adicionar zeros
-                self.autovalores.append(0)
-                self.autovetores.append([0] * n)
-    
-    def _deflar_matriz(self, matriz, autovalor, autovetor):
-        """Remove autovalor dominante da matriz"""
-        n = len(matriz)
-        nova_matriz = [[0 for _ in range(n)] for _ in range(n)]
-        
-        # A' = A - λ * v * v^T
-        for i in range(n):
-            for j in range(n):
-                nova_matriz[i][j] = (matriz[i][j] - 
-                                   autovalor * autovetor[i] * autovetor[j])
-        
-        return nova_matriz
-    
-    def calcular_variancia_explicada(self):
-        """Calcula porcentagem de variância explicada por cada componente"""
-        variancia_total = sum(self.autovalores)
-        
-        self.variancia_explicada = []
-        variancia_acumulada = 0
-        
-        for autovalor in self.autovalores:
-            porcentagem = (autovalor / variancia_total) * 100
-            variancia_acumulada += porcentagem
-            
-            self.variancia_explicada.append({
-                'individual': porcentagem,
-                'acumulada': variancia_acumulada
-            })
-        
-        return self.variancia_explicada
-    
-    def transformar_dados(self, n_componentes=None):
-        """Transforma dados para espaço dos componentes principais"""
-        if n_componentes is None:
-            n_componentes = self.n_variaveis
-        
-        # Pegar os primeiros n componentes principais
-        componentes = self.autovetores[:n_componentes]
-        
-        # Transformar cada observação
-        dados_transformados = []
-        for observacao in self.dados_centrados:
-            nova_observacao = []
-            for componente in componentes:
-                # Projeção: y = v^T * x
-                projecao = produto_escalar(componente, observacao)
-                nova_observacao.append(projecao)
-            dados_transformados.append(nova_observacao)
-        
-        return dados_transformados
-    
-    def executar_pca_completo(self, dados, n_componentes=None):
-        """Executa análise PCA completa"""
-        print("🔍 EXECUTANDO ANÁLISE PCA")
-        print("=" * 40)
-        
-        # Passo 1: Carregar e centralizar dados
-        self.carregar_dados(dados)
-        print(f"Dados carregados: {self.n_observacoes} observações, {self.n_variaveis} variáveis")
-        
-        self.centralizar_dados()
-        print("✓ Dados centralizados")
-        
-        # Passo 2: Calcular matriz de covariância
-        self.calcular_matriz_covariancia()
-        print("✓ Matriz de covariância calculada")
-        
-        # Passo 3: Encontrar autovalores e autovetores
-        self.encontrar_todos_autovalores()
-        print("✓ Autovalores e autovetores encontrados")
-        
-        # Passo 4: Calcular variância explicada
-        self.calcular_variancia_explicada()
-        print("✓ Variância explicada calculada")
-        
-        # Passo 5: Transformar dados
-        dados_transformados = self.transformar_dados(n_componentes)
-        print(f"✓ Dados transformados para {n_componentes or self.n_variaveis} componentes")
-        
-        return dados_transformados
-    
-    def relatorio_pca(self):
-        """Gera relatório detalhado da análise PCA"""
-        print("\\n📊 RELATÓRIO PCA")
-        print("=" * 50)
-        
-        print("\\n🔢 AUTOVALORES E VARIÂNCIA EXPLICADA:")
-        for i, (autovalor, variancia) in enumerate(zip(self.autovalores, self.variancia_explicada)):
-            print(f"  PC{i+1}: λ={autovalor:.4f}, "
-                  f"Var.Ind.={variancia['individual']:.1f}%, "
-                  f"Var.Acum.={variancia['acumulada']:.1f}%")
-        
-        print("\\n🎯 AUTOVETORES (Componentes Principais):")
-        for i, autovetor in enumerate(self.autovetores):
-            componentes_str = ", ".join([f"{x:.3f}" for x in autovetor])
-            print(f"  PC{i+1}: [{componentes_str}]")
-        
-        print("\\n📈 MATRIZ DE COVARIÂNCIA:")
-        for linha in self.matriz_covariancia:
-            linha_str = ", ".join([f"{x:7.3f}" for x in linha])
-            print(f"  [{linha_str}]")
-        
-        # Sugestão de número de componentes (critério de Kaiser: λ > 1)
-        componentes_significativos = sum(1 for λ in self.autovalores if λ > 1)
-        print(f"\\n💡 SUGESTÃO: Usar {componentes_significativos} componentes (critério λ > 1)")
-        
-        # Encontrar quantos componentes explicam 95% da variância
-        for i, variancia in enumerate(self.variancia_explicada):
-            if variancia['acumulada'] >= 95:
-                print(f"💡 ALTERNATIVA: {i+1} componentes explicam 95% da variância")
-                break
-
-# Exemplo prático: análise de dados de estudantes
-dados_estudantes = [
-    # [Matemática, Física, Química, História, Literatura]
-    [85, 82, 78, 70, 72],
-    [90, 88, 85, 65, 68],
-    [78, 75, 80, 85, 88],
-    [92, 89, 86, 68, 70],
-    [76, 72, 74, 82, 85],
-    [88, 85, 83, 72, 75],
-    [82, 78, 79, 88, 90],
-    [86, 83, 81, 75, 78],
-    [79, 76, 77, 86, 89],
-    [91, 87, 84, 69, 71]
-]
-
-print("ANÁLISE PCA: DESEMPENHO DE ESTUDANTES")
-print("=====================================")
-print("Variáveis: Matemática, Física, Química, História, Literatura")
-
-# Executar PCA
-pca = AnalisePCA()
-dados_reduzidos = pca.executar_pca_completo(dados_estudantes, n_componentes=2)
-
-# Gerar relatório
-pca.relatorio_pca()
-
-print("\\n🎯 DADOS TRANSFORMADOS (Primeiros 2 Componentes):")
-for i, observacao in enumerate(dados_reduzidos):
-    print(f"  Estudante {i+1}: PC1={observacao[0]:.3f}, PC2={observacao[1]:.3f}")
-
-print("\\n🧠 INTERPRETAÇÃO:")
-print("PC1 (Primeira Componente Principal):")
-pc1 = pca.autovetores[0]
-if abs(pc1[0]) > 0.3 and abs(pc1[1]) > 0.3 and abs(pc1[2]) > 0.3:
-    print("  - Representa habilidade geral em ciências exatas")
-if abs(pc1[3]) > 0.3 and abs(pc1[4]) > 0.3:
-    print("  - Relacionada com humanidades")
-
-print("\\nPC2 (Segunda Componente Principal):")
-pc2 = pca.autovetores[1]
-print("  - Representa contraste entre diferentes áreas do conhecimento")</code></pre>
+print(f"Matriz x {escalar}:")
+for linha in resultado:
+    print(linha)</code></pre>
     </section>
 
     <section>
         <h2>🎮 Exercício Prático</h2>
         <div class="exercise-box">
-            <h3>Sistema de Recomendação com Redução de Dimensionalidade</h3>
-            <p>Implemente um sistema que usa PCA para reduzir dimensionalidade em dados de preferências de usuários:</p>
-            <ul>
-                <li>Análise de padrões de consumo</li>
-                <li>Redução de dimensionalidade</li>
-                <li>Sistema de recomendação baseado em similaridade</li>
-            </ul>
+            <h3>Sistema de Ajuste de Preços</h3>
             
-            <textarea id="code-input" placeholder="import math
-import random
+            <textarea id="code-input"># 💰 SISTEMA DE AJUSTE DE PREÇOS
 
-class SistemaRecomendacaoPCA:
-    '''Sistema de recomendação usando PCA para redução de dimensionalidade'''
-    
-    def __init__(self):
-        self.usuarios = []
-        self.produtos = []
-        self.matriz_avaliacoes = []
-        self.pca = AnalisePCA()
-        self.dados_reduzidos = None
-        self.matriz_similaridade = None
-    
-    def carregar_dados_avaliacoes(self, usuarios, produtos, avaliacoes):
-        '''Carrega dados de avaliações dos usuários'''
-        self.usuarios = usuarios[:]
-        self.produtos = produtos[:]
-        self.matriz_avaliacoes = [linha[:] for linha in avaliacoes]
-    
-    def executar_reducao_dimensionalidade(self, n_componentes=3):
-        '''Executa PCA para reduzir dimensionalidade dos dados'''
-        print('🔍 EXECUTANDO REDUÇÃO DE DIMENSIONALIDADE')
-        print('=' * 45)
-        
-        # Executar PCA nos dados de avaliações
-        self.dados_reduzidos = self.pca.executar_pca_completo(
-            self.matriz_avaliacoes, n_componentes
-        )
-        
-        # Mostrar resultados do PCA
-        self.pca.relatorio_pca()
-        
-        return self.dados_reduzidos
-    
-    def calcular_similaridade_cosseno(self, vetor1, vetor2):
-        '''Calcula similaridade do cosseno entre dois vetores'''
-        produto_escalar = sum(a * b for a, b in zip(vetor1, vetor2))
-        
-        norma1 = math.sqrt(sum(x**2 for x in vetor1))
-        norma2 = math.sqrt(sum(x**2 for x in vetor2))
-        
-        if norma1 == 0 or norma2 == 0:
-            return 0
-        
-        return produto_escalar / (norma1 * norma2)
-    
-    def construir_matriz_similaridade(self):
-        '''Constrói matriz de similaridade entre usuários'''
-        n_usuarios = len(self.usuarios)
-        self.matriz_similaridade = [[0 for _ in range(n_usuarios)] 
-                                  for _ in range(n_usuarios)]
-        
-        for i in range(n_usuarios):
-            for j in range(i, n_usuarios):
-                if i == j:
-                    similaridade = 1.0
-                else:
-                    similaridade = self.calcular_similaridade_cosseno(
-                        self.dados_reduzidos[i], 
-                        self.dados_reduzidos[j]
-                    )
-                
-                self.matriz_similaridade[i][j] = similaridade
-                self.matriz_similaridade[j][i] = similaridade
-        
-        return self.matriz_similaridade
-    
-    def encontrar_usuarios_similares(self, usuario_alvo, n_similares=3):
-        '''Encontra usuários mais similares ao usuário alvo'''
-        if usuario_alvo not in self.usuarios:
-            return []
-        
-        idx_alvo = self.usuarios.index(usuario_alvo)
-        
-        # Pegar similaridades (excluindo o próprio usuário)
-        similaridades = []
-        for i, similaridade in enumerate(self.matriz_similaridade[idx_alvo]):
-            if i != idx_alvo:
-                similaridades.append((i, similaridade))
-        
-        # Ordenar por similaridade (maior primeiro)
-        similaridades.sort(key=lambda x: x[1], reverse=True)
-        
-        # Retornar os N mais similares
-        usuarios_similares = []
-        for i, similaridade in similaridades[:n_similares]:
-            usuarios_similares.append((self.usuarios[i], similaridade))
-        
-        return usuarios_similares
-    
-    def recomendar_produtos(self, usuario_alvo, n_recomendacoes=3):
-        '''Recomenda produtos baseado em usuários similares'''
-        if usuario_alvo not in self.usuarios:
-            return []
-        
-        idx_alvo = self.usuarios.index(usuario_alvo)
-        
-        # Encontrar usuários similares
-        usuarios_similares = self.encontrar_usuarios_similares(usuario_alvo, 5)
-        
-        # Calcular pontuações para produtos não avaliados
-        pontuacoes_produtos = {}
-        avaliacoes_alvo = self.matriz_avaliacoes[idx_alvo]
-        
-        for idx_produto, produto in enumerate(self.produtos):
-            # Se usuário já avaliou, pular
-            if avaliacoes_alvo[idx_produto] > 0:
-                continue
-            
-            pontuacao_total = 0
-            peso_total = 0
-            
-            # Agregar avaliações de usuários similares
-            for usuario_similar, similaridade in usuarios_similares:
-                idx_similar = self.usuarios.index(usuario_similar)
-                avaliacao_similar = self.matriz_avaliacoes[idx_similar][idx_produto]
-                
-                if avaliacao_similar > 0:  # Se usuário similar avaliou
-                    pontuacao_total += avaliacao_similar * similaridade
-                    peso_total += similaridade
-            
-            # Calcular pontuação média ponderada
-            if peso_total > 0:
-                pontuacoes_produtos[produto] = pontuacao_total / peso_total
-        
-        # Ordenar produtos por pontuação
-        produtos_ordenados = sorted(pontuacoes_produtos.items(), 
-                                  key=lambda x: x[1], reverse=True)
-        
-        return produtos_ordenados[:n_recomendacoes]
-    
-    def analisar_perfil_usuario(self, usuario):
-        '''Analisa perfil do usuário no espaço reduzido'''
-        if usuario not in self.usuarios:
-            return None
-        
-        idx_usuario = self.usuarios.index(usuario)
-        perfil_reduzido = self.dados_reduzidos[idx_usuario]
-        
-        # Interpretar componentes principais
-        interpretacao = []
-        
-        for i, valor in enumerate(perfil_reduzido):
-            if valor > 0.5:
-                interpretacao.append(f'PC{i+1}: Alto ({valor:.3f})')
-            elif valor < -0.5:
-                interpretacao.append(f'PC{i+1}: Baixo ({valor:.3f})')
-            else:
-                interpretacao.append(f'PC{i+1}: Médio ({valor:.3f})')
-        
-        return {
-            'usuario': usuario,
-            'perfil_original': self.matriz_avaliacoes[idx_usuario],
-            'perfil_reduzido': perfil_reduzido,
-            'interpretacao': interpretacao
-        }
-    
-    def estatisticas_sistema(self):
-        '''Calcula estatísticas do sistema de recomendação'''
-        n_usuarios = len(self.usuarios)
-        n_produtos = len(self.produtos)
-        
-        # Calcular esparsidade da matriz
-        total_avaliacoes = sum(
-            sum(1 for avaliacao in linha if avaliacao > 0)
-            for linha in self.matriz_avaliacoes
-        )
-        
-        total_possivel = n_usuarios * n_produtos
-        densidade = (total_avaliacoes / total_possivel) * 100
-        esparsidade = 100 - densidade
-        
-        # Distribuição de avaliações
-        todas_avaliacoes = [
-            avaliacao for linha in self.matriz_avaliacoes 
-            for avaliacao in linha if avaliacao > 0
-        ]
-        
-        if todas_avaliacoes:
-            media_avaliacoes = sum(todas_avaliacoes) / len(todas_avaliacoes)
-            min_avaliacao = min(todas_avaliacoes)
-            max_avaliacao = max(todas_avaliacoes)
-        else:
-            media_avaliacoes = min_avaliacao = max_avaliacao = 0
-        
-        return {
-            'usuarios': n_usuarios,
-            'produtos': n_produtos,
-            'avaliacoes_total': total_avaliacoes,
-            'densidade': densidade,
-            'esparsidade': esparsidade,
-            'media_avaliacoes': media_avaliacoes,
-            'min_avaliacao': min_avaliacao,
-            'max_avaliacao': max_avaliacao,
-            'variancia_explicada': self.pca.variancia_explicada if self.pca.variancia_explicada else []
-        }
-    
-    def visualizar_similaridades(self):
-        '''Exibe matriz de similaridade de forma legível'''
-        print('\\n🔗 MATRIZ DE SIMILARIDADE ENTRE USUÁRIOS:')
-        print('=' * 50)
-        
-        # Cabeçalho
-        header = '    '
-        for usuario in self.usuarios:
-            header += f'{usuario[:4]:>6}'
-        print(header)
-        
-        # Linhas da matriz
-        for i, usuario in enumerate(self.usuarios):
-            linha = f'{usuario[:4]:>4}'
-            for j in range(len(self.usuarios)):
-                linha += f'{self.matriz_similaridade[i][j]:6.3f}'
-            print(linha)
+print("=" * 70)
+print("💰 SISTEMA DE REAJUSTE DE PREÇOS".center(70))
+print("=" * 70)
 
-# Dados de exemplo: usuários e suas avaliações de filmes (1-5)
-usuarios_exemplo = ['Alice', 'Bob', 'Carol', 'David', 'Eva', 'Frank']
-
-filmes_exemplo = [
-    'Ação_1', 'Ação_2', 'Comédia_1', 'Comédia_2', 
-    'Drama_1', 'Drama_2', 'Ficção_1', 'Ficção_2'
+# Preços base (3 lojas x 5 produtos)
+precos_base = [
+    [10.00, 25.00, 50.00, 15.00, 30.00],  # Loja A
+    [12.00, 27.00, 55.00, 17.00, 32.00],  # Loja B
+    [11.00, 26.00, 52.00, 16.00, 31.00]   # Loja C
 ]
 
-# Matriz de avaliações (0 = não avaliado, 1-5 = nota)
-avaliacoes_exemplo = [
-    [5, 4, 0, 2, 3, 0, 5, 4],  # Alice - gosta de ação e ficção
-    [4, 5, 1, 0, 2, 1, 4, 5],  # Bob - similar à Alice
-    [0, 1, 5, 4, 5, 4, 0, 1],  # Carol - gosta de comédia e drama
-    [1, 0, 4, 5, 4, 5, 2, 0],  # David - similar à Carol
-    [3, 3, 3, 3, 3, 3, 3, 3],  # Eva - médio em tudo
-    [5, 5, 0, 0, 0, 0, 5, 5]   # Frank - só ação e ficção
-]
+lojas = ["Loja A", "Loja B", "Loja C"]
+produtos = ["Prod 1", "Prod 2", "Prod 3", "Prod 4", "Prod 5"]
 
-print('🎬 SISTEMA DE RECOMENDAÇÃO DE FILMES COM PCA')
-print('=' * 50)
+# Mostrar preços originais
+print("\n📊 PREÇOS ATUAIS:")
+print(f"\n{'Loja':<12}", end="")
+for produto in produtos:
+    print(f"{produto:>10}", end="")
+print()
+print("-" * 70)
 
-# Criar e configurar sistema
-sistema = SistemaRecomendacaoPCA()
-sistema.carregar_dados_avaliacoes(usuarios_exemplo, filmes_exemplo, avaliacoes_exemplo)
+for i in range(len(precos_base)):
+    print(f"{lojas[i]:<12}", end="")
+    for j in range(len(precos_base[i])):
+        print(f"R$ {precos_base[i][j]:>6.2f}", end="")
+    print()
 
-print(f'Usuários: {usuarios_exemplo}')
-print(f'Filmes: {filmes_exemplo}')
-print('\\nMatriz de Avaliações (0=não avaliado, 1-5=nota):')
-for i, usuario in enumerate(usuarios_exemplo):
-    print(f'{usuario:>6}: {avaliacoes_exemplo[i]}')
+# CENÁRIO 1: Aumento de 10% (multiplicar por 1.1)
+print("\n📈 CENÁRIO 1: Aumento de 10%")
+print("-" * 70)
 
-# Executar redução de dimensionalidade
-dados_reduzidos = sistema.executar_reducao_dimensionalidade(n_componentes=3)
+aumento_10 = []
+for i in range(len(precos_base)):
+    linha = []
+    for j in range(len(precos_base[i])):
+        novo_preco = precos_base[i][j] * 1.1
+        linha.append(novo_preco)
+    aumento_10.append(linha)
 
-# Construir matriz de similaridade
-sistema.construir_matriz_similaridade()
+print(f"\n{'Loja':<12}", end="")
+for produto in produtos:
+    print(f"{produto:>10}", end="")
+print()
+print("-" * 70)
 
-# Visualizar similaridades
-sistema.visualizar_similaridades()
+for i in range(len(aumento_10)):
+    print(f"{lojas[i]:<12}", end="")
+    for j in range(len(aumento_10[i])):
+        print(f"R$ {aumento_10[i][j]:>6.2f}", end="")
+    print()
 
-print('\\n👥 ANÁLISE DE USUÁRIOS SIMILARES:')
-print('=' * 35)
+# CENÁRIO 2: Desconto de 15% (multiplicar por 0.85)
+print("\n📉 CENÁRIO 2: Desconto de 15%")
+print("-" * 70)
 
-for usuario in usuarios_exemplo[:3]:  # Apenas primeiros 3 para economizar espaço
-    similares = sistema.encontrar_usuarios_similares(usuario, 2)
-    print(f'\\n{usuario} é similar a:')
-    for usuario_similar, similaridade in similares:
-        print(f'  {usuario_similar}: {similaridade:.3f}')
+desconto_15 = []
+for i in range(len(precos_base)):
+    linha = []
+    for j in range(len(precos_base[i])):
+        novo_preco = precos_base[i][j] * 0.85
+        linha.append(novo_preco)
+    desconto_15.append(linha)
 
-print('\\n🎯 RECOMENDAÇÕES PERSONALIZADAS:')
-print('=' * 35)
+print(f"\n{'Loja':<12}", end="")
+for produto in produtos:
+    print(f"{produto:>10}", end="")
+print()
+print("-" * 70)
 
-for usuario in usuarios_exemplo[:3]:  # Apenas primeiros 3
-    recomendacoes = sistema.recomendar_produtos(usuario, 2)
-    print(f'\\nRecomendações para {usuario}:')
-    
-    if recomendacoes:
-        for filme, pontuacao in recomendacoes:
-            print(f'  {filme}: {pontuacao:.2f}')
-    else:
-        print('  Nenhuma recomendação disponível')
+for i in range(len(desconto_15)):
+    print(f"{lojas[i]:<12}", end="")
+    for j in range(len(desconto_15[i])):
+        print(f"R$ {desconto_15[i][j]:>6.2f}", end="")
+    print()
 
-print('\\n📊 ANÁLISE DE PERFIS DOS USUÁRIOS:')
-print('=' * 35)
+# CENÁRIO 3: Dobrar preços (multiplicar por 2)
+print("\n📈 CENÁRIO 3: Dobrar Preços (x2)")
+print("-" * 70)
 
-for usuario in usuarios_exemplo[:3]:  # Apenas primeiros 3
-    perfil = sistema.analisar_perfil_usuario(usuario)
-    print(f'\\n{usuario}:')
-    print(f'  Perfil original: {perfil[\"perfil_original\"]}')
-    print(f'  Perfil reduzido: {[f\"{x:.3f}\" for x in perfil[\"perfil_reduzido\"]]}')
-    print(f'  Interpretação: {perfil[\"interpretacao\"]}')
+dobro = []
+for i in range(len(precos_base)):
+    linha = []
+    for j in range(len(precos_base[i])):
+        novo_preco = precos_base[i][j] * 2
+        linha.append(novo_preco)
+    dobro.append(linha)
 
-print('\\n📈 ESTATÍSTICAS DO SISTEMA:')
-print('=' * 30)
+print(f"\n{'Loja':<12}", end="")
+for produto in produtos:
+    print(f"{produto:>10}", end="")
+print()
+print("-" * 70)
 
-stats = sistema.estatisticas_sistema()
-print(f'Usuários: {stats[\"usuarios\"]}')
-print(f'Produtos: {stats[\"produtos\"]}')
-print(f'Avaliações totais: {stats[\"avaliacoes_total\"]}')
-print(f'Densidade da matriz: {stats[\"densidade\"]:.1f}%')
-print(f'Esparsidade: {stats[\"esparsidade\"]:.1f}%')
-print(f'Média das avaliações: {stats[\"media_avaliacoes\"]:.2f}')
+for i in range(len(dobro)):
+    print(f"{lojas[i]:<12}", end="")
+    for j in range(len(dobro[i])):
+        print(f"R$ {dobro[i][j]:>6.2f}", end="")
+    print()
 
-if stats['variancia_explicada']:
-    print('\\nVariância explicada por componente:')
-    for i, var in enumerate(stats['variancia_explicada']):
-        print(f'  PC{i+1}: {var[\"individual\"]:.1f}% (Acum: {var[\"acumulada\"]:.1f}%)')
+# Comparação de impacto
+print("\n💡 ANÁLISE DE IMPACTO:")
+print("-" * 70)
 
-print('\\n💡 INTERPRETAÇÃO DOS RESULTADOS:')
-print('=' * 35)
-print('- PC1 pode representar preferência por gêneros de ação/aventura vs drama/comédia')
-print('- PC2 pode representar tolerância a diferentes tipos de conteúdo')
-print('- PC3 pode capturar nuances específicas de gosto pessoal')
-print('\\nO sistema usa essas dimensões reduzidas para encontrar usuários')
-print('com perfis similares e fazer recomendações baseadas em suas preferências.')"></textarea>
+total_base = 0
+total_aumento = 0
+total_desconto = 0
+
+for i in range(len(precos_base)):
+    for j in range(len(precos_base[i])):
+        total_base += precos_base[i][j]
+        total_aumento += aumento_10[i][j]
+        total_desconto += desconto_15[i][j]
+
+print(f"Faturamento base (todos produtos):     R$ {total_base:.2f}")
+print(f"Com aumento de 10%:                     R$ {total_aumento:.2f}")
+print(f"Com desconto de 15%:                    R$ {total_desconto:.2f}")
+
+diferenca_aumento = total_aumento - total_base
+diferenca_desconto = total_base - total_desconto
+
+print(f"\n💰 Ganho com aumento:                   R$ {diferenca_aumento:.2f}")
+print(f"💸 Perda com desconto:                  R$ {diferenca_desconto:.2f}")
+
+print("\n" + "=" * 70)</textarea>
             
-            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
+            <button onclick="runCode()" class="btn-run">▶️ Calcular Reajustes</button>
             <div id="output"></div>
         </div>
     </section>
 
     <section>
-        <h2>📊 Aplicações Práticas</h2>
-        
-        <div class="applications-grid">
-            <div class="app-card">
-                <h3>🔍 Análise de Dados</h3>
-                <ul>
-                    <li>Redução de dimensionalidade</li>
-                    <li>Visualização de dados complexos</li>
-                    <li>Detecção de padrões</li>
-                </ul>
-            </div>
-            
-            <div class="app-card">
-                <h3>🤖 Machine Learning</h3>
-                <ul>
-                    <li>Pré-processamento de features</li>
-                    <li>Remoção de ruído</li>
-                    <li>Compressão de dados</li>
-                </ul>
-            </div>
-            
-            <div class="app-card">
-                <h3>🎨 Processamento de Imagens</h3>
-                <ul>
-                    <li>Compressão de imagens</li>
-                    <li>Reconhecimento facial</li>
-                    <li>Análise de textura</li>
-                </ul>
-            </div>
-            
-            <div class="app-card">
-                <h3>📈 Análise Financeira</h3>
-                <ul>
-                    <li>Análise de portfólio</li>
-                    <li>Gerenciamento de risco</li>
-                    <li>Identificação de fatores</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <h2>⚡ Otimizações Avançadas</h2>
-        
-        <h3>Algoritmo QR para Autovalores:</h3>
-        <pre><code>def algoritmo_qr_autovalores(matriz, max_iter=1000, tolerancia=1e-10):
-    """
-    Algoritmo QR para encontrar todos os autovalores
-    (Implementação simplificada - conceitual)
-    """
-    n = len(matriz)
-    A = [linha[:] for linha in matriz]  # Cópia
-    
-    for iteracao in range(max_iter):
-        # Decomposição QR (Gram-Schmidt simplificado)
-        Q, R = decomposicao_qr_simplificada(A)
-        
-        # A_{k+1} = R * Q
-        A = multiplicar_matrizes(R, Q)
-        
-        # Verificar convergência (elementos abaixo da diagonal)
-        soma_offdiag = sum(abs(A[i][j]) for i in range(n) for j in range(i))
-        
-        if soma_offdiag < tolerancia:
-            print(f"QR convergiu em {iteracao + 1} iterações")
-            break
-    
-    # Autovalores são os elementos da diagonal
-    autovalores = [A[i][i] for i in range(n)]
-    return autovalores
-
-def decomposicao_qr_simplificada(A):
-    """Decomposição QR usando Gram-Schmidt modificado"""
-    n = len(A)
-    Q = [[0 for _ in range(n)] for _ in range(n)]
-    R = [[0 for _ in range(n)] for _ in range(n)]
-    
-    # Processo de Gram-Schmidt
-    for j in range(n):
-        # Copiar coluna j de A
-        v = [A[i][j] for i in range(n)]
-        
-        # Ortogonalizar contra colunas anteriores de Q
-        for i in range(j):
-            R[i][j] = produto_escalar([Q[k][i] for k in range(n)], v)
-            for k in range(n):
-                v[k] -= R[i][j] * Q[k][i]
-        
-        # Normalizar
-        R[j][j] = norma_vetor(v)
-        if R[j][j] > 0:
-            for i in range(n):
-                Q[i][j] = v[i] / R[j][j]
-    
-    return Q, R
-
-def multiplicar_matrizes(A, B):
-    """Multiplica duas matrizes"""
-    n = len(A)
-    C = [[0 for _ in range(n)] for _ in range(n)]
-    
-    for i in range(n):
-        for j in range(n):
-            for k in range(n):
-                C[i][j] += A[i][k] * B[k][j]
-    
-    return C
-
-# Teste do algoritmo QR
-print("\\nTeste do Algoritmo QR:")
-matriz_teste = [
-    [4, 1],
-    [1, 3]
-]
-
-autovalores_qr = algoritmo_qr_autovalores(matriz_teste)
-print(f"Autovalores (QR): {[f'{x:.6f}' for x in autovalores_qr]}")
-
-# Comparar com método da potência
-autovalor_max, _ = metodo_potencia(matriz_teste)
-print(f"Maior autovalor (Potência): {autovalor_max:.6f}")</code></pre>
-    </section>
-
-    <section>
-        <h2>💡 Dicas de Performance</h2>
-        <div class="tip-box">
-            <ul>
-                <li>🎯 <strong>Use métodos específicos</strong> - Potência para maior, Potência Inversa para específico</li>
-                <li>⚡ <strong>Aproveite estrutura</strong> - Matrizes simétricas têm autovetores ortogonais</li>
-                <li>🧠 <strong>Deflação cuidadosa</strong> - Erros numéricos podem se acumular</li>
-                <li>📊 <strong>Validação necessária</strong> - Sempre verifique A·v = λ·v</li>
-                <li>🔧 <strong>Use bibliotecas</strong> - NumPy/SciPy para produção</li>
-                <li>💾 <strong>Considere esparsidade</strong> - Algoritmos especiais para matrizes esparsas</li>
-            </ul>
-        </div>
+        <h2>📚 Resumo</h2>
+        <ul>
+            <li>✅ Multiplicar matriz por escalar</li>
+            <li>✅ Aplicar percentuais (aumentos/descontos)</li>
+            <li>✅ Simular cenários de preços</li>
+            <li>✅ Analisar impactos financeiros</li>
+        </ul>
     </section>
 {% endblock %}
 
 {% block extra_js %}
 <script>
 function runCode() {
-    const code = document.getElementById('code-input').value;
     const output = document.getElementById('output');
-    
-    output.innerHTML = '<div class="output-success">Sistema de recomendação com PCA executado! Veja como autovalores e autovetores reduzem dimensionalidade mantendo informação essencial.</div>';
+    output.innerHTML = '<div class="output-success">✅ Reajustes calculados! Cenários simulados.</div>';
 }
 </script>
 {% endblock %}

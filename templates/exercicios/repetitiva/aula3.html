@@ -148,21 +148,26 @@ while tentativas < max_tentativas:
                 <li>Continue até acertar</li>
             </ul>
             
-            <textarea id="code-input" placeholder="import random
-
-# O computador escolhe um número
-numero_secreto = random.randint(1, 100)
+            <h4>Exemplo de código:</h4>
+            <pre><code># Jogo de Adivinhação Simplificado
+print('🎯 Jogo de Adivinhação!')
+numero_secreto = 42  # Número escolhido
 tentativas = 0
 acertou = False
 
-print('🎯 Jogo de Adivinhação!')
-print('Adivinhe o número de 1 a 100')
+print('Adivinhe o número secreto!')
 
 while not acertou:
     tentativas += 1
     palpite = int(input(f'Tentativa {tentativas}: '))
     
-    # Complete o código..."></textarea>
+    if palpite == numero_secreto:
+        acertou = True
+        print(f'🎉 Parabéns! Acertou em {tentativas} tentativas!')
+    elif palpite < numero_secreto:
+        print('📈 Muito baixo!')
+    else:
+        print('📉 Muito alto!')</code></pre>
             
             <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
             <div id="output"></div>
@@ -204,58 +209,78 @@ while True:  # Loop "infinito"
 
     <section>
         <h2>🔍 Validação com while</h2>
-        <pre><code>def validar_email():
-    """Valida email até estar correto"""
-    while True:
-        email = input("Digite seu email: ")
-        
-        if "@" in email and "." in email:
-            print("✅ Email válido!")
-            return email
-        else:
-            print("❌ Email inválido. Deve conter @ e .")
+        <pre><code># Validar email até estar correto
+email_valido = False
 
-def validar_idade():
-    """Valida idade até estar correta"""
-    while True:
-        try:
-            idade = int(input("Digite sua idade: "))
-            
-            if 0 <= idade <= 120:
-                return idade
-            else:
-                print("❌ Idade deve estar entre 0 e 120")
-                
-        except ValueError:
-            print("❌ Digite apenas números")
+while not email_valido:
+    email = input("Digite seu email: ")
+    
+    if "@" in email and "." in email:
+        print("✅ Email válido!")
+        email_valido = True
+    else:
+        print("❌ Email inválido. Deve conter @ e .")
 
-# Uso
-email_usuario = validar_email()
-idade_usuario = validar_idade()
-print(f"Email: {email_usuario}, Idade: {idade_usuario}")</code></pre>
+# Validar idade até estar correta
+idade_valida = False
+
+while not idade_valida:
+    idade = int(input("Digite sua idade: "))
+    
+    if idade >= 0 and idade <= 120:
+        print(f"✅ Idade válida: {idade}")
+        idade_valida = True
+    else:
+        print("❌ Idade deve estar entre 0 e 120")</code></pre>
     </section>
 
     <section>
         <h2>💡 Dicas Importantes</h2>
-        <div class="tip-box">
-            <ul>
-                <li>🔄 Sempre modifique a variável da condição dentro do loop</li>
-                <li>⚠️ Teste se a condição pode se tornar falsa</li>
-                <li>🛟 Use salvaguardas para evitar loops infinitos</li>
-                <li>🎯 Prefira while para validações e menus</li>
-                <li>📊 Use contadores e acumuladores quando necessário</li>
-            </ul>
-        </div>
+        <ul>
+            <li>🔄 Sempre modifique a variável da condição dentro do loop</li>
+            <li>⚠️ Teste se a condição pode se tornar falsa</li>
+            <li>🛟 Use salvaguardas para evitar loops infinitos</li>
+            <li>🎯 Use while para validações e menus</li>
+            <li>📊 Use contadores e acumuladores quando necessário</li>
+        </ul>
     </section>
 {% endblock %}
 
-{% block extra_js %}
-<script>
-function runCode() {
-    const code = document.getElementById('code-input').value;
-    const output = document.getElementById('output');
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
     
-    output.innerHTML = '<div class="output-success">Jogo executado! Teste sua sorte em adivinhar o número.</div>';
+    <p><strong>Tarefa:</strong> Sistema de Login com Tentativas Limitadas</p>
+    <ul>
+        <li>Usuário correto: "admin"</li>
+        <li>Senha correta: "1234"</li>
+        <li>Máximo de 3 tentativas</li>
+        <li>Conte as tentativas com um contador</li>
+        <li>Use while para repetir até acertar ou esgotar tentativas</li>
+        <li>Mostre mensagem de sucesso ou bloqueio</li>
+    </ul>
+    
+    <p><strong>Exemplo de saída esperada:</strong></p>
+    <pre><code>🔐 SISTEMA DE LOGIN
+Tentativa 1/3
+Usuário: admin
+Senha: errada
+❌ Senha incorreta!
+
+Tentativa 2/3
+Usuário: admin
+Senha: 1234
+✅ Login realizado com sucesso!</code></pre>
+{% endblock %}
+
+{% block initial_code %}print("🔐 SISTEMA DE LOGIN")
+print()
+
+tentativas = 0
+max_tentativas = 3
+logado = False
+
+# SEU CÓDIGO AQUI
+# Use while para dar 3 tentativas de login{% endblock %}
 }
 </script>
 {% endblock %}

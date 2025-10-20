@@ -1,1017 +1,220 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 9 - Decomposições de Matrizes | CodeLogic{% endblock %}
+{% block title %}Aula 9 - Matrizes 3D | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 9 – Decomposições de Matrizes{% endblock %}
+{% block lesson_title %}Aula 9 – Trabalhando com Matrizes 3D{% endblock %}
 
 {% block lesson_content %}
     <section>
         <h2>🎯 Objetivo</h2>
-        <ul>
-            <li>Compreender decomposições fundamentais de matrizes</li>
-            <li>Implementar decomposições LU, QR e SVD</li>
-            <li>Aplicar em resolução de sistemas e análise de dados</li>
-        </ul>
+        <p>Entender e trabalhar com matrizes tridimensionais (listas de listas de listas).</p>
     </section>
 
     <section>
-        <h2>🔧 Decomposição LU</h2>
-        <p>A decomposição LU fatoriza uma matriz A em produto de uma matriz triangular inferior (L) e superior (U).</p>
-        
-        <div class="formula-box">
-            <h3>Decomposição LU:</h3>
-            <p><strong>A = L × U</strong></p>
-            <p>Onde:</p>
-            <ul>
-                <li>L = matriz triangular inferior (Lower)</li>
-                <li>U = matriz triangular superior (Upper)</li>
-            </ul>
-        </div>
-        
-        <h3>Implementação da Decomposição LU:</h3>
-        <pre><code>def decomposicao_lu(matriz):
-    """
-    Realiza decomposição LU usando eliminação gaussiana
-    Retorna L e U tais que A = L × U
-    """
-    n = len(matriz)
-    
-    # Criar cópias para L e U
-    L = [[0.0 for _ in range(n)] for _ in range(n)]
-    U = [linha[:] for linha in matriz]  # Cópia de A
-    
-    # Inicializar diagonal de L com 1s
-    for i in range(n):
-        L[i][i] = 1.0
-    
-    # Processo de eliminação
-    for i in range(n):
-        # Verificar se elemento pivô é zero
-        if abs(U[i][i]) < 1e-10:
-            raise ValueError(f"Elemento pivô muito pequeno na posição ({i},{i})")
-        
-        # Eliminar elementos abaixo do pivô
-        for j in range(i + 1, n):
-            # Calcular multiplicador
-            multiplicador = U[j][i] / U[i][i]
-            L[j][i] = multiplicador
-            
-            # Aplicar eliminação na linha j
-            for k in range(i, n):
-                U[j][k] -= multiplicador * U[i][k]
-    
-    return L, U
-
-def verificar_decomposicao_lu(A, L, U):
-    """Verifica se L × U = A"""
-    n = len(A)
-    produto = [[0.0 for _ in range(n)] for _ in range(n)]
-    
-    # Calcular L × U
-    for i in range(n):
-        for j in range(n):
-            for k in range(n):
-                produto[i][j] += L[i][k] * U[k][j]
-    
-    # Verificar diferença
-    erro_max = 0
-    for i in range(n):
-        for j in range(n):
-            erro = abs(produto[i][j] - A[i][j])
-            erro_max = max(erro_max, erro)
-    
-    return erro_max
-
-def resolver_lu(L, U, b):
-    """
-    Resolve sistema Ax = b usando decomposição LU
-    1. Ly = b (substituição para frente)
-    2. Ux = y (substituição para trás)
-    """
-    n = len(L)
-    
-    # Passo 1: Resolver Ly = b
-    y = [0.0] * n
-    for i in range(n):
-        y[i] = b[i]
-        for j in range(i):
-            y[i] -= L[i][j] * y[j]
-        y[i] /= L[i][i]
-    
-    # Passo 2: Resolver Ux = y
-    x = [0.0] * n
-    for i in range(n - 1, -1, -1):
-        x[i] = y[i]
-        for j in range(i + 1, n):
-            x[i] -= U[i][j] * x[j]
-        x[i] /= U[i][i]
-    
-    return x
-
-# Exemplo prático
-matriz_exemplo = [
-    [2, 1, 1],
-    [4, 3, 3],
-    [8, 7, 9]
+        <h2>📦 O que é uma Matriz 3D?</h2>
+        <p>Uma matriz 3D é uma lista de matrizes 2D. Útil para dados com 3 dimensões.</p>
+        <pre><code># Exemplo: 2 andares x 3 linhas x 4 colunas
+matriz_3d = [
+    [  # Andar 0
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12]
+    ],
+    [  # Andar 1
+        [13, 14, 15, 16],
+        [17, 18, 19, 20],
+        [21, 22, 23, 24]
+    ]
 ]
 
-print("DECOMPOSIÇÃO LU")
-print("=" * 30)
-print("Matriz A:")
-for linha in matriz_exemplo:
-    print(f"  {linha}")
-
-# Realizar decomposição
-L, U = decomposicao_lu(matriz_exemplo)
-
-print("\\nMatriz L (triangular inferior):")
-for linha in L:
-    print(f"  {[f'{x:6.3f}' for x in linha]}")
-
-print("\\nMatriz U (triangular superior):")
-for linha in U:
-    print(f"  {[f'{x:6.3f}' for x in linha]}")
-
-# Verificar decomposição
-erro = verificar_decomposicao_lu(matriz_exemplo, L, U)
-print(f"\\nErro de decomposição: {erro:.2e}")
-
-# Resolver sistema Ax = b
-b = [5, 13, 31]
-x = resolver_lu(L, U, b)
-
-print(f"\\nSistema: Ax = {b}")
-print(f"Solução: x = {[f'{xi:.6f}' for xi in x]}")
-
-# Verificar solução
-verificacao = [
-    sum(matriz_exemplo[i][j] * x[j] for j in range(len(x)))
-    for i in range(len(matriz_exemplo))
-]
-print(f"Verificação Ax = {[f'{v:.6f}' for v in verificacao]}")</code></pre>
-        
-        <h3>Decomposição LU com Pivotamento:</h3>
-        <pre><code>def decomposicao_lu_pivotamento(matriz):
-    """
-    Decomposição LU com pivotamento parcial
-    Retorna P, L, U tais que PA = LU
-    """
-    n = len(matriz)
-    
-    # Inicializar matrizes
-    A = [linha[:] for linha in matriz]  # Cópia
-    L = [[0.0 for _ in range(n)] for _ in range(n)]
-    P = [[0.0 for _ in range(n)] for _ in range(n)]
-    
-    # Inicializar P como identidade
-    for i in range(n):
-        P[i][i] = 1.0
-        L[i][i] = 1.0
-    
-    # Vetor de permutações
-    permutacoes = list(range(n))
-    
-    for i in range(n):
-        # Encontrar pivô (maior elemento em valor absoluto)
-        max_linha = i
-        for k in range(i + 1, n):
-            if abs(A[k][i]) > abs(A[max_linha][i]):
-                max_linha = k
-        
-        # Trocar linhas se necessário
-        if max_linha != i:
-            A[i], A[max_linha] = A[max_linha], A[i]
-            permutacoes[i], permutacoes[max_linha] = permutacoes[max_linha], permutacoes[i]
-            
-            # Trocar elementos correspondentes em L (apenas abaixo da diagonal)
-            for j in range(i):
-                L[i][j], L[max_linha][j] = L[max_linha][j], L[i][j]
-        
-        # Verificar pivô
-        if abs(A[i][i]) < 1e-10:
-            raise ValueError(f"Matriz singular ou quase singular na posição {i}")
-        
-        # Eliminação
-        for j in range(i + 1, n):
-            multiplicador = A[j][i] / A[i][i]
-            L[j][i] = multiplicador
-            
-            for k in range(i, n):
-                A[j][k] -= multiplicador * A[i][k]
-    
-    # Construir matriz de permutação P
-    P_final = [[0.0 for _ in range(n)] for _ in range(n)]
-    for i in range(n):
-        P_final[i][permutacoes[i]] = 1.0
-    
-    return P_final, L, A  # A agora é U
-
-# Teste com matriz que precisa de pivotamento
-matriz_pivotamento = [
-    [0, 1, 2],
-    [1, 2, 1],
-    [2, 1, 0]
-]
-
-print("\\n" + "="*40)
-print("DECOMPOSIÇÃO LU COM PIVOTAMENTO")
-print("="*40)
-
-P, L_piv, U_piv = decomposicao_lu_pivotamento(matriz_pivotamento)
-
-print("Matriz original:")
-for linha in matriz_pivotamento:
-    print(f"  {linha}")
-
-print("\\nMatriz de permutação P:")
-for linha in P:
-    print(f"  {[int(x) for x in linha]}")
-
-print("\\nMatriz L:")
-for linha in L_piv:
-    print(f"  {[f'{x:6.3f}' for x in linha]}")
-
-print("\\nMatriz U:")
-for linha in U_piv:
-    print(f"  {[f'{x:6.3f}' for x in linha]}")</code></pre>
+# Acessar elemento: andar, linha, coluna
+elemento = matriz_3d[1][2][3]
+print(f"Elemento [1][2][3]: {elemento}")  # 24</code></pre>
     </section>
 
     <section>
-        <h2>📐 Decomposição QR</h2>
-        <p>A decomposição QR fatoriza uma matriz A em produto de uma matriz ortogonal (Q) e triangular superior (R).</p>
-        
-        <h3>Implementação usando Gram-Schmidt:</h3>
-        <pre><code>def decomposicao_qr_gram_schmidt(matriz):
-    """
-    Decomposição QR usando processo de Gram-Schmidt modificado
-    Retorna Q (ortogonal) e R (triangular superior) tais que A = QR
-    """
-    m = len(matriz)      # número de linhas
-    n = len(matriz[0])   # número de colunas
-    
-    # Inicializar Q e R
-    Q = [[0.0 for _ in range(n)] for _ in range(m)]
-    R = [[0.0 for _ in range(n)] for _ in range(n)]
-    
-    # Para cada coluna da matriz
-    for j in range(n):
-        # Extrair coluna j
-        coluna = [matriz[i][j] for i in range(m)]
-        
-        # Ortogonalizar contra colunas anteriores de Q
-        for i in range(j):
-            # R[i,j] = produto escalar de Q[:,i] com coluna original
-            R[i][j] = sum(Q[k][i] * matriz[k][j] for k in range(m))
-            
-            # Subtrair projeção
-            for k in range(m):
-                coluna[k] -= R[i][j] * Q[k][i]
-        
-        # Calcular norma da coluna ortogonalizada
-        norma = math.sqrt(sum(x**2 for x in coluna))
-        R[j][j] = norma
-        
-        # Normalizar para obter coluna j de Q
-        if norma > 1e-10:
-            for i in range(m):
-                Q[i][j] = coluna[i] / norma
-    
-    return Q, R
-
-def verificar_decomposicao_qr(A, Q, R):
-    """Verifica se Q × R = A"""
-    m = len(A)
-    n = len(A[0])
-    produto = [[0.0 for _ in range(n)] for _ in range(m)]
-    
-    # Calcular Q × R
-    for i in range(m):
-        for j in range(n):
-            for k in range(n):
-                produto[i][j] += Q[i][k] * R[k][j]
-    
-    # Calcular erro máximo
-    erro_max = 0
-    for i in range(m):
-        for j in range(n):
-            erro = abs(produto[i][j] - A[i][j])
-            erro_max = max(erro_max, erro)
-    
-    return erro_max
-
-def verificar_ortogonalidade_q(Q):
-    """Verifica se Q^T × Q = I"""
-    m = len(Q)
-    n = len(Q[0])
-    
-    # Calcular Q^T × Q
-    produto = [[0.0 for _ in range(n)] for _ in range(n)]
-    for i in range(n):
-        for j in range(n):
-            for k in range(m):
-                produto[i][j] += Q[k][i] * Q[k][j]
-    
-    # Verificar se é aproximadamente identidade
-    erro_max = 0
-    for i in range(n):
-        for j in range(n):
-            esperado = 1.0 if i == j else 0.0
-            erro = abs(produto[i][j] - esperado)
-            erro_max = max(erro_max, erro)
-    
-    return erro_max
-
-# Exemplo da decomposição QR
-matriz_qr = [
-    [1, 1, 0],
-    [1, 0, 1],
-    [0, 1, 1]
+        <h2>🔄 Percorrer Matriz 3D</h2>
+        <pre><code>dados = [
+    [[1, 2], [3, 4]],
+    [[5, 6], [7, 8]],
+    [[9, 10], [11, 12]]
 ]
 
-print("\\n" + "="*30)
-print("DECOMPOSIÇÃO QR")
-print("="*30)
-
-print("Matriz A:")
-for linha in matriz_qr:
-    print(f"  {linha}")
-
-Q, R = decomposicao_qr_gram_schmidt(matriz_qr)
-
-print("\\nMatriz Q (ortogonal):")
-for linha in Q:
-    print(f"  {[f'{x:7.4f}' for x in linha]}")
-
-print("\\nMatriz R (triangular superior):")
-for linha in R:
-    print(f"  {[f'{x:7.4f}' for x in linha]}")
-
-# Verificações
-erro_qr = verificar_decomposicao_qr(matriz_qr, Q, R)
-erro_ortogonal = verificar_ortogonalidade_q(Q)
-
-print(f"\\nErro QR (||QR - A||): {erro_qr:.2e}")
-print(f"Erro ortogonalidade (||Q^TQ - I||): {erro_ortogonal:.2e}")</code></pre>
-    </section>
-
-    <section>
-        <h2>🌟 Decomposição SVD (Singular Value Decomposition)</h2>
-        
-        <h3>Implementação Simplificada do SVD:</h3>
-        <pre><code>def svd_simplificado(matriz, max_iter=1000, tolerancia=1e-10):
-    """
-    Implementação simplificada do SVD usando método das potências
-    Encontra os principais valores singulares e vetores
-    """
-    A = [linha[:] for linha in matriz]  # Cópia
-    m = len(A)
-    n = len(A[0])
-    
-    # Calcular A^T × A
-    AtA = [[0.0 for _ in range(n)] for _ in range(n)]
-    for i in range(n):
-        for j in range(n):
-            for k in range(m):
-                AtA[i][j] += A[k][i] * A[k][j]
-    
-    # Encontrar autovalores de A^T × A (são σ²)
-    valores_singulares = []
-    vetores_v = []
-    vetores_u = []
-    
-    # Usar deflação para encontrar múltiplos valores singulares
-    matriz_trabalho = [linha[:] for linha in AtA]
-    
-    rank_estimado = min(m, n, 3)  # Limitar a 3 para demonstração
-    
-    for i in range(rank_estimado):
-        try:
-            # Encontrar maior autovalor de A^T A
-            autovalor, autovetor = metodo_potencia(matriz_trabalho, max_iter, tolerancia)
-            
-            if autovalor < tolerancia:
-                break
-            
-            # Valor singular é a raiz quadrada do autovalor
-            valor_singular = math.sqrt(abs(autovalor))
-            valores_singulares.append(valor_singular)
-            
-            # v_i é o autovetor correspondente
-            vetores_v.append(autovetor[:])
-            
-            # u_i = (1/σ_i) × A × v_i
-            Av = [sum(A[j][k] * autovetor[k] for k in range(n)) for j in range(m)]
-            norma_Av = math.sqrt(sum(x**2 for x in Av))
-            
-            if norma_Av > tolerancia:
-                u_i = [x / norma_Av for x in Av]
-            else:
-                u_i = [0.0] * m
-            
-            vetores_u.append(u_i)
-            
-            # Deflação: remover componente atual
-            matriz_trabalho = deflar_matriz_svd(matriz_trabalho, autovalor, autovetor)
-            
-        except:
-            break
-    
-    return valores_singulares, vetores_u, vetores_v
-
-def deflar_matriz_svd(matriz, autovalor, autovetor):
-    """Remove componente principal da matriz"""
-    n = len(matriz)
-    nova_matriz = [[0.0 for _ in range(n)] for _ in range(n)]
-    
-    for i in range(n):
-        for j in range(n):
-            nova_matriz[i][j] = (matriz[i][j] - 
-                               autovalor * autovetor[i] * autovetor[j])
-    
-    return nova_matriz
-
-def reconstruir_matriz_svd(valores_singulares, U, V, k=None):
-    """
-    Reconstrói matriz usando k primeiros componentes SVD
-    A ≈ Σ(σ_i × u_i × v_i^T) para i = 1 até k
-    """
-    if k is None:
-        k = len(valores_singulares)
-    
-    m = len(U[0]) if U else 0
-    n = len(V[0]) if V else 0
-    
-    # Inicializar matriz reconstruída
-    A_reconstruida = [[0.0 for _ in range(n)] for _ in range(m)]
-    
-    # Somar contribuições de cada componente
-    for i in range(min(k, len(valores_singulares))):
-        sigma = valores_singulares[i]
-        u_i = U[i]
-        v_i = V[i]
-        
-        # Adicionar σ_i × u_i × v_i^T
-        for j in range(m):
-            for l in range(n):
-                A_reconstruida[j][l] += sigma * u_i[j] * v_i[l]
-    
-    return A_reconstruida
-
-def calcular_erro_reconstrucao(original, reconstruida):
-    """Calcula erro de reconstrução (norma de Frobenius)"""
-    m = len(original)
-    n = len(original[0])
-    
-    erro_total = 0
-    for i in range(m):
-        for j in range(n):
-            diff = original[i][j] - reconstruida[i][j]
-            erro_total += diff * diff
-    
-    return math.sqrt(erro_total)
-
-# Exemplo de aplicação do SVD
-matriz_svd = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9],
-    [10, 11, 12]
-]
-
-print("\\n" + "="*40)
-print("DECOMPOSIÇÃO SVD")
-print("="*40)
-
-print("Matriz original A:")
-for linha in matriz_svd:
-    print(f"  {linha}")
-
-# Executar SVD
-valores_s, vetores_u, vetores_v = svd_simplificado(matriz_svd)
-
-print(f"\\nValores singulares: {[f'{s:.4f}' for s in valores_s]}")
-
-print("\\nVetores U (primeiras colunas):")
-for i, u in enumerate(vetores_u):
-    print(f"  u_{i+1}: {[f'{x:7.4f}' for x in u]}")
-
-print("\\nVetores V (linhas de V^T):")
-for i, v in enumerate(vetores_v):
-    print(f"  v_{i+1}: {[f'{x:7.4f}' for x in v]}")
-
-# Reconstrução com diferentes números de componentes
-print("\\nRECONSTRUÇÃO COM DIFERENTES NÚMEROS DE COMPONENTES:")
-for k in range(1, min(4, len(valores_s) + 1)):
-    reconstruida = reconstruir_matriz_svd(valores_s, vetores_u, vetores_v, k)
-    erro = calcular_erro_reconstrucao(matriz_svd, reconstruida)
-    
-    print(f"\\nCom {k} componente(s) - Erro: {erro:.4f}")
-    for linha in reconstruida:
-        print(f"  {[f'{x:7.2f}' for x in linha]}")</code></pre>
+# Três loops aninhados
+for i in range(len(dados)):  # Andares
+    print(f"Andar {i}:")
+    for j in range(len(dados[i])):  # Linhas
+        for k in range(len(dados[i][j])):  # Colunas
+            print(f"  [{i}][{j}][{k}] = {dados[i][j][k]}")
+    print()</code></pre>
     </section>
 
     <section>
         <h2>🎮 Exercício Prático</h2>
         <div class="exercise-box">
-            <h3>Sistema de Compressão de Imagens com SVD</h3>
-            <p>Implemente um sistema que simula compressão de imagens usando decomposição SVD:</p>
-            <ul>
-                <li>Simulação de dados de imagem como matriz</li>
-                <li>Aplicação de SVD para compressão</li>
-                <li>Análise de qualidade vs taxa de compressão</li>
-            </ul>
+            <h3>Sistema de Vendas Trimestral Multi-Regional</h3>
             
-            <textarea id="code-input" placeholder="import math
-import random
+            <textarea id="code-input"># 📊 SISTEMA DE VENDAS 3D: Trimestres x Lojas x Produtos
 
-class CompressorImagemSVD:
-    '''Simulador de compressão de imagens usando SVD'''
+print("=" * 80)
+print("📊 ANÁLISE DE VENDAS TRIMESTRAL".center(80))
+print("=" * 80)
+
+# Estrutura: 4 trimestres x 3 lojas x 4 produtos
+vendas_3d = [
+    [  # Trimestre 1
+        [100, 150, 200, 120],  # Loja A
+        [90, 140, 180, 110],   # Loja B
+        [110, 160, 190, 130]   # Loja C
+    ],
+    [  # Trimestre 2
+        [120, 170, 210, 140],
+        [95, 150, 190, 120],
+        [115, 165, 195, 135]
+    ],
+    [  # Trimestre 3
+        [130, 180, 220, 150],
+        [100, 155, 195, 125],
+        [120, 170, 200, 140]
+    ],
+    [  # Trimestre 4
+        [140, 190, 230, 160],
+        [105, 160, 200, 130],
+        [125, 175, 205, 145]
+    ]
+]
+
+trimestres = ["1º Tri", "2º Tri", "3º Tri", "4º Tri"]
+lojas = ["Loja A", "Loja B", "Loja C"]
+produtos = ["Prod 1", "Prod 2", "Prod 3", "Prod 4"]
+
+# Exibir dados por trimestre
+for t in range(len(vendas_3d)):
+    print(f"\n📅 {trimestres[t].upper()}:")
+    print("-" * 80)
+    print(f"{'Loja':<12}", end="")
+    for produto in produtos:
+        print(f"{produto:>10}", end="")
+    print()
     
-    def __init__(self):
-        self.imagem_original = None
-        self.valores_singulares = []
-        self.vetores_u = []
-        self.vetores_v = []
-        self.dimensoes = (0, 0)
+    for l in range(len(vendas_3d[t])):
+        print(f"{lojas[l]:<12}", end="")
+        for p in range(len(vendas_3d[t][l])):
+            print(f"{vendas_3d[t][l][p]:>10}", end="")
+        print()
+
+# Total por trimestre
+print("\n📊 TOTAL POR TRIMESTRE:")
+print("-" * 80)
+
+for t in range(len(vendas_3d)):
+    total_tri = 0
+    for l in range(len(vendas_3d[t])):
+        for p in range(len(vendas_3d[t][l])):
+            total_tri += vendas_3d[t][l][p]
+    print(f"{trimestres[t]}: {total_tri:,} unidades")
+
+# Total por loja (todos os trimestres)
+print("\n🏪 TOTAL POR LOJA (ANO COMPLETO):")
+print("-" * 80)
+
+for l in range(len(lojas)):
+    total_loja = 0
+    for t in range(len(vendas_3d)):
+        for p in range(len(vendas_3d[t][l])):
+            total_loja += vendas_3d[t][l][p]
+    print(f"{lojas[l]}: {total_loja:,} unidades")
+
+# Total por produto (todos os trimestres e lojas)
+print("\n📦 TOTAL POR PRODUTO (ANO COMPLETO):")
+print("-" * 80)
+
+for p in range(len(produtos)):
+    total_produto = 0
+    for t in range(len(vendas_3d)):
+        for l in range(len(vendas_3d[t])):
+            total_produto += vendas_3d[t][l][p]
+    print(f"{produtos[p]}: {total_produto:,} unidades")
+
+# Evolução de uma loja específica
+print("\n📈 EVOLUÇÃO DA LOJA A AO LONGO DO ANO:")
+print("-" * 80)
+
+for t in range(len(vendas_3d)):
+    total_loja_a = 0
+    for p in range(len(vendas_3d[t][0])):
+        total_loja_a += vendas_3d[t][0][p]
+    print(f"{trimestres[t]}: {total_loja_a} unidades")
+
+# Melhor trimestre para cada loja
+print("\n🏆 MELHOR TRIMESTRE DE CADA LOJA:")
+print("-" * 80)
+
+for l in range(len(lojas)):
+    melhor_tri = 0
+    melhor_valor = 0
     
-    def gerar_imagem_exemplo(self, altura=8, largura=8, tipo='gradiente'):
-        '''Gera imagem de exemplo para demonstração'''
-        self.dimensoes = (altura, largura)
+    for t in range(len(vendas_3d)):
+        total = 0
+        for p in range(len(vendas_3d[t][l])):
+            total += vendas_3d[t][l][p]
         
-        if tipo == 'gradiente':
-            # Gradiente diagonal
-            self.imagem_original = []
-            for i in range(altura):
-                linha = []
-                for j in range(largura):
-                    # Valor baseado na distância do canto
-                    valor = 255 * (i + j) / (altura + largura - 2)
-                    linha.append(int(valor))
-                self.imagem_original.append(linha)
-        
-        elif tipo == 'xadrez':
-            # Padrão xadrez
-            tamanho_quadrado = 2
-            self.imagem_original = []
-            for i in range(altura):
-                linha = []
-                for j in range(largura):
-                    quad_i = i // tamanho_quadrado
-                    quad_j = j // tamanho_quadrado
-                    if (quad_i + quad_j) % 2 == 0:
-                        linha.append(255)
-                    else:
-                        linha.append(0)
-                self.imagem_original.append(linha)
-        
-        elif tipo == 'circulo':
-            # Círculo no centro
-            centro_x, centro_y = altura // 2, largura // 2
-            raio = min(altura, largura) // 3
+        if total > melhor_valor:
+            melhor_valor = total
+            melhor_tri = t
+    
+    print(f"{lojas[l]}: {trimestres[melhor_tri]} ({melhor_valor} unidades)")
+
+# Produto mais vendido no ano
+print("\n🥇 PRODUTO CAMPEÃO DO ANO:")
+print("-" * 80)
+
+produto_campeao = 0
+maior_total = 0
+
+for p in range(len(produtos)):
+    total = 0
+    for t in range(len(vendas_3d)):
+        for l in range(len(vendas_3d[t])):
+            total += vendas_3d[t][l][p]
+    
+    if total > maior_total:
+        maior_total = total
+        produto_campeao = p
+
+print(f"{produtos[produto_campeao]}: {maior_total:,} unidades vendidas")
+
+# Total geral do ano
+total_ano = 0
+for t in range(len(vendas_3d)):
+    for l in range(len(vendas_3d[t])):
+        for p in range(len(vendas_3d[t][l])):
+            total_ano += vendas_3d[t][l][p]
+
+print(f"\n💰 TOTAL GERAL DO ANO: {total_ano:,} unidades")
+print("=" * 80)</textarea>
             
-            self.imagem_original = []
-            for i in range(altura):
-                linha = []
-                for j in range(largura):
-                    distancia = math.sqrt((i - centro_x)**2 + (j - centro_y)**2)
-                    if distancia <= raio:
-                        linha.append(255)
-                    else:
-                        # Gradiente suave fora do círculo
-                        valor = max(0, 255 - int(20 * (distancia - raio)))
-                        linha.append(valor)
-                self.imagem_original.append(linha)
-        
-        elif tipo == 'ruido':
-            # Imagem com ruído estruturado
-            self.imagem_original = []
-            for i in range(altura):
-                linha = []
-                for j in range(largura):
-                    # Padrão base mais ruído
-                    base = 128 + 50 * math.sin(i * 0.5) * math.cos(j * 0.5)
-                    ruido = random.randint(-30, 30)
-                    valor = max(0, min(255, int(base + ruido)))
-                    linha.append(valor)
-                self.imagem_original.append(linha)
-        
-        return self.imagem_original
-    
-    def aplicar_svd(self):
-        '''Aplica decomposição SVD na imagem'''
-        if not self.imagem_original:
-            raise ValueError('Nenhuma imagem carregada')
-        
-        print('🔍 Aplicando SVD na imagem...')
-        
-        # Converter para formato float para cálculos
-        matriz_float = [[float(pixel) for pixel in linha] 
-                       for linha in self.imagem_original]
-        
-        # Aplicar SVD
-        self.valores_singulares, self.vetores_u, self.vetores_v = svd_simplificado(matriz_float)
-        
-        print(f'✓ SVD concluído: {len(self.valores_singulares)} componentes principais encontrados')
-        
-        return len(self.valores_singulares)
-    
-    def comprimir_imagem(self, num_componentes):
-        '''Comprime imagem usando apenas num_componentes principais'''
-        if not self.valores_singulares:
-            raise ValueError('SVD não foi aplicado ainda')
-        
-        # Reconstruir usando apenas k componentes
-        imagem_comprimida = reconstruir_matriz_svd(
-            self.valores_singulares, 
-            self.vetores_u, 
-            self.vetores_v, 
-            num_componentes
-        )
-        
-        # Converter de volta para inteiros e clipar valores
-        resultado = []
-        for linha in imagem_comprimida:
-            linha_int = []
-            for pixel in linha:
-                valor = max(0, min(255, round(pixel)))
-                linha_int.append(int(valor))
-            resultado.append(linha_int)
-        
-        return resultado
-    
-    def calcular_metricas_compressao(self, imagem_comprimida):
-        '''Calcula métricas de qualidade da compressão'''
-        altura, largura = self.dimensoes
-        
-        # Erro quadrático médio (MSE)
-        mse = 0
-        for i in range(altura):
-            for j in range(largura):
-                diff = self.imagem_original[i][j] - imagem_comprimida[i][j]
-                mse += diff * diff
-        
-        mse /= (altura * largura)
-        
-        # PSNR (Peak Signal-to-Noise Ratio)
-        if mse > 0:
-            psnr = 20 * math.log10(255 / math.sqrt(mse))
-        else:
-            psnr = float('inf')
-        
-        # Taxa de compressão
-        # Original: altura * largura valores
-        # Comprimido: num_componentes * (altura + largura + 1)
-        tamanho_original = altura * largura
-        num_comp = len([s for s in self.valores_singulares if s > 1e-6])
-        tamanho_comprimido = num_comp * (altura + largura + 1)
-        taxa_compressao = tamanho_original / tamanho_comprimido
-        
-        return {
-            'mse': mse,
-            'psnr': psnr,
-            'taxa_compressao': taxa_compressao,
-            'num_componentes': num_comp
-        }
-    
-    def exibir_imagem_ascii(self, imagem, titulo=''):
-        '''Exibe imagem usando caracteres ASCII'''
-        if titulo:
-            print(f'\\n{titulo}:')
-        
-        # Escala de cinza em ASCII (do mais escuro ao mais claro)
-        escala = ' .:-=+*#%@'
-        
-        for linha in imagem:
-            linha_ascii = ''
-            for pixel in linha:
-                # Mapear valor 0-255 para índice da escala
-                indice = min(len(escala) - 1, pixel * len(escala) // 256)
-                linha_ascii += escala[indice] * 2  # 2x para melhor proporção
-            print(linha_ascii)
-    
-    def analisar_componentes_principais(self):
-        '''Analisa a importância dos componentes principais'''
-        if not self.valores_singulares:
-            return
-        
-        print('\\n📊 ANÁLISE DOS COMPONENTES PRINCIPAIS:')
-        print('=' * 45)
-        
-        # Calcular energia total
-        energia_total = sum(s**2 for s in self.valores_singulares)
-        
-        energia_acumulada = 0
-        for i, sigma in enumerate(self.valores_singulares):
-            energia_comp = sigma**2
-            energia_acumulada += energia_comp
-            
-            porcentagem_individual = (energia_comp / energia_total) * 100
-            porcentagem_acumulada = (energia_acumulada / energia_total) * 100
-            
-            print(f'Componente {i+1:2d}: σ={sigma:8.3f}, '
-                  f'Energia={porcentagem_individual:5.1f}%, '
-                  f'Acum={porcentagem_acumulada:5.1f}%')
-        
-        # Encontrar quantos componentes para 90% e 95% da energia
-        energia_parcial = 0
-        for i, sigma in enumerate(self.valores_singulares):
-            energia_parcial += sigma**2
-            porcentagem = (energia_parcial / energia_total) * 100
-            
-            if porcentagem >= 90 and i < len(self.valores_singulares) - 1:
-                print(f'\\n💡 {i+1} componentes capturam 90% da energia')
-                break
-        
-        for i, sigma in enumerate(self.valores_singulares):
-            energia_parcial_95 = sum(s**2 for s in self.valores_singulares[:i+1])
-            porcentagem_95 = (energia_parcial_95 / energia_total) * 100
-            
-            if porcentagem_95 >= 95:
-                print(f'💡 {i+1} componentes capturam 95% da energia')
-                break
-    
-    def demonstracao_completa(self, tipo_imagem='gradiente'):
-        '''Executa demonstração completa do sistema'''
-        print('🖼️  SISTEMA DE COMPRESSÃO DE IMAGENS COM SVD')
-        print('=' * 50)
-        
-        # Gerar imagem de exemplo
-        print(f'Gerando imagem de exemplo (tipo: {tipo_imagem})...')
-        self.gerar_imagem_exemplo(8, 8, tipo_imagem)
-        
-        # Exibir imagem original
-        self.exibir_imagem_ascii(self.imagem_original, 'IMAGEM ORIGINAL')
-        
-        # Aplicar SVD
-        num_componentes = self.aplicar_svd()
-        
-        # Analisar componentes
-        self.analisar_componentes_principais()
-        
-        # Testar diferentes níveis de compressão
-        print('\\n🗜️  TESTANDO DIFERENTES NÍVEIS DE COMPRESSÃO:')
-        print('=' * 50)
-        
-        niveis_teste = [1, 2, 3, min(4, num_componentes)]
-        
-        for k in niveis_teste:
-            if k <= num_componentes:
-                print(f'\\n--- COMPRESSÃO COM {k} COMPONENTE(S) ---')
-                
-                # Comprimir
-                img_comprimida = self.comprimir_imagem(k)
-                
-                # Calcular métricas
-                metricas = self.calcular_metricas_compressao(img_comprimida)
-                
-                print(f'MSE: {metricas[\"mse\"]:.2f}')
-                print(f'PSNR: {metricas[\"psnr\"]:.2f} dB')
-                print(f'Taxa de compressão: {metricas[\"taxa_compressao\"]:.1f}:1')
-                
-                # Exibir resultado
-                self.exibir_imagem_ascii(img_comprimida, f'COMPRIMIDA ({k} comp.)')
-        
-        return True
-
-# Demonstração com diferentes tipos de imagens
-tipos_imagem = ['gradiente', 'xadrez', 'circulo', 'ruido']
-
-for tipo in tipos_imagem:
-    print('\\n' + '='*60)
-    print(f'DEMONSTRAÇÃO: IMAGEM TIPO {tipo.upper()}')
-    print('='*60)
-    
-    compressor = CompressorImagemSVD()
-    compressor.demonstracao_completa(tipo)
-    
-    # Análise específica para cada tipo
-    print(f'\\n📈 ANÁLISE ESPECÍFICA - {tipo.upper()}:')
-    if tipo == 'gradiente':
-        print('- Gradientes são bem comprimidos pelo SVD')
-        print('- Poucos componentes capturam a estrutura linear')
-    elif tipo == 'xadrez':
-        print('- Padrões regulares requerem mais componentes')
-        print('- Bordas nítidas são desafiadoras para SVD')
-    elif tipo == 'circulo':
-        print('- Formas geométricas têm compressão moderada')
-        print('- Gradientes suaves são bem representados')
-    elif tipo == 'ruido':
-        print('- Ruído dificulta compressão eficiente')
-        print('- Muitos componentes necessários para qualidade')
-
-print('\\n🎯 CONCLUSÕES GERAIS:')
-print('='*30)
-print('1. SVD é eficaz para imagens com estrutura suave')
-print('2. Imagens com ruído ou detalhes finos precisam mais componentes')
-print('3. Trade-off entre qualidade e taxa de compressão')
-print('4. PSNR > 30dB geralmente indica qualidade aceitável')
-print('5. Primeiros componentes capturam estruturas principais')
-
-# Exemplo de comparação direta
-print('\\n🔍 COMPARAÇÃO DIRETA: GRADIENTE vs RUÍDO')
-print('='*45)
-
-# Gradiente simples
-comp1 = CompressorImagemSVD()
-comp1.gerar_imagem_exemplo(6, 6, 'gradiente')
-comp1.aplicar_svd()
-img1_comp = comp1.comprimir_imagem(2)
-metricas1 = comp1.calcular_metricas_compressao(img1_comp)
-
-# Ruído
-comp2 = CompressorImagemSVD()
-comp2.gerar_imagem_exemplo(6, 6, 'ruido')
-comp2.aplicar_svd()
-img2_comp = comp2.comprimir_imagem(2)
-metricas2 = comp2.calcular_metricas_compressao(img2_comp)
-
-print(f'Gradiente (2 comp.): PSNR = {metricas1[\"psnr\"]:.1f} dB')
-print(f'Ruído (2 comp.):     PSNR = {metricas2[\"psnr\"]:.1f} dB')
-print(f'Diferença de qualidade: {metricas1[\"psnr\"] - metricas2[\"psnr\"]:.1f} dB')"></textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
+            <button onclick="runCode()" class="btn-run">▶️ Analisar Dados 3D</button>
             <div id="output"></div>
         </div>
     </section>
 
     <section>
-        <h2>📊 Comparação de Decomposições</h2>
-        
-        <table class="decomposition-table">
-            <tr>
-                <th>Decomposição</th>
-                <th>Formato</th>
-                <th>Aplicação Principal</th>
-                <th>Complexidade</th>
-            </tr>
-            <tr>
-                <td>LU</td>
-                <td>A = LU</td>
-                <td>Sistemas lineares</td>
-                <td>O(n³)</td>
-            </tr>
-            <tr>
-                <td>QR</td>
-                <td>A = QR</td>
-                <td>Mínimos quadrados</td>
-                <td>O(mn²)</td>
-            </tr>
-            <tr>
-                <td>SVD</td>
-                <td>A = UΣV^T</td>
-                <td>Redução dimensionalidade</td>
-                <td>O(min(m²n, mn²))</td>
-            </tr>
-            <tr>
-                <td>Cholesky</td>
-                <td>A = LL^T</td>
-                <td>Matrizes positivas definidas</td>
-                <td>O(n³/3)</td>
-            </tr>
-        </table>
-    </section>
-
-    <section>
-        <h2>🔧 Aplicações Práticas</h2>
-        
-        <div class="applications-grid">
-            <div class="app-card">
-                <h3>💻 Computação Científica</h3>
-                <ul>
-                    <li>Resolução de sistemas lineares</li>
-                    <li>Interpolação e ajuste de curvas</li>
-                    <li>Simulações numéricas</li>
-                </ul>
-            </div>
-            
-            <div class="app-card">
-                <h3>📊 Análise de Dados</h3>
-                <ul>
-                    <li>Redução de dimensionalidade</li>
-                    <li>Filtragem de ruído</li>
-                    <li>Compressão de dados</li>
-                </ul>
-            </div>
-            
-            <div class="app-card">
-                <h3>🎨 Processamento de Imagens</h3>
-                <ul>
-                    <li>Compressão JPEG</li>
-                    <li>Denoising</li>
-                    <li>Reconhecimento de padrões</li>
-                </ul>
-            </div>
-            
-            <div class="app-card">
-                <h3>🤖 Machine Learning</h3>
-                <ul>
-                    <li>PCA para feature extraction</li>
-                    <li>Sistemas de recomendação</li>
-                    <li>Análise de sentimentos</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <h2>⚡ Otimizações Numéricas</h2>
-        
-        <h3>Estabilidade Numérica:</h3>
-        <pre><code>def verificar_condicao_matriz(matriz):
-    """Estima número de condição da matriz"""
-    # Usar SVD para estimar condição
-    valores_s, _, _ = svd_simplificado(matriz)
-    
-    if len(valores_s) > 0 and valores_s[-1] > 1e-15:
-        condicao = valores_s[0] / valores_s[-1]
-    else:
-        condicao = float('inf')
-    
-    return condicao
-
-def escolher_decomposicao(matriz, aplicacao='geral'):
-    """Sugere melhor decomposição baseada na matriz e aplicação"""
-    m = len(matriz)
-    n = len(matriz[0])
-    
-    # Verificar se é quadrada
-    quadrada = (m == n)
-    
-    # Estimar condição
-    condicao = verificar_condicao_matriz(matriz)
-    
-    sugestoes = []
-    
-    if aplicacao == 'sistema_linear' and quadrada:
-        if condicao < 1e12:
-            sugestoes.append("LU com pivotamento")
-        else:
-            sugestoes.append("SVD (mais estável)")
-    
-    elif aplicacao == 'minimos_quadrados':
-        sugestoes.append("QR (método preferido)")
-        if condicao > 1e12:
-            sugestoes.append("SVD (para casos mal-condicionados)")
-    
-    elif aplicacao == 'pca' or aplicacao == 'compressao':
-        sugestoes.append("SVD (ideal para análise espectral)")
-    
-    else:
-        if quadrada and condicao < 1e8:
-            sugestoes.append("LU")
-        sugestoes.append("QR (versátil)")
-        sugestoes.append("SVD (mais informativo)")
-    
-    return {
-        'condicao': condicao,
-        'quadrada': quadrada,
-        'sugestoes': sugestoes
-    }
-
-# Teste de seleção de método
-matrizes_teste = {
-    'bem_condicionada': [[2, 1], [1, 2]],
-    'mal_condicionada': [[1, 1], [1, 1.0001]],
-    'retangular': [[1, 2, 3], [4, 5, 6]]
-}
-
-print("\\n" + "="*50)
-print("SELEÇÃO AUTOMÁTICA DE DECOMPOSIÇÃO")
-print("="*50)
-
-for nome, matriz in matrizes_teste.items():
-    print(f"\\nMatriz {nome}:")
-    analise = escolher_decomposicao(matriz, 'sistema_linear')
-    
-    print(f"  Condição: {analise['condicao']:.2e}")
-    print(f"  Quadrada: {analise['quadrada']}")
-    print("  Sugestões:")
-    for sugestao in analise['sugestoes']:
-        print(f"    - {sugestao}")</code></pre>
-    </section>
-
-    <section>
-        <h2>💡 Considerações de Implementação</h2>
-        <div class="tip-box">
-            <ul>
-                <li>🎯 <strong>Escolha baseada no problema</strong> - LU para sistemas, QR para mínimos quadrados, SVD para análise</li>
-                <li>🔢 <strong>Pivotamento essencial</strong> - sempre use pivotamento em LU para estabilidade</li>
-                <li>⚖️ <strong>Trade-off precisão-performance</strong> - SVD é mais lento mas mais informativo</li>
-                <li>🧠 <strong>Monitore condição</strong> - matrizes mal-condicionadas precisam métodos especiais</li>
-                <li>💾 <strong>Reutilize decomposições</strong> - calcule uma vez, use múltiplas vezes</li>
-                <li>🔧 <strong>Use bibliotecas otimizadas</strong> - LAPACK/BLAS para produção</li>
-            </ul>
-        </div>
+        <h2>📚 Resumo</h2>
+        <ul>
+            <li>✅ Entender estrutura 3D</li>
+            <li>✅ Percorrer com 3 loops aninhados</li>
+            <li>✅ Acessar elementos [i][j][k]</li>
+            <li>✅ Analisar dados multidimensionais</li>
+        </ul>
     </section>
 {% endblock %}
 
 {% block extra_js %}
 <script>
 function runCode() {
-    const code = document.getElementById('code-input').value;
     const output = document.getElementById('output');
-    
-    output.innerHTML = '<div class="output-success">Compressor de imagens SVD executado! Veja como decomposições de matrizes permitem compressão eficiente mantendo qualidade.</div>';
+    output.innerHTML = '<div class="output-success">✅ Análise 3D completa! Dados multidimensionais processados.</div>';
 }
 </script>
 {% endblock %}

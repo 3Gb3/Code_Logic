@@ -72,9 +72,10 @@ animais.remove("gato")  # Remove o primeiro "gato"
 print(f"Após remove: {animais}")  # ['cachorro', 'gato', 'pássaro']
 
 # Cuidado: remove() gera erro se elemento não existir
-try:
+# Sempre verificar se existe antes de remover
+if "elefante" in animais:
     animais.remove("elefante")
-except ValueError:
+else:
     print("Elemento 'elefante' não encontrado")</code></pre>
         
         <h3>2. pop() - Remove e Retorna Elemento</h3>
@@ -135,14 +136,13 @@ print(f"Primeira banana na posição: {posicao}")  # 1
 posicao2 = frutas.index("banana", 2)  # Buscar a partir do índice 2
 print(f"Segunda banana na posição: {posicao2}")  # 3
 
-# Busca segura
-def buscar_seguro(lista, elemento):
-    try:
-        return lista.index(elemento)
-    except ValueError:
-        return -1  # Não encontrado
-
-print(f"Posição de 'kiwi': {buscar_seguro(frutas, 'kiwi')}")  # -1</code></pre>
+# Busca segura com verificação
+elemento_busca = 'kiwi'
+if elemento_busca in frutas:
+    posicao_kiwi = frutas.index(elemento_busca)
+    print(f"Posição de '{elemento_busca}': {posicao_kiwi}")
+else:
+    print(f"Posição de '{elemento_busca}': -1")  # -1 indica não encontrado</code></pre>
         
         <h3>2. count() - Contar Ocorrências</h3>
         <pre><code>numeros = [1, 2, 3, 2, 4, 2, 5]
@@ -154,13 +154,10 @@ count_6 = numeros.count(6)
 print(f"Número 6 aparece {count_6} vezes")  # 0
 
 # Contagem de elementos únicos
-def contar_unicos(lista):
-    contador = {}
-    for elemento in lista:
-        contador[elemento] = lista.count(elemento)
-    return contador
+contagem = {}
+for elemento in numeros:
+    contagem[elemento] = numeros.count(elemento)
 
-contagem = contar_unicos(numeros)
 print(f"Contagem: {contagem}")  # {1: 1, 2: 3, 3: 1, 4: 1, 5: 1}</code></pre>
     </section>
 
@@ -244,66 +241,67 @@ print(f"Original após 'não cópia': {original}")  # [1, 2, 3, 4, 5, 7]</code><
             <textarea id="code-input" placeholder="# Sistema de Gerenciamento de Tarefas
 tarefas = []
 
-def adicionar_tarefa(nome, posicao=None):
-    if posicao is None:
-        tarefas.append(nome)
-        print(f'✅ Tarefa "{nome}" adicionada no final')
-    else:
-        tarefas.insert(posicao, nome)
-        print(f'✅ Tarefa "{nome}" adicionada na posição {posicao}')
-
-def remover_tarefa(identificador):
-    if isinstance(identificador, int):
-        # Remover por posição
-        if 0 <= identificador < len(tarefas):
-            removida = tarefas.pop(identificador)
-            print(f'❌ Tarefa "{removida}" removida da posição {identificador}')
-        else:
-            print('Posição inválida!')
-    else:
-        # Remover por nome
-        if identificador in tarefas:
-            tarefas.remove(identificador)
-            print(f'❌ Tarefa "{identificador}" removida')
-        else:
-            print(f'Tarefa "{identificador}" não encontrada!')
-
-def listar_tarefas():
-    if not tarefas:
-        print('📋 Nenhuma tarefa cadastrada')
-        return
-    
-    print('📋 LISTA DE TAREFAS:')
-    for i, tarefa in enumerate(tarefas, 1):
-        print(f'{i}. {tarefa}')
-
-def buscar_tarefa(nome):
-    if nome in tarefas:
-        posicao = tarefas.index(nome)
-        count = tarefas.count(nome)
-        print(f'🔍 "{nome}" encontrada na posição {posicao} ({count} ocorrência(s))')
-    else:
-        print(f'🔍 "{nome}" não encontrada')
-
-# Testando o sistema
 print('🚀 SISTEMA DE TAREFAS INICIADO')
 
-# Adicionando tarefas
-adicionar_tarefa('Estudar Python')
-adicionar_tarefa('Fazer exercícios')
-adicionar_tarefa('Ler documentação')
-adicionar_tarefa('Fazer projeto', 1)  # Inserir na posição 1
+# Adicionando tarefas no final
+tarefa = 'Estudar Python'
+tarefas.append(tarefa)
+print(f'✅ Tarefa \"{tarefa}\" adicionada no final')
 
-listar_tarefas()
+tarefa = 'Fazer exercícios'
+tarefas.append(tarefa)
+print(f'✅ Tarefa \"{tarefa}\" adicionada no final')
+
+tarefa = 'Ler documentação'
+tarefas.append(tarefa)
+print(f'✅ Tarefa \"{tarefa}\" adicionada no final')
+
+# Inserindo tarefa em posição específica
+tarefa = 'Fazer projeto'
+posicao = 1
+tarefas.insert(posicao, tarefa)
+print(f'✅ Tarefa \"{tarefa}\" adicionada na posição {posicao}')
+
+# Listando tarefas
+if not tarefas:
+    print('📋 Nenhuma tarefa cadastrada')
+else:
+    print('📋 LISTA DE TAREFAS:')
+    for i in range(len(tarefas)):
+        print(f'{i + 1}. {tarefas[i]}')
 
 # Buscando tarefa
-buscar_tarefa('Estudar Python')
+nome_busca = 'Estudar Python'
+if nome_busca in tarefas:
+    posicao = tarefas.index(nome_busca)
+    count = tarefas.count(nome_busca)
+    print(f'🔍 \"{nome_busca}\" encontrada na posição {posicao} ({count} ocorrência(s))')
+else:
+    print(f'🔍 \"{nome_busca}\" não encontrada')
 
-# Removendo tarefa
-remover_tarefa('Fazer exercícios')
-remover_tarefa(0)  # Remove por posição
+# Removendo tarefa por nome
+tarefa_remover = 'Fazer exercícios'
+if tarefa_remover in tarefas:
+    tarefas.remove(tarefa_remover)
+    print(f'❌ Tarefa \"{tarefa_remover}\" removida')
+else:
+    print(f'Tarefa \"{tarefa_remover}\" não encontrada!')
 
-listar_tarefas()
+# Removendo tarefa por posição
+posicao_remover = 0
+if 0 <= posicao_remover < len(tarefas):
+    removida = tarefas.pop(posicao_remover)
+    print(f'❌ Tarefa \"{removida}\" removida da posição {posicao_remover}')
+else:
+    print('Posição inválida!')
+
+# Listando tarefas novamente
+if not tarefas:
+    print('📋 Nenhuma tarefa cadastrada')
+else:
+    print('📋 LISTA DE TAREFAS:')
+    for i in range(len(tarefas)):
+        print(f'{i + 1}. {tarefas[i]}')
 
 # Organizando
 print('\n📊 Organizando tarefas...')
@@ -332,11 +330,7 @@ for item in dados:
     if item:  # Se item é "truthy"
         limpos.append(item)
 
-print(f"Limpos: {limpos}")  # [1, 2, 3, 4, 5]
-
-# Ou usando list comprehension
-limpos2 = [item for item in dados if item]
-print(f"Limpos (comprehension): {limpos2}")</code></pre>
+print(f"Limpos: {limpos}")  # [1, 2, 3, 4, 5]</code></pre>
         
         <h3>2. Remoção Segura em Loop:</h3>
         <pre><code># CUIDADO: Não modifique lista durante iteração!

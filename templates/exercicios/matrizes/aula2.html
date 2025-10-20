@@ -53,7 +53,8 @@ for linha in range(len(matriz)):
         <h3>1. Por linha (padrão):</h3>
         <pre><code>for i in range(len(matriz)):
     for j in range(len(matriz[0])):
-        print(f"[{i}][{j}] = {matriz[i][j]}")
+        elemento = matriz[i][j]
+        print(f"Posição ({i},{j}) = {elemento}")
         
 # Resultado:
 # [0][0] = 1

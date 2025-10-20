@@ -1,304 +1,195 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 9 - Boas Práticas | CodeLogic{% endblock %}
+{% block title %}Aula 9 - Código Limpo com If/Else | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 9 – Boas Práticas em Estruturas Condicionais{% endblock %}
+{% block lesson_title %}Aula 9 – Escrevendo Código Limpo com If/Else{% endblock %}
 
 {% block lesson_content %}
     <section>
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Aplicar boas práticas em código condicional</li>
-            <li>Escrever código mais limpo e legível</li>
-            <li>Evitar erros comuns e anti-padrões</li>
+            <li>Escrever código condicional limpo e legível</li>
+            <li>Usar nomes de variáveis descritivos</li>
+            <li>Organizar condições de forma clara</li>
         </ul>
     </section>
 
     <section>
-        <h2>✨ Princípios de Código Limpo</h2>
+        <h2>✨ Nomes Descritivos</h2>
         
-        <h3>1. Nomes Descritivos</h3>
-        <div class="comparison">
-            <div class="bad-example">
-                <h4>❌ Ruim:</h4>
-                <pre><code>if x > 18:
-    y = True</code></pre>
-            </div>
-            <div class="good-example">
-                <h4>✅ Bom:</h4>
-                <pre><code>if idade > 18:
-    pode_votar = True</code></pre>
-            </div>
-        </div>
+        <h3>❌ Código Ruim:</h3>
+        <pre><code>x = int(input("Digite: "))
+if x > 18:
+    y = True
+    print(y)</code></pre>
         
-        <h3>2. Evite Negações Desnecessárias</h3>
-        <div class="comparison">
-            <div class="bad-example">
-                <h4>❌ Ruim:</h4>
-                <pre><code>if not not usuario_logado:
-    print("Bem-vindo!")</code></pre>
-            </div>
-            <div class="good-example">
-                <h4>✅ Bom:</h4>
-                <pre><code>if usuario_logado:
-    print("Bem-vindo!")</code></pre>
-            </div>
-        </div>
+        <h3>✅ Código Bom:</h3>
+        <pre><code>idade = int(input("Digite sua idade: "))
+if idade > 18:
+    pode_votar = True
+    print("Você pode votar!")</code></pre>
+        
+        <p><strong>Por quê?</strong> Nomes claros facilitam a leitura!</p>
     </section>
 
     <section>
-        <h2>🏗️ Estruturação de Condições</h2>
+        <h2>🎯 Condições Diretas</h2>
         
-        <h3>1. Early Return (Retorno Antecipado)</h3>
-        <div class="comparison">
-            <div class="bad-example">
-                <h4>❌ Ruim:</h4>
-                <pre><code>def processar_usuario(usuario):
-    if usuario is not None:
-        if usuario.ativo:
-            if usuario.idade >= 18:
-                # processar usuário
-                return True
-            else:
-                return False
-        else:
-            return False
-    else:
-        return False</code></pre>
-            </div>
-            <div class="good-example">
-                <h4>✅ Bom:</h4>
-                <pre><code>def processar_usuario(usuario):
-    if usuario is None:
-        return False
-    
-    if not usuario.ativo:
-        return False
-    
-    if usuario.idade < 18:
-        return False
-    
-    # processar usuário
-    return True</code></pre>
-            </div>
-        </div>
-        
-        <h3>2. Extrair Condições Complexas</h3>
-        <div class="comparison">
-            <div class="bad-example">
-                <h4>❌ Ruim:</h4>
-                <pre><code>if (usuario.idade >= 18 and usuario.tem_carteira and 
-    usuario.pontos >= 10 and not usuario.suspenso):
-    liberar_acesso()</code></pre>
-            </div>
-            <div class="good-example">
-                <h4>✅ Bom:</h4>
-                <pre><code>def pode_acessar(usuario):
-    return (usuario.idade >= 18 and 
-            usuario.tem_carteira and 
-            usuario.pontos >= 10 and 
-            not usuario.suspenso)
-
-if pode_acessar(usuario):
-    liberar_acesso()</code></pre>
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <h2>🔍 Validação Eficiente</h2>
-        
-        <h3>1. Validação em Cascata</h3>
-        <pre><code>def validar_email(email):
-    """Valida email de forma estruturada"""
-    if not email:
-        return False, "Email é obrigatório"
-    
-    if "@" not in email:
-        return False, "Email deve conter @"
-    
-    if "." not in email.split("@")[1]:
-        return False, "Domínio inválido"
-    
-    return True, "Email válido"
-
-# Uso
-email = input("Digite seu email: ")
-valido, mensagem = validar_email(email)
-
-if valido:
-    print(f"✅ {mensagem}")
-else:
-    print(f"❌ {mensagem}")</code></pre>
-    
-        <h3>2. Dicionário para Múltiplas Condições</h3>
-        <pre><code># Em vez de muitos if-elif
-def calcular_desconto(categoria):
-    descontos = {
-        "vip": 0.20,
-        "premium": 0.15,
-        "regular": 0.10,
-        "bronze": 0.05
-    }
-    return descontos.get(categoria, 0)</code></pre>
-    </section>
-
-    <section>
-        <h2>🚫 Erros Comuns a Evitar</h2>
-        
-        <h3>1. Comparação com True/False</h3>
-        <div class="comparison">
-            <div class="bad-example">
-                <h4>❌ Ruim:</h4>
-                <pre><code>if usuario_ativo == True:
-    print("Usuário ativo")</code></pre>
-            </div>
-            <div class="good-example">
-                <h4>✅ Bom:</h4>
-                <pre><code>if usuario_ativo:
-    print("Usuário ativo")</code></pre>
-            </div>
-        </div>
-        
-        <h3>2. Condições Redundantes</h3>
-        <div class="comparison">
-            <div class="bad-example">
-                <h4>❌ Ruim:</h4>
-                <pre><code>if idade >= 18:
+        <h3>❌ Redundante:</h3>
+        <pre><code>idade = int(input("Idade: "))
+if idade >= 18:
     pode_votar = True
 else:
-    pode_votar = False</code></pre>
-            </div>
-            <div class="good-example">
-                <h4>✅ Bom:</h4>
-                <pre><code>pode_votar = idade >= 18</code></pre>
-            </div>
-        </div>
+    pode_votar = False
+print(pode_votar)</code></pre>
         
-        <h3>3. Aninhamento Excessivo</h3>
-        <div class="comparison">
-            <div class="bad-example">
-                <h4>❌ Ruim:</h4>
-                <pre><code>if usuario:
-    if usuario.ativo:
-        if usuario.permissao:
-            if recurso_disponivel:
-                processar()</code></pre>
-            </div>
-            <div class="good-example">
-                <h4>✅ Bom:</h4>
-                <pre><code>if not usuario:
-    return
-if not usuario.ativo:
-    return
-if not usuario.permissao:
-    return
-if not recurso_disponivel:
-    return
-
-processar()</code></pre>
-            </div>
-        </div>
+        <h3>✅ Direto:</h3>
+        <pre><code>idade = int(input("Idade: "))
+pode_votar = idade >= 18
+print(f"Pode votar: {pode_votar}")</code></pre>
+        
+        <p><strong>Dica:</strong> Quando uma condição retorna True/False, atribua diretamente!</p>
     </section>
 
     <section>
-        <h2>📊 Exemplo Prático Completo</h2>
-        <pre><code>class SistemaLogin:
-    def __init__(self):
-        self.tentativas_maximas = 3
-        self.usuarios = {
-            "admin": {"senha": "123456", "ativo": True},
-            "user": {"senha": "password", "ativo": False}
-        }
-    
-    def validar_credenciais(self, usuario, senha):
-        """Valida credenciais com mensagens específicas"""
-        if not usuario or not senha:
-            return False, "Usuário e senha são obrigatórios"
+        <h2>🔍 Validação em Etapas</h2>
         
-        if usuario not in self.usuarios:
-            return False, "Usuário não encontrado"
-        
-        dados_usuario = self.usuarios[usuario]
-        
-        if not dados_usuario["ativo"]:
-            return False, "Usuário inativo"
-        
-        if dados_usuario["senha"] != senha:
-            return False, "Senha incorreta"
-        
-        return True, "Login realizado com sucesso"
-    
-    def fazer_login(self):
-        """Sistema de login com controle de tentativas"""
-        tentativas = 0
-        
-        while tentativas < self.tentativas_maximas:
-            usuario = input("Usuário: ")
-            senha = input("Senha: ")
-            
-            sucesso, mensagem = self.validar_credenciais(usuario, senha)
-            
-            if sucesso:
-                print(f"✅ {mensagem}")
-                return True
-            
-            tentativas += 1
-            restantes = self.tentativas_maximas - tentativas
-            
-            print(f"❌ {mensagem}")
-            
-            if restantes > 0:
-                print(f"Tentativas restantes: {restantes}")
-            else:
-                print("🔒 Acesso bloqueado - muitas tentativas")
-                return False
-        
-        return False</code></pre>
-    </section>
+        <h3>❌ Aninhamento Excessivo:</h3>
+        <pre><code>nome = input("Nome: ")
+idade = int(input("Idade: "))
+email = input("Email: ")
 
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Refatoração de Código</h3>
-            <p>Refatore o código abaixo aplicando as boas práticas aprendidas:</p>
-            
-            <textarea id="code-input" placeholder="# Código para refatorar
-def verificar_acesso(u):
-    if u != None:
-        if u['idade'] >= 18:
-            if u['ativo'] == True:
-                if u['verificado'] == True:
-                    if u['bloqueado'] == False:
-                        return True
-                    else:
-                        return False
-                else:
-                    return False
-            else:
-                return False
+if len(nome) >= 3:
+    if idade >= 18:
+        if "@" in email:
+            print("Cadastro aprovado!")
         else:
-            return False
+            print("Email inválido")
     else:
-        return False
+        print("Idade insuficiente")
+else:
+    print("Nome muito curto")</code></pre>
+        
+        <h3>✅ Validação Sequencial:</h3>
+        <pre><code>nome = input("Nome: ")
+idade = int(input("Idade: "))
+email = input("Email: ")
 
-# Refatore este código seguindo as boas práticas"></textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Verificar Refatoração</button>
-            <div id="output"></div>
-        </div>
+# Validar um de cada vez
+if len(nome) < 3:
+    print("❌ Nome muito curto")
+elif idade < 18:
+    print("❌ Idade insuficiente")
+elif "@" not in email:
+    print("❌ Email inválido")
+else:
+    print("✅ Cadastro aprovado!")</code></pre>
     </section>
 
     <section>
-        <h2>📋 Checklist de Boas Práticas</h2>
-        <div class="checklist">
-            <ul>
-                <li>✅ Usar nomes descritivos para variáveis e funções</li>
-                <li>✅ Evitar aninhamento excessivo (máximo 3 níveis)</li>
-                <li>✅ Preferir early returns</li>
-                <li>✅ Extrair condições complexas em funções</li>
-                <li>✅ Evitar comparações desnecessárias com True/False</li>
-                <li>✅ Usar comentários para lógica complexa</li>
+        <h2>� Condições Compostas</h2>
+        
+        <h3>Múltiplas Verificações:</h3>
+        <pre><code>usuario = input("Usuário: ")
+senha = input("Senha: ")
+
+# Verificar tudo de uma vez
+usuario_correto = usuario == "admin"
+senha_correta = senha == "1234"
+tamanho_ok = len(senha) >= 4
+
+if usuario_correto and senha_correta and tamanho_ok:
+    print("✅ Login realizado!")
+else:
+    print("❌ Acesso negado!")
+    
+    # Mostrar o que está errado
+    if not usuario_correto:
+        print("- Usuário incorreto")
+    if not senha_correta:
+        print("- Senha incorreta")
+    if not tamanho_ok:
+        print("- Senha muito curta")</code></pre>
+    </section>
+
+    <section>
+        <h2>🎯 Sistema de Notas Limpo</h2>
+        <pre><code>nome = input("Nome do aluno: ")
+nota1 = float(input("Nota 1: "))
+nota2 = float(input("Nota 2: "))
+nota3 = float(input("Nota 3: "))
+
+# Calcular média
+media = (nota1 + nota2 + nota3) / 3
+
+# Determinar situação
+if media >= 7:
+    situacao = "Aprovado"
+    emoji = "🎉"
+elif media >= 5:
+    situacao = "Recuperação"
+    emoji = "⚠️"
+else:
+    situacao = "Reprovado"
+    emoji = "❌"
+
+# Exibir resultado organizado
+print()
+print("="*40)
+print(f"BOLETIM DE {nome.upper()}")
+print("="*40)
+print(f"Nota 1: {nota1:.1f}")
+print(f"Nota 2: {nota2:.1f}")
+print(f"Nota 3: {nota3:.1f}")
+print(f"Média: {media:.2f}")
+print(f"Situação: {situacao} {emoji}")
+print("="*40)</code></pre>
+    </section>
+
+        <section>
+        <h2>💡 Dicas de Organização</h2>
+        <ul>
+            <li>✅ Use nomes que explicam o que a variável guarda</li>
+            <li>✅ Evite muitos if dentro de if (máximo 2 níveis)</li>
+            <li>✅ Agrupe validações relacionadas</li>
+            <li>✅ Use elif para condições excludentes</li>
+            <li>✅ Comente apenas o que não é óbvio</li>
+            <li>✅ Deixe espaço entre seções do código</li>
+        </ul>
+    </section>
+{% endblock %}
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    
+    <p><strong>Tarefa:</strong> Sistema de Login Limpo</p>
+    <ul>
+        <li>Peça usuário e senha</li>
+        <li>Usuário correto: "admin"</li>
+        <li>Senha correta: "1234"</li>
+        <li>Valide o tamanho da senha (mínimo 4 caracteres)</li>
+        <li>Mostre mensagens específicas para cada erro</li>
+        <li>Use validação sequencial (elif), não if dentro de if</li>
+        <li>Use nomes descritivos para variáveis booleanas</li>
+    </ul>
+    
+    <p><strong>Exemplo de saída esperada:</strong></p>
+    <pre><code>🔐 SISTEMA DE LOGIN 🔐
+Usuário: admin
+Senha: 1234
+✅ Login realizado com sucesso!
+Bem-vindo ao sistema!</code></pre>
+{% endblock %}
+
+{% block initial_code %}print("🔐 SISTEMA DE LOGIN 🔐")
+print()
+
+# Entrada de dados
+usuario = input("Usuário: ")
+senha = input("Senha: ")
+
+# SEU CÓDIGO AQUI
+# Valide de forma limpa e organizada{% endblock %}
                 <li>✅ Validar entrada de dados</li>
                 <li>✅ Retornar mensagens de erro específicas</li>
                 <li>✅ Manter consistência no estilo do código</li>

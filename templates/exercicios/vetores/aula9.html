@@ -1,622 +1,382 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 9 - Algoritmos com Vetores | CodeLogic{% endblock %}
+{% block title %}Aula 9 - Dicionários | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 9 – Algoritmos com Vetores{% endblock %}
+{% block lesson_title %}Aula 9 – Dicionários{% endblock %}
 
 {% block lesson_content %}
     <section>
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Implementar algoritmos clássicos usando listas</li>
-            <li>Resolver problemas complexos com estruturas de dados</li>
-            <li>Otimizar soluções algorítmicas</li>
+            <li>Compreender o conceito de dicionários (dict)</li>
+            <li>Trabalhar com pares chave-valor</li>
+            <li>Aplicar dicionários em problemas práticos</li>
         </ul>
     </section>
 
     <section>
-        <h2>🔍 Algoritmos de Busca Avançados</h2>
+        <h2>📖 O que são Dicionários?</h2>
+        <p>Dicionários são coleções que armazenam pares de <strong>chave-valor</strong>. Cada chave é única e permite acesso rápido ao valor correspondente.</p>
         
-        <h3>Busca com Múltiplos Critérios:</h3>
-        <pre><code>def busca_multiplos_criterios(lista, **criterios):
-    """
-    Busca elementos que atendem múltiplos critérios
-    Exemplo: buscar pessoas com idade > 25 AND cidade = 'SP'
-    """
-    resultado = []
-    
-    for item in lista:
-        atende_todos = True
+        <h3>Características dos Dicionários:</h3>
+        <ul>
+            <li>🔑 <strong>Chave-Valor</strong> - cada elemento é um par</li>
+            <li>🚫 <strong>Chaves únicas</strong> - não pode haver chaves duplicadas</li>
+            <li>✏️ <strong>Mutável</strong> - pode ser modificado</li>
+            <li>⚡ <strong>Acesso rápido</strong> - busca por chave é muito eficiente</li>
+            <li>📋 <strong>Ordenado</strong> - a partir do Python 3.7+</li>
+        </ul>
         
-        for campo, valor in criterios.items():
-            if isinstance(valor, dict):
-                # Operadores especiais: {'>=': 25}, {'in': ['A', 'B']}
-                operador = list(valor.keys())[0]
-                val = valor[operador]
-                
-                if operador == '>=':
-                    if not (item.get(campo, 0) >= val):
-                        atende_todos = False
-                        break
-                elif operador == '<=':
-                    if not (item.get(campo, 0) <= val):
-                        atende_todos = False
-                        break
-                elif operador == 'in':
-                    if not (item.get(campo) in val):
-                        atende_todos = False
-                        break
-                elif operador == 'contains':
-                    if not (val.lower() in item.get(campo, '').lower()):
-                        atende_todos = False
-                        break
-            else:
-                # Igualdade simples
-                if item.get(campo) != valor:
-                    atende_todos = False
-                    break
-        
-        if atende_todos:
-            resultado.append(item)
-    
-    return resultado
+        <h3>Criação de Dicionários:</h3>
+        <pre><code># Dicionário vazio
+dicionario_vazio = {}
+print(f"Vazio: {dicionario_vazio}")
 
-# Exemplo de uso
-pessoas = [
-    {'nome': 'Ana', 'idade': 28, 'cidade': 'SP', 'salario': 5000},
-    {'nome': 'Bruno', 'idade': 32, 'cidade': 'RJ', 'salario': 6000},
-    {'nome': 'Carlos', 'idade': 24, 'cidade': 'SP', 'salario': 4500},
-    {'nome': 'Diana', 'idade': 29, 'cidade': 'SP', 'salario': 5500}
+# Dicionário com elementos
+aluno = {
+    "nome": "Ana Silva",
+    "idade": 20,
+    "curso": "Engenharia",
+    "ativo": True
+}
+
+print(f"Aluno: {aluno}")
+
+# Usando dict()
+pessoa = dict(nome="Carlos", idade=25, cidade="São Paulo")
+print(f"Pessoa: {pessoa}")</code></pre>
+    </section>
+
+    <section>
+        <h2>🎯 Acessando Valores</h2>
+        
+        <h3>Acesso por Chave:</h3>
+        <pre><code>aluno = {
+    "nome": "Ana Silva",
+    "idade": 20,
+    "curso": "Engenharia"
+}
+
+# Acesso direto com []
+nome = aluno["nome"]
+print(f"Nome: {nome}")
+
+# Acesso seguro com get()
+idade = aluno.get("idade")
+print(f"Idade: {idade}")
+
+# get() com valor padrão
+email = aluno.get("email", "Não informado")
+print(f"Email: {email}")  # Retorna valor padrão</code></pre>
+        
+        <h3>Verificar se Chave Existe:</h3>
+        <pre><code>produto = {
+    "nome": "Notebook",
+    "preco": 3500.00,
+    "estoque": 10
+}
+
+# Verificar com in
+if "preco" in produto:
+    print(f"Preço: R$ {produto['preco']:.2f}")
+
+if "desconto" not in produto:
+    print("Produto sem desconto")</code></pre>
+    </section>
+
+    <section>
+        <h2>➕ Adicionando e Modificando</h2>
+        
+        <h3>Adicionar/Modificar Elementos:</h3>
+        <pre><code>pessoa = {
+    "nome": "Bruno",
+    "idade": 25
+}
+
+print(f"Antes: {pessoa}")
+
+# Adicionar novo par chave-valor
+pessoa["cidade"] = "São Paulo"
+print(f"Após adicionar cidade: {pessoa}")
+
+# Modificar valor existente
+pessoa["idade"] = 26
+print(f"Após modificar idade: {pessoa}")
+
+# update() - atualizar múltiplos valores
+pessoa.update({"profissao": "Programador", "salario": 5000})
+print(f"Após update: {pessoa}")</code></pre>
+        
+        <h3>Remover Elementos:</h3>
+        <pre><code>dados = {
+    "nome": "Carlos",
+    "idade": 30,
+    "cidade": "Rio",
+    "temp": "valor temporário"
+}
+
+print(f"Inicial: {dados}")
+
+# del - remover chave específica
+del dados["temp"]
+print(f"Após del: {dados}")
+
+# pop() - remover e retornar valor
+idade = dados.pop("idade")
+print(f"Idade removida: {idade}")
+print(f"Após pop: {dados}")
+
+# popitem() - remover último item
+ultimo = dados.popitem()
+print(f"Último removido: {ultimo}")
+print(f"Após popitem: {dados}")
+
+# clear() - limpar tudo
+dados.clear()
+print(f"Após clear: {dados}")</code></pre>
+    </section>
+
+    <section>
+        <h2>🔄 Percorrendo Dicionários</h2>
+        
+        <h3>Percorrer Chaves:</h3>
+        <pre><code>notas = {
+    "Ana": 8.5,
+    "Bruno": 7.0,
+    "Carlos": 9.5,
+    "Diana": 8.0
+}
+
+# Percorrer apenas as chaves
+print("Alunos:")
+for aluno in notas:
+    print(f"  - {aluno}")
+
+# Ou explicitamente com keys()
+print("\nAlunos (com keys()):")
+for aluno in notas.keys():
+    print(f"  - {aluno}")</code></pre>
+        
+        <h3>Percorrer Valores:</h3>
+        <pre><code>print("Notas:")
+for nota in notas.values():
+    print(f"  - {nota}")</code></pre>
+        
+        <h3>Percorrer Chaves e Valores:</h3>
+        <pre><code>print("Alunos e suas notas:")
+for aluno, nota in notas.items():
+    print(f"{aluno}: {nota}")</code></pre>
+    </section>
+
+    <section>
+        <h2>📊 Operações Úteis</h2>
+        
+        <h3>Contar Ocorrências:</h3>
+        <pre><code>texto = "python é incrível e python é poderoso"
+palavras = texto.split()
+
+# Contar quantas vezes cada palavra aparece
+contagem = {}
+for palavra in palavras:
+    if palavra in contagem:
+        contagem[palavra] += 1
+    else:
+        contagem[palavra] = 1
+
+print("Contagem de palavras:")
+for palavra, count in contagem.items():
+    print(f"{palavra}: {count}")</code></pre>
+        
+        <h3>Agrupar Dados:</h3>
+        <pre><code>alunos = [
+    {"nome": "Ana", "curso": "Eng"},
+    {"nome": "Bruno", "curso": "Med"},
+    {"nome": "Carlos", "curso": "Eng"},
+    {"nome": "Diana", "curso": "Med"},
+    {"nome": "Eduardo", "curso": "Eng"}
 ]
 
-# Buscar pessoas de SP com idade >= 25
-resultado = busca_multiplos_criterios(
-    pessoas,
-    cidade='SP',
-    idade={'>=': 25}
-)
-print("Pessoas de SP com 25+ anos:")
-for pessoa in resultado:
-    print(f"  {pessoa['nome']}: {pessoa['idade']} anos")</code></pre>
+# Agrupar alunos por curso
+por_curso = {}
+for aluno in alunos:
+    curso = aluno["curso"]
+    if curso not in por_curso:
+        por_curso[curso] = []
+    por_curso[curso].append(aluno["nome"])
+
+print("Alunos por curso:")
+for curso, lista_alunos in por_curso.items():
+    print(f"{curso}: {lista_alunos}")</code></pre>
         
-        <h3>Busca por Aproximação (Fuzzy Search):</h3>
-        <pre><code>def distancia_levenshtein(s1, s2):
-    """Calcula distância de Levenshtein entre duas strings"""
-    if len(s1) < len(s2):
-        return distancia_levenshtein(s2, s1)
-    
-    if len(s2) == 0:
-        return len(s1)
-    
-    anterior = list(range(len(s2) + 1))
-    for i, c1 in enumerate(s1):
-        atual = [i + 1]
-        for j, c2 in enumerate(s2):
-            insercoes = anterior[j + 1] + 1
-            delecoes = atual[j] + 1
-            substituicoes = anterior[j] + (c1 != c2)
-            atual.append(min(insercoes, delecoes, substituicoes))
-        anterior = atual
-    
-    return anterior[-1]
+        <h3>Inverter Chave-Valor:</h3>
+        <pre><code>capitais = {
+    "Brasil": "Brasília",
+    "Argentina": "Buenos Aires",
+    "Chile": "Santiago"
+}
 
-def busca_aproximada(lista_nomes, termo, tolerancia=2):
-    """Busca nomes similares com tolerância a erros"""
-    resultados = []
-    
-    for nome in lista_nomes:
-        distancia = distancia_levenshtein(nome.lower(), termo.lower())
-        if distancia <= tolerancia:
-            resultados.append((nome, distancia))
-    
-    # Ordenar por menor distância
-    resultados.sort(key=lambda x: x[1])
-    return resultados
+# Inverter para cidade: país
+invertido = {}
+for pais, capital in capitais.items():
+    invertido[capital] = pais
 
-# Teste
-nomes = ["João", "Maria", "José", "Ana", "Pedro", "Joana", "Mário"]
-busca = busca_aproximada(nomes, "Joao", tolerancia=2)
-print(f"Busca por 'Joao': {busca}")  # [('João', 1), ('Joana', 2)]</code></pre>
+print("Invertido:")
+for capital, pais in invertido.items():
+    print(f"{capital} é capital de {pais}")</code></pre>
     </section>
 
     <section>
-        <h2>🔄 Algoritmos de Processamento</h2>
+        <h2>📚 Dicionários Aninhados</h2>
         
-        <h3>Sliding Window (Janela Deslizante):</h3>
-        <pre><code>def max_soma_subarray(arr, k):
-    """Encontra a soma máxima de subarray de tamanho k"""
-    if len(arr) < k:
-        return None
-    
-    # Calcular soma da primeira janela
-    soma_janela = sum(arr[:k])
-    max_soma = soma_janela
-    
-    # Deslizar a janela
-    for i in range(len(arr) - k):
-        # Remover primeiro elemento e adicionar próximo
-        soma_janela = soma_janela - arr[i] + arr[i + k]
-        max_soma = max(max_soma, soma_janela)
-    
-    return max_soma
+        <pre><code># Dicionário contendo dicionários
+empresa = {
+    "TI": {
+        "gerente": "Ana",
+        "funcionarios": 15,
+        "orcamento": 500000
+    },
+    "Vendas": {
+        "gerente": "Bruno",
+        "funcionarios": 20,
+        "orcamento": 300000
+    },
+    "RH": {
+        "gerente": "Carlos",
+        "funcionarios": 5,
+        "orcamento": 150000
+    }
+}
 
-def media_movel(dados, janela):
-    """Calcula média móvel dos dados"""
-    if len(dados) < janela:
-        return []
-    
-    medias = []
-    for i in range(len(dados) - janela + 1):
-        media = sum(dados[i:i + janela]) / janela
-        medias.append(round(media, 2))
-    
-    return medias
+# Acessar dados aninhados
+print(f"Gerente de TI: {empresa['TI']['gerente']}")
+print(f"Funcionários de Vendas: {empresa['Vendas']['funcionarios']}")
 
-# Teste
-precos = [10, 12, 13, 12, 15, 16, 14, 13, 12, 11]
-print(f"Preços: {precos}")
-print(f"Máxima soma (3 dias): {max_soma_subarray(precos, 3)}")
-print(f"Média móvel (3 dias): {media_movel(precos, 3)}")</code></pre>
-        
-        <h3>Two Pointers (Dois Ponteiros):</h3>
-        <pre><code>def par_soma_alvo(arr, alvo):
-    """Encontra par de números que somam o valor alvo"""
-    arr_ordenado = sorted(arr)
-    esquerda = 0
-    direita = len(arr_ordenado) - 1
-    
-    while esquerda < direita:
-        soma_atual = arr_ordenado[esquerda] + arr_ordenado[direita]
-        
-        if soma_atual == alvo:
-            return (arr_ordenado[esquerda], arr_ordenado[direita])
-        elif soma_atual < alvo:
-            esquerda += 1
-        else:
-            direita -= 1
-    
-    return None
-
-def remover_duplicatas_ordenado(arr):
-    """Remove duplicatas de array ordenado in-place"""
-    if not arr:
-        return 0
-    
-    escrita = 1
-    
-    for leitura in range(1, len(arr)):
-        if arr[leitura] != arr[leitura - 1]:
-            arr[escrita] = arr[leitura]
-            escrita += 1
-    
-    return escrita  # Novo tamanho
-
-# Teste
-numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-par = par_soma_alvo(numeros, 10)
-print(f"Par que soma 10: {par}")
-
-duplicatas = [1, 1, 2, 2, 2, 3, 4, 4, 5]
-tamanho = remover_duplicatas_ordenado(duplicatas)
-print(f"Sem duplicatas: {duplicatas[:tamanho]}")</code></pre>
-    </section>
-
-    <section>
-        <h2>🔀 Algoritmos de Permutação e Combinação</h2>
-        
-        <h3>Gerando Permutações:</h3>
-        <pre><code>def permutacoes(lista):
-    """Gera todas as permutações de uma lista"""
-    if len(lista) <= 1:
-        return [lista]
-    
-    resultado = []
-    for i in range(len(lista)):
-        elemento = lista[i]
-        resto = lista[:i] + lista[i+1:]
-        
-        for perm in permutacoes(resto):
-            resultado.append([elemento] + perm)
-    
-    return resultado
-
-def permutacoes_iterativo(lista):
-    """Versão iterativa usando biblioteca"""
-    from itertools import permutations
-    return [list(p) for p in permutations(lista)]
-
-# Gerar combinações
-def combinacoes(lista, r):
-    """Gera combinações de r elementos"""
-    from itertools import combinations
-    return [list(c) for c in combinations(lista, r)]
-
-# Teste
-elementos = [1, 2, 3]
-print(f"Elementos: {elementos}")
-print(f"Permutações: {permutacoes(elementos)}")
-print(f"Combinações (2): {combinacoes(elementos, 2)}")</code></pre>
-        
-        <h3>Subsequências e Subconjuntos:</h3>
-        <pre><code>def maior_subsequencia_crescente(arr):
-    """Encontra o tamanho da maior subsequência crescente"""
-    if not arr:
-        return 0
-    
-    # dp[i] = tamanho da maior subsequência terminando em i
-    dp = [1] * len(arr)
-    
-    for i in range(1, len(arr)):
-        for j in range(i):
-            if arr[j] < arr[i]:
-                dp[i] = max(dp[i], dp[j] + 1)
-    
-    return max(dp)
-
-def todos_subconjuntos(lista):
-    """Gera todos os subconjuntos possíveis"""
-    resultado = []
-    
-    def backtrack(indice, subconjunto_atual):
-        if indice == len(lista):
-            resultado.append(subconjunto_atual[:])
-            return
-        
-        # Não incluir elemento atual
-        backtrack(indice + 1, subconjunto_atual)
-        
-        # Incluir elemento atual
-        subconjunto_atual.append(lista[indice])
-        backtrack(indice + 1, subconjunto_atual)
-        subconjunto_atual.pop()
-    
-    backtrack(0, [])
-    return resultado
-
-# Teste
-sequencia = [10, 9, 2, 5, 3, 7, 101, 18]
-print(f"Sequência: {sequencia}")
-print(f"Maior subseq. crescente: {maior_subsequencia_crescente(sequencia)}")
-
-conjunto = [1, 2, 3]
-subconjuntos = todos_subconjuntos(conjunto)
-print(f"Subconjuntos de {conjunto}: {subconjuntos}")</code></pre>
+# Percorrer dicionário aninhado
+print("\nTodos os departamentos:")
+for depto, dados in empresa.items():
+    print(f"\n{depto}:")
+    print(f"  Gerente: {dados['gerente']}")
+    print(f"  Funcionários: {dados['funcionarios']}")
+    print(f"  Orçamento: R$ {dados['orcamento']:,}")</code></pre>
     </section>
 
     <section>
         <h2>🎮 Exercício Prático</h2>
         <div class="exercise-box">
-            <h3>Sistema de Recomendação e Análise</h3>
-            <p>Implemente um sistema completo de análise e recomendação usando algoritmos avançados:</p>
+            <h3>Sistema de Gerenciamento de Estoque</h3>
+            <p>Crie um sistema de estoque usando dicionários:</p>
             <ul>
-                <li>Análise de padrões em dados</li>
-                <li>Sistema de recomendação baseado em similaridade</li>
-                <li>Detecção de tendências e anomalias</li>
+                <li>Armazenar produtos com código, nome, preço e quantidade</li>
+                <li>Adicionar, remover e atualizar produtos</li>
+                <li>Calcular valor total do estoque</li>
+                <li>Gerar relatórios</li>
             </ul>
             
-            <textarea id="code-input" placeholder="import math
-from collections import defaultdict, Counter
+            <textarea id="code-input" placeholder="# Sistema de Gerenciamento de Estoque
 
-class SistemaAnaliseRecomendacao:
-    def __init__(self):
-        # Dados de exemplo: usuários e suas avaliações de produtos
-        self.avaliacoes = {
-            'Alice': {'Produto A': 5, 'Produto B': 3, 'Produto C': 4, 'Produto D': 1},
-            'Bob': {'Produto A': 3, 'Produto B': 1, 'Produto C': 2, 'Produto E': 5},
-            'Charlie': {'Produto A': 4, 'Produto B': 2, 'Produto C': 5, 'Produto D': 2},
-            'Diana': {'Produto B': 4, 'Produto D': 5, 'Produto E': 3, 'Produto F': 4},
-            'Eva': {'Produto A': 2, 'Produto C': 3, 'Produto E': 4, 'Produto F': 5}
-        }
-        
-        # Dados de vendas por período
-        self.vendas_temporais = [
-            {'periodo': '2023-01', 'produto': 'Produto A', 'vendas': 150},
-            {'periodo': '2023-01', 'produto': 'Produto B', 'vendas': 120},
-            {'periodo': '2023-02', 'produto': 'Produto A', 'vendas': 180},
-            {'periodo': '2023-02', 'produto': 'Produto B', 'vendas': 100},
-            {'periodo': '2023-03', 'produto': 'Produto A', 'vendas': 220},
-            {'periodo': '2023-03', 'produto': 'Produto B', 'vendas': 80},
-        ]
+estoque = {
+    'P001': {'nome': 'Arroz', 'preco': 5.50, 'quantidade': 100},
+    'P002': {'nome': 'Feijão', 'preco': 7.00, 'quantidade': 80},
+    'P003': {'nome': 'Açúcar', 'preco': 3.50, 'quantidade': 120},
+    'P004': {'nome': 'Óleo', 'preco': 8.00, 'quantidade': 60}
+}
+
+print('📦 SISTEMA DE GERENCIAMENTO DE ESTOQUE')
+print('=' * 60)
+
+# Listar todos os produtos
+print('\n📋 PRODUTOS EM ESTOQUE:')
+print(f'{'Código':8} {'Nome':15} {'Preço':10} {'Qtd':6} {'Total':10}')
+print('-' * 60)
+
+for codigo, produto in estoque.items():
+    nome = produto['nome']
+    preco = produto['preco']
+    qtd = produto['quantidade']
+    total = preco * qtd
     
-    def similaridade_coseno(self, usuario1, usuario2):
-        '''Calcula similaridade coseno entre dois usuários'''
-        # Produtos em comum
-        produtos_comuns = set(self.avaliacoes[usuario1].keys()) & set(self.avaliacoes[usuario2].keys())
-        
-        if not produtos_comuns:
-            return 0
-        
-        # Vetores de avaliações
-        vetor1 = [self.avaliacoes[usuario1][produto] for produto in produtos_comuns]
-        vetor2 = [self.avaliacoes[usuario2][produto] for produto in produtos_comuns]
-        
-        # Produto escalar
-        produto_escalar = sum(a * b for a, b in zip(vetor1, vetor2))
-        
-        # Magnitudes
-        magnitude1 = math.sqrt(sum(a * a for a in vetor1))
-        magnitude2 = math.sqrt(sum(b * b for b in vetor2))
-        
-        if magnitude1 == 0 or magnitude2 == 0:
-            return 0
-        
-        return produto_escalar / (magnitude1 * magnitude2)
+    print(f'{codigo:8} {nome:15} R$ {preco:6.2f} {qtd:6} R$ {total:8.2f}')
+
+# Calcular valor total do estoque
+valor_total = 0
+quantidade_total = 0
+
+for produto in estoque.values():
+    valor_total += produto['preco'] * produto['quantidade']
+    quantidade_total += produto['quantidade']
+
+print('-' * 60)
+print(f'Total de produtos diferentes: {len(estoque)}')
+print(f'Quantidade total de itens: {quantidade_total}')
+print(f'Valor total do estoque: R$ {valor_total:.2f}')
+
+# Adicionar novo produto
+novo_codigo = 'P005'
+novo_produto = {
+    'nome': 'Macarrão',
+    'preco': 4.50,
+    'quantidade': 90
+}
+
+estoque[novo_codigo] = novo_produto
+print(f'\n✅ Produto {novo_codigo} adicionado: {novo_produto['nome']}')
+
+# Atualizar quantidade (venda)
+codigo_venda = 'P001'
+qtd_vendida = 10
+
+if codigo_venda in estoque:
+    estoque[codigo_venda]['quantidade'] -= qtd_vendida
+    print(f'💰 Venda registrada: {qtd_vendida} unidades de {estoque[codigo_venda]['nome']}')
+    print(f'   Estoque restante: {estoque[codigo_venda]['quantidade']} unidades')
+
+# Produtos com estoque baixo (< 70)
+print('\n⚠️  PRODUTOS COM ESTOQUE BAIXO (< 70):')
+tem_baixo = False
+
+for codigo, produto in estoque.items():
+    if produto['quantidade'] < 70:
+        tem_baixo = True
+        print(f'  {codigo} - {produto['nome']}: {produto['quantidade']} unidades')
+
+if not tem_baixo:
+    print('  Nenhum produto com estoque baixo')
+
+# Produto mais caro e mais barato
+produto_mais_caro = ''
+preco_mais_caro = 0
+produto_mais_barato = ''
+preco_mais_barato = 99999
+
+for codigo, produto in estoque.items():
+    if produto['preco'] > preco_mais_caro:
+        preco_mais_caro = produto['preco']
+        produto_mais_caro = produto['nome']
     
-    def usuarios_similares(self, usuario_alvo, n=3):
-        '''Encontra os N usuários mais similares'''
-        if usuario_alvo not in self.avaliacoes:
-            return []
-        
-        similaridades = []
-        
-        for usuario in self.avaliacoes:
-            if usuario != usuario_alvo:
-                sim = self.similaridade_coseno(usuario_alvo, usuario)
-                similaridades.append((usuario, sim))
-        
-        # Ordenar por similaridade decrescente
-        similaridades.sort(key=lambda x: x[1], reverse=True)
-        
-        return similaridades[:n]
-    
-    def recomendar_produtos(self, usuario_alvo, n_recomendacoes=3):
-        '''Recomenda produtos baseado em usuários similares'''
-        if usuario_alvo not in self.avaliacoes:
-            return []
-        
-        # Produtos já avaliados pelo usuário
-        produtos_usuario = set(self.avaliacoes[usuario_alvo].keys())
-        
-        # Encontrar usuários similares
-        usuarios_sim = self.usuarios_similares(usuario_alvo, 5)
-        
-        # Coletar recomendações ponderadas
-        recomendacoes = defaultdict(float)
-        peso_total = defaultdict(float)
-        
-        for usuario_similar, similaridade in usuarios_sim:
-            for produto, avaliacao in self.avaliacoes[usuario_similar].items():
-                if produto not in produtos_usuario:
-                    recomendacoes[produto] += avaliacao * similaridade
-                    peso_total[produto] += similaridade
-        
-        # Calcular médias ponderadas
-        for produto in recomendacoes:
-            if peso_total[produto] > 0:
-                recomendacoes[produto] /= peso_total[produto]
-        
-        # Ordenar e retornar top N
-        melhores = sorted(recomendacoes.items(), key=lambda x: x[1], reverse=True)
-        return melhores[:n_recomendacoes]
-    
-    def detectar_tendencias(self, produto):
-        '''Detecta tendências de crescimento/declínio'''
-        vendas_produto = [v for v in self.vendas_temporais if v['produto'] == produto]
-        vendas_produto.sort(key=lambda x: x['periodo'])
-        
-        if len(vendas_produto) < 2:
-            return 'Dados insuficientes'
-        
-        valores = [v['vendas'] for v in vendas_produto]
-        
-        # Calcular tendência usando regressão linear simples
-        n = len(valores)
-        x = list(range(n))
-        
-        # Coeficientes da reta y = ax + b
-        soma_x = sum(x)
-        soma_y = sum(valores)
-        soma_xy = sum(xi * yi for xi, yi in zip(x, valores))
-        soma_x2 = sum(xi * xi for xi in x)
-        
-        a = (n * soma_xy - soma_x * soma_y) / (n * soma_x2 - soma_x * soma_x)
-        
-        # Interpretar tendência
-        if a > 10:
-            return 'Crescimento forte'
-        elif a > 0:
-            return 'Crescimento moderado'
-        elif a > -10:
-            return 'Declínio moderado'
-        else:
-            return 'Declínio forte'
-    
-    def detectar_anomalias(self, dados, threshold=2):
-        '''Detecta valores anômalos usando desvio padrão'''
-        if len(dados) < 2:
-            return []
-        
-        media = sum(dados) / len(dados)
-        variancia = sum((x - media) ** 2 for x in dados) / len(dados)
-        desvio_padrao = math.sqrt(variancia)
-        
-        anomalias = []
-        for i, valor in enumerate(dados):
-            z_score = abs(valor - media) / desvio_padrao if desvio_padrao > 0 else 0
-            if z_score > threshold:
-                anomalias.append((i, valor, z_score))
-        
-        return anomalias
-    
-    def analise_popularidade(self):
-        '''Analisa popularidade dos produtos'''
-        contador_avaliacoes = Counter()
-        soma_avaliacoes = defaultdict(float)
-        
-        for avaliacoes_usuario in self.avaliacoes.values():
-            for produto, avaliacao in avaliacoes_usuario.items():
-                contador_avaliacoes[produto] += 1
-                soma_avaliacoes[produto] += avaliacao
-        
-        # Calcular médias
-        popularidade = {}
-        for produto in contador_avaliacoes:
-            num_avaliacoes = contador_avaliacoes[produto]
-            media_avaliacao = soma_avaliacoes[produto] / num_avaliacoes
-            
-            # Score de popularidade: média * log(número de avaliações)
-            score = media_avaliacao * math.log(num_avaliacoes + 1)
-            
-            popularidade[produto] = {
-                'media_avaliacao': round(media_avaliacao, 2),
-                'num_avaliacoes': num_avaliacoes,
-                'score_popularidade': round(score, 2)
-            }
-        
-        return dict(sorted(popularidade.items(), 
-                          key=lambda x: x[1]['score_popularidade'], 
-                          reverse=True))
-    
-    def clusters_usuarios(self, threshold=0.5):
-        '''Agrupa usuários similares em clusters'''
-        usuarios = list(self.avaliacoes.keys())
-        clusters = []
-        visitados = set()
-        
-        for usuario in usuarios:
-            if usuario in visitados:
-                continue
-            
-            cluster = [usuario]
-            visitados.add(usuario)
-            
-            for outro_usuario in usuarios:
-                if outro_usuario not in visitados:
-                    sim = self.similaridade_coseno(usuario, outro_usuario)
-                    if sim >= threshold:
-                        cluster.append(outro_usuario)
-                        visitados.add(outro_usuario)
-            
-            clusters.append(cluster)
-        
-        return clusters
-    
-    def matrix_factorization_simples(self, k=2, iteracoes=100, lr=0.01):
-        '''Implementação simples de fatoração de matriz para recomendação'''
-        # Criar matriz usuário-produto
-        usuarios = list(self.avaliacoes.keys())
-        produtos = set()
-        for avs in self.avaliacoes.values():
-            produtos.update(avs.keys())
-        produtos = list(produtos)
-        
-        # Matriz R
-        R = [[0 for _ in produtos] for _ in usuarios]
-        mask = [[False for _ in produtos] for _ in usuarios]
-        
-        for i, usuario in enumerate(usuarios):
-            for j, produto in enumerate(produtos):
-                if produto in self.avaliacoes[usuario]:
-                    R[i][j] = self.avaliacoes[usuario][produto]
-                    mask[i][j] = True
-        
-        # Inicializar matrizes P e Q aleatoriamente
-        import random
-        P = [[random.random() for _ in range(k)] for _ in usuarios]
-        Q = [[random.random() for _ in range(k)] for _ in produtos]
-        
-        # Treinamento
-        for _ in range(iteracoes):
-            for i in range(len(usuarios)):
-                for j in range(len(produtos)):
-                    if mask[i][j]:  # Apenas para avaliações conhecidas
-                        erro = R[i][j] - sum(P[i][f] * Q[j][f] for f in range(k))
-                        
-                        # Atualizar fatores
-                        for f in range(k):
-                            P[i][f] += lr * erro * Q[j][f]
-                            Q[j][f] += lr * erro * P[i][f]
-        
-        return usuarios, produtos, P, Q
+    if produto['preco'] < preco_mais_barato:
+        preco_mais_barato = produto['preco']
+        produto_mais_barato = produto['nome']
 
-# Testando o sistema
-sistema = SistemaAnaliseRecomendacao()
+print(f'\n💎 Produto mais caro: {produto_mais_caro} (R$ {preco_mais_caro:.2f})')
+print(f'💵 Produto mais barato: {produto_mais_barato} (R$ {preco_mais_barato:.2f})')
 
-print('🔍 SISTEMA DE ANÁLISE E RECOMENDAÇÃO')
-print('=' * 40)
+# Buscar produto por nome
+nome_busca = 'Açúcar'
+print(f'\n🔍 BUSCAR: {nome_busca}')
+encontrado = False
 
-# Análise de popularidade
-print('\\n📊 ANÁLISE DE POPULARIDADE:')
-popularidade = sistema.analise_popularidade()
-for produto, stats in list(popularidade.items())[:3]:
-    print(f'  {produto}: Score {stats[\"score_popularidade\"]} '
-          f'(Média: {stats[\"media_avaliacao\"]}, Avaliações: {stats[\"num_avaliacoes\"]})')
+for codigo, produto in estoque.items():
+    if produto['nome'] == nome_busca:
+        encontrado = True
+        print(f'  Código: {codigo}')
+        print(f'  Preço: R$ {produto['preco']:.2f}')
+        print(f'  Quantidade: {produto['quantidade']}')
+        valor_estoque = produto['preco'] * produto['quantidade']
+        print(f'  Valor em estoque: R$ {valor_estoque:.2f}')
+        break
 
-# Recomendações para Alice
-print('\\n💡 RECOMENDAÇÕES PARA ALICE:')
-recomendacoes = sistema.recomendar_produtos('Alice', 3)
-for produto, score in recomendacoes:
-    print(f'  {produto}: Score {score:.2f}')
-
-# Usuários similares a Alice
-print('\\n👥 USUÁRIOS SIMILARES A ALICE:')
-similares = sistema.usuarios_similares('Alice', 3)
-for usuario, sim in similares:
-    print(f'  {usuario}: Similaridade {sim:.3f}')
-
-# Análise de tendências
-print('\\n📈 ANÁLISE DE TENDÊNCIAS:')
-for produto in ['Produto A', 'Produto B']:
-    tendencia = sistema.detectar_tendencias(produto)
-    print(f'  {produto}: {tendencia}')
-
-# Clusters de usuários
-print('\\n🔗 CLUSTERS DE USUÁRIOS:')
-clusters = sistema.clusters_usuarios(0.3)
-for i, cluster in enumerate(clusters, 1):
-    print(f'  Cluster {i}: {cluster}')
-
-# Detecção de anomalias em vendas
-print('\\n⚠️ DETECÇÃO DE ANOMALIAS:')
-vendas_exemplo = [100, 120, 110, 500, 115, 125, 130]  # 500 é anômalo
-anomalias = sistema.detectar_anomalias(vendas_exemplo)
-for idx, valor, z_score in anomalias:
-    print(f'  Posição {idx}: Valor {valor} (Z-score: {z_score:.2f})')
-
-# Demonstração de algoritmos auxiliares
-print('\\n🧮 ALGORITMOS AUXILIARES:')
-
-# Sliding window para média móvel de vendas
-def media_movel_vendas(vendas, janela):
-    if len(vendas) < janela:
-        return []
-    
-    medias = []
-    for i in range(len(vendas) - janela + 1):
-        media = sum(vendas[i:i + janela]) / janela
-        medias.append(round(media, 1))
-    
-    return medias
-
-vendas_mensais = [150, 120, 180, 100, 220, 80, 200, 160]
-media_3_meses = media_movel_vendas(vendas_mensais, 3)
-print(f'Vendas mensais: {vendas_mensais}')
-print(f'Média móvel (3 meses): {media_3_meses}')
-
-# Top-K elementos usando heap
-import heapq
-
-def top_k_produtos_avaliacoes(avaliacoes_dict, k=3):
-    '''Encontra top K produtos por número de avaliações'''
-    contador = {}
-    for avs in avaliacoes_dict.values():
-        for produto in avs:
-            contador[produto] = contador.get(produto, 0) + 1
-    
-    # Usar heap para eficiência
-    heap = []
-    for produto, count in contador.items():
-        if len(heap) < k:
-            heapq.heappush(heap, (count, produto))
-        elif count > heap[0][0]:
-            heapq.heapreplace(heap, (count, produto))
-    
-    return sorted(heap, reverse=True)
-
-top_produtos = top_k_produtos_avaliacoes(sistema.avaliacoes, 3)
-print(f'\\nTop 3 produtos mais avaliados:')
-for count, produto in top_produtos:
-    print(f'  {produto}: {count} avaliações')"></textarea>
+if not encontrado:
+    print(f'  Produto não encontrado')"></textarea>
             
             <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
             <div id="output"></div>
@@ -624,268 +384,29 @@ for count, produto in top_produtos:
     </section>
 
     <section>
-        <h2>🎨 Algoritmos de Processamento de Imagem</h2>
-        
-        <h3>Filtros em Matrizes:</h3>
-        <pre><code>def aplicar_filtro_media(matriz, tamanho_kernel=3):
-    """Aplica filtro de média (blur) em matriz"""
-    linhas, colunas = len(matriz), len(matriz[0])
-    resultado = [[0 for _ in range(colunas)] for _ in range(linhas)]
-    
-    offset = tamanho_kernel // 2
-    
-    for i in range(linhas):
-        for j in range(colunas):
-            soma = 0
-            count = 0
-            
-            # Aplicar kernel
-            for di in range(-offset, offset + 1):
-                for dj in range(-offset, offset + 1):
-                    ni, nj = i + di, j + dj
-                    if 0 <= ni < linhas and 0 <= nj < colunas:
-                        soma += matriz[ni][nj]
-                        count += 1
-            
-            resultado[i][j] = round(soma / count, 1)
-    
-    return resultado
-
-def detectar_bordas_simples(matriz):
-    """Detecta bordas usando operador de Sobel simplificado"""
-    linhas, colunas = len(matriz), len(matriz[0])
-    resultado = [[0 for _ in range(colunas)] for _ in range(linhas)]
-    
-    for i in range(1, linhas - 1):
-        for j in range(1, colunas - 1):
-            # Gradiente horizontal
-            gx = (-1 * matriz[i-1][j-1] + 1 * matriz[i-1][j+1] +
-                  -2 * matriz[i][j-1]   + 2 * matriz[i][j+1] +
-                  -1 * matriz[i+1][j-1] + 1 * matriz[i+1][j+1])
-            
-            # Gradiente vertical
-            gy = (-1 * matriz[i-1][j-1] - 2 * matriz[i-1][j] - 1 * matriz[i-1][j+1] +
-                   1 * matriz[i+1][j-1] + 2 * matriz[i+1][j] + 1 * matriz[i+1][j+1])
-            
-            # Magnitude do gradiente
-            resultado[i][j] = round((gx**2 + gy**2)**0.5, 1)
-    
-    return resultado
-
-# Teste
-imagem = [
-    [10, 20, 30, 40],
-    [50, 60, 70, 80],
-    [90, 100, 110, 120],
-    [130, 140, 150, 160]
-]
-
-print("Imagem original:")
-for linha in imagem:
-    print(linha)
-
-suavizada = aplicar_filtro_media(imagem)
-print("\\nApós filtro de média:")
-for linha in suavizada:
-    print(linha)</code></pre>
-    </section>
-
-    <section>
-        <h2>⚡ Algoritmos de Otimização</h2>
-        
-        <h3>Memoização (Programação Dinâmica):</h3>
-        <pre><code>def fibonacci_memo():
-    """Fibonacci com memoização"""
-    cache = {}
-    
-    def fib(n):
-        if n in cache:
-            return cache[n]
-        
-        if n <= 1:
-            return n
-        
-        resultado = fib(n-1) + fib(n-2)
-        cache[n] = resultado
-        return resultado
-    
-    return fib
-
-def longest_common_subsequence(str1, str2):
-    """Maior subsequência comum usando programação dinâmica"""
-    m, n = len(str1), len(str2)
-    
-    # Tabela DP
-    dp = [[0 for _ in range(n + 1)] for _ in range(m + 1)]
-    
-    # Preencher tabela
-    for i in range(1, m + 1):
-        for j in range(1, n + 1):
-            if str1[i-1] == str2[j-1]:
-                dp[i][j] = dp[i-1][j-1] + 1
-            else:
-                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
-    
-    return dp[m][n]
-
-# Teste
-fib = fibonacci_memo()
-print(f"Fibonacci(30): {fib(30)}")
-
-lcs_len = longest_common_subsequence("ABCDGH", "AEDFHR")
-print(f"LCS length: {lcs_len}")</code></pre>
-        
-        <h3>Algoritmo Guloso (Greedy):</h3>
-        <pre><code>def problema_troco(valor, moedas):
-    """Resolve problema do troco usando algoritmo guloso"""
-    moedas_ordenadas = sorted(moedas, reverse=True)
-    resultado = []
-    
-    for moeda in moedas_ordenadas:
-        while valor >= moeda:
-            resultado.append(moeda)
-            valor -= moeda
-    
-    return resultado if valor == 0 else None
-
-def scheduling_tarefas(tarefas):
-    """Agenda tarefas para minimizar tempo total"""
-    # Ordenar por duração (algoritmo guloso)
-    tarefas_ordenadas = sorted(tarefas, key=lambda x: x[1])
-    
-    tempo_atual = 0
-    agenda = []
-    
-    for nome, duracao in tarefas_ordenadas:
-        agenda.append((nome, tempo_atual, tempo_atual + duracao))
-        tempo_atual += duracao
-    
-    return agenda
-
-# Teste
-troco = problema_troco(67, [25, 10, 5, 1])
-print(f"Troco de 67: {troco}")
-
-tarefas = [("A", 3), ("B", 1), ("C", 4), ("D", 2)]
-agenda = scheduling_tarefas(tarefas)
-print("Agenda otimizada:")
-for nome, inicio, fim in agenda:
-    print(f"  {nome}: {inicio}-{fim}")</code></pre>
-    </section>
-
-    <section>
-        <h2>🧠 Algoritmos de Machine Learning Básico</h2>
-        
-        <h3>K-Means Clustering:</h3>
-        <pre><code>import random
-import math
-
-def distancia_euclidiana(p1, p2):
-    """Calcula distância euclidiana entre dois pontos"""
-    return math.sqrt(sum((a - b) ** 2 for a, b in zip(p1, p2)))
-
-def k_means(pontos, k, max_iteracoes=100):
-    """Implementação simples do K-Means"""
-    if k <= 0 or k > len(pontos):
-        return None
-    
-    # Inicializar centroides aleatoriamente
-    centroides = random.sample(pontos, k)
-    
-    for iteracao in range(max_iteracoes):
-        # Atribuir pontos aos clusters
-        clusters = [[] for _ in range(k)]
-        
-        for ponto in pontos:
-            distancias = [distancia_euclidiana(ponto, centroide) 
-                         for centroide in centroides]
-            cluster_mais_proximo = distancias.index(min(distancias))
-            clusters[cluster_mais_proximo].append(ponto)
-        
-        # Calcular novos centroides
-        novos_centroides = []
-        for cluster in clusters:
-            if cluster:  # Evitar divisão por zero
-                centroide = tuple(sum(coord) / len(cluster) 
-                                for coord in zip(*cluster))
-                novos_centroides.append(centroide)
-            else:
-                novos_centroides.append(centroides[len(novos_centroides)])
-        
-        # Verificar convergência
-        if centroides == novos_centroides:
-            break
-        
-        centroides = novos_centroides
-    
-    return clusters, centroides
-
-# Teste
-pontos_2d = [(1, 2), (2, 1), (2, 2), (8, 8), (8, 9), (9, 8), (9, 9)]
-clusters, centroides = k_means(pontos_2d, 2)
-
-print("Clusters encontrados:")
-for i, cluster in enumerate(clusters):
-    print(f"  Cluster {i+1}: {cluster}")
-print(f"Centroides: {centroides}")</code></pre>
-    </section>
-
-    <section>
-        <h2>💡 Estratégias de Otimização</h2>
+        <h2>💡 Dicas Importantes</h2>
         <div class="tip-box">
             <ul>
-                <li>🎯 <strong>Divide e Conquista</strong> - quebrar problemas complexos</li>
-                <li>💾 <strong>Memoização</strong> - cache para evitar recálculos</li>
-                <li>🏃 <strong>Algoritmos Gulosos</strong> - escolhas localmente ótimas</li>
-                <li>🧮 <strong>Programação Dinâmica</strong> - otimização por subproblemas</li>
-                <li>⚡ <strong>Two Pointers</strong> - eficiente para arrays ordenados</li>
-                <li>🪟 <strong>Sliding Window</strong> - problemas de subarray</li>
-                <li>📊 <strong>Estruturas auxiliares</strong> - hash maps, heaps</li>
+                <li>🔑 Chaves devem ser imutáveis (strings, números, tuplas)</li>
+                <li>⚡ Acesso por chave é muito rápido (O(1))</li>
+                <li>🛡️ Use <code>get()</code> para evitar erros ao acessar chaves inexistentes</li>
+                <li>🔄 Use <code>items()</code> para percorrer chaves e valores juntos</li>
+                <li>📊 Dicionários são ideais para contar, agrupar e mapear dados</li>
+                <li>🎯 Chaves não podem ser repetidas - valor mais recente sobrescreve</li>
             </ul>
         </div>
     </section>
 
     <section>
-        <h2>📊 Complexidade dos Algoritmos</h2>
-        
-        <table class="complexity-table">
-            <tr>
-                <th>Algoritmo</th>
-                <th>Tempo</th>
-                <th>Espaço</th>
-                <th>Uso</th>
-            </tr>
-            <tr>
-                <td>Busca Linear</td>
-                <td>O(n)</td>
-                <td>O(1)</td>
-                <td>Arrays não ordenados</td>
-            </tr>
-            <tr>
-                <td>Busca Binária</td>
-                <td>O(log n)</td>
-                <td>O(1)</td>
-                <td>Arrays ordenados</td>
-            </tr>
-            <tr>
-                <td>Sliding Window</td>
-                <td>O(n)</td>
-                <td>O(1)</td>
-                <td>Subarrays contíguos</td>
-            </tr>
-            <tr>
-                <td>Two Pointers</td>
-                <td>O(n)</td>
-                <td>O(1)</td>
-                <td>Arrays ordenados</td>
-            </tr>
-            <tr>
-                <td>K-Means</td>
-                <td>O(k×n×i)</td>
-                <td>O(k+n)</td>
-                <td>Clustering</td>
-            </tr>
-        </table>
+        <h2>📚 Resumo</h2>
+        <p>Nesta aula você aprendeu:</p>
+        <ul>
+            <li>✅ O que são dicionários e como criar</li>
+            <li>✅ Acessar, adicionar e remover elementos</li>
+            <li>✅ Percorrer dicionários de diferentes formas</li>
+            <li>✅ Aplicações práticas: contar, agrupar, mapear</li>
+            <li>✅ Trabalhar com dicionários aninhados</li>
+        </ul>
     </section>
 {% endblock %}
 
@@ -895,7 +416,7 @@ function runCode() {
     const code = document.getElementById('code-input').value;
     const output = document.getElementById('output');
     
-    output.innerHTML = '<div class="output-success">Sistema de análise executado! Veja algoritmos avançados aplicados a problemas reais.</div>';
+    output.innerHTML = '<div class="output-success">Sistema de estoque executado! Veja como dicionários organizam dados de forma eficiente.</div>';
 }
 </script>
 {% endblock %}

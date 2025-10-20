@@ -1,180 +1,148 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 8 - Random e Geração de Números Aleatórios | CodeLogic{% endblock %}
+{% block title %}Aula 8 - Operações com Números e Strings | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 8 – Random e Geração de Números Aleatórios{% endblock %}
+{% block lesson_title %}Aula 8 – Operações com Números e Strings{% endblock %}
 
 {% block lesson_content %}
     <section>
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Conhecer a biblioteca random</li>
-            <li>Gerar números e elementos aleatórios</li>
-            <li>Criar programas com elementos de aleatoriedade</li>
+            <li>Trabalhar com operações numéricas</li>
+            <li>Manipular strings e caracteres</li>
+            <li>Criar programas interativos com entrada do usuário</li>
         </ul>
     </section>
 
     <section>
-        <h2>🎲 Biblioteca Random</h2>
-        <p>A biblioteca random permite gerar números e escolhas aleatórias:</p>
+        <h2>🔢 Operações com Números</h2>
+        <p>Podemos usar operações matemáticas para criar valores interessantes:</p>
         
-        <pre><code>import random</code></pre>
+        <h3>Operações com Resto (%):</h3>
+        <pre><code># Verificar se número é par ou ímpar
+numero = int(input("Digite um número: "))
+resto = numero % 2
+print(f"Resto da divisão por 2: {resto}")
+
+if resto == 0:
+    print("O número é par!")
+else:
+    print("O número é ímpar!")</code></pre>
         
-        <h3>Principais funções:</h3>
+        <h3>Operações com Potência (**):</h3>
+        <pre><code># Calcular área do quadrado
+lado = float(input("Digite o lado do quadrado: "))
+area = lado ** 2
+print(f"Área do quadrado: {area}")</code></pre>
         
-        <h4>random() - número decimal entre 0 e 1:</h4>
-        <pre><code>print(random.random())  # Ex: 0.7234567890123456</code></pre>
-        
-        <h4>randint() - número inteiro entre dois valores:</h4>
-        <pre><code>dado = random.randint(1, 6)  # Simula dado de 6 faces
-print(f"Dado: {dado}")</code></pre>
-        
-        <h4>uniform() - número decimal entre dois valores:</h4>
-        <pre><code>altura = random.uniform(1.5, 2.0)  # Altura entre 1.5 e 2.0m
-print(f"Altura: {altura:.2f}m")</code></pre>
-        
-        <h4>choice() - escolhe um elemento de uma lista:</h4>
-        <pre><code>cores = ["vermelho", "azul", "verde", "amarelo"]
-cor_escolhida = random.choice(cores)
-print(f"Cor sorteada: {cor_escolhida}")</code></pre>
-        
-        <h4>shuffle() - embaralha uma lista:</h4>
-        <pre><code>cartas = ["A", "K", "Q", "J"]
-random.shuffle(cartas)  # Modifica a lista original
-print(f"Cartas embaralhadas: {cartas}")</code></pre>
+        <h3>Trabalhando com Strings:</h3>
+        <pre><code># Repetir strings
+nome = input("Digite seu nome: ")
+print(nome * 3)  # Repete o nome 3 vezes
+
+# Contar caracteres
+tamanho = len(nome)
+print(f"Seu nome tem {tamanho} letras")</code></pre>
     </section>
 
     <section>
         <h2>🎮 Exemplos Práticos</h2>
         
-        <h3>Jogo de Adivinhação:</h3>
-        <pre><code>import random
+        <h3>Calculadora de IMC:</h3>
+        <pre><code>nome = input("Digite seu nome: ")
+peso = float(input("Digite seu peso (kg): "))
+altura = float(input("Digite sua altura (m): "))
 
-numero_secreto = random.randint(1, 100)
-tentativa = int(input("Adivinhe o número (1-100): "))
+imc = peso / (altura ** 2)
+print(f"{nome}, seu IMC é: {imc:.2f}")
 
-if tentativa == numero_secreto:
-    print("Parabéns! Você acertou!")
-elif tentativa < numero_secreto:
-    print("O número é maior!")
+if imc < 18.5:
+    print("Abaixo do peso")
+elif imc < 25:
+    print("Peso normal")
+elif imc < 30:
+    print("Sobrepeso")
 else:
-    print("O número é menor!")
-    
-print(f"O número era: {numero_secreto}")</code></pre>
+    print("Obesidade")</code></pre>
         
-        <h3>Gerador de Senhas:</h3>
-        <pre><code>import random
+        <h3>Conversor de Temperatura:</h3>
+        <pre><code>celsius = float(input("Digite a temperatura em Celsius: "))
 
-letras = "abcdefghijklmnopqrstuvwxyz"
-numeros = "0123456789"
-simbolos = "!@#$%&*"
+fahrenheit = (celsius * 9/5) + 32
+kelvin = celsius + 273.15
 
-todos_chars = letras + letras.upper() + numeros + simbolos
-senha = ""
-
-for i in range(8):  # Senha de 8 caracteres
-    senha += random.choice(todos_chars)
-    
-print(f"Senha gerada: {senha}")</code></pre>
+print(f"Fahrenheit: {fahrenheit:.1f}°F")
+print(f"Kelvin: {kelvin:.1f}K")</code></pre>
         
-        <h3>Simulador de Cara ou Coroa:</h3>
-        <pre><code>import random
+        <h3>Calculadora de Desconto:</h3>
+        <pre><code>produto = input("Nome do produto: ")
+preco = float(input("Preço original: R$ "))
+desconto = float(input("Percentual de desconto: "))
 
-resultado = random.choice(["Cara", "Coroa"])
-print(f"Resultado: {resultado}")
+valor_desconto = preco * (desconto / 100)
+preco_final = preco - valor_desconto
 
-# Ou usando randint:
-moeda = random.randint(0, 1)
-resultado = "Cara" if moeda == 0 else "Coroa"
-print(f"Resultado: {resultado}")</code></pre>
+print(f"Produto: {produto}")
+print(f"Desconto: R$ {valor_desconto:.2f}")
+print(f"Preço final: R$ {preco_final:.2f}")</code></pre>
     </section>
 
     <section>
-        <h2>📊 Estatísticas e Simulações</h2>
+        <h2>📊 Formatação Avançada</h2>
         
-        <h3>Simulação de dados:</h3>
-        <pre><code>import random
+        <h3>Trabalhando com números decimais:</h3>
+        <pre><code>valor = float(input("Digite um valor: "))
 
-# Simular 1000 jogadas de dado
-resultados = []
-for i in range(1000):
-    dado = random.randint(1, 6)
-    resultados.append(dado)
+# Arredondar
+arredondado = round(valor, 2)
+print(f"Arredondado: {arredondado}")
 
-# Contar frequência de cada face
-for face in range(1, 7):
-    frequencia = resultados.count(face)
-    percentual = (frequencia / 1000) * 100
-    print(f"Face {face}: {frequencia} vezes ({percentual:.1f}%)")</code></pre>
-        
-        <h3>Sorteio de nomes:</h3>
-        <pre><code>import random
+# Valor absoluto
+absoluto = abs(valor)
+print(f"Valor absoluto: {absoluto}")
 
-participantes = ["Ana", "Bruno", "Carlos", "Diana", "Eduardo"]
-vencedor = random.choice(participantes)
-print(f"Vencedor do sorteio: {vencedor}")
-
-# Para sortear múltiplos vencedores sem repetição:
-vencedores = random.sample(participantes, 3)  # 3 vencedores
-print(f"Vencedores: {vencedores}")</code></pre>
-    </section>
-
-    <section>
-        <h2>🔧 Semente (Seed)</h2>
-        <p>Para resultados reproduzíveis, use seed:</p>
-        <pre><code>import random
-
-random.seed(42)  # Sempre gerará a mesma sequência
-print(random.randint(1, 10))  # Sempre será o mesmo número
-print(random.randint(1, 10))  # Sempre será o mesmo número
-
-# Sem seed, números são diferentes a cada execução</code></pre>
+# Potência
+quadrado = valor ** 2
+cubo = valor ** 3
+print(f"Quadrado: {quadrado:.2f}")
+print(f"Cubo: {cubo:.2f}")</code></pre>
     </section>
 {% endblock %}
 
 {% block exercise_description %}
     <h4>🎮 Vamos praticar!</h4>
     
-    <p><strong>Tarefa 1:</strong> Jogo de Adivinhação Melhorado</p>
+    <p><strong>Tarefa:</strong> Sistema de Avaliação de Produtos</p>
     <ul>
-        <li>Gere um número entre 1 e 100</li>
-        <li>Dê 3 tentativas ao jogador</li>
-        <li>Para cada tentativa, diga se o número é maior ou menor</li>
-        <li>Mostre o resultado final</li>
-    </ul>
-    
-    <p><strong>Tarefa 2:</strong> Simulador de Loteria</p>
-    <ul>
-        <li>Gere 6 números únicos entre 1 e 60</li>
-        <li>Ordene os números</li>
-        <li>Exiba como um resultado de loteria</li>
-    </ul>
-    
-    <p><strong>Tarefa 3:</strong> Gerador de Frases Aleatórias</p>
-    <ul>
-        <li>Crie listas de sujeitos, verbos e objetos</li>
-        <li>Combine aleatoriamente para criar frases</li>
-        <li>Gere 5 frases diferentes</li>
+        <li>Peça o nome do produto</li>
+        <li>Peça o preço original</li>
+        <li>Peça a nota de avaliação (0 a 10)</li>
+        <li>Peça o número de avaliações</li>
+        <li>Calcule um desconto baseado na nota (nota * 5)%</li>
+        <li>Calcule o preço final com desconto</li>
+        <li>Exiba todas as informações formatadas</li>
+        <li>Mostre uma mensagem se a nota for maior ou igual a 8</li>
     </ul>
     
     <p><strong>Exemplo de saída esperada:</strong></p>
-    <pre><code>🎲 Jogo de Adivinhação 🎲
-Tentativa 1: Muito baixo!
-Tentativa 2: Muito alto!
-Tentativa 3: Parabéns! Acertou!
-
-🎰 Números da Sorte: 05 12 23 34 45 58</code></pre>
+    <pre><code>📦 AVALIAÇÃO DO PRODUTO 📦
+Produto: Notebook Gamer
+Preço Original: R$ 3500.00
+Nota: 9.5 ⭐ (150 avaliações)
+Desconto: 47.5% (R$ 1662.50)
+Preço Final: R$ 1837.50
+🎉 Produto Altamente Recomendado!</code></pre>
 {% endblock %}
 
-{% block initial_code %}import random
+{% block initial_code %}# Sistema de Avaliação de Produtos
+print("📦 AVALIAÇÃO DO PRODUTO 📦")
+print()
 
-# Exemplo: Dado simples
-dado = random.randint(1, 6)
-print(f"Você tirou: {dado}")
+# Entrada de dados
+produto = input("Nome do produto: ")
+preco = float(input("Preço original: R$ "))
+nota = float(input("Nota de avaliação (0-10): "))
+avaliacoes = int(input("Número de avaliações: "))
 
-# Exemplo: Escolha aleatória
-opcoes = ["Pedra", "Papel", "Tesoura"]
-escolha = random.choice(opcoes)
-print(f"Computador escolheu: {escolha}")
-
-# Agora implemente os exercícios{% endblock %}
+# SEU CÓDIGO AQUI
+# Calcule o desconto, preço final e exiba as informações{% endblock %}
