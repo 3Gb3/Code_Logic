@@ -113,36 +113,62 @@ def execute_code():
 def correct_exercise():
     """API para correção automática de exercícios"""
     try:
-        from utils.executor import executor
-        from utils.ai_corrector import corrector
+        # Importa as dependências
+        try:
+            from utils.executor import executor
+            from utils.ai_corrector import corrector
+        except ImportError as ie:
+            logging.error(f"Erro ao importar módulos: {ie}")
+            return jsonify({
+                "success": False,
+                "error": "Erro ao carregar módulos de correção",
+                "details": str(ie)
+            }), 500
         
+        # Obtém dados da requisição
         data = request.get_json()
+        logging.info(f"Dados recebidos: {data}")
+        
         if not data or 'code' not in data or 'exercise_description' not in data:
-            return jsonify({"error": "Dados incompletos"}), 400
+            logging.warning("Dados incompletos na requisição")
+            return jsonify({
+                "success": False,
+                "error": "Dados incompletos. É necessário enviar 'code' e 'exercise_description'."
+            }), 400
         
         code = data['code']
         exercise_description = data['exercise_description']
         lesson_number = data.get('lesson_number', 1)
         
+        logging.info(f"Validando código da aula {lesson_number}")
+        
         # Valida sintaxe primeiro
         validation = executor.validate_code(code)
         if not validation['valid']:
+            logging.warning(f"Código com erro de sintaxe: {validation['error']}")
             return jsonify({
                 "success": False,
                 "error": "Erro de sintaxe no código",
                 "details": validation['error']
-            })
+            }), 400
+        
+        logging.info("Código validado com sucesso. Executando correção...")
         
         # Executa a correção com IA
         correction_result = corrector.correct_exercise(code, exercise_description, lesson_number)
         
+        logging.info(f"Correção concluída: {correction_result.get('correct', 'N/A')}")
+        
         return jsonify({
             "success": True,
             "correction": correction_result
-        })
+        }), 200
         
     except Exception as e:
+        import traceback
+        error_trace = traceback.format_exc()
         logging.error(f"Erro na correção automática: {e}")
+        logging.error(f"Traceback completo:\n{error_trace}")
         return jsonify({
             "success": False,
             "error": "Erro interno do servidor",

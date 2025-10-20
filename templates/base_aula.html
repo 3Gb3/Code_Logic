@@ -208,18 +208,22 @@
                 if (result.success) {
                     displayFeedback(result.correction);
                 } else {
+                    const errorMsg = result.error || result.details || 'Erro desconhecido';
                     document.getElementById('feedback-content').innerHTML = `
                         <div class="error">
                             <strong>❌ Erro na verificação:</strong>
-                            <p>${result.error}</p>
+                            <p>${errorMsg}</p>
+                            ${result.details ? `<p style="margin-top:10px; font-size:0.9em; opacity:0.8;">${result.details}</p>` : ''}
                         </div>
                     `;
                 }
             } catch (error) {
+                console.error('Erro ao verificar código:', error);
                 document.getElementById('feedback-content').innerHTML = `
                     <div class="error">
                         <strong>❌ Erro de conexão:</strong>
                         <p>${error.message}</p>
+                        <p style="margin-top:10px; font-size:0.9em; opacity:0.8;">Verifique sua conexão com a internet e tente novamente.</p>
                     </div>
                 `;
             } finally {
