@@ -292,6 +292,13 @@
             <div class="content-header">
                 <h1>🔀 Estruturas Comparativas</h1>
                 <p class="subtitle">Aprenda a tomar decisões com if, else e elif</p>
+                
+                <!-- Botão para pular módulo -->
+                <div class="skip-module-container">
+                    <button id="skip-module-btn" class="skip-module-btn" onclick="showSkipModuleModal()">
+                        ✓ Já tenho esse conhecimento
+                    </button>
+                </div>
             </div>
 
         <!-- Aulas Grid -->
@@ -488,5 +495,95 @@
             background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
         }
     </style>
+
+    <!-- Modal de confirmação para pular módulo -->
+    <div id="skip-module-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⚠️ Confirmar ação</h2>
+            </div>
+            <div class="modal-body">
+                <p>Você tem certeza que já possui conhecimento sobre <strong>Estruturas Comparativas</strong>?</p>
+                <p class="modal-warning">Ao confirmar, todas as aulas deste módulo serão marcadas como concluídas e o próximo módulo será liberado.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-cancel" onclick="hideSkipModuleModal()">Cancelar</button>
+                <button class="modal-btn modal-btn-confirm" onclick="skipModule()">Sim, pular módulo</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Funções do modal de pular módulo
+        function showSkipModuleModal() {
+            const modal = document.getElementById('skip-module-modal');
+            modal.style.display = 'flex';
+        }
+
+        function hideSkipModuleModal() {
+            const modal = document.getElementById('skip-module-modal');
+            modal.style.display = 'none';
+        }
+
+        // Função para pular o módulo
+        async function skipModule() {
+            try {
+                const userId = localStorage.getItem('userId');
+                if (!userId) {
+                    alert('Erro: Usuário não identificado');
+                    return;
+                }
+
+                // Desabilita o botão para evitar múltiplos cliques
+                const confirmBtn = document.querySelector('.modal-btn-confirm');
+                confirmBtn.disabled = true;
+                confirmBtn.textContent = 'Processando...';
+
+                const response = await fetch('/api/skip-module', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        user_id: userId,
+                        module: 'comparativa'
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    hideSkipModuleModal();
+                    
+                    // Mostra mensagem de sucesso
+                    alert(`✅ ${result.message}\n\nVocê será redirecionado para o dashboard.`);
+                    
+                    // Redireciona para o dashboard após 2 segundos
+                    setTimeout(() => {
+                        window.location.href = '/dashboard';
+                    }, 2000);
+                } else {
+                    alert(`Erro ao pular módulo: ${result.error}`);
+                    confirmBtn.disabled = false;
+                    confirmBtn.textContent = 'Sim, pular módulo';
+                }
+
+            } catch (error) {
+                console.error('Erro ao pular módulo:', error);
+                alert('Erro ao pular módulo. Tente novamente.');
+                const confirmBtn = document.querySelector('.modal-btn-confirm');
+                confirmBtn.disabled = false;
+                confirmBtn.textContent = 'Sim, pular módulo';
+            }
+        }
+
+        // Fecha o modal ao clicar fora dele
+        window.onclick = function(event) {
+            const modal = document.getElementById('skip-module-modal');
+            if (event.target === modal) {
+                hideSkipModuleModal();
+            }
+        }
+    </script>
 </body>
 </html>

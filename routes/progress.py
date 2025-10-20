@@ -467,6 +467,80 @@ def get_all_progress(user_id):
             "details": str(e)
         }), 500
 
+@progress_bp.route("/skip-module", methods=["POST"])
+def skip_module():
+    """Permite pular um módulo marcando todas as aulas como concluídas e liberando o próximo módulo"""
+    try:
+        data = request.get_json()
+        if not data or 'user_id' not in data or 'module' not in data:
+            return jsonify({"error": "Dados incompletos"}), 400
+        
+        user_id = data['user_id']
+        module = data['module']
+        
+        if not db:
+            return jsonify({"error": "Banco de dados não disponível"}), 500
+        
+        # Valida o módulo
+        if module not in MODULE_ORDER:
+            return jsonify({"error": "Módulo inválido"}), 400
+        
+        # Referência do módulo
+        user_ref = db.collection('usuarios').document(user_id)
+        conteudo_ref = user_ref.collection('conteudo').document(module)
+        
+        # Busca ou cria o documento do módulo
+        conteudo_doc = conteudo_ref.get()
+        if conteudo_doc.exists:
+            conteudo_data = conteudo_doc.to_dict()
+            total_aulas = conteudo_data.get('total_aulas', 10)
+            nome_modulo = conteudo_data.get('nome_modulo', module.title())
+        else:
+            total_aulas = 10
+            module_names = {
+                'sequencial': 'Programação Sequencial',
+                'comparativa': 'Estruturas Comparativas',
+                'repetitiva': 'Estruturas Repetitivas',
+                'vetores': 'Vetores',
+                'matrizes': 'Matrizes'
+            }
+            nome_modulo = module_names.get(module, module.title())
+        
+        # Marca todas as aulas como concluídas e liberadas
+        all_lessons = list(range(1, total_aulas + 1))
+        
+        conteudo_data = {
+            'aulas_concluidas': all_lessons,
+            'aulas_liberadas': all_lessons,
+            'ultima_atualizacao': firestore.SERVER_TIMESTAMP,
+            'total_aulas': total_aulas,
+            'nome_modulo': nome_modulo,
+            'pulado': True  # Marca que o módulo foi pulado
+        }
+        
+        conteudo_ref.set(conteudo_data, merge=True)
+        
+        # Libera o próximo módulo
+        unlock_next_module(user_id, module)
+        
+        logging.info(f"Módulo {module} pulado pelo usuário {user_id}")
+        
+        return jsonify({
+            "success": True,
+            "message": f"Módulo {nome_modulo} completado! Próximo módulo liberado.",
+            "module": module,
+            "aulas_concluidas": all_lessons,
+            "next_module_unlocked": True
+        })
+        
+    except Exception as e:
+        logging.error(f"Erro ao pular módulo: {e}")
+        return jsonify({
+            "success": False,
+            "error": "Erro interno do servidor",
+            "details": str(e)
+        }), 500
+
 @progress_bp.route("/test-firestore/<user_id>", methods=["GET"])
 def test_firestore(user_id):
     """Teste da estrutura do Firestore"""
