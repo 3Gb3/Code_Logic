@@ -164,49 +164,7 @@ for i in range(3):
 #   -----------
 # 2  O |   | X</code></pre>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Gerador de Padrões</h3>
-            <p>Crie um programa que gere diferentes padrões com loops aninhados:</p>
-            <ul>
-                <li>Triângulo decrescente</li>
-                <li>Pirâmide centralizada</li>
-                <li>Tabuleiro de xadrez</li>
-                <li>Matriz de multiplicação</li>
-            </ul>
-            
-            <textarea id="code-input" placeholder="# Gerador de Padrões
-print('🎨 Gerador de Padrões')
-print('1. Triângulo decrescente')
-print('2. Pirâmide centralizada')
-print('3. Tabuleiro de xadrez')
-print('4. Matriz de multiplicação')
-
-opcao = input('Escolha um padrão (1-4): ')
-
-if opcao == '1':
-    # Triângulo decrescente
-    altura = int(input('Altura do triângulo: '))
-    for i in range(altura, 0, -1):
-        for j in range(i):
-            print('*', end='')
-        print()
-
-elif opcao == '2':
-    # Pirâmide centralizada
-    altura = int(input('Altura da pirâmide: '))
-    # Complete o código...
-
-# Continue com outras opções..."></textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
+<section>
         <h2>🔍 Busca em Matriz</h2>
         <pre><code>matriz = [
     [1, 2, 3],
@@ -333,6 +291,15 @@ for i in range(1000):     # 1000 iterações
             </ul>
         </div>
     </section>
+{% endblock %}
+
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    <p>Complete o exercício no editor ao lado.</p>
+{% endblock %}
+
+{% block initial_code %}# Seu código aqui
 {% endblock %}
 
 {% block extra_js %}

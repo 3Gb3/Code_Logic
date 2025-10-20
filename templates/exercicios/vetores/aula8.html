@@ -260,110 +260,7 @@ print(f"Únicos de lista2: {unicos_2}")  # {6, 7, 8}
 comuns = set(lista1) & set(lista2)
 print(f"Elementos comuns: {comuns}")  # {4, 5}</code></pre>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Sistema de Análise de Cursos</h3>
-            <p>Crie um sistema que analise alunos matriculados em diferentes cursos:</p>
-            <ul>
-                <li>Encontrar alunos que fazem múltiplos cursos</li>
-                <li>Identificar alunos exclusivos de cada curso</li>
-                <li>Calcular intersecções e diferenças entre turmas</li>
-            </ul>
-            
-            <textarea id="code-input" placeholder="# Sistema de Análise de Cursos
-
-# Alunos matriculados em cada curso
-python = {'Ana', 'Bruno', 'Carlos', 'Diana', 'Eduardo'}
-javascript = {'Bruno', 'Diana', 'Felipe', 'Gabriela', 'Helena'}
-java = {'Carlos', 'Eduardo', 'Felipe', 'Igor', 'Julia'}
-
-print('🎓 SISTEMA DE ANÁLISE DE CURSOS')
-print('=' * 60)
-
-# Total de alunos em cada curso
-print('\n📊 TOTAL DE ALUNOS POR CURSO:')
-print(f'Python: {len(python)} alunos')
-print(f'JavaScript: {len(javascript)} alunos')
-print(f'Java: {len(java)} alunos')
-
-# Todos os alunos (união)
-todos_alunos = python | javascript | java
-print(f'\n👥 Total de alunos únicos: {len(todos_alunos)}')
-print(f'Alunos: {sorted(todos_alunos)}')
-
-# Alunos que fazem Python E JavaScript
-python_e_js = python & javascript
-print(f'\n🔗 Alunos que fazem Python E JavaScript: {python_e_js}')
-
-# Alunos que fazem Python E Java
-python_e_java = python & java
-print(f'🔗 Alunos que fazem Python E Java: {python_e_java}')
-
-# Alunos que fazem JavaScript E Java
-js_e_java = javascript & java
-print(f'🔗 Alunos que fazem JavaScript E Java: {js_e_java}')
-
-# Alunos que fazem os 3 cursos
-tres_cursos = python & javascript & java
-if tres_cursos:
-    print(f'\n⭐ Alunos fazendo os 3 cursos: {tres_cursos}')
-else:
-    print(f'\n⭐ Nenhum aluno fazendo os 3 cursos')
-
-# Alunos exclusivos de Python
-exclusivos_python = python - javascript - java
-print(f'\n🎯 Alunos APENAS de Python: {exclusivos_python}')
-
-# Alunos exclusivos de JavaScript
-exclusivos_js = javascript - python - java
-print(f'🎯 Alunos APENAS de JavaScript: {exclusivos_js}')
-
-# Alunos exclusivos de Java
-exclusivos_java = java - python - javascript
-print(f'🎯 Alunos APENAS de Java: {exclusivos_java}')
-
-# Alunos que fazem pelo menos 2 cursos
-pelo_menos_2 = (python & javascript) | (python & java) | (javascript & java)
-print(f'\n📚 Alunos fazendo pelo menos 2 cursos: {pelo_menos_2}')
-print(f'Total: {len(pelo_menos_2)} alunos')
-
-# Verificar se algum aluno específico está matriculado
-aluno_busca = 'Bruno'
-print(f'\n🔍 BUSCAR ALUNO: {aluno_busca}')
-
-cursos_bruno = []
-if aluno_busca in python:
-    cursos_bruno.append('Python')
-if aluno_busca in javascript:
-    cursos_bruno.append('JavaScript')
-if aluno_busca in java:
-    cursos_bruno.append('Java')
-
-if cursos_bruno:
-    print(f'{aluno_busca} está matriculado em: {cursos_bruno}')
-    print(f'Total de cursos: {len(cursos_bruno)}')
-else:
-    print(f'{aluno_busca} não está matriculado em nenhum curso')
-
-# Estatísticas gerais
-print(f'\n📈 ESTATÍSTICAS GERAIS:')
-print(f'Total de alunos únicos: {len(todos_alunos)}')
-print(f'Alunos fazendo múltiplos cursos: {len(pelo_menos_2)}')
-print(f'Alunos fazendo apenas 1 curso: {len(todos_alunos) - len(pelo_menos_2)}')
-
-# Porcentagem
-if len(todos_alunos) > 0:
-    perc_multiplos = (len(pelo_menos_2) / len(todos_alunos)) * 100
-    print(f'Porcentagem fazendo múltiplos cursos: {perc_multiplos:.1f}%')"></textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
+<section>
         <h2>💡 Dicas Importantes</h2>
         <div class="tip-box">
             <ul>
@@ -388,6 +285,15 @@ if len(todos_alunos) > 0:
             <li>✅ Casos práticos de uso de sets</li>
         </ul>
     </section>
+{% endblock %}
+
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    <p>Complete o exercício no editor ao lado.</p>
+{% endblock %}
+
+{% block initial_code %}# Seu código aqui
 {% endblock %}
 
 {% block extra_js %}

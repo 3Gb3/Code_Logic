@@ -7,17 +7,17 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: linear-gradient(135deg, #1E2A3A 0%, #2C3E50 100%);
     min-height: 100vh;
-    color: #2c3e50;
+    color: #ECEFF1;
 }
 
 /* Header */
 .header {
-    background: rgba(255, 255, 255, 0.95);
+    background: #111B2C;
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -47,10 +47,7 @@ body {
 .logo h1 {
     font-size: 24px;
     font-weight: 700;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #ECEFF1;
 }
 
 .nav-menu {
@@ -60,7 +57,7 @@ body {
 
 .nav-link {
     text-decoration: none;
-    color: #34495e;
+    color: #ECEFF1;
     font-weight: 500;
     padding: 8px 16px;
     border-radius: 8px;
@@ -69,7 +66,7 @@ body {
 
 .nav-link:hover,
 .nav-link.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #3D5A80;
     color: white;
     transform: translateY(-2px);
 }
@@ -93,13 +90,14 @@ body {
 .content-header h1 {
     font-size: 36px;
     font-weight: 700;
-    color: #2c3e50;
+    color: #FFFFFF;
     margin-bottom: 10px;
+    text-shadow: 0 2px 10px rgba(91, 124, 153, 0.5);
 }
 
 .subtitle {
     font-size: 18px;
-    color: #7f8c8d;
+    color: #E0E7EF;
     margin-bottom: 0;
 }
 
@@ -112,13 +110,13 @@ body {
 }
 
 .aula-card {
-    background: rgba(255, 255, 255, 0.9);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-    border: 2px solid transparent;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    border: 2px solid rgba(102, 126, 234, 0.3);
     transition: all 0.3s ease;
     position: relative;
 }
@@ -134,23 +132,23 @@ body {
 
 /* Estados das aulas */
 .aula-card.completed {
-    border-color: #27ae60;
-    background: linear-gradient(135deg, rgba(39, 174, 96, 0.1) 0%, rgba(46, 204, 113, 0.1) 100%);
+    border-color: #667eea;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
 }
 
 .aula-card.completed:hover .aula-link {
     transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(39, 174, 96, 0.2);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
 }
 
 .aula-card.available {
-    border-color: #3498db;
-    background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 0%, rgba(41, 128, 185, 0.1) 100%);
+    border-color: #667eea;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%);
 }
 
 .aula-card.available:hover .aula-link {
     transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(52, 152, 219, 0.2);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
 }
 
 .aula-card.locked {
@@ -174,12 +172,12 @@ body {
 }
 
 .aula-card.completed .aula-number {
-    color: #27ae60;
+    color: #667eea;
     opacity: 0.8;
 }
 
 .aula-card.available .aula-number {
-    color: #3498db;
+    color: #667eea;
     opacity: 0.8;
 }
 
@@ -190,13 +188,13 @@ body {
 
 .aula-info h3 {
     font-size: 22px;
-    color: #2c3e50;
+    color: #ECEFF1;
     margin-bottom: 10px;
     font-weight: 600;
 }
 
 .aula-info p {
-    color: #7f8c8d;
+    color: #B0BEC5;
     line-height: 1.5;
     margin-bottom: 15px;
     font-size: 14px;
@@ -213,13 +211,13 @@ body {
 }
 
 .aula-card.completed .aula-status {
-    background: rgba(39, 174, 96, 0.2);
-    color: #27ae60;
+    background: rgba(102, 126, 234, 0.2);
+    color: #667eea;
 }
 
 .aula-card.available .aula-status {
-    background: rgba(52, 152, 219, 0.2);
-    color: #3498db;
+    background: rgba(102, 126, 234, 0.2);
+    color: #667eea;
 }
 
 .aula-card.locked .aula-status {
@@ -229,19 +227,19 @@ body {
 
 /* Progress Section */
 .progress-section {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(30, 42, 58, 0.95);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 30px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    border: 1px solid rgba(61, 90, 128, 0.3);
     text-align: center;
 }
 
 .progress-section h2 {
     font-size: 24px;
-    color: #2c3e50;
+    color: #ECEFF1;
     margin-bottom: 20px;
     font-weight: 600;
 }
@@ -252,17 +250,17 @@ body {
 }
 
 .progress-bar {
-    background: #ecf0f1;
+    background: #1E2A3A;
     height: 12px;
     border-radius: 6px;
     overflow: hidden;
     margin-bottom: 15px;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #3D5A80 0%, #5B7C99 100%);
     border-radius: 6px;
     transition: width 0.8s ease;
     position: relative;
@@ -302,7 +300,7 @@ body {
 
 .progress-text {
     font-size: 16px;
-    color: #34495e;
+    color: #B0BEC5;
     font-weight: 500;
 }
 
@@ -446,7 +444,7 @@ body {
 
 .loading-content {
     text-align: center;
-    color: #2c3e50;
+    color: #FFFFFF;
 }
 
 .spinner {
@@ -531,7 +529,7 @@ body {
 .global-progress h3 {
     font-size: 1.4rem;
     margin-bottom: 15px;
-    color: #2c3e50;
+    color: #FFFFFF;
 }
 
 /* Modules Grid */
@@ -629,7 +627,7 @@ body {
 
 .module-header h3 {
     font-size: 1.3rem;
-    color: #2c3e50;
+    color: #FFFFFF;
     flex: 1;
 }
 
@@ -776,15 +774,13 @@ body {
 .module-hero h1 {
     font-size: 3rem;
     margin-bottom: 15px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #FFFFFF;
+    text-shadow: 0 3px 15px rgba(91, 124, 153, 0.6);
 }
 
 .module-hero p {
     font-size: 1.3rem;
-    color: #666;
+    color: #E0E7EF;
     max-width: 600px;
     margin: 0 auto;
     line-height: 1.6;

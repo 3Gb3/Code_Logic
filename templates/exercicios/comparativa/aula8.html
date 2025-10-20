@@ -144,37 +144,7 @@ match classificacao:
         print("Classificação inválida")
         idade_minima = None</code></pre>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Sistema de Notas e Conceitos</h3>
-            <p>Crie um sistema que converta notas numéricas em conceitos usando match-case:</p>
-            <ul>
-                <li>9.0 a 10.0: Conceito A (Excelente)</li>
-                <li>7.0 a 8.9: Conceito B (Bom)</li>
-                <li>5.0 a 6.9: Conceito C (Regular)</li>
-                <li>3.0 a 4.9: Conceito D (Insuficiente)</li>
-                <li>0.0 a 2.9: Conceito F (Reprovado)</li>
-            </ul>
-            
-            <textarea id="code-input" placeholder="# Sistema de Conceitos
-nota = float(input('Digite a nota (0-10): '))
-
-# Use match-case com guards para classificar
-match nota:
-    case x if x < 0 or x > 10:
-        print('Nota inválida!')
-    case x if x >= 9.0:
-        print('Conceito A - Excelente! 🌟')
-    # Continue com os outros casos..."></textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
+<section>
         <h2>🆚 Match-Case vs If-Elif</h2>
         
         <h3>✅ Use Match-Case quando:</h3>
@@ -206,6 +176,15 @@ match nota:
             </ul>
         </div>
     </section>
+{% endblock %}
+
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    <p>Complete o exercício no editor ao lado.</p>
+{% endblock %}
+
+{% block initial_code %}# Seu código aqui
 {% endblock %}
 
 {% block extra_js %}

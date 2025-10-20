@@ -102,125 +102,7 @@ print("\nSaldos ajustados (negativos = 0):")
 for linha in saldos:
     print(linha)</code></pre>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Sistema de Atualização de Estoque</h3>
-            
-            <textarea id="code-input"># 📦 SISTEMA DE ATUALIZAÇÃO DE ESTOQUE
-
-print("=" * 70)
-print("📦 SISTEMA DE ESTOQUE".center(70))
-print("=" * 70)
-
-# Estoque inicial (3 lojas x 4 produtos)
-estoque = [
-    [50, 30, 20, 15],  # Loja A
-    [40, 25, 18, 12],  # Loja B
-    [35, 28, 22, 10]   # Loja C
-]
-
-lojas = ["Loja A", "Loja B", "Loja C"]
-produtos = ["Produto 1", "Produto 2", "Produto 3", "Produto 4"]
-
-# Mostrar estoque inicial
-print("\n📊 ESTOQUE INICIAL:")
-print(f"\n{'Loja':<12}", end="")
-for produto in produtos:
-    print(f"{produto:>12}", end="")
-print()
-print("-" * 70)
-
-for i in range(len(estoque)):
-    print(f"{lojas[i]:<12}", end="")
-    for j in range(len(estoque[i])):
-        print(f"{estoque[i][j]:>12}", end="")
-    print()
-
-# OPERAÇÃO 1: Venda na Loja A
-print("\n🛒 OPERAÇÃO: Venda na Loja A")
-print("   Produto 1: -5 unidades")
-print("   Produto 3: -3 unidades")
-
-estoque[0][0] -= 5
-estoque[0][2] -= 3
-
-# OPERAÇÃO 2: Reposição na Loja B
-print("\n📥 OPERAÇÃO: Reposição na Loja B")
-print("   Produto 2: +20 unidades")
-print("   Produto 4: +15 unidades")
-
-estoque[1][1] += 20
-estoque[1][3] += 15
-
-# OPERAÇÃO 3: Transferência Loja C → Loja A
-print("\n🔄 OPERAÇÃO: Transferência de Loja C para Loja A")
-print("   Produto 2: 10 unidades")
-
-quantidade_transferir = 10
-estoque[2][1] -= quantidade_transferir
-estoque[0][1] += quantidade_transferir
-
-# Mostrar estoque atualizado
-print("\n📊 ESTOQUE ATUALIZADO:")
-print(f"\n{'Loja':<12}", end="")
-for produto in produtos:
-    print(f"{produto:>12}", end="")
-print()
-print("-" * 70)
-
-for i in range(len(estoque)):
-    print(f"{lojas[i]:<12}", end="")
-    for j in range(len(estoque[i])):
-        print(f"{estoque[i][j]:>12}", end="")
-    print()
-
-# Análise: produtos com estoque baixo
-print("\n⚠️  ALERTA: Produtos com estoque < 15:")
-encontrou_baixo = False
-
-for i in range(len(estoque)):
-    for j in range(len(estoque[i])):
-        if estoque[i][j] < 15:
-            encontrou_baixo = True
-            print(f"   {lojas[i]} - {produtos[j]}: {estoque[i][j]} unidades")
-
-if not encontrou_baixo:
-    print("   Nenhum produto com estoque crítico")
-
-# Total geral
-total_geral = 0
-for i in range(len(estoque)):
-    for j in range(len(estoque[i])):
-        total_geral += estoque[i][j]
-
-print(f"\n📦 Total de produtos em estoque: {total_geral} unidades")
-
-# Total por loja
-print("\n📊 TOTAL POR LOJA:")
-for i in range(len(estoque)):
-    total_loja = 0
-    for j in range(len(estoque[i])):
-        total_loja += estoque[i][j]
-    print(f"   {lojas[i]}: {total_loja} unidades")
-
-# Total por produto
-print("\n📊 TOTAL POR PRODUTO:")
-for j in range(len(produtos)):
-    total_produto = 0
-    for i in range(len(estoque)):
-        total_produto += estoque[i][j]
-    print(f"   {produtos[j]}: {total_produto} unidades")
-
-print("\n" + "=" * 70)</textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Executar Sistema</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
+<section>
         <h2>📚 Resumo</h2>
         <ul>
             <li>✅ Modificar elementos individuais</li>
@@ -229,6 +111,15 @@ print("\n" + "=" * 70)</textarea>
             <li>✅ Simular operações de estoque</li>
         </ul>
     </section>
+{% endblock %}
+
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    <p>Complete o exercício no editor ao lado.</p>
+{% endblock %}
+
+{% block initial_code %}# Seu código aqui
 {% endblock %}
 
 {% block extra_js %}

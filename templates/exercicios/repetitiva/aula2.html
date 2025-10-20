@@ -95,38 +95,7 @@ print("\nMenu numerado:")
 for i in range(len(frutas)):
     print(f"{i + 1}. {frutas[i]}")</code></pre>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Calculadora de Médias</h3>
-            <p>Crie um programa que:</p>
-            <ul>
-                <li>Pergunte quantas notas o usuário quer inserir</li>
-                <li>Use um loop for para coletar todas as notas</li>
-                <li>Calcule e exiba a média</li>
-                <li>Mostre quantas notas estão acima da média</li>
-            </ul>
-            
-            <textarea id="code-input" placeholder="# Calculadora de Médias
-quantidade = int(input('Quantas notas você quer inserir? '))
-notas = []
-
-# Use for para coletar as notas
-for i in range(quantidade):
-    nota = float(input(f'Digite a nota {i + 1}: '))
-    notas.append(nota)
-
-# Calculate a média
-# Conte quantas estão acima da média
-# Exiba os resultados"></textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
+<section>
         <h2>🎨 Padrões com Loops</h2>
         
         <h3>Exemplo 1: Pirâmide de Estrelas</h3>
@@ -171,6 +140,15 @@ else:
             </ul>
         </div>
     </section>
+{% endblock %}
+
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    <p>Complete o exercício no editor ao lado.</p>
+{% endblock %}
+
+{% block initial_code %}# Seu código aqui
 {% endblock %}
 
 {% block extra_js %}

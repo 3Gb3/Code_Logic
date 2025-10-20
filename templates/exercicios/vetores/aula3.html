@@ -225,99 +225,7 @@ nao_copia = original  # Mesma referência
 nao_copia.append(7)
 print(f"Original após 'não cópia': {original}")  # [1, 2, 3, 4, 5, 7]</code></pre>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Sistema de Gerenciamento de Tarefas</h3>
-            <p>Crie um sistema que permita:</p>
-            <ul>
-                <li>Adicionar tarefas no final e em posições específicas</li>
-                <li>Remover tarefas por nome ou posição</li>
-                <li>Reorganizar a lista (ordenar, inverter)</li>
-                <li>Buscar e contar tarefas</li>
-            </ul>
-            
-            <textarea id="code-input" placeholder="# Sistema de Gerenciamento de Tarefas
-tarefas = []
-
-print('🚀 SISTEMA DE TAREFAS INICIADO')
-
-# Adicionando tarefas no final
-tarefa = 'Estudar Python'
-tarefas.append(tarefa)
-print(f'✅ Tarefa \"{tarefa}\" adicionada no final')
-
-tarefa = 'Fazer exercícios'
-tarefas.append(tarefa)
-print(f'✅ Tarefa \"{tarefa}\" adicionada no final')
-
-tarefa = 'Ler documentação'
-tarefas.append(tarefa)
-print(f'✅ Tarefa \"{tarefa}\" adicionada no final')
-
-# Inserindo tarefa em posição específica
-tarefa = 'Fazer projeto'
-posicao = 1
-tarefas.insert(posicao, tarefa)
-print(f'✅ Tarefa \"{tarefa}\" adicionada na posição {posicao}')
-
-# Listando tarefas
-if not tarefas:
-    print('📋 Nenhuma tarefa cadastrada')
-else:
-    print('📋 LISTA DE TAREFAS:')
-    for i in range(len(tarefas)):
-        print(f'{i + 1}. {tarefas[i]}')
-
-# Buscando tarefa
-nome_busca = 'Estudar Python'
-if nome_busca in tarefas:
-    posicao = tarefas.index(nome_busca)
-    count = tarefas.count(nome_busca)
-    print(f'🔍 \"{nome_busca}\" encontrada na posição {posicao} ({count} ocorrência(s))')
-else:
-    print(f'🔍 \"{nome_busca}\" não encontrada')
-
-# Removendo tarefa por nome
-tarefa_remover = 'Fazer exercícios'
-if tarefa_remover in tarefas:
-    tarefas.remove(tarefa_remover)
-    print(f'❌ Tarefa \"{tarefa_remover}\" removida')
-else:
-    print(f'Tarefa \"{tarefa_remover}\" não encontrada!')
-
-# Removendo tarefa por posição
-posicao_remover = 0
-if 0 <= posicao_remover < len(tarefas):
-    removida = tarefas.pop(posicao_remover)
-    print(f'❌ Tarefa \"{removida}\" removida da posição {posicao_remover}')
-else:
-    print('Posição inválida!')
-
-# Listando tarefas novamente
-if not tarefas:
-    print('📋 Nenhuma tarefa cadastrada')
-else:
-    print('📋 LISTA DE TAREFAS:')
-    for i in range(len(tarefas)):
-        print(f'{i + 1}. {tarefas[i]}')
-
-# Organizando
-print('\n📊 Organizando tarefas...')
-tarefas_copia = tarefas.copy()
-tarefas_copia.sort()
-print(f'Ordenadas: {tarefas_copia}')
-
-tarefas.reverse()
-print(f'Invertidas: {tarefas}')"></textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
+<section>
         <h2>⚡ Métodos Úteis Combinados</h2>
         
         <h3>1. Limpeza e Filtragem:</h3>
@@ -362,6 +270,15 @@ print(f"Apenas ímpares: {numeros}")  # [1, 3, 5, 7, 9]</code></pre>
             </ul>
         </div>
     </section>
+{% endblock %}
+
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    <p>Complete o exercício no editor ao lado.</p>
+{% endblock %}
+
+{% block initial_code %}# Seu código aqui
 {% endblock %}
 
 {% block extra_js %}

@@ -133,130 +133,7 @@ for i in range(len(vendas)):
     media_linha = soma_linha / len(vendas[i])
     print(f"Média linha {i}: R$ {media_linha:.2f}")</code></pre>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Análise de Temperaturas</h3>
-            <p>Sistema completo de análise de temperaturas em 4 cidades durante 7 dias.</p>
-            
-            <textarea id="code-input"># 🌡️ SISTEMA DE ANÁLISE DE TEMPERATURAS
-
-print("=" * 60)
-print("🌡️  ANÁLISE DE TEMPERATURAS".center(60))
-print("=" * 60)
-
-# Temperaturas (4 cidades x 7 dias)
-temperaturas = [
-    [22, 24, 23, 25, 26, 24, 23],  # Cidade A
-    [18, 19, 20, 21, 22, 20, 19],  # Cidade B
-    [28, 29, 30, 31, 32, 30, 29],  # Cidade C
-    [15, 16, 17, 18, 19, 17, 16]   # Cidade D
-]
-
-cidades = ["Cidade A", "Cidade B", "Cidade C", "Cidade D"]
-dias = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"]
-
-# Exibir tabela
-print("\n📊 TEMPERATURAS DA SEMANA:")
-print(f"\n{'Cidade':<12}", end="")
-for dia in dias:
-    print(f"{dia:>6}", end="")
-print()
-print("-" * 60)
-
-for i in range(len(temperaturas)):
-    print(f"{cidades[i]:<12}", end="")
-    for j in range(len(temperaturas[i])):
-        print(f"{temperaturas[i][j]:>6}°C", end="")
-    print()
-
-# Calcular média por cidade
-print("\n📈 MÉDIA POR CIDADE:")
-for i in range(len(temperaturas)):
-    soma = 0
-    for j in range(len(temperaturas[i])):
-        soma += temperaturas[i][j]
-    media = soma / len(temperaturas[i])
-    print(f"{cidades[i]}: {media:.1f}°C")
-
-# Temperatura mais alta
-maior_temp = temperaturas[0][0]
-cidade_maior = 0
-dia_maior = 0
-
-for i in range(len(temperaturas)):
-    for j in range(len(temperaturas[i])):
-        if temperaturas[i][j] > maior_temp:
-            maior_temp = temperaturas[i][j]
-            cidade_maior = i
-            dia_maior = j
-
-print(f"\n🔥 Temperatura mais alta: {maior_temp}°C")
-print(f"   {cidades[cidade_maior]} - {dias[dia_maior]}")
-
-# Temperatura mais baixa
-menor_temp = temperaturas[0][0]
-cidade_menor = 0
-dia_menor = 0
-
-for i in range(len(temperaturas)):
-    for j in range(len(temperaturas[i])):
-        if temperaturas[i][j] < menor_temp:
-            menor_temp = temperaturas[i][j]
-            cidade_menor = i
-            dia_menor = j
-
-print(f"\n❄️  Temperatura mais baixa: {menor_temp}°C")
-print(f"   {cidades[cidade_menor]} - {dias[dia_menor]}")
-
-# Amplitude térmica por cidade
-print("\n🌡️  AMPLITUDE TÉRMICA:")
-for i in range(len(temperaturas)):
-    maior_cidade = temperaturas[i][0]
-    menor_cidade = temperaturas[i][0]
-    
-    for j in range(len(temperaturas[i])):
-        if temperaturas[i][j] > maior_cidade:
-            maior_cidade = temperaturas[i][j]
-        if temperaturas[i][j] < menor_cidade:
-            menor_cidade = temperaturas[i][j]
-    
-    amplitude = maior_cidade - menor_cidade
-    print(f"{cidades[i]}: {amplitude}°C (Min: {menor_cidade}°C, Max: {maior_cidade}°C)")
-
-# Dias acima da média geral
-soma_geral = 0
-total_dias = 0
-
-for i in range(len(temperaturas)):
-    for j in range(len(temperaturas[i])):
-        soma_geral += temperaturas[i][j]
-        total_dias += 1
-
-media_geral = soma_geral / total_dias
-
-print(f"\n📊 Média geral: {media_geral:.1f}°C")
-print("\n🌡️  Temperaturas acima da média:")
-
-for i in range(len(temperaturas)):
-    print(f"\n{cidades[i]}:")
-    tem_acima = False
-    for j in range(len(temperaturas[i])):
-        if temperaturas[i][j] > media_geral:
-            tem_acima = True
-            print(f"  {dias[j]}: {temperaturas[i][j]}°C")
-    if not tem_acima:
-        print("  Nenhum dia acima da média")
-
-print("\n" + "=" * 60)</textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Executar Análise</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
+<section>
         <h2>📚 Resumo</h2>
         <ul>
             <li>✅ Somar elementos (total, por linha, por coluna)</li>
@@ -265,6 +142,15 @@ print("\n" + "=" * 60)</textarea>
             <li>✅ Calcular médias</li>
         </ul>
     </section>
+{% endblock %}
+
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    <p>Complete o exercício no editor ao lado.</p>
+{% endblock %}
+
+{% block initial_code %}# Seu código aqui
 {% endblock %}
 
 {% block extra_js %}

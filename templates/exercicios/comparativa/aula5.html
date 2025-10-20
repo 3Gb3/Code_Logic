@@ -89,35 +89,7 @@ else:
 else:
     print("Menor de idade")</code></pre>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Sistema de Cadastro de Usuário</h3>
-            <p>Crie um sistema que valide o cadastro com condições aninhadas:</p>
-            <ul>
-                <li>Se idade ≥ 18: pode se cadastrar</li>
-                <li>Se tem email: verificar se tem @</li>
-                <li>Se senha tem ≥ 8 caracteres: cadastro completo</li>
-                <li>Senão: pedir senha mais forte</li>
-            </ul>
-            
-            <textarea id="code-input" placeholder="# Sistema de Cadastro
-idade = int(input('Idade: '))
-
-if idade >= 18:
-    print('Idade válida!')
-    email = input('Email: ')
-    # Continue o código...
-else:
-    print('Menor de idade não pode se cadastrar')"></textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
+<section>
         <h2>💡 Dicas Importantes</h2>
         <div class="tip-box">
             <ul>
@@ -128,6 +100,15 @@ else:
             </ul>
         </div>
     </section>
+{% endblock %}
+
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    <p>Complete o exercício no editor ao lado.</p>
+{% endblock %}
+
+{% block initial_code %}# Seu código aqui
 {% endblock %}
 
 {% block extra_js %}

@@ -212,99 +212,7 @@ for x in numeros:
 
 print(f"Somados com 10: {somados}")  # [11, 12, 13, 14, 15]</code></pre>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Calculadora de Vetores</h3>
-            <p>Crie uma calculadora que realize operações entre vetores (listas):</p>
-            <ul>
-                <li>Soma e subtração elemento a elemento</li>
-                <li>Produto escalar e produto por escalar</li>
-                <li>Magnitude (comprimento) do vetor</li>
-                <li>Concatenação e comparação de vetores</li>
-            </ul>
-            
-            <textarea id="code-input" placeholder="# 🧮 CALCULADORA DE VETORES (LISTAS)
-# Vetores de teste
-vetor_a = [3, 4, 5]
-vetor_b = [1, 2, 3]
-
-print('🧮 CALCULADORA DE VETORES')
-print(f'Vetor A: {vetor_a}')
-print(f'Vetor B: {vetor_b}')
-print()
-
-# ➕ SOMA elemento a elemento
-if len(vetor_a) != len(vetor_b):
-    print('Erro: Vetores devem ter o mesmo tamanho')
-else:
-    soma = []
-    for i in range(len(vetor_a)):
-        soma.append(vetor_a[i] + vetor_b[i])
-    print(f'➕ Soma: {soma}')
-
-# ➖ SUBTRAÇÃO elemento a elemento
-if len(vetor_a) != len(vetor_b):
-    print('Erro: Vetores devem ter o mesmo tamanho')
-else:
-    subtracao = []
-    for i in range(len(vetor_a)):
-        subtracao.append(vetor_a[i] - vetor_b[i])
-    print(f'➖ Subtração (A-B): {subtracao}')
-
-# ✖️ PRODUTO ESCALAR (soma dos produtos)
-if len(vetor_a) != len(vetor_b):
-    print('Erro: Vetores devem ter o mesmo tamanho')
-else:
-    produto_escalar = 0
-    for i in range(len(vetor_a)):
-        produto_escalar += vetor_a[i] * vetor_b[i]
-    print(f'✖️ Produto escalar: {produto_escalar}')
-
-# 📊 MULTIPLICAÇÃO por escalar
-escalar = 2
-vetor_multiplicado = []
-for x in vetor_a:
-    vetor_multiplicado.append(x * escalar)
-print(f'📊 A × {escalar}: {vetor_multiplicado}')
-
-# 📏 MAGNITUDE (comprimento do vetor)
-# Magnitude = raiz quadrada da soma dos quadrados
-soma_quadrados = 0
-for x in vetor_a:
-    soma_quadrados += x ** 2
-magnitude = soma_quadrados ** 0.5
-print(f'📏 Magnitude de A: {magnitude:.2f}')
-
-# 📐 NORMALIZAÇÃO (vetor com magnitude = 1)
-if magnitude == 0:
-    print('Não é possível normalizar vetor zero')
-else:
-    normalizado = []
-    for x in vetor_a:
-        normalizado.append(x / magnitude)
-    
-    # Arredondar para exibição
-    normalizado_arredondado = []
-    for valor in normalizado:
-        normalizado_arredondado.append(round(valor, 3))
-    
-    print(f'📐 A normalizado: {normalizado_arredondado}')
-    
-    # Verificar magnitude do normalizado
-    soma_quad_norm = 0
-    for x in normalizado:
-        soma_quad_norm += x ** 2
-    mag_normalizado = soma_quad_norm ** 0.5
-    print(f'📏 Magnitude do normalizado: {mag_normalizado:.6f}')"></textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
+<section>
         <h2>🔄 Operações Avançadas</h2>
         
         <h3>1. Interseção e União:</h3>
@@ -400,6 +308,15 @@ if original:
             </ul>
         </div>
     </section>
+{% endblock %}
+
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    <p>Complete o exercício no editor ao lado.</p>
+{% endblock %}
+
+{% block initial_code %}# Seu código aqui
 {% endblock %}
 
 {% block extra_js %}

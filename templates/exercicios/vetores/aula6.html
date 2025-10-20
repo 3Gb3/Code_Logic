@@ -321,150 +321,7 @@ for aluno in notas:
     media = soma_notas / count_notas
     print(f"{nome}: {media:.2f}")</code></pre>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Sistema de Controle de Estoque</h3>
-            <p>Crie um sistema que gerencie estoque de produtos em diferentes depósitos:</p>
-            <ul>
-                <li>Armazenar produtos e quantidades por depósito</li>
-                <li>Calcular estoque total de cada produto</li>
-                <li>Encontrar produto com maior/menor estoque</li>
-                <li>Verificar disponibilidade</li>
-            </ul>
-            
-            <textarea id="code-input" placeholder="# Sistema de Controle de Estoque
-# Cada linha = depósito, cada coluna = produto
-# [Arroz, Feijão, Açúcar]
-estoque = [
-    [50, 30, 25],  # Depósito A
-    [40, 45, 30],  # Depósito B
-    [35, 20, 40]   # Depósito C
-]
-
-produtos = ['Arroz', 'Feijão', 'Açúcar']
-depositos = ['A', 'B', 'C']
-
-print('📦 SISTEMA DE CONTROLE DE ESTOQUE')
-print('=' * 50)
-
-# Exibir estoque atual
-print('\nESTOQUE ATUAL:')
-print('Depósito    ', end='')
-for produto in produtos:
-    espaco = 12 - len(produto)
-    print(produto + ' ' * espaco, end='')
-print()
-print('-' * 50)
-
-for i in range(len(estoque)):
-    print(depositos[i] + ' ' * 11, end='')
-    for quantidade in estoque[i]:
-        qtd_str = str(quantidade)
-        espaco = 12 - len(qtd_str)
-        print(qtd_str + ' ' * espaco, end='')
-    print()
-
-# Calcular estoque total por produto
-print('\n📊 ESTOQUE TOTAL POR PRODUTO:')
-for j in range(len(produtos)):
-    total = 0
-    for i in range(len(estoque)):
-        total += estoque[i][j]
-    print(f'{produtos[j]}: {total} unidades')
-
-# Calcular estoque total por depósito
-print('\n🏢 ESTOQUE TOTAL POR DEPÓSITO:')
-for i in range(len(estoque)):
-    total = 0
-    for quantidade in estoque[i]:
-        total += quantidade
-    print(f'Depósito {depositos[i]}: {total} unidades')
-
-# Encontrar produto com maior estoque
-maior_estoque = 0
-produto_maior = ''
-for j in range(len(produtos)):
-    total = 0
-    for i in range(len(estoque)):
-        total += estoque[i][j]
-    
-    if total > maior_estoque:
-        maior_estoque = total
-        produto_maior = produtos[j]
-
-print(f'\n⭐ Produto com maior estoque: {produto_maior} ({maior_estoque} unidades)')
-
-# Encontrar produto com menor estoque
-menor_estoque = 9999
-produto_menor = ''
-for j in range(len(produtos)):
-    total = 0
-    for i in range(len(estoque)):
-        total += estoque[i][j]
-    
-    if total < menor_estoque:
-        menor_estoque = total
-        produto_menor = produtos[j]
-
-print(f'⚠️  Produto com menor estoque: {produto_menor} ({menor_estoque} unidades)')
-
-# Verificar disponibilidade de um produto específico
-produto_busca = 'Arroz'
-print(f'\n🔍 DISPONIBILIDADE DE {produto_busca}:')
-
-# Encontrar índice do produto
-indice_produto = -1
-for i in range(len(produtos)):
-    if produtos[i] == produto_busca:
-        indice_produto = i
-        break
-
-if indice_produto >= 0:
-    for i in range(len(estoque)):
-        qtd = estoque[i][indice_produto]
-        print(f'  Depósito {depositos[i]}: {qtd} unidades')
-else:
-    print(f'  Produto não encontrado')
-
-# Simular venda (remover do estoque)
-print(f'\n💰 SIMULANDO VENDA:')
-deposito_venda = 0  # Depósito A
-produto_venda = 0   # Arroz
-quantidade_venda = 10
-
-print(f'Vendendo {quantidade_venda} unidades de {produtos[produto_venda]} do Depósito {depositos[deposito_venda]}')
-
-if estoque[deposito_venda][produto_venda] >= quantidade_venda:
-    estoque[deposito_venda][produto_venda] -= quantidade_venda
-    print(f'✅ Venda realizada! Estoque restante: {estoque[deposito_venda][produto_venda]} unidades')
-else:
-    print(f'❌ Estoque insuficiente! Disponível: {estoque[deposito_venda][produto_venda]} unidades')
-
-# Exibir estoque após venda
-print('\n📦 ESTOQUE APÓS VENDA:')
-print('Depósito    ', end='')
-for produto in produtos:
-    espaco = 12 - len(produto)
-    print(produto + ' ' * espaco, end='')
-print()
-print('-' * 50)
-
-for i in range(len(estoque)):
-    print(depositos[i] + ' ' * 11, end='')
-    for quantidade in estoque[i]:
-        qtd_str = str(quantidade)
-        espaco = 12 - len(qtd_str)
-        print(qtd_str + ' ' * espaco, end='')
-    print()"></textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
+<section>
         <h2>💡 Dicas Importantes</h2>
         <div class="tip-box">
             <ul>
@@ -489,6 +346,15 @@ for i in range(len(estoque)):
             <li>✅ Trabalhar com estruturas bidimensionais (tabelas)</li>
         </ul>
     </section>
+{% endblock %}
+
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    <p>Complete o exercício no editor ao lado.</p>
+{% endblock %}
+
+{% block initial_code %}# Seu código aqui
 {% endblock %}
 
 {% block extra_js %}

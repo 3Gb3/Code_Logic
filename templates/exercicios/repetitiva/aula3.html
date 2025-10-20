@@ -134,47 +134,7 @@ while tentativas < max_tentativas:
         else:
             print("🔒 Acesso bloqueado - muitas tentativas!")</code></pre>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Jogo de Adivinhação</h3>
-            <p>Crie um jogo onde:</p>
-            <ul>
-                <li>O computador "pensa" em um número de 1 a 100</li>
-                <li>O usuário tenta adivinhar</li>
-                <li>Dê dicas: "muito alto" ou "muito baixo"</li>
-                <li>Conte quantas tentativas foram necessárias</li>
-                <li>Continue até acertar</li>
-            </ul>
-            
-            <h4>Exemplo de código:</h4>
-            <pre><code># Jogo de Adivinhação Simplificado
-print('🎯 Jogo de Adivinhação!')
-numero_secreto = 42  # Número escolhido
-tentativas = 0
-acertou = False
-
-print('Adivinhe o número secreto!')
-
-while not acertou:
-    tentativas += 1
-    palpite = int(input(f'Tentativa {tentativas}: '))
-    
-    if palpite == numero_secreto:
-        acertou = True
-        print(f'🎉 Parabéns! Acertou em {tentativas} tentativas!')
-    elif palpite < numero_secreto:
-        print('📈 Muito baixo!')
-    else:
-        print('📉 Muito alto!')</code></pre>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
+<section>
         <h2>⚠️ Evitando Loops Infinitos</h2>
         
         <h3>❌ Problema Comum:</h3>

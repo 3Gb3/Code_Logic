@@ -59,38 +59,29 @@ else:
             <li>O else é sempre opcional</li>
         </ul>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Sistema de Classificação Etária</h3>
-            <p>Crie um programa que receba a idade de uma pessoa e classifique em:</p>
-            <ul>
-                <li>0-12 anos: "Criança"</li>
-                <li>13-17 anos: "Adolescente"</li>
-                <li>18-59 anos: "Adulto"</li>
-                <li>60+ anos: "Idoso"</li>
-            </ul>
-            
-            <textarea id="code-input" placeholder="# Digite seu código aqui
-idade = int(input('Digite sua idade: '))
-
-# Complete o código..."></textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
-            <div id="output"></div>
-        </div>
-    </section>
 {% endblock %}
 
-{% block extra_js %}
-<script>
-function runCode() {
-    const code = document.getElementById('code-input').value;
-    const output = document.getElementById('output');
+{% block exercise_description %}
+    <h4>🎮 Exercício Prático</h4>
     
-    // Simulação de execução (aqui você integraria com um interpretador Python real)
-    output.innerHTML = '<div class="output-success">Código executado! Verifique se está funcionando com diferentes idades.</div>';
-}
-</script>
+    <h3>Sistema de Classificação Etária</h3>
+    <p>Crie um programa que receba a idade de uma pessoa e classifique em:</p>
+    <ul>
+        <li>0-12 anos: "Criança"</li>
+        <li>13-17 anos: "Adolescente"</li>
+        <li>18-59 anos: "Adulto"</li>
+        <li>60+ anos: "Idoso"</li>
+    </ul>
+    
+    <p><strong>Exemplo de saída esperada:</strong></p>
+    <pre><code>Digite sua idade: 25
+Adulto
+
+Digite sua idade: 10
+Criança</code></pre>
+{% endblock %}
+
+{% block initial_code %}idade = int(input('Digite sua idade: '))
+
+# Complete o código...
 {% endblock %}

@@ -114,73 +114,7 @@ print(f"Após inserção: {numeros}")  # [1, 20, 25, 35, 30, 40, 5]
 del numeros[2:4]  # Remove índices 2 e 3
 print(f"Após remoção: {numeros}")  # [1, 20, 30, 40, 5]</code></pre>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Manipulador de Playlist</h3>
-            <p>Crie um programa que:</p>
-            <ul>
-                <li>Tenha uma playlist de músicas</li>
-                <li>Permita acessar música por posição</li>
-                <li>Extraia sublistas (top 3, últimas 5, etc.)</li>
-                <li>Inverta a ordem da playlist</li>
-            </ul>
-            
-            <textarea id="code-input" placeholder="# Manipulador de Playlist
-playlist = [
-    'Bohemian Rhapsody',
-    'Stairway to Heaven', 
-    'Hotel California',
-    'Imagine',
-    'Like a Rolling Stone',
-    'Billie Jean',
-    'Hey Jude',
-    'Smells Like Teen Spirit',
-    'What a Wonderful World',
-    'Yesterday'
-]
-
-print('🎵 PLAYLIST ORIGINAL:')
-for i, musica in enumerate(playlist, 1):
-    print(f'{i}. {musica}')
-
-# 1. Acessar primeira e última música
-primeira = playlist[0]
-ultima = playlist[-1]
-print(f'\n🥇 Primeira: {primeira}')
-print(f'🏁 Última: {ultima}')
-
-# 2. Top 3 músicas
-top_3 = playlist[:3]
-print(f'\n🏆 TOP 3:')
-for i, musica in enumerate(top_3, 1):
-    print(f'{i}. {musica}')
-
-# 3. Últimas 3 músicas
-ultimas_3 = playlist[-3:]
-print(f'\n📻 ÚLTIMAS 3:')
-for i, musica in enumerate(ultimas_3, 1):
-    print(f'{i}. {musica}')
-
-# 4. Músicas pares (posições 2, 4, 6...)
-musicas_pares = playlist[1::2]
-print(f'\n⚡ POSIÇÕES PARES:')
-for musica in musicas_pares:
-    print(f'- {musica}')
-
-# 5. Playlist invertida
-playlist_invertida = playlist[::-1]
-print(f'\n🔄 PLAYLIST INVERTIDA:')
-for i, musica in enumerate(playlist_invertida, 1):
-    print(f'{i}. {musica}')"></textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
+<section>
         <h2>🔍 Operações Avançadas</h2>
         
         <h3>1. Encontrando Índices:</h3>
@@ -266,6 +200,15 @@ print(f"Últimas 3 invertidas: {ultimas_3_invertidas}")</code></pre>
             </ul>
         </div>
     </section>
+{% endblock %}
+
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    <p>Complete o exercício no editor ao lado.</p>
+{% endblock %}
+
+{% block initial_code %}# Seu código aqui
 {% endblock %}
 
 {% block extra_js %}

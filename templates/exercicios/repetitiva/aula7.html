@@ -159,57 +159,7 @@ for i, (produto, preco, qtd) in enumerate(zip(produtos, precos, quantidades), 1)
 print("-" * 45)
 print(f"TOTAL GERAL: R$ {total_geral:.2f}")</code></pre>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Sistema de Votação</h3>
-            <p>Crie um sistema que:</p>
-            <ul>
-                <li>Tenha uma lista de candidatos</li>
-                <li>Colete votos usando enumerate() para mostrar opções</li>
-                <li>Use zip() para combinar candidatos com votos</li>
-                <li>Exiba resultado final ordenado</li>
-            </ul>
-            
-            <textarea id="code-input" placeholder="# Sistema de Votação
-candidatos = ['Alice Silva', 'Bruno Costa', 'Carlos Lima', 'Diana Santos']
-votos = [0] * len(candidatos)  # Lista de zeros
-
-print('🗳️  SISTEMA DE VOTAÇÃO')
-print('Candidatos disponíveis:')
-
-# Mostrar candidatos com enumerate
-for i, candidato in enumerate(candidatos, 1):
-    print(f'{i}. {candidato}')
-
-# Coletar votos
-print('\nDigite o número do candidato (0 para encerrar):')
-
-while True:
-    try:
-        voto = int(input('Seu voto: '))
-        
-        if voto == 0:
-            break
-        elif 1 <= voto <= len(candidatos):
-            votos[voto - 1] += 1
-            print(f'✅ Voto registrado para {candidatos[voto - 1]}')
-        else:
-            print('❌ Candidato inválido!')
-    except ValueError:
-        print('❌ Digite apenas números!')
-
-# Exibir resultados usando zip
-print('\n📊 RESULTADO DA VOTAÇÃO:')
-# Complete o código..."></textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
+<section>
         <h2>⚠️ Cuidados com zip()</h2>
         
         <h3>Sequências de Tamanhos Diferentes:</h3>
@@ -299,6 +249,15 @@ for i, (x, y) in enumerate(zip(pontos_x, pontos_y), 1):
             </ul>
         </div>
     </section>
+{% endblock %}
+
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    <p>Complete o exercício no editor ao lado.</p>
+{% endblock %}
+
+{% block initial_code %}# Seu código aqui
 {% endblock %}
 
 {% block extra_js %}

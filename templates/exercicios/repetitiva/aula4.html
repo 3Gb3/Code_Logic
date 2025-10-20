@@ -142,57 +142,7 @@ for email in emails:
 
 print(f"\nEmails válidos encontrados: {len(emails_validos)}")</code></pre>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Sistema de Notas Escolares</h3>
-            <p>Crie um programa que:</p>
-            <ul>
-                <li>Colete notas de alunos (digite -1 para parar)</li>
-                <li>Ignore notas inválidas (< 0 ou > 10) com continue</li>
-                <li>Pare de coletar com break quando digitar -1</li>
-                <li>Calcule média, maior e menor nota</li>
-            </ul>
-            
-            <textarea id="code-input" placeholder="# Sistema de Notas
-notas = []
-print('📚 Sistema de Notas Escolares')
-print('Digite as notas (0-10) ou -1 para parar')
-
-while True:
-    try:
-        nota = float(input('Digite uma nota: '))
-        
-        # Se digitar -1, para o programa
-        if nota == -1:
-            break
-        
-        # Se nota inválida, ignora e continua
-        if nota < 0 or nota > 10:
-            print('❌ Nota inválida! Digite entre 0 e 10')
-            continue
-        
-        # Adiciona nota válida
-        notas.append(nota)
-        print(f'✅ Nota {nota} adicionada')
-        
-    except ValueError:
-        print('❌ Digite apenas números')
-        continue
-
-# Calcule estatísticas se houver notas
-if notas:
-    # Complete o código...
-else:
-    print('Nenhuma nota foi registrada.')"></textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
+<section>
         <h2>🔄 Loops Aninhados com break/continue</h2>
         
         <h3>Break em Loop Aninhado</h3>

@@ -259,131 +259,7 @@ for depto, dados in empresa.items():
     print(f"  Funcionários: {dados['funcionarios']}")
     print(f"  Orçamento: R$ {dados['orcamento']:,}")</code></pre>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Sistema de Gerenciamento de Estoque</h3>
-            <p>Crie um sistema de estoque usando dicionários:</p>
-            <ul>
-                <li>Armazenar produtos com código, nome, preço e quantidade</li>
-                <li>Adicionar, remover e atualizar produtos</li>
-                <li>Calcular valor total do estoque</li>
-                <li>Gerar relatórios</li>
-            </ul>
-            
-            <textarea id="code-input" placeholder="# Sistema de Gerenciamento de Estoque
-
-estoque = {
-    'P001': {'nome': 'Arroz', 'preco': 5.50, 'quantidade': 100},
-    'P002': {'nome': 'Feijão', 'preco': 7.00, 'quantidade': 80},
-    'P003': {'nome': 'Açúcar', 'preco': 3.50, 'quantidade': 120},
-    'P004': {'nome': 'Óleo', 'preco': 8.00, 'quantidade': 60}
-}
-
-print('📦 SISTEMA DE GERENCIAMENTO DE ESTOQUE')
-print('=' * 60)
-
-# Listar todos os produtos
-print('\n📋 PRODUTOS EM ESTOQUE:')
-print(f'{'Código':8} {'Nome':15} {'Preço':10} {'Qtd':6} {'Total':10}')
-print('-' * 60)
-
-for codigo, produto in estoque.items():
-    nome = produto['nome']
-    preco = produto['preco']
-    qtd = produto['quantidade']
-    total = preco * qtd
-    
-    print(f'{codigo:8} {nome:15} R$ {preco:6.2f} {qtd:6} R$ {total:8.2f}')
-
-# Calcular valor total do estoque
-valor_total = 0
-quantidade_total = 0
-
-for produto in estoque.values():
-    valor_total += produto['preco'] * produto['quantidade']
-    quantidade_total += produto['quantidade']
-
-print('-' * 60)
-print(f'Total de produtos diferentes: {len(estoque)}')
-print(f'Quantidade total de itens: {quantidade_total}')
-print(f'Valor total do estoque: R$ {valor_total:.2f}')
-
-# Adicionar novo produto
-novo_codigo = 'P005'
-novo_produto = {
-    'nome': 'Macarrão',
-    'preco': 4.50,
-    'quantidade': 90
-}
-
-estoque[novo_codigo] = novo_produto
-print(f'\n✅ Produto {novo_codigo} adicionado: {novo_produto['nome']}')
-
-# Atualizar quantidade (venda)
-codigo_venda = 'P001'
-qtd_vendida = 10
-
-if codigo_venda in estoque:
-    estoque[codigo_venda]['quantidade'] -= qtd_vendida
-    print(f'💰 Venda registrada: {qtd_vendida} unidades de {estoque[codigo_venda]['nome']}')
-    print(f'   Estoque restante: {estoque[codigo_venda]['quantidade']} unidades')
-
-# Produtos com estoque baixo (< 70)
-print('\n⚠️  PRODUTOS COM ESTOQUE BAIXO (< 70):')
-tem_baixo = False
-
-for codigo, produto in estoque.items():
-    if produto['quantidade'] < 70:
-        tem_baixo = True
-        print(f'  {codigo} - {produto['nome']}: {produto['quantidade']} unidades')
-
-if not tem_baixo:
-    print('  Nenhum produto com estoque baixo')
-
-# Produto mais caro e mais barato
-produto_mais_caro = ''
-preco_mais_caro = 0
-produto_mais_barato = ''
-preco_mais_barato = 99999
-
-for codigo, produto in estoque.items():
-    if produto['preco'] > preco_mais_caro:
-        preco_mais_caro = produto['preco']
-        produto_mais_caro = produto['nome']
-    
-    if produto['preco'] < preco_mais_barato:
-        preco_mais_barato = produto['preco']
-        produto_mais_barato = produto['nome']
-
-print(f'\n💎 Produto mais caro: {produto_mais_caro} (R$ {preco_mais_caro:.2f})')
-print(f'💵 Produto mais barato: {produto_mais_barato} (R$ {preco_mais_barato:.2f})')
-
-# Buscar produto por nome
-nome_busca = 'Açúcar'
-print(f'\n🔍 BUSCAR: {nome_busca}')
-encontrado = False
-
-for codigo, produto in estoque.items():
-    if produto['nome'] == nome_busca:
-        encontrado = True
-        print(f'  Código: {codigo}')
-        print(f'  Preço: R$ {produto['preco']:.2f}')
-        print(f'  Quantidade: {produto['quantidade']}')
-        valor_estoque = produto['preco'] * produto['quantidade']
-        print(f'  Valor em estoque: R$ {valor_estoque:.2f}')
-        break
-
-if not encontrado:
-    print(f'  Produto não encontrado')"></textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
+<section>
         <h2>💡 Dicas Importantes</h2>
         <div class="tip-box">
             <ul>
@@ -408,6 +284,15 @@ if not encontrado:
             <li>✅ Trabalhar com dicionários aninhados</li>
         </ul>
     </section>
+{% endblock %}
+
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    <p>Complete o exercício no editor ao lado.</p>
+{% endblock %}
+
+{% block initial_code %}# Seu código aqui
 {% endblock %}
 
 {% block extra_js %}

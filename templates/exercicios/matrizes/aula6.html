@@ -81,100 +81,7 @@ print("\nMatriz Transposta (2x3):")
 for linha in transposta:
     print(linha)</code></pre>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Sistema de Transposição de Dados</h3>
-            
-            <textarea id="code-input"># 🔄 SISTEMA DE TRANSPOSIÇÃO DE MATRIZES
-
-print("=" * 70)
-print("🔄 SISTEMA DE TRANSPOSIÇÃO".center(70))
-print("=" * 70)
-
-# Dados de vendas: Produtos x Meses
-vendas = [
-    [100, 120, 150, 140],  # Produto A
-    [80, 90, 95, 100],     # Produto B
-    [200, 210, 190, 220]   # Produto C
-]
-
-produtos = ["Produto A", "Produto B", "Produto C"]
-meses = ["Janeiro", "Fevereiro", "Março", "Abril"]
-
-print("\n📊 VENDAS POR PRODUTO (Original):")
-print(f"\n{'Produto':<15}", end="")
-for mes in meses:
-    print(f"{mes:>12}", end="")
-print()
-print("-" * 70)
-
-for i in range(len(vendas)):
-    print(f"{produtos[i]:<15}", end="")
-    for j in range(len(vendas[i])):
-        print(f"{vendas[i][j]:>12}", end="")
-    print()
-
-# TRANSPOR: Meses x Produtos
-linhas = len(vendas)
-colunas = len(vendas[0])
-
-vendas_transposta = []
-for j in range(colunas):
-    linha = []
-    for i in range(linhas):
-        linha.append(vendas[i][j])
-    vendas_transposta.append(linha)
-
-print("\n🔄 VENDAS POR MÊS (Transposta):")
-print(f"\n{'Mês':<15}", end="")
-for produto in produtos:
-    print(f"{produto:>12}", end="")
-print()
-print("-" * 70)
-
-for i in range(len(vendas_transposta)):
-    print(f"{meses[i]:<15}", end="")
-    for j in range(len(vendas_transposta[i])):
-        print(f"{vendas_transposta[i][j]:>12}", end="")
-    print()
-
-# Análise por mês (mais fácil com transposta)
-print("\n📈 TOTAL DE VENDAS POR MÊS:")
-for i in range(len(vendas_transposta)):
-    total_mes = 0
-    for j in range(len(vendas_transposta[i])):
-        total_mes += vendas_transposta[i][j]
-    print(f"{meses[i]:<15} {total_mes:>6} unidades")
-
-# Análise por produto (usando matriz original)
-print("\n📦 TOTAL DE VENDAS POR PRODUTO:")
-for i in range(len(vendas)):
-    total_produto = 0
-    for j in range(len(vendas[i])):
-        total_produto += vendas[i][j]
-    print(f"{produtos[i]:<15} {total_produto:>6} unidades")
-
-# Verificar se transposição está correta
-print("\n✅ VERIFICAÇÃO DA TRANSPOSIÇÃO:")
-print("Comparando elemento [1][2] original com [2][1] transposta:")
-print(f"   Original[1][2] = {vendas[1][2]}")
-print(f"   Transposta[2][1] = {vendas_transposta[2][1]}")
-
-if vendas[1][2] == vendas_transposta[2][1]:
-    print("   ✅ Transposição correta!")
-else:
-    print("   ❌ Erro na transposição")
-
-print("\n" + "=" * 70)</textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Transpor Matriz</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
+<section>
         <h2>💡 Aplicações Práticas</h2>
         <ul>
             <li>📊 Reorganizar dados de análise</li>
@@ -193,6 +100,15 @@ print("\n" + "=" * 70)</textarea>
             <li>✅ Aplicar em análise de dados</li>
         </ul>
     </section>
+{% endblock %}
+
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    <p>Complete o exercício no editor ao lado.</p>
+{% endblock %}
+
+{% block initial_code %}# Seu código aqui
 {% endblock %}
 
 {% block extra_js %}

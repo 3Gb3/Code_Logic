@@ -1,7 +1,7 @@
 body {
     font-family: 'Arial', sans-serif;
-    background: #f5f6fa;
-    color: #333;
+    background: #1E2A3A;
+    color: #ECEFF1;
     line-height: 1.6;
     margin: 0;
     padding: 20px;
@@ -10,13 +10,13 @@ body {
 header {
     text-align: center;
     padding: 30px 0;
-    background-color: #6c63ff;
+    background-color: #3D5A80;
     color: #fff;
     border-radius: 8px;
 }
 
 h1, h2, h3 {
-    color: #222;
+    color: #ECEFF1;
 }
 
 h1 {
@@ -36,17 +36,18 @@ p {
 }
 
 code {
-    background: #eaeaea;
+    background: #111B2C;
     padding: 4px 8px;
     border-radius: 4px;
     display: block;
     margin: 10px 0;
     white-space: pre-wrap;
+    color: #E0E7EF;
 }
 
 .activity {
-    background-color: #fff4e5;
-    border-left: 6px solid #ffb347;
+    background-color: rgba(61, 90, 128, 0.3);
+    border-left: 6px solid #5B7C99;
     padding: 15px;
     margin: 20px 0;
     border-radius: 6px;
@@ -60,6 +61,6 @@ body::-webkit-scrollbar {
     width: 8px;
 }
 body::-webkit-scrollbar-thumb {
-    background-color: #6c63ff;
+    background-color: #3D5A80;
     border-radius: 4px;
 }

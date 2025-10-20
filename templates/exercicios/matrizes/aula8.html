@@ -34,146 +34,7 @@ print(f"Matriz x {escalar}:")
 for linha in resultado:
     print(linha)</code></pre>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Sistema de Ajuste de Preços</h3>
-            
-            <textarea id="code-input"># 💰 SISTEMA DE AJUSTE DE PREÇOS
-
-print("=" * 70)
-print("💰 SISTEMA DE REAJUSTE DE PREÇOS".center(70))
-print("=" * 70)
-
-# Preços base (3 lojas x 5 produtos)
-precos_base = [
-    [10.00, 25.00, 50.00, 15.00, 30.00],  # Loja A
-    [12.00, 27.00, 55.00, 17.00, 32.00],  # Loja B
-    [11.00, 26.00, 52.00, 16.00, 31.00]   # Loja C
-]
-
-lojas = ["Loja A", "Loja B", "Loja C"]
-produtos = ["Prod 1", "Prod 2", "Prod 3", "Prod 4", "Prod 5"]
-
-# Mostrar preços originais
-print("\n📊 PREÇOS ATUAIS:")
-print(f"\n{'Loja':<12}", end="")
-for produto in produtos:
-    print(f"{produto:>10}", end="")
-print()
-print("-" * 70)
-
-for i in range(len(precos_base)):
-    print(f"{lojas[i]:<12}", end="")
-    for j in range(len(precos_base[i])):
-        print(f"R$ {precos_base[i][j]:>6.2f}", end="")
-    print()
-
-# CENÁRIO 1: Aumento de 10% (multiplicar por 1.1)
-print("\n📈 CENÁRIO 1: Aumento de 10%")
-print("-" * 70)
-
-aumento_10 = []
-for i in range(len(precos_base)):
-    linha = []
-    for j in range(len(precos_base[i])):
-        novo_preco = precos_base[i][j] * 1.1
-        linha.append(novo_preco)
-    aumento_10.append(linha)
-
-print(f"\n{'Loja':<12}", end="")
-for produto in produtos:
-    print(f"{produto:>10}", end="")
-print()
-print("-" * 70)
-
-for i in range(len(aumento_10)):
-    print(f"{lojas[i]:<12}", end="")
-    for j in range(len(aumento_10[i])):
-        print(f"R$ {aumento_10[i][j]:>6.2f}", end="")
-    print()
-
-# CENÁRIO 2: Desconto de 15% (multiplicar por 0.85)
-print("\n📉 CENÁRIO 2: Desconto de 15%")
-print("-" * 70)
-
-desconto_15 = []
-for i in range(len(precos_base)):
-    linha = []
-    for j in range(len(precos_base[i])):
-        novo_preco = precos_base[i][j] * 0.85
-        linha.append(novo_preco)
-    desconto_15.append(linha)
-
-print(f"\n{'Loja':<12}", end="")
-for produto in produtos:
-    print(f"{produto:>10}", end="")
-print()
-print("-" * 70)
-
-for i in range(len(desconto_15)):
-    print(f"{lojas[i]:<12}", end="")
-    for j in range(len(desconto_15[i])):
-        print(f"R$ {desconto_15[i][j]:>6.2f}", end="")
-    print()
-
-# CENÁRIO 3: Dobrar preços (multiplicar por 2)
-print("\n📈 CENÁRIO 3: Dobrar Preços (x2)")
-print("-" * 70)
-
-dobro = []
-for i in range(len(precos_base)):
-    linha = []
-    for j in range(len(precos_base[i])):
-        novo_preco = precos_base[i][j] * 2
-        linha.append(novo_preco)
-    dobro.append(linha)
-
-print(f"\n{'Loja':<12}", end="")
-for produto in produtos:
-    print(f"{produto:>10}", end="")
-print()
-print("-" * 70)
-
-for i in range(len(dobro)):
-    print(f"{lojas[i]:<12}", end="")
-    for j in range(len(dobro[i])):
-        print(f"R$ {dobro[i][j]:>6.2f}", end="")
-    print()
-
-# Comparação de impacto
-print("\n💡 ANÁLISE DE IMPACTO:")
-print("-" * 70)
-
-total_base = 0
-total_aumento = 0
-total_desconto = 0
-
-for i in range(len(precos_base)):
-    for j in range(len(precos_base[i])):
-        total_base += precos_base[i][j]
-        total_aumento += aumento_10[i][j]
-        total_desconto += desconto_15[i][j]
-
-print(f"Faturamento base (todos produtos):     R$ {total_base:.2f}")
-print(f"Com aumento de 10%:                     R$ {total_aumento:.2f}")
-print(f"Com desconto de 15%:                    R$ {total_desconto:.2f}")
-
-diferenca_aumento = total_aumento - total_base
-diferenca_desconto = total_base - total_desconto
-
-print(f"\n💰 Ganho com aumento:                   R$ {diferenca_aumento:.2f}")
-print(f"💸 Perda com desconto:                  R$ {diferenca_desconto:.2f}")
-
-print("\n" + "=" * 70)</textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Calcular Reajustes</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
+<section>
         <h2>📚 Resumo</h2>
         <ul>
             <li>✅ Multiplicar matriz por escalar</li>
@@ -182,6 +43,15 @@ print("\n" + "=" * 70)</textarea>
             <li>✅ Analisar impactos financeiros</li>
         </ul>
     </section>
+{% endblock %}
+
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    <p>Complete o exercício no editor ao lado.</p>
+{% endblock %}
+
+{% block initial_code %}# Seu código aqui
 {% endblock %}
 
 {% block extra_js %}

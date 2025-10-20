@@ -64,156 +64,7 @@ print("X - Y:")
 for linha in diferenca:
     print(linha)</code></pre>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Comparação de Vendas Trimestrais</h3>
-            
-            <textarea id="code-input"># 📊 COMPARAÇÃO DE VENDAS ENTRE TRIMESTRES
-
-print("=" * 70)
-print("📊 ANÁLISE TRIMESTRAL DE VENDAS".center(70))
-print("=" * 70)
-
-# Vendas 1º Trimestre (3 lojas x 4 produtos)
-trimestre1 = [
-    [100, 150, 200, 120],  # Loja A
-    [90, 140, 180, 110],   # Loja B
-    [110, 160, 190, 130]   # Loja C
-]
-
-# Vendas 2º Trimestre
-trimestre2 = [
-    [120, 170, 210, 140],  # Loja A
-    [95, 150, 190, 120],   # Loja B
-    [115, 165, 195, 135]   # Loja C
-]
-
-lojas = ["Loja A", "Loja B", "Loja C"]
-produtos = ["Prod 1", "Prod 2", "Prod 3", "Prod 4"]
-
-# Mostrar 1º Trimestre
-print("\n📅 VENDAS - 1º TRIMESTRE:")
-print(f"\n{'Loja':<12}", end="")
-for produto in produtos:
-    print(f"{produto:>10}", end="")
-print()
-print("-" * 70)
-
-for i in range(len(trimestre1)):
-    print(f"{lojas[i]:<12}", end="")
-    for j in range(len(trimestre1[i])):
-        print(f"{trimestre1[i][j]:>10}", end="")
-    print()
-
-# Mostrar 2º Trimestre
-print("\n📅 VENDAS - 2º TRIMESTRE:")
-print(f"\n{'Loja':<12}", end="")
-for produto in produtos:
-    print(f"{produto:>10}", end="")
-print()
-print("-" * 70)
-
-for i in range(len(trimestre2)):
-    print(f"{lojas[i]:<12}", end="")
-    for j in range(len(trimestre2[i])):
-        print(f"{trimestre2[i][j]:>10}", end="")
-    print()
-
-# DIFERENÇA: Trimestre 2 - Trimestre 1
-diferenca = []
-
-for i in range(len(trimestre2)):
-    linha = []
-    for j in range(len(trimestre2[i])):
-        dif = trimestre2[i][j] - trimestre1[i][j]
-        linha.append(dif)
-    diferenca.append(linha)
-
-print("\n📈 CRESCIMENTO (2º - 1º Trimestre):")
-print(f"\n{'Loja':<12}", end="")
-for produto in produtos:
-    print(f"{produto:>10}", end="")
-print()
-print("-" * 70)
-
-for i in range(len(diferenca)):
-    print(f"{lojas[i]:<12}", end="")
-    for j in range(len(diferenca[i])):
-        valor = diferenca[i][j]
-        sinal = "+" if valor >= 0 else ""
-        print(f"{sinal}{valor:>9}", end="")
-    print()
-
-# TOTAL SEMESTRAL: Trimestre 1 + Trimestre 2
-total_semestre = []
-
-for i in range(len(trimestre1)):
-    linha = []
-    for j in range(len(trimestre1[i])):
-        soma = trimestre1[i][j] + trimestre2[i][j]
-        linha.append(soma)
-    total_semestre.append(linha)
-
-print("\n📊 TOTAL SEMESTRAL (1º + 2º Trimestre):")
-print(f"\n{'Loja':<12}", end="")
-for produto in produtos:
-    print(f"{produto:>10}", end="")
-print()
-print("-" * 70)
-
-for i in range(len(total_semestre)):
-    print(f"{lojas[i]:<12}", end="")
-    for j in range(len(total_semestre[i])):
-        print(f"{total_semestre[i][j]:>10}", end="")
-    print()
-
-# Análise de crescimento
-print("\n🎯 ANÁLISE DE DESEMPENHO:")
-print("-" * 70)
-
-for i in range(len(lojas)):
-    print(f"\n{lojas[i]}:")
-    cresceu = 0
-    caiu = 0
-    manteve = 0
-    
-    for j in range(len(diferenca[i])):
-        if diferenca[i][j] > 0:
-            cresceu += 1
-        elif diferenca[i][j] < 0:
-            caiu += 1
-        else:
-            manteve += 1
-    
-    print(f"  ↗️  Produtos com crescimento: {cresceu}")
-    print(f"  ↘️  Produtos com queda: {caiu}")
-    print(f"  ➡️  Produtos estáveis: {manteve}")
-
-# Melhor crescimento
-print("\n🏆 DESTAQUES:")
-maior_crescimento = 0
-loja_maior = ""
-produto_maior = ""
-
-for i in range(len(diferenca)):
-    for j in range(len(diferenca[i])):
-        if diferenca[i][j] > maior_crescimento:
-            maior_crescimento = diferenca[i][j]
-            loja_maior = lojas[i]
-            produto_maior = produtos[j]
-
-print(f"Maior crescimento: {loja_maior} - {produto_maior} (+{maior_crescimento} unidades)")
-
-print("\n" + "=" * 70)</textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Analisar Trimestres</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
+<section>
         <h2>📚 Resumo</h2>
         <ul>
             <li>✅ Somar matrizes de mesma dimensão</li>
@@ -222,6 +73,15 @@ print("\n" + "=" * 70)</textarea>
             <li>✅ Calcular totais combinados</li>
         </ul>
     </section>
+{% endblock %}
+
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    <p>Complete o exercício no editor ao lado.</p>
+{% endblock %}
+
+{% block initial_code %}# Seu código aqui
 {% endblock %}
 
 {% block extra_js %}

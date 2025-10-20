@@ -165,52 +165,7 @@ print("Frequência das palavras:")
 for palavra, freq in contador.items():
     print(f"'{palavra}': {freq} vezes")</code></pre>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Analisador de Texto</h3>
-            <p>Crie um programa que analise um texto e forneça:</p>
-            <ul>
-                <li>Número de caracteres, palavras e frases</li>
-                <li>Palavra mais frequente</li>
-                <li>Porcentagem de vogais e consoantes</li>
-                <li>Verificar se contém palavras proibidas</li>
-            </ul>
-            
-            <textarea id="code-input" placeholder="# Analisador de Texto
-texto = input('Digite um texto para análise: ')
-
-# 1. Estatísticas básicas
-num_caracteres = len(texto)
-num_palavras = len(texto.split())
-num_frases = texto.count('.') + texto.count('!') + texto.count('?')
-
-print(f'📊 Estatísticas:')
-print(f'Caracteres: {num_caracteres}')
-print(f'Palavras: {num_palavras}')
-print(f'Frases: {num_frases}')
-
-# 2. Análise de caracteres
-vogais = 'aeiouAEIOU'
-cont_vogais = 0
-cont_consoantes = 0
-
-for char in texto:
-    if char.isalpha():
-        if char in vogais:
-            cont_vogais += 1
-        else:
-            cont_consoantes += 1
-
-# Continue a análise..."></textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
+<section>
         <h2>🔐 Cifra de César</h2>
         <pre><code>def cifra_cesar(texto, deslocamento):
     resultado = ""
@@ -350,6 +305,15 @@ print(f"'{palavra}' encontrado {len(posicoes)} vezes")</code></pre>
             </ul>
         </div>
     </section>
+{% endblock %}
+
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    <p>Complete o exercício no editor ao lado.</p>
+{% endblock %}
+
+{% block initial_code %}# Seu código aqui
 {% endblock %}
 
 {% block extra_js %}

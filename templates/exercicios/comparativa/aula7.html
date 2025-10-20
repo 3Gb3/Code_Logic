@@ -114,35 +114,7 @@ eh_funcionario = True
 bonus = salario * 0.1 if eh_funcionario else 0
 print(f"Bônus: R$ {bonus}")</code></pre>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Calculadora de Preços com Descontos</h3>
-            <p>Use expressões condicionais para criar um sistema de preços:</p>
-            <ul>
-                <li>Cliente VIP: 15% de desconto</li>
-                <li>Compra acima de R$ 100: 10% de desconto</li>
-                <li>Primeira compra: 5% de desconto</li>
-                <li>Combine as condições usando expressões condicionais</li>
-            </ul>
-            
-            <textarea id="code-input" placeholder="# Calculadora de Preços
-valor_compra = float(input('Valor da compra: R$ '))
-eh_vip = input('É cliente VIP? (s/n): ').lower() == 's'
-primeira_compra = input('É primeira compra? (s/n): ').lower() == 's'
-
-# Use expressões condicionais para calcular descontos
-desconto_vip = 0.15 if eh_vip else 0
-desconto_valor = 0.10 if valor_compra > 100 else 0
-# Continue..."></textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
+<section>
         <h2>⚖️ Quando Usar Expressões Condicionais</h2>
         
         <h3>✅ Use quando:</h3>
@@ -174,6 +146,15 @@ desconto_valor = 0.10 if valor_compra > 100 else 0
             </ul>
         </div>
     </section>
+{% endblock %}
+
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    <p>Complete o exercício no editor ao lado.</p>
+{% endblock %}
+
+{% block initial_code %}# Seu código aqui
 {% endblock %}
 
 {% block extra_js %}

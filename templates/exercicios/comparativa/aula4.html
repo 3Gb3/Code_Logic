@@ -63,29 +63,15 @@ if idade >= 60 or eh_estudante:
 else:
     print("Sem desconto disponível.")</code></pre>
     </section>
+{% endblock %}
 
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Sistema de Acesso ao Cinema</h3>
-            <p>Crie um programa que determine se uma pessoa pode assistir a um filme:</p>
-            <ul>
-                <li>Filme +18: pessoa deve ter 18+ anos</li>
-                <li>Filme +16: pessoa deve ter 16+ anos OU estar acompanhada</li>
-                <li>Filme livre: qualquer idade</li>
-            </ul>
-            
-            <textarea id="code-input" placeholder="# Digite seu código aqui
-idade = int(input('Sua idade: '))
-classificacao = input('Classificação do filme (18/16/livre): ')
-acompanhado = input('Está acompanhado? (s/n): ') == 's'
 
-# Complete o código..."></textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
-            <div id="output"></div>
-        </div>
-    </section>
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    <p>Complete o exercício no editor ao lado.</p>
+{% endblock %}
+
+{% block initial_code %}# Seu código aqui
 {% endblock %}
 
 {% block extra_js %}

@@ -106,166 +106,7 @@ for linha in triangular:
         print(f"{elem:3}", end=" ")
     print()</code></pre>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Gerador de Matrizes Especiais</h3>
-            
-            <textarea id="code-input"># 🎲 GERADOR DE MATRIZES ESPECIAIS
-
-print("=" * 60)
-print("🎲 GERADOR DE MATRIZES ESPECIAIS".center(60))
-print("=" * 60)
-
-tamanho = 5
-
-# 1. MATRIZ IDENTIDADE
-print(f"\n1️⃣  MATRIZ IDENTIDADE {tamanho}x{tamanho}:")
-print("-" * 60)
-
-identidade = []
-for i in range(tamanho):
-    linha = []
-    for j in range(tamanho):
-        if i == j:
-            linha.append(1)
-        else:
-            linha.append(0)
-    identidade.append(linha)
-
-for linha in identidade:
-    for elem in linha:
-        print(f"{elem:3}", end=" ")
-    print()
-
-# 2. MATRIZ COM DIAGONAL PERSONALIZADA
-print(f"\n2️⃣  MATRIZ COM DIAGONAL PERSONALIZADA:")
-print("-" * 60)
-
-diagonal_valores = [10, 20, 30, 40, 50]
-diagonal_matriz = []
-
-for i in range(tamanho):
-    linha = []
-    for j in range(tamanho):
-        if i == j:
-            linha.append(diagonal_valores[i])
-        else:
-            linha.append(0)
-    diagonal_matriz.append(linha)
-
-for linha in diagonal_matriz:
-    for elem in linha:
-        print(f"{elem:3}", end=" ")
-    print()
-
-# 3. MATRIZ TRIANGULAR SUPERIOR
-print(f"\n3️⃣  MATRIZ TRIANGULAR SUPERIOR:")
-print("-" * 60)
-
-triangular_sup = []
-valor = 1
-
-for i in range(tamanho):
-    linha = []
-    for j in range(tamanho):
-        if j >= i:
-            linha.append(valor)
-            valor += 1
-        else:
-            linha.append(0)
-    triangular_sup.append(linha)
-
-for linha in triangular_sup:
-    for elem in linha:
-        print(f"{elem:3}", end=" ")
-    print()
-
-# 4. MATRIZ TRIANGULAR INFERIOR
-print(f"\n4️⃣  MATRIZ TRIANGULAR INFERIOR:")
-print("-" * 60)
-
-triangular_inf = []
-valor = 1
-
-for i in range(tamanho):
-    linha = []
-    for j in range(tamanho):
-        if j <= i:
-            linha.append(valor)
-            valor += 1
-        else:
-            linha.append(0)
-    triangular_inf.append(linha)
-
-for linha in triangular_inf:
-    for elem in linha:
-        print(f"{elem:3}", end=" ")
-    print()
-
-# 5. VERIFICAR SE É DIAGONAL
-print(f"\n5️⃣  VERIFICAÇÃO DE MATRIZ DIAGONAL:")
-print("-" * 60)
-
-teste_matriz = [
-    [5, 0, 0],
-    [0, 10, 0],
-    [0, 0, 15]
-]
-
-print("Testando matriz:")
-for linha in teste_matriz:
-    print(linha)
-
-eh_diagonal = True
-for i in range(len(teste_matriz)):
-    for j in range(len(teste_matriz[i])):
-        if i != j and teste_matriz[i][j] != 0:
-            eh_diagonal = False
-            break
-    if not eh_diagonal:
-        break
-
-if eh_diagonal:
-    print("✅ É uma matriz diagonal!")
-else:
-    print("❌ Não é uma matriz diagonal")
-
-# 6. EXTRAIR DIAGONAIS
-print(f"\n6️⃣  EXTRAIR DIAGONAIS:")
-print("-" * 60)
-
-matriz_exemplo = [
-    [1, 2, 3, 4],
-    [5, 6, 7, 8],
-    [9, 10, 11, 12],
-    [13, 14, 15, 16]
-]
-
-print("Matriz:")
-for linha in matriz_exemplo:
-    print(linha)
-
-# Diagonal principal
-print("\nDiagonal principal:", end=" ")
-for i in range(len(matriz_exemplo)):
-    print(matriz_exemplo[i][i], end=" ")
-
-# Diagonal secundária
-print("\nDiagonal secundária:", end=" ")
-n = len(matriz_exemplo)
-for i in range(n):
-    print(matriz_exemplo[i][n-1-i], end=" ")
-
-print("\n" + "=" * 60)</textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Gerar Matrizes</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
+<section>
         <h2>📚 Resumo</h2>
         <ul>
             <li>✅ Criar matriz identidade</li>
@@ -274,6 +115,15 @@ print("\n" + "=" * 60)</textarea>
             <li>✅ Verificar tipos de matrizes</li>
         </ul>
     </section>
+{% endblock %}
+
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    <p>Complete o exercício no editor ao lado.</p>
+{% endblock %}
+
+{% block initial_code %}# Seu código aqui
 {% endblock %}
 
 {% block extra_js %}

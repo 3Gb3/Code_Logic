@@ -48,158 +48,7 @@ for i in range(len(dados)):  # Andares
             print(f"  [{i}][{j}][{k}] = {dados[i][j][k]}")
     print()</code></pre>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Sistema de Vendas Trimestral Multi-Regional</h3>
-            
-            <textarea id="code-input"># 📊 SISTEMA DE VENDAS 3D: Trimestres x Lojas x Produtos
-
-print("=" * 80)
-print("📊 ANÁLISE DE VENDAS TRIMESTRAL".center(80))
-print("=" * 80)
-
-# Estrutura: 4 trimestres x 3 lojas x 4 produtos
-vendas_3d = [
-    [  # Trimestre 1
-        [100, 150, 200, 120],  # Loja A
-        [90, 140, 180, 110],   # Loja B
-        [110, 160, 190, 130]   # Loja C
-    ],
-    [  # Trimestre 2
-        [120, 170, 210, 140],
-        [95, 150, 190, 120],
-        [115, 165, 195, 135]
-    ],
-    [  # Trimestre 3
-        [130, 180, 220, 150],
-        [100, 155, 195, 125],
-        [120, 170, 200, 140]
-    ],
-    [  # Trimestre 4
-        [140, 190, 230, 160],
-        [105, 160, 200, 130],
-        [125, 175, 205, 145]
-    ]
-]
-
-trimestres = ["1º Tri", "2º Tri", "3º Tri", "4º Tri"]
-lojas = ["Loja A", "Loja B", "Loja C"]
-produtos = ["Prod 1", "Prod 2", "Prod 3", "Prod 4"]
-
-# Exibir dados por trimestre
-for t in range(len(vendas_3d)):
-    print(f"\n📅 {trimestres[t].upper()}:")
-    print("-" * 80)
-    print(f"{'Loja':<12}", end="")
-    for produto in produtos:
-        print(f"{produto:>10}", end="")
-    print()
-    
-    for l in range(len(vendas_3d[t])):
-        print(f"{lojas[l]:<12}", end="")
-        for p in range(len(vendas_3d[t][l])):
-            print(f"{vendas_3d[t][l][p]:>10}", end="")
-        print()
-
-# Total por trimestre
-print("\n📊 TOTAL POR TRIMESTRE:")
-print("-" * 80)
-
-for t in range(len(vendas_3d)):
-    total_tri = 0
-    for l in range(len(vendas_3d[t])):
-        for p in range(len(vendas_3d[t][l])):
-            total_tri += vendas_3d[t][l][p]
-    print(f"{trimestres[t]}: {total_tri:,} unidades")
-
-# Total por loja (todos os trimestres)
-print("\n🏪 TOTAL POR LOJA (ANO COMPLETO):")
-print("-" * 80)
-
-for l in range(len(lojas)):
-    total_loja = 0
-    for t in range(len(vendas_3d)):
-        for p in range(len(vendas_3d[t][l])):
-            total_loja += vendas_3d[t][l][p]
-    print(f"{lojas[l]}: {total_loja:,} unidades")
-
-# Total por produto (todos os trimestres e lojas)
-print("\n📦 TOTAL POR PRODUTO (ANO COMPLETO):")
-print("-" * 80)
-
-for p in range(len(produtos)):
-    total_produto = 0
-    for t in range(len(vendas_3d)):
-        for l in range(len(vendas_3d[t])):
-            total_produto += vendas_3d[t][l][p]
-    print(f"{produtos[p]}: {total_produto:,} unidades")
-
-# Evolução de uma loja específica
-print("\n📈 EVOLUÇÃO DA LOJA A AO LONGO DO ANO:")
-print("-" * 80)
-
-for t in range(len(vendas_3d)):
-    total_loja_a = 0
-    for p in range(len(vendas_3d[t][0])):
-        total_loja_a += vendas_3d[t][0][p]
-    print(f"{trimestres[t]}: {total_loja_a} unidades")
-
-# Melhor trimestre para cada loja
-print("\n🏆 MELHOR TRIMESTRE DE CADA LOJA:")
-print("-" * 80)
-
-for l in range(len(lojas)):
-    melhor_tri = 0
-    melhor_valor = 0
-    
-    for t in range(len(vendas_3d)):
-        total = 0
-        for p in range(len(vendas_3d[t][l])):
-            total += vendas_3d[t][l][p]
-        
-        if total > melhor_valor:
-            melhor_valor = total
-            melhor_tri = t
-    
-    print(f"{lojas[l]}: {trimestres[melhor_tri]} ({melhor_valor} unidades)")
-
-# Produto mais vendido no ano
-print("\n🥇 PRODUTO CAMPEÃO DO ANO:")
-print("-" * 80)
-
-produto_campeao = 0
-maior_total = 0
-
-for p in range(len(produtos)):
-    total = 0
-    for t in range(len(vendas_3d)):
-        for l in range(len(vendas_3d[t])):
-            total += vendas_3d[t][l][p]
-    
-    if total > maior_total:
-        maior_total = total
-        produto_campeao = p
-
-print(f"{produtos[produto_campeao]}: {maior_total:,} unidades vendidas")
-
-# Total geral do ano
-total_ano = 0
-for t in range(len(vendas_3d)):
-    for l in range(len(vendas_3d[t])):
-        for p in range(len(vendas_3d[t][l])):
-            total_ano += vendas_3d[t][l][p]
-
-print(f"\n💰 TOTAL GERAL DO ANO: {total_ano:,} unidades")
-print("=" * 80)</textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Analisar Dados 3D</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
+<section>
         <h2>📚 Resumo</h2>
         <ul>
             <li>✅ Entender estrutura 3D</li>
@@ -208,6 +57,15 @@ print("=" * 80)</textarea>
             <li>✅ Analisar dados multidimensionais</li>
         </ul>
     </section>
+{% endblock %}
+
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    <p>Complete o exercício no editor ao lado.</p>
+{% endblock %}
+
+{% block initial_code %}# Seu código aqui
 {% endblock %}
 
 {% block extra_js %}

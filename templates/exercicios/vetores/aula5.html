@@ -231,126 +231,7 @@ else:
 
 print(f"Mediana: {mediana}")</code></pre>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Sistema de Ranking de Jogadores</h3>
-            <p>Crie um sistema que gerencie um ranking de jogadores:</p>
-            <ul>
-                <li>Adicionar jogadores com nome e pontuação</li>
-                <li>Buscar jogador por nome</li>
-                <li>Ordenar ranking por pontuação</li>
-                <li>Mostrar top N jogadores</li>
-                <li>Calcular estatísticas (média, mediana)</li>
-            </ul>
-            
-            <textarea id="code-input" placeholder="# Sistema de Ranking de Jogadores
-jogadores = []  # Cada jogador é [nome, pontuacao]
-
-print('🎮 SISTEMA DE RANKING')
-
-# Adicionar jogadores
-jogadores.append(['Alice', 1250])
-jogadores.append(['Bob', 980])
-jogadores.append(['Carol', 1450])
-jogadores.append(['David', 1100])
-jogadores.append(['Eve', 1300])
-
-print(f'\nTotal de jogadores: {len(jogadores)}')
-
-# Buscar jogador por nome
-nome_busca = 'Carol'
-encontrado = False
-for jogador in jogadores:
-    if jogador[0] == nome_busca:
-        print(f'🔍 {nome_busca} encontrado: {jogador[1]} pontos')
-        encontrado = True
-        break
-
-if not encontrado:
-    print(f'🔍 {nome_busca} não encontrado')
-
-# Buscar jogadores em faixa de pontuação
-pontuacao_min = 1000
-pontuacao_max = 1300
-print(f'\n📊 Jogadores entre {pontuacao_min} e {pontuacao_max} pontos:')
-for jogador in jogadores:
-    if pontuacao_min <= jogador[1] <= pontuacao_max:
-        print(f'  {jogador[0]}: {jogador[1]} pontos')
-
-# Ordenar ranking por pontuação (maior para menor)
-# Criar lista auxiliar para ordenar: [pontuacao negativa, jogador]
-temp = []
-for jogador in jogadores:
-    temp.append([-jogador[1], jogador])  # pontuação negativa para ordem decrescente
-
-temp.sort()
-
-# Reconstruir lista jogadores
-jogadores = []
-for item in temp:
-    jogadores.append(item[1])
-
-print('\n🏆 RANKING (por pontuação):')
-for i in range(len(jogadores)):
-    print(f'{i + 1}º lugar: {jogadores[i][0]} - {jogadores[i][1]} pontos')
-
-# Top 3 jogadores
-n = 3
-print(f'\n⭐ TOP {n} JOGADORES:')
-for i in range(min(n, len(jogadores))):
-    print(f'{i + 1}. {jogadores[i][0]}: {jogadores[i][1]} pontos')
-
-# Calcular média de pontuação
-if jogadores:
-    soma = 0
-    for jogador in jogadores:
-        soma += jogador[1]
-    media = soma / len(jogadores)
-    print(f'\n📈 Pontuação média: {media:.1f}')
-    
-    # Jogadores acima da média
-    print('Jogadores acima da média:')
-    for jogador in jogadores:
-        if jogador[1] > media:
-            print(f'  {jogador[0]}: {jogador[1]} pontos')
-
-# Calcular mediana
-pontuacoes = []
-for jogador in jogadores:
-    pontuacoes.append(jogador[1])
-
-pontuacoes_ordenadas = sorted(pontuacoes)
-n = len(pontuacoes_ordenadas)
-
-if n % 2 == 1:
-    mediana = pontuacoes_ordenadas[n // 2]
-else:
-    meio1 = pontuacoes_ordenadas[n // 2 - 1]
-    meio2 = pontuacoes_ordenadas[n // 2]
-    mediana = (meio1 + meio2) / 2
-
-print(f'📊 Mediana de pontuação: {mediana}')
-
-# Estatísticas completas
-menor = min(pontuacoes)
-maior = max(pontuacoes)
-amplitude = maior - menor
-
-print(f'\n📉 ESTATÍSTICAS COMPLETAS:')
-print(f'Menor pontuação: {menor}')
-print(f'Maior pontuação: {maior}')
-print(f'Amplitude: {amplitude}')
-print(f'Média: {media:.1f}')
-print(f'Mediana: {mediana}')"></textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
+<section>
         <h2>💡 Dicas Importantes</h2>
         <div class="tip-box">
             <ul>
@@ -375,6 +256,15 @@ print(f'Mediana: {mediana}')"></textarea>
             <li>✅ Encontrar mínimo, máximo e mediana</li>
         </ul>
     </section>
+{% endblock %}
+
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    <p>Complete o exercício no editor ao lado.</p>
+{% endblock %}
+
+{% block initial_code %}# Seu código aqui
 {% endblock %}
 
 {% block extra_js %}

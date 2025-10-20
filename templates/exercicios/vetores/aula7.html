@@ -249,123 +249,7 @@ print(f"Depois: {dados}")  # A lista mudou!
             <li><strong>Listas:</strong> Dados que precisam ser modificados (carrinho de compras, histórico, fila)</li>
         </ul>
     </section>
-
-    <section>
-        <h2>🎮 Exercício Prático</h2>
-        <div class="exercise-box">
-            <h3>Sistema de Registro de Alunos</h3>
-            <p>Crie um sistema que armazene informações de alunos usando tuplas:</p>
-            <ul>
-                <li>Cada aluno é uma tupla (nome, idade, curso, notas)</li>
-                <li>Buscar alunos por curso</li>
-                <li>Calcular média de cada aluno</li>
-                <li>Encontrar melhor aluno</li>
-            </ul>
-            
-            <textarea id="code-input" placeholder="# Sistema de Registro de Alunos
-# Cada aluno: (nome, idade, curso, (nota1, nota2, nota3))
-alunos = (
-    ('Ana Silva', 20, 'Engenharia', (8.5, 9.0, 8.0)),
-    ('Bruno Costa', 22, 'Medicina', (7.5, 8.0, 7.0)),
-    ('Carlos Lima', 21, 'Engenharia', (9.0, 9.5, 8.5)),
-    ('Diana Santos', 23, 'Medicina', (8.0, 8.5, 9.0)),
-    ('Eduardo Souza', 20, 'Engenharia', (7.0, 7.5, 8.0))
-)
-
-print('📚 SISTEMA DE REGISTRO DE ALUNOS')
-print('=' * 60)
-
-# Listar todos os alunos
-print('\n👥 LISTA DE ALUNOS:')
-for i in range(len(alunos)):
-    nome, idade, curso, notas = alunos[i]
-    print(f'{i + 1}. {nome} - {idade} anos - {curso}')
-
-# Buscar alunos por curso
-curso_busca = 'Engenharia'
-print(f'\n🔍 ALUNOS DE {curso_busca}:')
-for aluno in alunos:
-    nome, idade, curso, notas = aluno
-    if curso == curso_busca:
-        print(f'  - {nome}')
-
-# Calcular média de cada aluno
-print('\n📊 MÉDIAS DOS ALUNOS:')
-for aluno in alunos:
-    nome, idade, curso, notas = aluno
-    soma = sum(notas)
-    media = soma / len(notas)
-    print(f'{nome}: {media:.2f}')
-
-# Encontrar melhor aluno (maior média)
-melhor_nome = ''
-melhor_media = 0
-
-for aluno in alunos:
-    nome, idade, curso, notas = aluno
-    soma = sum(notas)
-    media = soma / len(notas)
-    
-    if media > melhor_media:
-        melhor_media = media
-        melhor_nome = nome
-
-print(f'\n⭐ MELHOR ALUNO: {melhor_nome} com média {melhor_media:.2f}')
-
-# Estatísticas por curso
-cursos_unicos = []
-for aluno in alunos:
-    nome, idade, curso, notas = aluno
-    if curso not in cursos_unicos:
-        cursos_unicos.append(curso)
-
-print('\n📈 ESTATÍSTICAS POR CURSO:')
-for curso_stat in cursos_unicos:
-    print(f'\n{curso_stat}:')
-    
-    soma_curso = 0
-    count_curso = 0
-    
-    for aluno in alunos:
-        nome, idade, curso, notas = aluno
-        if curso == curso_stat:
-            media_aluno = sum(notas) / len(notas)
-            soma_curso += media_aluno
-            count_curso += 1
-    
-    if count_curso > 0:
-        media_curso = soma_curso / count_curso
-        print(f'  Alunos: {count_curso}')
-        print(f'  Média do curso: {media_curso:.2f}')
-
-# Alunos acima da média geral
-print('\n🏆 CÁLCULO DA MÉDIA GERAL:')
-soma_geral = 0
-count_total = 0
-
-for aluno in alunos:
-    nome, idade, curso, notas = aluno
-    media_aluno = sum(notas) / len(notas)
-    soma_geral += media_aluno
-    count_total += 1
-
-media_geral = soma_geral / count_total
-print(f'Média geral de todos os alunos: {media_geral:.2f}')
-
-print('\nAlunos acima da média geral:')
-for aluno in alunos:
-    nome, idade, curso, notas = aluno
-    media_aluno = sum(notas) / len(notas)
-    
-    if media_aluno > media_geral:
-        print(f'  ✅ {nome}: {media_aluno:.2f}')"></textarea>
-            
-            <button onclick="runCode()" class="btn-run">▶️ Executar Código</button>
-            <div id="output"></div>
-        </div>
-    </section>
-
-    <section>
+<section>
         <h2>💡 Dicas Importantes</h2>
         <div class="tip-box">
             <ul>
@@ -391,6 +275,15 @@ for aluno in alunos:
             <li>✅ Quando usar tuplas vs listas</li>
         </ul>
     </section>
+{% endblock %}
+
+
+{% block exercise_description %}
+    <h4>🎮 Vamos praticar!</h4>
+    <p>Complete o exercício no editor ao lado.</p>
+{% endblock %}
+
+{% block initial_code %}# Seu código aqui
 {% endblock %}
 
 {% block extra_js %}
