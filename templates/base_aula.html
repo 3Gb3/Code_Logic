@@ -19,7 +19,7 @@
             </div>
             <nav class="nav-menu">
                 <a href="/dashboard" class="nav-link">Dashboard</a>
-                <a href="/dashboard" class="nav-link">Aulas</a>
+                <a href="#" class="nav-link" onclick="goToModuleLobby()">Aulas</a>
                 <a href="#" class="nav-link" onclick="logout()">Sair</a>
             </nav>
         </div>
@@ -400,6 +400,13 @@
         function logout() {
             localStorage.clear();
             window.location.href = '/';
+        }
+
+        // Função para ir ao lobby do módulo atual
+        function goToModuleLobby() {
+            const moduleName = getModuleName();
+            console.log(`Navegando para o lobby do módulo: ${moduleName}`);
+            window.location.href = `/aulas/${moduleName}`;
         }
     </script>
     {% block extra_js %}{% endblock %}
