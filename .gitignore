@@ -63,3 +63,6 @@ htmlcov/
 uploads/
 temp/
 cache/
+
+# Arquivos irrelevantes
+modelos_seguir/

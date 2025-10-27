@@ -1,279 +1,155 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 4 - Break e Continue | CodeLogic{% endblock %}
+{% block title %}Aula 4 - Problema "media_idades" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 4 – Break e Continue{% endblock %}
+{% block lesson_title %}Aula 4 – Média com Validação{% endblock %}
 
 {% block lesson_content %}
     <section>
+
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Controlar o fluxo dos loops com break e continue</li>
-            <li>Saber quando usar cada comando</li>
-            <li>Otimizar loops para melhor performance</li>
+            <li>Calcular média de valores variáveis</li>
+            <li>Usar contador para quantidade de valores</li>
+            <li>Acumular soma dentro do loop</li>
+            <li>Tratar caso sem dados válidos</li>
         </ul>
+
     </section>
 
     <section>
-        <h2>🛑 O comando break</h2>
-        <p>O <code>break</code> interrompe completamente o loop e sai dele imediatamente.</p>
-        
-        <h3>Exemplo Básico:</h3>
-        <pre><code>for i in range(10):
-    if i == 5:
-        break  # Para quando i for 5
-    print(i)
 
-# Saída: 0, 1, 2, 3, 4</code></pre>
+        <h2>📚 Conceitos: Acumuladores e Contadores</h2>
+        <p>Quando processamos múltiplos valores, precisamos de:</p>
+        
+        <h3>Acumulador:</h3>
+        <p>Variável que <strong>soma</strong> valores ao longo do loop:</p>
+        <pre><code>soma = 0  # Inicia com zero
+
+# Dentro do loop:
+soma += valor  # soma = soma + valor</code></pre>
+        
+        <h3>Contador:</h3>
+        <p>Variável que <strong>conta</strong> quantas vezes algo aconteceu:</p>
+        <pre><code>contador = 0  # Inicia com zero
+
+# Dentro do loop:
+contador += 1  # contador = contador + 1</code></pre>
+        
+        <h3>Exemplo completo:</h3>
+        <pre><code>soma = 0
+contador = 0
+
+for i in range(5):
+    nota = float(input("Nota: "))
+    soma += nota
+    contador += 1
+
+media = soma / contador
+print(f"Media: {media:.2f}")</code></pre>
+
     </section>
 
     <section>
-        <h2>⏭️ O comando continue</h2>
-        <p>O <code>continue</code> pula a iteração atual e vai para a próxima.</p>
+
+        <h2>🔁 Padrão: Ler até Valor Negativo</h2>
+        <p>Um padrão comum: processar valores até encontrar um valor de parada (como número negativo):</p>
         
-        <h3>Exemplo Básico:</h3>
-        <pre><code>for i in range(10):
-    if i == 5:
-        continue  # Pula quando i for 5
-    print(i)
-
-# Saída: 0, 1, 2, 3, 4, 6, 7, 8, 9</code></pre>
-    </section>
-
-    <section>
-        <h2>🔍 Exemplos Práticos com break</h2>
-        
-        <h3>1. Busca em Lista</h3>
-        <pre><code>nomes = ["Ana", "Bruno", "Carlos", "Diana", "Eduardo"]
-nome_procurado = "Carlos"
-
-for nome in nomes:
-    print(f"Verificando: {nome}")
-    
-    if nome == nome_procurado:
-        print(f"✅ Encontrado: {nome}")
-        break
-else:
-    print("❌ Nome não encontrado")</code></pre>
-    
-        <h3>2. Validação com Limite de Tentativas</h3>
-        <pre><code>senha_correta = "python123"
-max_tentativas = 3
-
-for tentativa in range(1, max_tentativas + 1):
-    senha = input(f"Tentativa {tentativa} - Digite a senha: ")
-    
-    if senha == senha_correta:
-        print("✅ Acesso liberado!")
-        break
-    else:
-        print("❌ Senha incorreta")
-        
-    if tentativa == max_tentativas:
-        print("🔒 Acesso negado - muitas tentativas")</code></pre>
-    
-        <h3>3. Menu com Saída</h3>
-        <pre><code>while True:
-    print("\n=== CALCULADORA ===")
-    print("1. Somar")
-    print("2. Subtrair")
-    print("3. Multiplicar")
-    print("4. Sair")
-    
-    opcao = input("Escolha: ")
-    
-    if opcao == "4":
-        print("👋 Até logo!")
-        break
-    elif opcao in ["1", "2", "3"]:
-        a = float(input("Primeiro número: "))
-        b = float(input("Segundo número: "))
-        
-        if opcao == "1":
-            print(f"Resultado: {a + b}")
-        elif opcao == "2":
-            print(f"Resultado: {a - b}")
-        elif opcao == "3":
-            print(f"Resultado: {a * b}")
-    else:
-        print("❌ Opção inválida!")</code></pre>
-    </section>
-
-    <section>
-        <h2>⏭️ Exemplos Práticos com continue</h2>
-        
-        <h3>1. Filtrando Números Pares</h3>
-        <pre><code>print("Números ímpares de 1 a 10:")
-
-for i in range(1, 11):
-    if i % 2 == 0:  # Se for par
-        continue    # Pula para o próximo
-    
-    print(i)  # Só imprime ímpares</code></pre>
-    
-        <h3>2. Processando Lista com Exceções</h3>
-        <pre><code>valores = ["10", "20", "abc", "30", "xyz", "40"]
-
+        <h3>Estrutura:</h3>
+        <pre><code># Inicializa acumuladores
 soma = 0
-for valor in valores:
-    try:
-        numero = int(valor)
-    except ValueError:
-        print(f"⚠️ Ignorando valor inválido: {valor}")
-        continue  # Pula para o próximo
-    
-    soma += numero
-    print(f"✅ Adicionado: {numero}")
+contador = 0
 
-print(f"Soma total: {soma}")</code></pre>
-    
-        <h3>3. Validação de Dados</h3>
-        <pre><code>emails = ["user@email.com", "invalido", "admin@site.com", "erro.com"]
+# Lê primeiro valor
+valor = int(input("Digite um valor (negativo para parar): "))
 
-emails_validos = []
+# Processa enquanto não for negativo
+while valor >= 0:
+    soma += valor
+    contador += 1
+    valor = int(input("Digite um valor (negativo para parar): "))
 
-for email in emails:
-    if "@" not in email or "." not in email:
-        print(f"❌ Email inválido: {email}")
-        continue
-    
-    emails_validos.append(email)
-    print(f"✅ Email válido: {email}")
-
-print(f"\nEmails válidos encontrados: {len(emails_validos)}")</code></pre>
-    </section>
-<section>
-        <h2>🔄 Loops Aninhados com break/continue</h2>
-        
-        <h3>Break em Loop Aninhado</h3>
-        <pre><code># break só afeta o loop mais interno
-for i in range(3):
-    print(f"\nLinha {i}:")
-    
-    for j in range(5):
-        if j == 3:
-            break  # Só sai do loop j
-        print(j, end=" ")
-
-# Saída:
-# Linha 0: 0 1 2
-# Linha 1: 0 1 2  
-# Linha 2: 0 1 2</code></pre>
-    
-        <h3>Continue em Loop Aninhado</h3>
-        <pre><code>for i in range(3):
-    for j in range(5):
-        if j == 2:
-            continue  # Pula j=2
-        print(f"({i},{j})", end=" ")
-    print()  # Nova linha
-
-# Saída:
-# (0,0) (0,1) (0,3) (0,4)
-# (1,0) (1,1) (1,3) (1,4)
-# (2,0) (2,1) (2,3) (2,4)</code></pre>
-    </section>
-
-    <section>
-        <h2>🏷️ Usando Labels com break (Avançado)</h2>
-        <p>Python não tem labels como outras linguagens, mas você pode usar flags:</p>
-        
-        <pre><code>encontrou = False
-
-for i in range(3):
-    for j in range(3):
-        if i == 1 and j == 1:
-            print(f"Encontrado em ({i},{j})")
-            encontrou = True
-            break
-    
-    if encontrou:
-        break  # Sai do loop externo também
-
-print("Busca finalizada")</code></pre>
-    </section>
-
-    <section>
-        <h2>⚖️ Quando Usar break vs continue</h2>
-        
-        <h3>✅ Use break quando:</h3>
-        <ul>
-            <li>Encontrou o que estava procurando</li>
-            <li>Atingiu uma condição de parada</li>
-            <li>Detectou um erro crítico</li>
-            <li>O usuário quer sair do programa</li>
-        </ul>
-        
-        <h3>✅ Use continue quando:</h3>
-        <ul>
-            <li>Quer pular elementos inválidos</li>
-            <li>Filtrando dados de uma lista</li>
-            <li>Ignorando casos especiais</li>
-            <li>Validando entrada sem parar</li>
-        </ul>
-    </section>
-
-    <section>
-        <h2>🚀 Busca Eficiente com break</h2>
-        <pre><code># Verificar se número é primo
-numero = int(input("Digite um número: "))
-
-if numero < 2:
-    print(f"{numero} não é primo")
+# Calcula resultado (cuidado com divisão por zero!)
+if contador > 0:
+    media = soma / contador
+    print(f"Media: {media:.2f}")
 else:
-    eh_primo = True
-    
-    # Testar divisores até a raiz quadrada
-    for i in range(2, int(numero ** 0.5) + 1):
-        if numero % i == 0:
-            eh_primo = False
-            print(f"Encontrou divisor: {i}")
-            break  # Para no primeiro divisor!
-    
-    if eh_primo:
-        print(f"✅ {numero} é primo!")
-    else:
-        print(f"❌ {numero} não é primo")</code></pre>
+    print("Nenhum valor valido digitado!")</code></pre>
+        
+        <h3>⚠️ Importante:</h3>
+        <ul>
+            <li>Sempre inicializar acumuladores ANTES do loop</li>
+            <li>Verificar se contador > 0 antes de dividir</li>
+            <li>Valor de parada não é incluído nos cálculos</li>
+        </ul>
+
     </section>
 
     <section>
-        <h2>💡 Dicas Importantes</h2>
-        <ul>
-            <li>🛑 break sai completamente do loop</li>
-            <li>⏭️ continue pula apenas a iteração atual</li>
-            <li>🎯 Use break para buscas eficientes</li>
-            <li>🔍 Use continue para filtrar dados</li>
-            <li>🔄 Em loops aninhados, afetam apenas o loop mais interno</li>
-            <li>⚡ break pode melhorar muito a performance</li>
-        </ul>
+
+        <h2>💡 Problema: Média de Idades</h2>
+        <p>Faça um programa para ler um número indeterminado de dados, contendo cada um, a idade de um indivíduo. O último dado, que não entrará nos cálculos, contém um valor de idade negativa. Calcular e imprimir a idade média deste grupo de indivíduos. Se for digitada uma idade negativa na primeira vez, mostrar a mensagem "IMPOSSIVEL CALCULAR".</p>
+
     </section>
 {% endblock %}
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
-    
-    <p><strong>Tarefa:</strong> Validador de Senha com Tentativas</p>
-    <ul>
-        <li>Senha correta: "python123"</li>
-        <li>Usuário tem 5 tentativas</li>
-        <li>Use for para contar as tentativas</li>
-        <li>Use break quando acertar a senha</li>
-        <li>Mostre quantas tentativas usou</li>
-        <li>Bloqueie após 5 tentativas erradas</li>
-    </ul>
-    
-    <p><strong>Exemplo de saída esperada:</strong></p>
-    <pre><code>🔐 VALIDADOR DE SENHA
-Tentativa 1/5: errada
-❌ Senha incorreta!
-Tentativa 2/5: python123
-✅ Senha correta! Usou 2 tentativas.</code></pre>
+
+        <h4>📝 Exemplo 1:</h4>
+        <pre><code>Digite as idades:
+31
+27
+46
+-5
+MEDIA = 34.67</code></pre>
+        
+        <h4>📝 Exemplo 2:</h4>
+        <pre><code>Digite as idades:
+-10
+IMPOSSIVEL CALCULAR</code></pre>
+        
+        <h4>📝 Exemplo 3:</h4>
+        <pre><code>Digite as idades:
+25
+30
+20
+18
+-1
+MEDIA = 23.25</code></pre>
+
 {% endblock %}
 
-{% block initial_code %}print("🔐 VALIDADOR DE SENHA")
-print()
+{% block initial_code %}# Inicialize acumuladores
+soma = 0
+contador = 0
 
-senha_correta = "python123"
+# Leia a primeira idade
+print("Digite as idades:")
+idade = int(input())
 
-# SEU CÓDIGO AQUI
-# Use for range(5) e break para implementar{% endblock %}
+# Processe as idades
+
+
+# Calcule e exiba a média
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function getExerciseDescription() {
+        return `Problema "media_idades":
+
+Faça um programa para ler um número indeterminado de dados, contendo cada um, a idade de um indivíduo. O último dado, que não entrará nos cálculos, contém um valor de idade negativa. Calcular e imprimir a idade média deste grupo de indivíduos.
+
+ENTRADA:
+- Várias idades (int)
+- Para quando idade < 0
+
+SAÍDA:
+- MEDIA = [valor com 2 casas decimais]
+- OU "IMPOSSIVEL CALCULAR" se primeira idade for negativa
+
+CÁLCULO:
+- Media = soma_idades / quantidade`;
+    }
+</script>
+{% endblock %}

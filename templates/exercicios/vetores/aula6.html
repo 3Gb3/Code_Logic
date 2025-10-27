@@ -1,369 +1,165 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 6 - Listas Aninhadas | CodeLogic{% endblock %}
+{% block title %}Aula 6 - Problema "soma_vetores" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 6 – Listas Aninhadas{% endblock %}
+{% block lesson_title %}Aula 6 – Soma de Dois Vetores{% endblock %}
 
 {% block lesson_content %}
     <section>
+
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Trabalhar com listas dentro de listas</li>
-            <li>Acessar e modificar elementos em listas aninhadas</li>
-            <li>Percorrer estruturas bidimensionais com loops</li>
+            <li>Trabalhar com múltiplos vetores</li>
+            <li>Realizar operações elemento a elemento</li>
+            <li>Criar vetor resultante</li>
         </ul>
+
     </section>
 
     <section>
-        <h2>📋 Conceito de Listas Aninhadas</h2>
-        <p>Listas aninhadas são listas que contêm outras listas como elementos.</p>
+
+        <h2>📚 Conceitos: Operações com Múltiplos Vetores</h2>
+        <p>Podemos realizar operações entre vetores elemento por elemento:</p>
         
-        <h3>Criação de Listas Aninhadas:</h3>
-        <pre><code># Criação manual
-matriz = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9]
-]
+        <h3>Soma de vetores:</h3>
+        <pre><code>vetor_a = [5, 10, 15]
+vetor_b = [2, 4, 6]
 
-print("Matriz 3x3:")
-for linha in matriz:
-    print(linha)</code></pre>
+# Criar vetor resultado
+vetor_c = []
+
+for i in range(len(vetor_a)):
+    soma = vetor_a[i] + vetor_b[i]
+    vetor_c.append(soma)
+
+print(vetor_c)  # [7, 14, 21]</code></pre>
         
-        <h3>⚠️ Cuidado ao Criar com Repetição:</h3>
-        <pre><code># ❌ ERRADO: Todas as linhas referenciam a mesma lista!
-matriz_errada = [[0] * 3] * 3
-print(f"Matriz errada: {matriz_errada}")
+        <h3>Usando list comprehension (avançado):</h3>
+        <pre><code>vetor_a = [5, 10, 15]
+vetor_b = [2, 4, 6]
 
-# Modificar um elemento afeta todas as linhas
-matriz_errada[0][0] = 1
-print(f"Após modificar [0][0]: {matriz_errada}")  # Todas mudam!
+vetor_c = [vetor_a[i] + vetor_b[i] for i in range(len(vetor_a))]
+print(vetor_c)  # [7, 14, 21]</code></pre>
 
-# ✅ CORRETO: Cada linha é uma lista separada
-matriz_correta = []
-for i in range(3):
-    linha = [0] * 3
-    matriz_correta.append(linha)
-
-print(f"\nMatriz correta: {matriz_correta}")
-
-# Modificar um elemento afeta apenas uma linha
-matriz_correta[0][0] = 1
-print(f"Após modificar [0][0]: {matriz_correta}")  # Apenas primeira linha muda</code></pre>
-        
-        <h3>Listas com Tamanhos Diferentes:</h3>
-        <pre><code># Listas irregulares (cada linha com tamanho diferente)
-triangulo = [
-    [1],
-    [1, 1],
-    [1, 2, 1],
-    [1, 3, 3, 1]
-]
-
-print("Triângulo de Pascal:")
-for linha in triangulo:
-    print(linha)</code></pre>
     </section>
 
     <section>
-        <h2>🎯 Acessando Elementos</h2>
+
+        <h2>🎯 Padrão: Ler Dois Vetores</h2>
+        <p>Para ler dois vetores do mesmo tamanho:</p>
         
-        <h3>Acesso por Índices:</h3>
-        <pre><code>matriz = [
-    [10, 20, 30],
-    [40, 50, 60],
-    [70, 80, 90]
-]
+        <h3>Estrutura:</h3>
+        <pre><code># Ler tamanho
+n = int(input("Quantos valores? "))
 
-# Acessar linha inteira
-primeira_linha = matriz[0]
-print(f"Primeira linha: {primeira_linha}")  # [10, 20, 30]
+# Criar vetores
+vetor_a = []
+vetor_b = []
 
-# Acessar elemento específico
-elemento = matriz[1][2]  # Linha 1, Coluna 2
-print(f"Elemento [1][2]: {elemento}")  # 60
+# Ler primeiro vetor
+print("Digite os valores do vetor A:")
+for i in range(n):
+    valor = int(input())
+    vetor_a.append(valor)
 
-# Acessar com índices negativos
-ultimo_da_ultima = matriz[-1][-1]
-print(f"Último elemento: {ultimo_da_ultima}")  # 90</code></pre>
-        
-        <h3>Verificação de Índices:</h3>
-        <pre><code>matriz = [
-    [1, 2, 3],
-    [4, 5, 6]
-]
+# Ler segundo vetor
+print("Digite os valores do vetor B:")
+for i in range(n):
+    valor = int(input())
+    vetor_b.append(valor)
 
-# Acessar com segurança
-linha = 1
-coluna = 2
+# Criar vetor resultado
+vetor_c = []
+for i in range(n):
+    vetor_c.append(vetor_a[i] + vetor_b[i])
 
-if 0 <= linha < len(matriz):
-    if 0 <= coluna < len(matriz[linha]):
-        elemento = matriz[linha][coluna]
-        print(f"Elemento [linha][coluna]: {elemento}")
-    else:
-        print(f"Coluna {coluna} inválida")
-else:
-    print(f"Linha {linha} inválida")</code></pre>
+# Exibir resultado
+print("VETOR RESULTANTE:")
+for valor in vetor_c:
+    print(valor)</code></pre>
+
     </section>
 
     <section>
-        <h2>✏️ Modificando Elementos</h2>
-        
-        <h3>Alterar Elemento Individual:</h3>
-        <pre><code>notas = [
-    ["Ana", 7.5, 8.0],
-    ["Bruno", 6.5, 7.0],
-    ["Carlos", 8.5, 9.0]
-]
 
-print("Antes:")
-for aluno in notas:
-    print(aluno)
+        <h2>💡 Problema: Soma Vetores</h2>
+        <p>Faça um programa para ler dois vetores A e B, contendo N elementos cada. Em seguida, gere um terceiro vetor C onde cada elemento de C é a soma dos elementos correspondentes de A e B. Imprima o vetor C gerado.</p>
 
-# Alterar nota de Bruno
-notas[1][1] = 8.5  # Linha 1 (Bruno), coluna 1 (primeira nota)
-
-print("\nDepois:")
-for aluno in notas:
-    print(aluno)</code></pre>
-        
-        <h3>Modificar Linha Inteira:</h3>
-        <pre><code>tabuleiro = [
-    ['X', 'O', 'X'],
-    ['O', 'X', 'O'],
-    ['X', 'O', 'X']
-]
-
-print("Antes:")
-for linha in tabuleiro:
-    print(linha)
-
-# Substituir linha inteira
-tabuleiro[1] = [' ', ' ', ' ']
-
-print("\nDepois:")
-for linha in tabuleiro:
-    print(linha)</code></pre>
-    </section>
-
-    <section>
-        <h2>🔄 Percorrendo Listas Aninhadas</h2>
-        
-        <h3>Loop com For Each:</h3>
-        <pre><code>matriz = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9]
-]
-
-print("Percorrendo com for each:")
-for linha in matriz:
-    for elemento in linha:
-        print(elemento, end=' ')
-    print()  # Nova linha após cada linha da matriz</code></pre>
-        
-        <h3>Loop com Índices:</h3>
-        <pre><code>matriz = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9]
-]
-
-print("Percorrendo com índices:")
-for i in range(len(matriz)):
-    for j in range(len(matriz[i])):
-        valor = matriz[i][j]
-        print(f"Posição ({i}, {j}) = {valor}")
-</code></pre>
-        
-        <h3>Exibir em Formato de Tabela:</h3>
-        <pre><code>tabela = [
-    ["Produto", "Preço", "Qtd"],
-    ["Arroz", 5.50, 10],
-    ["Feijão", 7.00, 5],
-    ["Açúcar", 3.50, 8]
-]
-
-print("TABELA DE PRODUTOS:")
-print("-" * 40)
-for linha in tabela:
-    for item in linha:
-        item_str = str(item)
-        espacos = 15 - len(item_str)
-        print(item_str + ' ' * espacos, end='')
-    print()
-print("-" * 40)</code></pre>
-    </section>
-
-    <section>
-        <h2>➕ Operações com Listas Aninhadas</h2>
-        
-        <h3>Somar Todos os Elementos:</h3>
-        <pre><code>numeros = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9]
-]
-
-soma_total = 0
-for linha in numeros:
-    for elemento in linha:
-        soma_total += elemento
-
-print(f"Soma total: {soma_total}")  # 45</code></pre>
-        
-        <h3>Encontrar Maior e Menor:</h3>
-        <pre><code>valores = [
-    [15, 8, 23],
-    [4, 16, 42],
-    [30, 11, 7]
-]
-
-# Encontrar maior
-maior = valores[0][0]
-pos_maior = [0, 0]
-
-for i in range(len(valores)):
-    for j in range(len(valores[i])):
-        if valores[i][j] > maior:
-            maior = valores[i][j]
-            pos_maior = [i, j]
-
-print(f"Maior valor: {maior} na posição {pos_maior}")
-
-# Encontrar menor
-menor = valores[0][0]
-pos_menor = [0, 0]
-
-for i in range(len(valores)):
-    for j in range(len(valores[i])):
-        if valores[i][j] < menor:
-            menor = valores[i][j]
-            pos_menor = [i, j]
-
-print(f"Menor valor: {menor} na posição {pos_menor}")</code></pre>
-        
-        <h3>Contar Ocorrências:</h3>
-        <pre><code>grid = [
-    ['X', 'O', 'X'],
-    ['O', 'X', 'O'],
-    ['X', 'X', 'O']
-]
-
-# Contar X e O
-count_x = 0
-count_o = 0
-
-for linha in grid:
-    for simbolo in linha:
-        if simbolo == 'X':
-            count_x += 1
-        elif simbolo == 'O':
-            count_o += 1
-
-print(f"X: {count_x} ocorrências")
-print(f"O: {count_o} ocorrências")</code></pre>
-    </section>
-
-    <section>
-        <h2>📊 Operações em Linhas e Colunas</h2>
-        
-        <h3>Somar por Linha:</h3>
-        <pre><code>vendas = [
-    [100, 150, 200],  # Semana 1
-    [120, 180, 210],  # Semana 2
-    [90, 160, 190]    # Semana 3
-]
-
-print("Vendas por semana:")
-for i in range(len(vendas)):
-    soma_semana = 0
-    for valor in vendas[i]:
-        soma_semana += valor
-    print(f"Semana {i + 1}: {soma_semana}")</code></pre>
-        
-        <h3>Somar por Coluna:</h3>
-        <pre><code>vendas = [
-    [100, 150, 200],  # Semana 1
-    [120, 180, 210],  # Semana 2
-    [90, 160, 190]    # Semana 3
-]
-
-# Número de colunas (produtos)
-num_colunas = len(vendas[0])
-
-print("Vendas por produto:")
-for coluna in range(num_colunas):
-    soma_produto = 0
-    for linha in range(len(vendas)):
-        soma_produto += vendas[linha][coluna]
-    print(f"Produto {coluna + 1}: {soma_produto}")</code></pre>
-        
-        <h3>Calcular Média por Aluno:</h3>
-        <pre><code>notas = [
-    ["Ana", 7.5, 8.0, 9.0],
-    ["Bruno", 6.5, 7.0, 8.5],
-    ["Carlos", 8.5, 9.0, 9.5]
-]
-
-print("Médias dos alunos:")
-for aluno in notas:
-    nome = aluno[0]
-    soma_notas = 0
-    count_notas = 0
-    
-    # Somar apenas as notas (a partir do índice 1)
-    for i in range(1, len(aluno)):
-        soma_notas += aluno[i]
-        count_notas += 1
-    
-    media = soma_notas / count_notas
-    print(f"{nome}: {media:.2f}")</code></pre>
-    </section>
-<section>
-        <h2>💡 Dicas Importantes</h2>
-        <div class="tip-box">
-            <ul>
-                <li>📋 Sempre crie cada linha separadamente para evitar referências compartilhadas</li>
-                <li>🎯 Use <code>len(matriz[i])</code> para pegar o tamanho de cada linha</li>
-                <li>🔢 Para acessar elemento: <code>matriz[linha][coluna]</code></li>
-                <li>🔄 Use loops aninhados para percorrer toda a estrutura</li>
-                <li>✔️ Sempre verifique índices antes de acessar para evitar erros</li>
-                <li>📊 Para somar colunas, percorra todas as linhas com o mesmo índice de coluna</li>
-            </ul>
-        </div>
-    </section>
-
-    <section>
-        <h2>📚 Resumo</h2>
-        <p>Nesta aula você aprendeu:</p>
-        <ul>
-            <li>✅ Criar listas aninhadas corretamente</li>
-            <li>✅ Acessar e modificar elementos com duplo índice</li>
-            <li>✅ Percorrer listas aninhadas com loops aninhados</li>
-            <li>✅ Realizar operações em linhas e colunas</li>
-            <li>✅ Trabalhar com estruturas bidimensionais (tabelas)</li>
-        </ul>
     </section>
 {% endblock %}
-
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
-    <p>Complete o exercício no editor ao lado.</p>
+
+        <h4>📝 Exemplo:</h4>
+        <pre><code>Quantos valores vai ter cada vetor? 6
+Digite os valores do vetor A:
+8
+2
+11
+14
+13
+20
+Digite os valores do vetor B:
+5
+10
+3
+1
+10
+7
+
+VETOR RESULTANTE:
+13
+12
+14
+15
+23
+27</code></pre>
+
 {% endblock %}
 
-{% block initial_code %}# Seu código aqui
+{% block initial_code %}# Leia a quantidade
+n = int(input("Quantos valores vai ter cada vetor? "))
+
+# Crie os vetores
+vetor_a = []
+vetor_b = []
+
+# Leia vetor A
+print("Digite os valores do vetor A:")
+for i in range(n):
+    valor = int(input())
+    vetor_a.append(valor)
+
+# Leia vetor B
+print("Digite os valores do vetor B:")
+for i in range(n):
+    valor = int(input())
+    vetor_b.append(valor)
+
+# Crie vetor C (soma)
+
+
+# Exiba o resultado
+print("\nVETOR RESULTANTE:")
+
 {% endblock %}
 
 {% block extra_js %}
 <script>
-function runCode() {
-    const code = document.getElementById('code-input').value;
-    const output = document.getElementById('output');
-    
-    output.innerHTML = '<div class="output-success">Sistema de estoque executado! Veja como trabalhar com listas aninhadas em situações reais.</div>';
-}
+    function getExerciseDescription() {
+        return `Problema "soma_vetores":
+
+Faça um programa para ler dois vetores A e B, contendo N elementos cada. Gere um terceiro vetor C onde cada elemento é a soma dos elementos correspondentes de A e B.
+
+ENTRADA:
+- N (quantidade)
+- N valores do vetor A
+- N valores do vetor B
+
+SAÍDA:
+- VETOR RESULTANTE:
+- Cada elemento de C (um por linha)
+- C[i] = A[i] + B[i]`;
+    }
 </script>
 {% endblock %}

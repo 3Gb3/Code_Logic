@@ -1,163 +1,150 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 3 - Operações com Matrizes | CodeLogic{% endblock %}
+{% block title %}Aula 3 - Problema "soma_linhas" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 3 – Operações Básicas com Matrizes{% endblock %}
+{% block lesson_title %}Aula 3 – Soma de Cada Linha{% endblock %}
 
 {% block lesson_content %}
     <section>
+
         <h2>🎯 Objetivo</h2>
-        <p>Aprender operações fundamentais com matrizes: soma, busca, máximo/mínimo e cálculos.</p>
-    </section>
-
-    <section>
-        <h2>➕ Soma de Elementos</h2>
-        <pre><code>matriz = [
-    [10, 20, 30],
-    [40, 50, 60],
-    [70, 80, 90]
-]
-
-# Somar todos os elementos
-soma_total = 0
-for i in range(len(matriz)):
-    for j in range(len(matriz[i])):
-        soma_total += matriz[i][j]
-
-print(f"Soma total: {soma_total}")  # 450
-
-# Soma por linha
-for i in range(len(matriz)):
-    soma_linha = 0
-    for j in range(len(matriz[i])):
-        soma_linha += matriz[i][j]
-    print(f"Linha {i}: {soma_linha}")
-
-# Soma por coluna
-for j in range(len(matriz[0])):
-    soma_coluna = 0
-    for i in range(len(matriz)):
-        soma_coluna += matriz[i][j]
-    print(f"Coluna {j}: {soma_coluna}")</code></pre>
-    </section>
-
-    <section>
-        <h2>🔍 Buscar Elemento</h2>
-        <pre><code>matriz = [
-    [5, 8, 12],
-    [15, 20, 25],
-    [30, 35, 40]
-]
-
-valor_busca = 20
-
-# Buscar valor na matriz
-encontrado = False
-pos_i = -1
-pos_j = -1
-
-for i in range(len(matriz)):
-    for j in range(len(matriz[i])):
-        if matriz[i][j] == valor_busca:
-            encontrado = True
-            pos_i = i
-            pos_j = j
-            break
-    if encontrado:
-        break
-
-if encontrado:
-    print(f"Valor {valor_busca} encontrado na posição ({pos_i}, {pos_j})")
-else:
-    print(f"Valor {valor_busca} não encontrado")</code></pre>
-    </section>
-
-    <section>
-        <h2>📊 Máximo e Mínimo</h2>
-        <pre><code>notas = [
-    [7.5, 8.0, 6.5],
-    [9.0, 7.0, 8.5],
-    [6.0, 9.5, 7.5]
-]
-
-# Encontrar maior nota
-maior = notas[0][0]
-pos_maior = (0, 0)
-
-for i in range(len(notas)):
-    for j in range(len(notas[i])):
-        if notas[i][j] > maior:
-            maior = notas[i][j]
-            pos_maior = (i, j)
-
-print(f"Maior nota: {maior} na posição {pos_maior}")
-
-# Encontrar menor nota
-menor = notas[0][0]
-pos_menor = (0, 0)
-
-for i in range(len(notas)):
-    for j in range(len(notas[i])):
-        if notas[i][j] < menor:
-            menor = notas[i][j]
-            pos_menor = (i, j)
-
-print(f"Menor nota: {menor} na posição {pos_menor}")</code></pre>
-    </section>
-
-    <section>
-        <h2>📈 Média dos Elementos</h2>
-        <pre><code>vendas = [
-    [100, 150, 200],
-    [120, 180, 160],
-    [140, 170, 190]
-]
-
-# Calcular média geral
-soma = 0
-quantidade = 0
-
-for i in range(len(vendas)):
-    for j in range(len(vendas[i])):
-        soma += vendas[i][j]
-        quantidade += 1
-
-media = soma / quantidade
-print(f"Média de vendas: R$ {media:.2f}")
-
-# Média por linha
-for i in range(len(vendas)):
-    soma_linha = 0
-    for j in range(len(vendas[i])):
-        soma_linha += vendas[i][j]
-    media_linha = soma_linha / len(vendas[i])
-    print(f"Média linha {i}: R$ {media_linha:.2f}")</code></pre>
-    </section>
-<section>
-        <h2>📚 Resumo</h2>
         <ul>
-            <li>✅ Somar elementos (total, por linha, por coluna)</li>
-            <li>✅ Buscar valores em matrizes</li>
-            <li>✅ Encontrar máximo e mínimo</li>
-            <li>✅ Calcular médias</li>
+            <li>Somar elementos de cada linha</li>
+            <li>Armazenar somas em vetor</li>
+            <li>Exibir resultados formatados</li>
         </ul>
+
+    </section>
+
+    <section>
+
+        <h2>📚 Conceitos: Soma de Linhas</h2>
+        <p>Calcular a soma dos elementos de cada linha:</p>
+        
+        <h3>Método 1: Função sum()</h3>
+        <pre><code>matriz = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+
+# Somar linha 0
+soma_linha_0 = sum(matriz[0])  # 6
+
+# Somar todas as linhas
+for i in range(len(matriz)):
+    soma = sum(matriz[i])
+    print(f"Soma da linha {i}: {soma}")</code></pre>
+        
+        <h3>Método 2: Loop manual</h3>
+        <pre><code>for i in range(len(matriz)):
+    soma = 0
+    for j in range(len(matriz[i])):
+        soma += matriz[i][j]
+    print(f"Linha {i}: {soma}")</code></pre>
+
+    </section>
+
+    <section>
+
+        <h2>📊 Vetor de Resultados</h2>
+        <p>Armazenar o resultado de cada linha em um vetor separado:</p>
+        
+        <h3>Padrão:</h3>
+        <pre><code># Ler matriz
+m = int(input("Linhas? "))
+n = int(input("Colunas? "))
+
+matriz = []
+for i in range(m):
+    linha = []
+    for j in range(n):
+        valor = float(input())
+        linha.append(valor)
+    matriz.append(linha)
+
+# Criar vetor de somas
+vetor_soma = []
+for i in range(m):
+    soma = sum(matriz[i])
+    vetor_soma.append(soma)
+
+# Exibir resultados
+print("VETOR GERADO:")
+for soma in vetor_soma:
+    print(f"{soma:.1f}")</code></pre>
+
+    </section>
+
+    <section>
+
+        <h2>💡 Problema: Soma Linhas</h2>
+        <p>Fazer um programa para ler dois números inteiros M e N, e depois ler uma matriz de M linhas por N colunas contendo números reais. Gerar um vetor de modo que cada elemento do vetor seja a soma dos elementos da linha correspondente da matriz. Mostrar o vetor gerado.</p>
+
     </section>
 {% endblock %}
-
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
-    <p>Complete o exercício no editor ao lado.</p>
+
+        <h4>📝 Exemplo:</h4>
+        <pre><code>Qual a quantidade de linhas da matriz? 3
+Qual a quantidade de colunas da matriz? 4
+Elemento [0,0]: 2.0
+Elemento [0,1]: 3.5
+Elemento [0,2]: 1.5
+Elemento [0,3]: 4.0
+Elemento [1,0]: 6.0
+Elemento [1,1]: 2.5
+Elemento [1,2]: 3.0
+Elemento [1,3]: 5.5
+Elemento [2,0]: 4.5
+Elemento [2,1]: 1.0
+Elemento [2,2]: 8.0
+Elemento [2,3]: 2.5
+
+VETOR GERADO:
+11.0
+17.0
+16.0</code></pre>
+
 {% endblock %}
 
-{% block initial_code %}# Seu código aqui
+{% block initial_code %}# Leia as dimensões
+m = int(input("Qual a quantidade de linhas da matriz? "))
+n = int(input("Qual a quantidade de colunas da matriz? "))
+
+# Leia a matriz
+matriz = []
+for i in range(m):
+    linha = []
+    for j in range(n):
+        elemento = float(input(f"Elemento [{i},{j}]: "))
+        linha.append(elemento)
+    matriz.append(linha)
+
+# Crie vetor de somas
+
+
+# Exiba o vetor
+print("\nVETOR GERADO:")
+
 {% endblock %}
 
 {% block extra_js %}
 <script>
-function runCode() {
-    const output = document.getElementById('output');
-    output.innerHTML = '<div class="output-success">✅ Análise executada! Operações com matrizes aplicadas.</div>';
-}
+    function getExerciseDescription() {
+        return `Problema "soma_linhas":
+
+Ler matriz MxN de reais. Gerar vetor onde cada elemento é a soma da linha correspondente da matriz.
+
+ENTRADA:
+- M (linhas)
+- N (colunas)
+- M×N elementos reais
+
+SAÍDA:
+- VETOR GERADO:
+- Soma de cada linha (1 casa, um por linha)`;
+    }
 </script>
 {% endblock %}

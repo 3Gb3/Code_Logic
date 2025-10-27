@@ -1,279 +1,128 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 5 - Busca e Ordenação | CodeLogic{% endblock %}
+{% block title %}Aula 5 - Problema "maior_posicao" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 5 – Busca e Ordenação{% endblock %}
+{% block lesson_title %}Aula 5 – Encontrar Maior Valor e Posição{% endblock %}
 
 {% block lesson_content %}
     <section>
+
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Buscar elementos em listas</li>
-            <li>Ordenar listas usando métodos Python</li>
-            <li>Trabalhar com listas ordenadas</li>
+            <li>Encontrar o maior valor em lista</li>
+            <li>Identificar a posição do maior valor</li>
+            <li>Usar algoritmo de busca</li>
         </ul>
+
     </section>
 
     <section>
-        <h2>🔍 Buscando Elementos</h2>
+
+        <h2>�� Conceitos: Encontrar Maior Elemento</h2>
+        <p>Para encontrar o maior valor em uma lista:</p>
         
-        <h3>Operador in:</h3>
-        <pre><code>numeros = [64, 34, 25, 12, 22, 11, 90, 25]
-print(f"Lista: {numeros}")
-
-# Verificar se elemento existe
-if 25 in numeros:
-    print("25 está na lista")
-else:
-    print("25 não está na lista")
-
-# Verificar se NÃO existe
-if 100 not in numeros:
-    print("100 não está na lista")</code></pre>
+        <h3>Método 1: Função max()</h3>
+        <pre><code>numeros = [5, 12, 8, 20, 3]
+maior = max(numeros)
+print(f"Maior: {maior}")  # 20</code></pre>
         
-        <h3>Método index() - Encontrar Posição:</h3>
-        <pre><code>frutas = ["maçã", "banana", "uva", "pêra", "banana"]
-print(f"Frutas: {frutas}")
+        <h3>Método 2: Loop manual (para aprender a lógica)</h3>
+        <pre><code>numeros = [5, 12, 8, 20, 3]
 
-# Encontrar primeira ocorrência
-if "banana" in frutas:
-    posicao = frutas.index("banana")
-    print(f"Primeira banana está na posição: {posicao}")  # 1
+# Assume que o primeiro é o maior
+maior = numeros[0]
 
-# Buscar a partir de uma posição
-if "banana" in frutas[2:]:
-    posicao = frutas.index("banana", 2)  # Buscar após índice 2
-    print(f"Segunda banana está na posição: {posicao}")  # 4</code></pre>
-        
-        <h3>Encontrar Todas as Ocorrências:</h3>
-        <pre><code>numeros = [5, 2, 8, 2, 9, 2, 1]
-elemento = 2
+# Compara com os demais
+for i in range(1, len(numeros)):
+    if numeros[i] > maior:
+        maior = numeros[i]
 
-# Encontrar todos os índices do elemento
-indices = []
-for i in range(len(numeros)):
-    if numeros[i] == elemento:
-        indices.append(i)
+print(f"Maior: {maior}")  # 20</code></pre>
 
-print(f"O número {elemento} aparece nas posições: {indices}")  # [1, 3, 5]</code></pre>
     </section>
 
     <section>
-        <h2>📊 Ordenando Listas</h2>
+
+        <h2>🎯 Encontrar Posição do Maior</h2>
+        <p>Para encontrar tanto o valor quanto a posição:</p>
         
-        <h3>Método sort() - Modifica a Lista Original:</h3>
-        <pre><code>numeros = [64, 34, 25, 12, 22, 11, 90]
-print(f"Original: {numeros}")
-
-# Ordenar em ordem crescente
-numeros.sort()
-print(f"Ordenado: {numeros}")  # [11, 12, 22, 25, 34, 64, 90]
-
-# Ordenar em ordem decrescente
-numeros.sort(reverse=True)
-print(f"Decrescente: {numeros}")  # [90, 64, 34, 25, 22, 12, 11]</code></pre>
+        <h3>Método 1: Função index()</h3>
+        <pre><code>numeros = [5, 12, 8, 20, 3]
+maior = max(numeros)
+posicao = numeros.index(maior)
+print(f"Maior: {maior} na posição {posicao}")
+# Maior: 20 na posição 3</code></pre>
         
-        <h3>Função sorted() - Cria Nova Lista:</h3>
-        <pre><code>original = [64, 34, 25, 12, 22, 11, 90]
-print(f"Original: {original}")
+        <h3>Método 2: Loop guardando posição</h3>
+        <pre><code>numeros = [5, 12, 8, 20, 3]
 
-# Criar lista ordenada (crescente)
-crescente = sorted(original)
-print(f"Crescente: {crescente}")  # [11, 12, 22, 25, 34, 64, 90]
+maior_valor = numeros[0]
+maior_posicao = 0
 
-# Criar lista ordenada (decrescente)
-decrescente = sorted(original, reverse=True)
-print(f"Decrescente: {decrescente}")  # [90, 64, 34, 25, 22, 12, 11]
+for i in range(1, len(numeros)):
+    if numeros[i] > maior_valor:
+        maior_valor = numeros[i]
+        maior_posicao = i
 
-# Lista original não mudou
-print(f"Original mantida: {original}")  # [64, 34, 25, 12, 22, 11, 90]</code></pre>
+print(f"Maior valor: {maior_valor}")
+print(f"Posicao do maior valor: {maior_posicao}")</code></pre>
         
-        <h3>Ordenando Strings:</h3>
-        <pre><code>nomes = ["Carlos", "Ana", "Bruno", "Diana"]
-print(f"Original: {nomes}")
+        <h3>⚠️ Nota sobre índices:</h3>
+        <p>Listas começam no índice 0, mas o problema pode pedir "posição 1" para o primeiro elemento. Ajuste conforme necessário.</p>
 
-# Ordem alfabética
-nomes.sort()
-print(f"Alfabética: {nomes}")  # ['Ana', 'Bruno', 'Carlos', 'Diana']
-
-# Ordem alfabética reversa
-nomes.sort(reverse=True)
-print(f"Reversa: {nomes}")  # ['Diana', 'Carlos', 'Bruno', 'Ana']</code></pre>
     </section>
 
     <section>
-        <h2>🎨 Ordenação Personalizada</h2>
-        
-        <h3>Ordenar por Tamanho da String:</h3>
-        <pre><code>palavras = ["python", "é", "incrível", "sim"]
-print(f"Original: {palavras}")
 
-# Ordenar por tamanho (menor para maior)
-palavras_ordenadas = sorted(palavras, key=len)
-print(f"Por tamanho: {palavras_ordenadas}")  # ['é', 'sim', 'python', 'incrível']
+        <h2>💡 Problema: Maior Posição</h2>
+        <p>Faça um programa que leia N números reais e armazene-os em um vetor. Em seguida, mostrar na tela o maior número do vetor (supor não haver empates). Mostrar também a posição do maior elemento, considerando a primeira posição como 0 (zero).</p>
 
-# Ordenar por tamanho (maior para menor)
-palavras_desc = sorted(palavras, key=len, reverse=True)
-print(f"Tamanho decrescente: {palavras_desc}")  # ['incrível', 'python', 'sim', 'é']</code></pre>
-        
-        <h3>Ordenar Lista de Listas:</h3>
-        <pre><code># Lista de [nome, idade]
-pessoas = [
-    ["Ana", 25],
-    ["Bruno", 30],
-    ["Carlos", 20],
-    ["Diana", 28]
-]
-
-print("Original:")
-for pessoa in pessoas:
-    print(f"  {pessoa}")
-
-# Ordenar por idade (segundo elemento - índice 1)
-# Criar lista auxiliar: [idade, pessoa]
-temp = []
-for pessoa in pessoas:
-    temp.append([pessoa[1], pessoa])  # [idade, [nome, idade]]
-
-# Ordenar pela idade
-temp.sort()
-
-# Reconstruir lista pessoas
-pessoas = []
-for item in temp:
-    pessoas.append(item[1])
-
-print("\nOrdenado por idade:")
-for pessoa in pessoas:
-    print(f"  {pessoa}")
-# Carlos [20], Ana [25], Diana [28], Bruno [30]</code></pre>
-        
-        <h3>Ordenar por Múltiplos Critérios:</h3>
-        <pre><code># Lista de notas: [nome, nota]
-alunos = [
-    ["Ana", 8.5],
-    ["Bruno", 7.0],
-    ["Carlos", 8.5],
-    ["Diana", 9.0],
-    ["Eduardo", 7.0]
-]
-
-# Ordenar por nota (decrescente), depois por nome (crescente)
-# Criar lista auxiliar: [nota negativa, nome, aluno] para ordenação correta
-temp = []
-for aluno in alunos:
-    temp.append([-aluno[1], aluno[0], aluno])  # nota negativa para ordem desc
-
-# Ordenar
-temp.sort()
-
-# Reconstruir lista alunos
-alunos = []
-for item in temp:
-    alunos.append(item[2])
-
-print("Alunos ordenados (nota desc, nome asc):")
-for aluno in alunos:
-    print(f"  {aluno[0]}: {aluno[1]}")</code></pre>
-    </section>
-
-    <section>
-        <h2>🔢 Trabalhando com Listas Ordenadas</h2>
-        
-        <h3>Encontrar Mínimo e Máximo:</h3>
-        <pre><code>numeros = [64, 34, 25, 12, 22, 11, 90]
-print(f"Lista: {numeros}")
-
-# Encontrar menor e maior
-minimo = min(numeros)
-maximo = max(numeros)
-print(f"Menor: {minimo}")  # 11
-print(f"Maior: {maximo}")  # 90
-
-# Posição do menor e maior
-pos_min = numeros.index(minimo)
-pos_max = numeros.index(maximo)
-print(f"Posição do menor: {pos_min}")
-print(f"Posição do maior: {pos_max}")</code></pre>
-        
-        <h3>N Maiores e N Menores:</h3>
-        <pre><code>notas = [7.5, 8.0, 6.2, 9.1, 5.5, 8.8, 7.0, 9.5, 6.8, 8.2]
-print(f"Notas: {notas}")
-
-# Ordenar para encontrar top 3
-notas_ordenadas = sorted(notas, reverse=True)
-top_3 = notas_ordenadas[:3]
-print(f"Top 3 maiores notas: {top_3}")  # [9.5, 9.1, 8.8]
-
-# 3 menores notas
-bottom_3 = notas_ordenadas[-3:]
-bottom_3.reverse()  # Inverter para ordem crescente
-print(f"3 menores notas: {bottom_3}")  # [5.5, 6.2, 6.8]</code></pre>
-        
-        <h3>Mediana e Estatísticas:</h3>
-        <pre><code>valores = [15, 8, 23, 4, 16, 42, 12]
-print(f"Valores: {valores}")
-
-# Ordenar para calcular mediana
-valores_ordenados = sorted(valores)
-print(f"Ordenados: {valores_ordenados}")
-
-# Mediana (valor do meio)
-n = len(valores_ordenados)
-if n % 2 == 1:
-    # Ímpar: pegar elemento do meio
-    mediana = valores_ordenados[n // 2]
-else:
-    # Par: média dos dois elementos do meio
-    meio1 = valores_ordenados[n // 2 - 1]
-    meio2 = valores_ordenados[n // 2]
-    mediana = (meio1 + meio2) / 2
-
-print(f"Mediana: {mediana}")</code></pre>
-    </section>
-<section>
-        <h2>💡 Dicas Importantes</h2>
-        <div class="tip-box">
-            <ul>
-                <li>🔍 Use <code>in</code> para verificar se elemento existe antes de buscar</li>
-                <li>📊 <code>sort()</code> modifica a lista original, <code>sorted()</code> cria uma nova</li>
-                <li>⬆️ Use <code>reverse=True</code> para ordem decrescente</li>
-                <li>🎯 Use <code>key=len</code> para ordenar por tamanho</li>
-                <li>📈 <code>min()</code> e <code>max()</code> são mais rápidos que ordenar para achar extremos</li>
-                <li>🔢 Para mediana, sempre ordene a lista primeiro</li>
-            </ul>
-        </div>
-    </section>
-
-    <section>
-        <h2>📚 Resumo</h2>
-        <p>Nesta aula você aprendeu:</p>
-        <ul>
-            <li>✅ Buscar elementos com <code>in</code> e <code>index()</code></li>
-            <li>✅ Ordenar listas com <code>sort()</code> e <code>sorted()</code></li>
-            <li>✅ Ordenação personalizada com <code>key</code></li>
-            <li>✅ Trabalhar com listas ordenadas para estatísticas</li>
-            <li>✅ Encontrar mínimo, máximo e mediana</li>
-        </ul>
     </section>
 {% endblock %}
-
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
-    <p>Complete o exercício no editor ao lado.</p>
+
+        <h4>📝 Exemplo:</h4>
+        <pre><code>Quantos numeros voce vai digitar? 4
+Digite um numero: 8.0
+Digite um numero: 4.0
+Digite um numero: 10.0
+Digite um numero: 14.0
+
+MAIOR VALOR = 14.0
+POSICAO DO MAIOR VALOR = 3</code></pre>
+
 {% endblock %}
 
-{% block initial_code %}# Seu código aqui
+{% block initial_code %}# Leia a quantidade
+n = int(input("Quantos numeros voce vai digitar? "))
+
+# Leia os números
+numeros = []
+for i in range(n):
+    num = float(input("Digite um numero: "))
+    numeros.append(num)
+
+# Encontre o maior valor e sua posição
+
+
+# Exiba os resultados
 {% endblock %}
 
 {% block extra_js %}
 <script>
-function runCode() {
-    const code = document.getElementById('code-input').value;
-    const output = document.getElementById('output');
-    
-    output.innerHTML = '<div class="output-success">Sistema de ranking executado! Veja como buscar e ordenar listas com dados reais.</div>';
-}
+    function getExerciseDescription() {
+        return `Problema "maior_posicao":
+
+Faça um programa que leia N números reais e armazene-os em um vetor. Em seguida, mostrar o maior número e sua posição (índice 0 para primeira posição).
+
+ENTRADA:
+- N (quantidade)
+- N números reais
+
+SAÍDA:
+- MAIOR VALOR = [valor com 1 casa]
+- POSICAO DO MAIOR VALOR = [índice]`;
+    }
 </script>
 {% endblock %}

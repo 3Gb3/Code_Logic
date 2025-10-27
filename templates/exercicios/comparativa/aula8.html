@@ -1,199 +1,146 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 8 - Match-Case | CodeLogic{% endblock %}
+{% block title %}Aula 8 - Problema "coordenadas" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 8 – Match-Case (Python 3.10+){% endblock %}
+{% block lesson_title %}Aula 8 – Plano Cartesiano{% endblock %}
 
 {% block lesson_content %}
     <section>
+
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Conhecer a nova estrutura match-case</li>
-            <li>Comparar com if-elif-else tradicionais</li>
-            <li>Usar pattern matching eficientemente</li>
+            <li>Trabalhar com plano cartesiano (x, y)</li>
+            <li>Usar condicionais compostas (múltiplas condições)</li>
+            <li>Classificar pontos em quadrantes</li>
         </ul>
+
     </section>
 
     <section>
-        <h2>🆕 O que é Match-Case?</h2>
-        <p>Introduzido no Python 3.10, o match-case é similar ao switch-case de outras linguagens, mas mais poderoso.</p>
-        
-        <h3>Sintaxe Básica:</h3>
-        <pre><code>match variavel:
-    case valor1:
-        # código para valor1
-    case valor2:
-        # código para valor2
-    case _:  # default (opcional)
-        # código padrão</code></pre>
-    </section>
 
-    <section>
-        <h2>📝 Exemplo Básico: Menu de Opções</h2>
+        <h2>📚 Conceitos: Condições Compostas</h2>
+        <p>Podemos combinar múltiplas condições usando operadores lógicos:</p>
         
-        <h3>Com if-elif tradicional:</h3>
-        <pre><code>opcao = input("Digite uma opção (1-4): ")
+        <h3>Operador AND (e):</h3>
+        <pre><code>if condicao1 and condicao2:
+    # executa se AMBAS forem True</code></pre>
+        
+        <h3>Operador OR (ou):</h3>
+        <pre><code>if condicao1 or condicao2:
+    # executa se PELO MENOS UMA for True</code></pre>
+        
+        <h3>Exemplo:</h3>
+        <pre><code>idade = 25
+salario = 3000
 
-if opcao == "1":
-    print("Cadastrar usuário")
-elif opcao == "2":
-    print("Listar usuários")
-elif opcao == "3":
-    print("Editar usuário")
-elif opcao == "4":
-    print("Excluir usuário")
+if idade >= 18 and salario >= 2000:
+    print("Aprovado para crédito")
+elif idade >= 18 or salario >= 5000:
+    print("Análise necessária")
 else:
-    print("Opção inválida")</code></pre>
-    
-        <h3>Com match-case:</h3>
-        <pre><code>opcao = input("Digite uma opção (1-4): ")
+    print("Não aprovado")</code></pre>
 
-match opcao:
-    case "1":
-        print("Cadastrar usuário")
-    case "2":
-        print("Listar usuários")
-    case "3":
-        print("Editar usuário")
-    case "4":
-        print("Excluir usuário")
-    case _:
-        print("Opção inválida")</code></pre>
     </section>
 
     <section>
-        <h2>🎯 Pattern Matching Avançado</h2>
+
+        <h2>📐 Plano Cartesiano</h2>
+        <p>O plano cartesiano é dividido em 4 quadrantes pelos eixos X e Y:</p>
         
-        <h3>1. Múltiplos Valores</h3>
-        <pre><code>dia_semana = input("Que dia é hoje? ").lower()
-
-match dia_semana:
-    case "segunda" | "terça" | "quarta" | "quinta" | "sexta":
-        print("Dia útil - hora de trabalhar! 💼")
-    case "sábado" | "domingo":
-        print("Final de semana - hora de descansar! 🏖️")
-    case _:
-        print("Dia inválido")</code></pre>
-    
-        <h3>2. Matching com Condições (Guards)</h3>
-        <pre><code>idade = int(input("Sua idade: "))
-
-match idade:
-    case x if x < 0:
-        print("Idade inválida")
-    case x if x < 13:
-        print("Criança")
-    case x if x < 18:
-        print("Adolescente")
-    case x if x < 60:
-        print("Adulto")
-    case x if x >= 60:
-        print("Idoso")</code></pre>
-    </section>
-
-    <section>
-        <h2>📊 Calculadora com Match-Case</h2>
-        <pre><code>num1 = float(input("Primeiro número: "))
-operacao = input("Operação (+, -, *, /): ")
-num2 = float(input("Segundo número: "))
-
-match operacao:
-    case "+":
-        resultado = num1 + num2
-        print(f"{num1} + {num2} = {resultado}")
-    case "-":
-        resultado = num1 - num2
-        print(f"{num1} - {num2} = {resultado}")
-    case "*":
-        resultado = num1 * num2
-        print(f"{num1} × {num2} = {resultado}")
-    case "/":
-        if num2 != 0:
-            resultado = num1 / num2
-            print(f"{num1} ÷ {num2} = {resultado}")
-        else:
-            print("Erro: Divisão por zero!")
-    case _:
-        print("Operação inválida!")</code></pre>
-    </section>
-
-    <section>
-        <h2>🎮 Sistema de Classificação de Jogos</h2>
-        <pre><code>classificacao = input("Classificação do jogo: ").upper()
-
-match classificacao:
-    case "L":
-        print("🟢 LIVRE - Para todas as idades")
-        idade_minima = 0
-    case "10":
-        print("🟡 +10 - Não recomendado para menores de 10 anos")
-        idade_minima = 10
-    case "12":
-        print("🟠 +12 - Não recomendado para menores de 12 anos")
-        idade_minima = 12
-    case "14":
-        print("🔴 +14 - Não recomendado para menores de 14 anos")
-        idade_minima = 14
-    case "16":
-        print("🔴 +16 - Não recomendado para menores de 16 anos")
-        idade_minima = 16
-    case "18":
-        print("⚫ +18 - Não recomendado para menores de 18 anos")
-        idade_minima = 18
-    case _:
-        print("Classificação inválida")
-        idade_minima = None</code></pre>
-    </section>
-<section>
-        <h2>🆚 Match-Case vs If-Elif</h2>
+        <h3>Estrutura:</h3>
+        <pre><code>        Q2  |  Q1
+    --------|--------  (eixo X)
+        Q3  |  Q4
+            |
+        (eixo Y)</code></pre>
         
-        <h3>✅ Use Match-Case quando:</h3>
+        <h3>Classificação:</h3>
         <ul>
-            <li>Comparando uma variável com valores fixos</li>
-            <li>Há muitas opções diferentes</li>
-            <li>Os valores são simples (strings, números)</li>
-            <li>Quer aproveitar pattern matching</li>
+            <li><strong>Quadrante 1 (Q1):</strong> x > 0 e y > 0</li>
+            <li><strong>Quadrante 2 (Q2):</strong> x < 0 e y > 0</li>
+            <li><strong>Quadrante 3 (Q3):</strong> x < 0 e y < 0</li>
+            <li><strong>Quadrante 4 (Q4):</strong> x > 0 e y < 0</li>
+            <li><strong>Eixo X:</strong> y = 0 (e x ≠ 0)</li>
+            <li><strong>Eixo Y:</strong> x = 0 (e y ≠ 0)</li>
+            <li><strong>Origem:</strong> x = 0 e y = 0</li>
         </ul>
         
-        <h3>✅ Use If-Elif quando:</h3>
-        <ul>
-            <li>Precisa de condições complexas</li>
-            <li>Há lógica booleana envolvida</li>
-            <li>Compatibilidade com Python < 3.10</li>
-            <li>Condições envolvem múltiplas variáveis</li>
-        </ul>
+        <h3>Implementação:</h3>
+        <pre><code>if x == 0 and y == 0:
+    print("Origem")
+elif x == 0:
+    print("Eixo Y")
+elif y == 0:
+    print("Eixo X")
+elif x > 0 and y > 0:
+    print("Q1")
+elif x < 0 and y > 0:
+    print("Q2")
+elif x < 0 and y < 0:
+    print("Q3")
+else:  # x > 0 and y < 0
+    print("Q4")</code></pre>
+
     </section>
 
     <section>
-        <h2>💡 Dicas Importantes</h2>
-        <div class="tip-box">
-            <ul>
-                <li>🐍 Disponível apenas no Python 3.10+</li>
-                <li>🎯 Ideal para menus e sistemas de opções</li>
-                <li>🔍 Use guards (if) para condições adicionais</li>
-                <li>📋 O case _ é opcional mas recomendado</li>
-                <li>⚡ Pode ser mais rápido que if-elif em alguns casos</li>
-            </ul>
-        </div>
+
+        <h2>💡 Problema: Coordenadas</h2>
+        <p>Leia os valores das coordenadas X e Y de um ponto no plano cartesiano. A seguir, determine qual o quadrante ao qual pertence o ponto (Q1, Q2, Q3 ou Q4). Se o ponto estiver na origem, escreva a mensagem "Origem". Se o ponto estiver sobre um dos eixos, escreva "Eixo X" ou "Eixo Y".</p>
+
     </section>
 {% endblock %}
-
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
-    <p>Complete o exercício no editor ao lado.</p>
+
+        <h4>📝 Exemplo 1:</h4>
+        <pre><code>Valor de X: 4.5
+Valor de Y: -2.2
+Q4</code></pre>
+        
+        <h4>📝 Exemplo 2:</h4>
+        <pre><code>Valor de X: 0.1
+Valor de Y: 0.1
+Q1</code></pre>
+        
+        <h4>📝 Exemplo 3:</h4>
+        <pre><code>Valor de X: 0.0
+Valor de Y: 0.0
+Origem</code></pre>
+
 {% endblock %}
 
-{% block initial_code %}# Seu código aqui
+{% block initial_code %}# Leia as coordenadas
+x = float(input("Valor de X: "))
+y = float(input("Valor de Y: "))
+
+# Determine a localização do ponto
+
+# Exiba o resultado
 {% endblock %}
 
 {% block extra_js %}
 <script>
-function runCode() {
-    const code = document.getElementById('code-input').value;
-    const output = document.getElementById('output');
-    
-    output.innerHTML = '<div class="output-success">Sistema de conceitos executado! Teste com diferentes notas.</div>';
-}
+    function getExerciseDescription() {
+        return `Problema "coordenadas":
+
+Leia os valores das coordenadas X e Y de um ponto no plano cartesiano. A seguir, determine qual o quadrante ao qual pertence o ponto (Q1, Q2, Q3 ou Q4). Se o ponto estiver na origem, escreva a mensagem "Origem". Se o ponto estiver sobre um dos eixos, escreva "Eixo X" ou "Eixo Y".
+
+ENTRADA:
+- Valor de X (float)
+- Valor de Y (float)
+
+SAÍDA:
+- Q1, Q2, Q3, Q4, Eixo X, Eixo Y ou Origem
+
+CLASSIFICAÇÃO:
+- Origem: x = 0 e y = 0
+- Eixo X: y = 0 (x ≠ 0)
+- Eixo Y: x = 0 (y ≠ 0)
+- Q1: x > 0 e y > 0
+- Q2: x < 0 e y > 0
+- Q3: x < 0 e y < 0
+- Q4: x > 0 e y < 0`;
+    }
 </script>
 {% endblock %}

@@ -1,191 +1,99 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 10 - Projeto Final: Sistema de Cadastro | CodeLogic{% endblock %}
+{% block title %}Aula 10 - Problema "medidas" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 10 – Projeto Final: Sistema de Cadastro Completo{% endblock %}
+{% block lesson_title %}Aula 10 – Cálculo de Áreas Geométricas{% endblock %}
 
 {% block lesson_content %}
     <section>
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Aplicar todos os conceitos de lógica sequencial</li>
-            <li>Criar um programa completo com entrada e saída</li>
-            <li>Praticar cálculos e formatação</li>
+            <li>Aplicar múltiplas fórmulas geométricas</li>
+            <li>Trabalhar com várias variáveis</li>
+            <li>Exibir múltiplos resultados formatados</li>
         </ul>
     </section>
 
     <section>
-        <h2>🔧 Especificações do Projeto</h2>
-        <p>Vamos criar um sistema de cadastro e análise de dados pessoais:</p>
+        <h2>📐 Fórmulas Geométricas</h2>
         
-        <h3>Dados a Coletar:</h3>
-        <ul>
-            <li>Nome completo</li>
-            <li>Idade</li>
-            <li>Altura (em metros)</li>
-            <li>Peso (em kg)</li>
-            <li>Salário mensal</li>
-        </ul>
+        <h3>Área do Quadrado</h3>
+        <p><code>A = lado²</code></p>
+        <pre><code>area_quadrado = a**2</code></pre>
         
-        <h3>Cálculos Necessários:</h3>
-        <ul>
-            <li>IMC (Índice de Massa Corporal)</li>
-            <li>Idade em dias</li>
-            <li>Salário anual</li>
-            <li>Imposto (15% do salário)</li>
-        </ul>
+        <h3>Área do Triângulo</h3>
+        <p><code>A = (base × altura) / 2</code></p>
+        <pre><code>area_triangulo = (a * b) / 2</code></pre>
         
-        <h3>Saída Formatada:</h3>
-        <ul>
-            <li>Apresentar todos os dados organizados</li>
-            <li>Mostrar todos os cálculos com 2 casas decimais</li>
-            <li>Classificar o IMC</li>
-            <li>Dar feedback sobre os dados</li>
-        </ul>
+        <h3>Área do Trapézio</h3>
+        <p><code>A = ((base_maior + base_menor) × altura) / 2</code></p>
+        <pre><code>area_trapezio = ((a + b) * c) / 2</code></pre>
     </section>
 
     <section>
-        <h2>📋 Estrutura da Saída</h2>
-        <pre><code>========================================
-   👤 SISTEMA DE CADASTRO CODELOGIC
-========================================
-DADOS PESSOAIS:
-Nome: João Silva
-Idade: 25 anos (9125 dias)
-Altura: 1.75 m
-Peso: 70.0 kg
-
-CÁLCULOS:
-IMC: 22.86 - Peso Normal
-Salário Mensal: R$ 3500.00
-Salário Anual: R$ 42000.00
-Imposto (15%): R$ 525.00
-Salário Líquido: R$ 2975.00
-========================================</code></pre>
-    </section>
-
-    <section>
-        <h2>💡 Conceitos Utilizados</h2>
-        
-        <h3>1. Entrada de Dados:</h3>
-        <pre><code># Coleta de informações
-nome = input("Digite seu nome completo: ")
-idade = int(input("Digite sua idade: "))
-altura = float(input("Digite sua altura (m): "))
-peso = float(input("Digite seu peso (kg): "))
-salario = float(input("Digite seu salário mensal: R$ "))</code></pre>
-        
-        <h3>2. Cálculos:</h3>
-        <pre><code># IMC
-imc = peso / (altura ** 2)
-
-# Idade em dias (aproximado)
-dias = idade * 365
-
-# Valores financeiros
-salario_anual = salario * 12
-imposto = salario * 0.15
-salario_liquido = salario - imposto</code></pre>
-        
-        <h3>3. Classificação do IMC:</h3>
-        <pre><code># Determinar classificação
-if imc < 18.5:
-    classificacao = "Abaixo do peso"
-elif imc < 25:
-    classificacao = "Peso normal"
-elif imc < 30:
-    classificacao = "Sobrepeso"
-else:
-    classificacao = "Obesidade"</code></pre>
-        
-        <h3>4. Formatação da Saída:</h3>
-        <pre><code># Exibir de forma organizada
-print("=" * 40)
-print("   � SISTEMA DE CADASTRO CODELOGIC")
-print("=" * 40)
-print("DADOS PESSOAIS:")
-print(f"Nome: {nome}")
-print(f"Idade: {idade} anos ({dias} dias)")
-print(f"Altura: {altura} m")
-print(f"Peso: {peso} kg")
-print()
-print("CÁLCULOS:")
-print(f"IMC: {imc:.2f} - {classificacao}")
-print(f"Salário Mensal: R$ {salario:.2f}")
-print(f"Salário Anual: R$ {salario_anual:.2f}")
-print(f"Imposto (15%): R$ {imposto:.2f}")
-print(f"Salário Líquido: R$ {salario_liquido:.2f}")
-print("=" * 40)</code></pre>
-    </section>
-
-    <section>
-        <h2>🎨 Melhorias Possíveis</h2>
-        <ul>
-            <li>Adicionar mais informações pessoais (cidade, profissão)</li>
-            <li>Calcular outros índices de saúde</li>
-            <li>Incluir gráfico visual do IMC com caracteres</li>
-            <li>Adicionar cálculo de aposentadoria (tempo faltante)</li>
-            <li>Criar mensagens personalizadas baseadas nos dados</li>
-        </ul>
-    </section>
-
-    <section>
-        <h2>🏆 Desafios Extras</h2>
-        <ul>
-            <li>Adicione validação (idade > 0, altura > 0, etc.)</li>
-            <li>Calcule também o peso ideal</li>
-            <li>Mostre quanto tempo de vida em horas e minutos</li>
-            <li>Adicione categoria de idade (criança, adulto, idoso)</li>
-            <li>Crie uma barra de progresso visual para o IMC</li>
-        </ul>
+        <h2>🔢 Múltiplos Cálculos</h2>
+        <p>Podemos fazer vários cálculos no mesmo programa:</p>
+        <pre><code>area1 = ...
+area2 = ...
+area3 = ...</code></pre>
     </section>
 {% endblock %}
 
 {% block exercise_description %}
-    <h4>🎮 Projeto Final!</h4>
+    <h4>🎮 Problema "medidas"</h4>
+    <p>Fazer um programa para ler três medidas A, B e C. Em seguida, calcular e mostrar: a) área do quadrado de lado A, b) área do triângulo de base A e altura B, c) área do trapézio de bases A e B e altura C.</p>
     
-    <p><strong>Sua Missão:</strong> Criar o sistema de cadastro completo!</p>
+    <h4>📝 Exemplo 1:</h4>
+    <pre><code>Digite a medida A: 4.0
+Digite a medida B: 3.5
+Digite a medida C: 5.2
+AREA DO QUADRADO = 16.0000
+AREA DO TRIANGULO = 7.0000
+AREA DO TRAPEZIO = 19.5000</code></pre>
     
-    <p><strong>Requisitos Obrigatórios:</strong></p>
-    <ul>
-        <li>Coletar TODOS os dados pessoais listados</li>
-        <li>Realizar TODOS os cálculos (IMC, dias, salários)</li>
-        <li>Classificar o IMC corretamente</li>
-        <li>Formatar a saída exatamente como o exemplo</li>
-        <li>Usar formatação com 2 casas decimais onde necessário</li>
-    </ul>
-    
-    <p><strong>Cálculos Necessários:</strong></p>
-    <ol>
-        <li>IMC = peso / (altura²)</li>
-        <li>Dias = idade × 365</li>
-        <li>Salário Anual = salário × 12</li>
-        <li>Imposto = salário × 0.15</li>
-        <li>Salário Líquido = salário - imposto</li>
-    </ol>
-    
-    <p><strong>Classificação do IMC:</strong></p>
-    <ul>
-        <li>Menor que 18.5: "Abaixo do peso"</li>
-        <li>18.5 a 24.9: "Peso normal"</li>
-        <li>25.0 a 29.9: "Sobrepeso"</li>
-        <li>30.0 ou mais: "Obesidade"</li>
-    </ul>
-    
-    <p><strong>🌟 Bônus:</strong> Adicione validações e mensagens personalizadas!</p>
+    <h4>📝 Exemplo 2:</h4>
+    <pre><code>Digite a medida A: 7.13
+Digite a medida B: 8.05
+Digite a medida C: 11.912
+AREA DO QUADRADO = 50.8369
+AREA DO TRIANGULO = 28.6983
+AREA DO TRAPEZIO = 90.4121</code></pre>
 {% endblock %}
 
-{% block initial_code %}print("=" * 40)
-print("   👤 SISTEMA DE CADASTRO CODELOGIC")
-print("=" * 40)
-print()
+{% block initial_code %}a = float(input("Digite a medida A: "))
+b = float(input("Digite a medida B: "))
+c = float(input("Digite a medida C: "))
 
-# Coleta de dados
-nome = input("Digite seu nome completo: ")
-idade = int(input("Digite sua idade: "))
-altura = float(input("Digite sua altura (m): "))
-peso = float(input("Digite seu peso (kg): "))
-salario = float(input("Digite seu salário mensal: R$ "))
+area_quadrado = a**2
+area_triangulo = (a * b) / 2
+area_trapezio = ((a + b) * c) / 2
 
-# SEU CÓDIGO AQUI
-# Faça todos os cálculos e exiba as informações formatadas{% endblock %}
+print(f"AREA DO QUADRADO = {area_quadrado:.4f}")
+print(f"AREA DO TRIANGULO = {area_triangulo:.4f}")
+print(f"AREA DO TRAPEZIO = {area_trapezio:.4f}"){% endblock %}
+
+{% block extra_js %}
+<script>
+    function getExerciseDescription() {
+        return `Problema "medidas":
+
+Fazer um programa para ler três medidas A, B e C. Em seguida, calcular e mostrar:
+a) área do quadrado de lado A
+b) área do triângulo de base A e altura B  
+c) área do trapézio de bases A e B e altura C
+
+FÓRMULAS:
+- Quadrado: A = lado²
+- Triângulo: A = (base × altura) / 2
+- Trapézio: A = ((base1 + base2) × altura) / 2
+
+EXEMPLO 1:
+Digite a medida A: 4.0
+Digite a medida B: 3.5
+Digite a medida C: 5.2
+AREA DO QUADRADO = 16.0000
+AREA DO TRIANGULO = 7.0000
+AREA DO TRAPEZIO = 19.5000`;
+    }
+</script>
+{% endblock %}

@@ -1,224 +1,146 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 9 - Código Limpo com If/Else | CodeLogic{% endblock %}
+{% block title %}Aula 9 - Problema "aumento" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 9 – Escrevendo Código Limpo com If/Else{% endblock %}
+{% block lesson_title %}Aula 9 – Cálculo de Aumento Salarial{% endblock %}
 
 {% block lesson_content %}
     <section>
+
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Escrever código condicional limpo e legível</li>
-            <li>Usar nomes de variáveis descritivos</li>
-            <li>Organizar condições de forma clara</li>
+            <li>Implementar tabela de percentuais progressivos</li>
+            <li>Calcular aumentos e novos valores</li>
+            <li>Trabalhar com faixas de valores</li>
         </ul>
+
     </section>
 
     <section>
-        <h2>✨ Nomes Descritivos</h2>
+
+        <h2>📚 Conceitos: Faixas de Valores</h2>
+        <p>Quando temos regras diferentes para faixas de valores, usamos comparações encadeadas:</p>
         
-        <h3>❌ Código Ruim:</h3>
-        <pre><code>x = int(input("Digite: "))
-if x > 18:
-    y = True
-    print(y)</code></pre>
+        <h3>Padrão de faixas:</h3>
+        <pre><code>if valor <= limite1:
+    # Faixa 1
+elif valor <= limite2:
+    # Faixa 2
+elif valor <= limite3:
+    # Faixa 3
+else:
+    # Faixa 4</code></pre>
         
-        <h3>✅ Código Bom:</h3>
-        <pre><code>idade = int(input("Digite sua idade: "))
-if idade > 18:
-    pode_votar = True
-    print("Você pode votar!")</code></pre>
-        
-        <p><strong>Por quê?</strong> Nomes claros facilitam a leitura!</p>
+        <h3>Exemplo - Desconto progressivo:</h3>
+        <pre><code>total = 1500
+
+if total <= 500:
+    desconto = 0.05  # 5%
+elif total <= 1000:
+    desconto = 0.10  # 10%
+elif total <= 2000:
+    desconto = 0.15  # 15%
+else:
+    desconto = 0.20  # 20%
+
+valor_desconto = total * desconto
+valor_final = total - valor_desconto</code></pre>
+
     </section>
 
     <section>
-        <h2>🎯 Condições Diretas</h2>
+
+        <h2>📊 Tabela de Aumentos</h2>
+        <table border="1" cellpadding="8" style="border-collapse: collapse; margin: 20px 0;">
+            <thead>
+                <tr style="background-color: #f0f0f0;">
+                    <th>Salário Atual</th>
+                    <th>Percentual de Aumento</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Até R$ 1000.00</td><td>20%</td></tr>
+                <tr><td>De R$ 1000.01 a R$ 3000.00</td><td>15%</td></tr>
+                <tr><td>De R$ 3000.01 a R$ 8000.00</td><td>10%</td></tr>
+                <tr><td>Acima de R$ 8000.00</td><td>5%</td></tr>
+            </tbody>
+        </table>
         
-        <h3>❌ Redundante:</h3>
-        <pre><code>idade = int(input("Idade: "))
-if idade >= 18:
-    pode_votar = True
-else:
-    pode_votar = False
-print(pode_votar)</code></pre>
-        
-        <h3>✅ Direto:</h3>
-        <pre><code>idade = int(input("Idade: "))
-pode_votar = idade >= 18
-print(f"Pode votar: {pode_votar}")</code></pre>
-        
-        <p><strong>Dica:</strong> Quando uma condição retorna True/False, atribua diretamente!</p>
-    </section>
-
-    <section>
-        <h2>🔍 Validação em Etapas</h2>
-        
-        <h3>❌ Aninhamento Excessivo:</h3>
-        <pre><code>nome = input("Nome: ")
-idade = int(input("Idade: "))
-email = input("Email: ")
-
-if len(nome) >= 3:
-    if idade >= 18:
-        if "@" in email:
-            print("Cadastro aprovado!")
-        else:
-            print("Email inválido")
-    else:
-        print("Idade insuficiente")
-else:
-    print("Nome muito curto")</code></pre>
-        
-        <h3>✅ Validação Sequencial:</h3>
-        <pre><code>nome = input("Nome: ")
-idade = int(input("Idade: "))
-email = input("Email: ")
-
-# Validar um de cada vez
-if len(nome) < 3:
-    print("❌ Nome muito curto")
-elif idade < 18:
-    print("❌ Idade insuficiente")
-elif "@" not in email:
-    print("❌ Email inválido")
-else:
-    print("✅ Cadastro aprovado!")</code></pre>
-    </section>
-
-    <section>
-        <h2>� Condições Compostas</h2>
-        
-        <h3>Múltiplas Verificações:</h3>
-        <pre><code>usuario = input("Usuário: ")
-senha = input("Senha: ")
-
-# Verificar tudo de uma vez
-usuario_correto = usuario == "admin"
-senha_correta = senha == "1234"
-tamanho_ok = len(senha) >= 4
-
-if usuario_correto and senha_correta and tamanho_ok:
-    print("✅ Login realizado!")
-else:
-    print("❌ Acesso negado!")
-    
-    # Mostrar o que está errado
-    if not usuario_correto:
-        print("- Usuário incorreto")
-    if not senha_correta:
-        print("- Senha incorreta")
-    if not tamanho_ok:
-        print("- Senha muito curta")</code></pre>
-    </section>
-
-    <section>
-        <h2>🎯 Sistema de Notas Limpo</h2>
-        <pre><code>nome = input("Nome do aluno: ")
-nota1 = float(input("Nota 1: "))
-nota2 = float(input("Nota 2: "))
-nota3 = float(input("Nota 3: "))
-
-# Calcular média
-media = (nota1 + nota2 + nota3) / 3
-
-# Determinar situação
-if media >= 7:
-    situacao = "Aprovado"
-    emoji = "🎉"
-elif media >= 5:
-    situacao = "Recuperação"
-    emoji = "⚠️"
-else:
-    situacao = "Reprovado"
-    emoji = "❌"
-
-# Exibir resultado organizado
-print()
-print("="*40)
-print(f"BOLETIM DE {nome.upper()}")
-print("="*40)
-print(f"Nota 1: {nota1:.1f}")
-print(f"Nota 2: {nota2:.1f}")
-print(f"Nota 3: {nota3:.1f}")
-print(f"Média: {media:.2f}")
-print(f"Situação: {situacao} {emoji}")
-print("="*40)</code></pre>
-    </section>
-
-        <section>
-        <h2>💡 Dicas de Organização</h2>
+        <h3>Cálculos:</h3>
         <ul>
-            <li>✅ Use nomes que explicam o que a variável guarda</li>
-            <li>✅ Evite muitos if dentro de if (máximo 2 níveis)</li>
-            <li>✅ Agrupe validações relacionadas</li>
-            <li>✅ Use elif para condições excludentes</li>
-            <li>✅ Comente apenas o que não é óbvio</li>
-            <li>✅ Deixe espaço entre seções do código</li>
+            <li><strong>Aumento:</strong> salario × (percentual / 100)</li>
+            <li><strong>Novo salário:</strong> salario + aumento</li>
         </ul>
+        
+        <h3>Exemplo:</h3>
+        <pre><code>salario = 2500.00
+percentual = 15  # 15% para salários entre 1000 e 3000
+
+aumento = salario * (percentual / 100)  # 375.00
+novo_salario = salario + aumento  # 2875.00</code></pre>
+
+    </section>
+
+    <section>
+
+        <h2>💡 Problema: Aumento Salarial</h2>
+        <p>Uma empresa vai conceder um aumento percentual de salário aos seus funcionários dependendo de quanto cada pessoa ganha. Fazer um programa para ler o salário de uma pessoa, daí mostrar qual o novo salário desta pessoa depois do aumento, quanto foi o aumento e qual foi a porcentagem de aumento.</p>
+
     </section>
 {% endblock %}
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
-    
-    <p><strong>Tarefa:</strong> Sistema de Login Limpo</p>
-    <ul>
-        <li>Peça usuário e senha</li>
-        <li>Usuário correto: "admin"</li>
-        <li>Senha correta: "1234"</li>
-        <li>Valide o tamanho da senha (mínimo 4 caracteres)</li>
-        <li>Mostre mensagens específicas para cada erro</li>
-        <li>Use validação sequencial (elif), não if dentro de if</li>
-        <li>Use nomes descritivos para variáveis booleanas</li>
-    </ul>
-    
-    <p><strong>Exemplo de saída esperada:</strong></p>
-    <pre><code>🔐 SISTEMA DE LOGIN 🔐
-Usuário: admin
-Senha: 1234
-✅ Login realizado com sucesso!
-Bem-vindo ao sistema!</code></pre>
+
+        <h4>📝 Exemplo 1:</h4>
+        <pre><code>Digite o salario da pessoa: 800.00
+Novo salario = R$ 960.00
+Aumento = R$ 160.00
+Porcentagem = 20 %</code></pre>
+        
+        <h4>📝 Exemplo 2:</h4>
+        <pre><code>Digite o salario da pessoa: 1500.00
+Novo salario = R$ 1725.00
+Aumento = R$ 225.00
+Porcentagem = 15 %</code></pre>
+        
+        <h4>📝 Exemplo 3:</h4>
+        <pre><code>Digite o salario da pessoa: 9000.00
+Novo salario = R$ 9450.00
+Aumento = R$ 450.00
+Porcentagem = 5 %</code></pre>
+
 {% endblock %}
 
-{% block initial_code %}print("🔐 SISTEMA DE LOGIN 🔐")
-print()
+{% block initial_code %}# Leia o salário
+salario = float(input("Digite o salario da pessoa: "))
 
-# Entrada de dados
-usuario = input("Usuário: ")
-senha = input("Senha: ")
+# Determine o percentual de aumento baseado na faixa
 
-# SEU CÓDIGO AQUI
-# Valide de forma limpa e organizada{% endblock %}
-                <li>✅ Validar entrada de dados</li>
-                <li>✅ Retornar mensagens de erro específicas</li>
-                <li>✅ Manter consistência no estilo do código</li>
-                <li>✅ Testar todas as condições possíveis</li>
-            </ul>
-        </div>
-    </section>
+# Calcule o aumento e novo salário
 
-    <section>
-        <h2>💡 Dicas Finais</h2>
-        <div class="tip-box">
-            <ul>
-                <li>📖 Código é escrito uma vez, mas lido muitas vezes</li>
-                <li>🧪 Sempre teste casos extremos e valores inválidos</li>
-                <li>🔄 Refatore regularmente para melhorar a qualidade</li>
-                <li>👥 Peça feedback de outros programadores</li>
-                <li>📚 Continue estudando padrões e práticas da comunidade</li>
-            </ul>
-        </div>
-    </section>
+# Exiba os resultados
 {% endblock %}
 
 {% block extra_js %}
 <script>
-function runCode() {
-    const code = document.getElementById('code-input').value;
-    const output = document.getElementById('output');
-    
-    output.innerHTML = '<div class="output-success">Refatoração analisada! Compare seu código com as boas práticas apresentadas.</div>';
-}
+    function getExerciseDescription() {
+        return `Problema "aumento":
+
+Uma empresa vai conceder um aumento percentual de salário aos seus funcionários dependendo de quanto cada pessoa ganha.
+
+TABELA DE AUMENTOS:
+- Até R$ 1000.00: 20%
+- De R$ 1000.01 a R$ 3000.00: 15%
+- De R$ 3000.01 a R$ 8000.00: 10%
+- Acima de R$ 8000.00: 5%
+
+ENTRADA:
+- Salário atual (float)
+
+SAÍDA:
+- Novo salario = R$ [valor com 2 casas]
+- Aumento = R$ [valor com 2 casas]
+- Porcentagem = [percentual] %`;
+    }
 </script>
 {% endblock %}

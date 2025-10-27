@@ -1,190 +1,138 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 10 - Projeto Final: Sistema de Notas | CodeLogic{% endblock %}
-{% block lesson_title %}Aula 10 - Projeto Final: Sistema de Notas Completo{% endblock %}
+{% block title %}Aula 10 - Problema "troco_verificado" | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 10 – Verificação de Troco{% endblock %}
 
 {% block lesson_content %}
-<div class="content-section">
-    <h2>🎯 Objetivos do Projeto</h2>
-    <ul>
-        <li>Aplicar todos os conceitos de if/elif/else</li>
-        <li>Criar um sistema de notas completo</li>
-        <li>Trabalhar com múltiplas condições</li>
-        <li>Gerar relatório formatado</li>
-    </ul>
-</div>
+    <section>
 
-<div class="content-section">
-    <h2>🏗️ Visão Geral do Projeto</h2>
-    <p>
-        Vamos criar um <strong>Sistema de Boletim Escolar</strong> que calcula médias,
-        determina aprovação/reprovação e classifica o desempenho do aluno.
-    </p>
-    
-    <h3>📋 O que o sistema deve fazer:</h3>
-    <ul>
-        <li>📊 Coletar nome e 4 notas do aluno</li>
-        <li>🧮 Calcular média aritmética</li>
-        <li>✅ Determinar se está aprovado, em recuperação ou reprovado</li>
-        <li>🏆 Classificar desempenho (Excelente, Bom, Regular, Insuficiente)</li>
-        <li>📝 Dar feedback personalizado</li>
-    </ul>
-</div>
+        <h2>�� Objetivo</h2>
+        <ul>
+            <li>Validar suficiência de pagamento</li>
+            <li>Calcular troco ou falta</li>
+            <li>Implementar lógica de negócio real</li>
+        </ul>
 
-<div class="content-section">
-    <h2>📏 Critérios de Avaliação</h2>
-    
-    <h3>Sistema de Classificação:</h3>
-    <ul>
-        <li><strong>Média >= 9.0:</strong> Excelente 🏆</li>
-        <li><strong>Média >= 7.0:</strong> Bom 😊</li>
-        <li><strong>Média >= 6.0:</strong> Regular 😐</li>
-        <li><strong>Média < 6.0:</strong> Insuficiente 😔</li>
-    </ul>
-    
-    <h3>Sistema de Aprovação:</h3>
-    <ul>
-        <li><strong>Média >= 7.0:</strong> APROVADO ✅</li>
-        <li><strong>5.0 <= Média < 7.0:</strong> RECUPERAÇÃO ⚠️</li>
-        <li><strong>Média < 5.0:</strong> REPROVADO ❌</li>
-    </ul>
-</div>
+    </section>
 
-<div class="content-section">
-    <h2>🧮 Exemplo de Cálculo</h2>
-    
-    <pre><code>nome = input("Nome do aluno: ")
-nota1 = float(input("Nota 1: "))
-nota2 = float(input("Nota 2: "))
-nota3 = float(input("Nota 3: "))
-nota4 = float(input("Nota 4: "))
+    <section>
 
-# Calcular média
-media = (nota1 + nota2 + nota3 + nota4) / 4
+        <h2>📚 Conceitos: Validação de Valores</h2>
+        <p>Em aplicações reais, precisamos validar se os valores fornecidos são suficientes:</p>
+        
+        <h3>Padrão de validação:</h3>
+        <pre><code>valor_necessario = 100.0
+valor_fornecido = float(input("Valor: "))
 
-# Determinar situação
-if media >= 7.0:
-    situacao = "APROVADO"
-    emoji = "✅"
-elif media >= 5.0:
-    situacao = "RECUPERAÇÃO"
-    emoji = "⚠️"
+if valor_fornecido >= valor_necessario:
+    print("Valor suficiente")
+    troco = valor_fornecido - valor_necessario
+    print(f"Troco: {troco:.2f}")
 else:
-    situacao = "REPROVADO"
-    emoji = "❌"
+    print("Valor insuficiente")
+    falta = valor_necessario - valor_fornecido
+    print(f"Falta: {falta:.2f}")</code></pre>
 
-# Classificar desempenho
-if media >= 9.0:
-    desempenho = "Excelente"
-    medalha = "🏆"
-elif media >= 7.0:
-    desempenho = "Bom"
-    medalha = "😊"
-elif media >= 6.0:
-    desempenho = "Regular"
-    medalha = "😐"
+    </section>
+
+    <section>
+
+        <h2>💰 Lógica de Pagamento</h2>
+        <p>O programa deve calcular o total da compra e verificar se o dinheiro recebido é suficiente:</p>
+        
+        <h3>Passo 1: Calcular total</h3>
+        <pre><code>total = preco_unitario × quantidade</code></pre>
+        
+        <h3>Passo 2: Comparar com dinheiro recebido</h3>
+        <pre><code>if dinheiro >= total:
+    troco = dinheiro - total
+    print(f"TROCO = {troco:.2f}")
 else:
-    desempenho = "Insuficiente"
-    medalha = "😔"
+    falta = total - dinheiro
+    print(f"DINHEIRO INSUFICIENTE. FALTAM {falta:.2f} REAIS")</code></pre>
+        
+        <h3>Exemplo completo:</h3>
+        <pre><code># Entrada
+preco = 8.00
+quantidade = 2
+dinheiro = 10.00
 
-# Exibir boletim
-print()
-print("="*50)
-print(f"BOLETIM ESCOLAR - {nome.upper()}")
-print("="*50)
-print(f"Nota 1: {nota1:.1f}")
-print(f"Nota 2: {nota2:.1f}")
-print(f"Nota 3: {nota3:.1f}")
-print(f"Nota 4: {nota4:.1f}")
-print(f"Média Final: {media:.2f}")
-print(f"Desempenho: {desempenho} {medalha}")
-print(f"Situação: {situacao} {emoji}")
-print("="*50)</code></pre>
-</div>
+# Cálculo
+total = preco * quantidade  # 16.00
 
-<div class="content-section">
-    <h2>🎯 Feedback Personalizado</h2>
-    
-    <pre><code># Adicionar mensagem personalizada
-if media >= 9.0:
-    print("🎉 Parabéns! Desempenho excepcional!")
-    print("Continue assim!")
-elif media >= 7.0:
-    print("😊 Bom trabalho!")
-    print("Com mais dedicação pode alcançar excelência!")
-elif media >= 6.0:
-    print("😐 Desempenho regular.")
-    print("Precisa estudar mais para melhorar!")
-elif media >= 5.0:
-    print("⚠️ Atenção! Você está em recuperação.")
-    print("Estude mais para a prova de recuperação!")
+# Validação
+if dinheiro >= total:
+    troco = dinheiro - total
+    print(f"TROCO = {troco:.2f}")
 else:
-    print("❌ Infelizmente você foi reprovado.")
-    print("Não desanime! Estude mais no próximo ano!")</code></pre>
-</div>
+    falta = total - dinheiro
+    print(f"DINHEIRO INSUFICIENTE. FALTAM {falta:.2f} REAIS")</code></pre>
 
-<div class="content-section">
-    <h2>🔍 Conceitos Aplicados</h2>
-    <ul>
-        <li><strong>Input:</strong> Coleta de dados do usuário</li>
-        <li><strong>Conversão:</strong> float() para notas decimais</li>
-        <li><strong>Cálculos:</strong> Média aritmética</li>
-        <li><strong>If/Elif/Else:</strong> Múltiplas classificações</li>
-        <li><strong>Operadores:</strong> Comparações e lógica</li>
-        <li><strong>Formatação:</strong> f-strings com :.2f</li>
-    </ul>
-</div>
+    </section>
+
+    <section>
+
+        <h2>💡 Problema: Troco Verificado</h2>
+        <p>Fazer um programa para calcular o troco no processo de pagamento de um produto de uma mercearia. O programa deve ler o preço unitário do produto, a quantidade de unidades compradas deste produto, e o valor em dinheiro dado pelo cliente. Seu programa deve mostrar o valor do troco a ser devolvido ao cliente. Se o dinheiro dado pelo cliente não for suficiente, mostrar uma mensagem informando o valor restante.</p>
+
+    </section>
 {% endblock %}
 
 {% block exercise_description %}
-    <h4>🎮 Projeto Final!</h4>
-    
-    <p><strong>Sua Missão:</strong> Criar o Sistema de Boletim Completo!</p>
-    
-    <p><strong>Requisitos Obrigatórios:</strong></p>
-    <ol>
-        <li>Coletar nome e 4 notas do aluno</li>
-        <li>Calcular a média das 4 notas</li>
-        <li>Determinar a situação (APROVADO/RECUPERAÇÃO/REPROVADO)</li>
-        <li>Classificar o desempenho (Excelente/Bom/Regular/Insuficiente)</li>
-        <li>Exibir boletim formatado com todas as informações</li>
-        <li>Mostrar mensagem personalizada de feedback</li>
-    </ol>
-    
-    <p><strong>Critérios:</strong></p>
-    <ul>
-        <li><strong>Situação:</strong> Aprovado (≥7.0), Recuperação (5.0-6.9), Reprovado (<5.0)</li>
-        <li><strong>Desempenho:</strong> Excelente (≥9.0), Bom (≥7.0), Regular (≥6.0), Insuficiente (<6.0)</li>
-    </ul>
-    
-    <p><strong>Exemplo de saída esperada:</strong></p>
-    <pre><code>==================================================
-BOLETIM ESCOLAR - JOÃO SILVA
-==================================================
-Nota 1: 8.5
-Nota 2: 9.0
-Nota 3: 7.5
-Nota 4: 8.0
-Média Final: 8.25
-Desempenho: Bom 😊
-Situação: APROVADO ✅
-==================================================
-😊 Bom trabalho!
-Com mais dedicação pode alcançar excelência!</code></pre>
+
+        <h4>📝 Exemplo 1 (troco):</h4>
+        <pre><code>Preco unitario do produto: 8.00
+Quantidade comprada: 2
+Dinheiro recebido: 20.00
+TROCO = 4.00</code></pre>
+        
+        <h4>📝 Exemplo 2 (falta):</h4>
+        <pre><code>Preco unitario do produto: 8.00
+Quantidade comprada: 2
+Dinheiro recebido: 10.00
+DINHEIRO INSUFICIENTE. FALTAM 6.00 REAIS</code></pre>
+        
+        <h4>📝 Exemplo 3 (exato):</h4>
+        <pre><code>Preco unitario do produto: 5.00
+Quantidade comprada: 4
+Dinheiro recebido: 20.00
+TROCO = 0.00</code></pre>
+
 {% endblock %}
 
-{% block initial_code %}print("="*50)
-print("SISTEMA DE BOLETIM ESCOLAR")
-print("="*50)
-print()
+{% block initial_code %}# Leia os dados
+preco = float(input("Preco unitario do produto: "))
+quantidade = int(input("Quantidade comprada: "))
+dinheiro = float(input("Dinheiro recebido: "))
 
-# Coleta de dados
-nome = input("Nome do aluno: ")
-nota1 = float(input("Nota 1 (0-10): "))
-nota2 = float(input("Nota 2 (0-10): "))
-nota3 = float(input("Nota 3 (0-10): "))
-nota4 = float(input("Nota 4 (0-10): "))
+# Calcule o total da compra
 
-# SEU CÓDIGO AQUI
-# Calcule média, determine situação e desempenho
-# Exiba o boletim formatado com feedback{% endblock %}
+# Verifique se o dinheiro é suficiente
+
+# Exiba o resultado (troco ou falta)
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function getExerciseDescription() {
+        return `Problema "troco_verificado":
+
+Fazer um programa para calcular o troco no processo de pagamento de um produto de uma mercearia. O programa deve ler o preço unitário do produto, a quantidade de unidades compradas deste produto, e o valor em dinheiro dado pelo cliente.
+
+ENTRADA:
+- Preço unitário (float)
+- Quantidade comprada (int)
+- Dinheiro recebido (float)
+
+SAÍDA:
+- Se suficiente: "TROCO = [valor com 2 casas]"
+- Se insuficiente: "DINHEIRO INSUFICIENTE. FALTAM [valor com 2 casas] REAIS"
+
+CÁLCULO:
+- Total = preço × quantidade
+- Se dinheiro >= total: troco = dinheiro - total
+- Se dinheiro < total: falta = total - dinheiro`;
+    }
+</script>
+{% endblock %}

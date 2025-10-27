@@ -1,253 +1,148 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 10 - Projeto Final: Jogo de Aventura | CodeLogic{% endblock %}
-{% block lesson_title %}Aula 10 - Projeto Final: Jogo de Aventura Textual{% endblock %}
+{% block title %}Aula 10 - Problema "divisao" | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 10 – Divisão com Validação{% endblock %}
 
 {% block lesson_content %}
-<div class="content-section">
-    <h2>🎯 Objetivos do Projeto</h2>
-    <ul>
-        <li>Integrar todos os tipos de loops (for, while)</li>
-        <li>Aplicar break e continue</li>
-        <li>Criar um jogo completo com menu e validações</li>
-        <li>Trabalhar com listas e controle de fluxo</li>
-    </ul>
-</div>
+    <section>
 
-<div class="content-section">
-    <h2>🎮 Visão Geral do Projeto</h2>
-    <p>
-        Vamos criar um <strong>Jogo de Aventura Textual Simples</strong> com:
-    </p>
-    
-    <ul>
-        <li>🎯 Sistema de pontuação</li>
-        <li>📦 Inventário de itens</li>
-        <li>🗺️ Múltiplas salas para explorar</li>
-        <li>🎲 Decisões e consequências</li>
-        <li>💰 Coleta de tesouros</li>
-    </ul>
-</div>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Tratar divisão por zero</li>
+            <li>Validar operações matemáticas</li>
+            <li>Processar pares de valores</li>
+            <li>Formatar resultados com decimais</li>
+        </ul>
 
-<div class="content-section">
-    <h2>🏗️ Estrutura do Jogo</h2>
-    
-    <h3>Menu Principal:</h3>
-    <pre><code>print("="*40)
-print("🎮 AVENTURA NA CAVERNA")
-print("="*40)
-print("1. Iniciar Aventura")
-print("2. Ver Inventário")
-print("3. Ver Pontuação")
-print("4. Sair")
-print("="*40)
+    </section>
 
-opcao = input("Escolha: ")</code></pre>
-    
-    <h3>Sistema de Salas:</h3>
-    <pre><code># Salas disponíveis
-salas = ["Entrada", "Corredor", "Sala do Tesouro", "Armadilha", "Saída"]
-sala_atual = 0  # Começa na entrada
-pontos = 0
-vidas = 3
+    <section>
 
-# Itens coletados
-inventario = []
-
-# Explorar
-while sala_atual < len(salas) and vidas > 0:
-    print(f"\n📍 Você está em: {salas[sala_atual]}")
-    print(f"💖 Vidas: {vidas} | ⭐ Pontos: {pontos}")
-    
-    # Ações na sala atual
-    if sala_atual == 0:  # Entrada
-        print("Você vê duas portas...")
-    elif sala_atual == 2:  # Tesouro
-        print("💎 Você encontrou um tesouro!")
-        inventario.append("Diamante")
-        pontos += 100
-    
-    # Próxima sala
-    sala_atual += 1</code></pre>
-</div>
-
-<div class="content-section">
-    <h2>🎲 Sistema de Desafios</h2>
-    
-    <h3>Exemplo de Desafio com Tentativas:</h3>
-    <pre><code>print("\n🔒 PORTA TRANCADA!")
-print("Adivinhe o número de 1 a 5 para abrir")
-
-numero_secreto = 3
-tentativas = 0
-max_tentativas = 3
-
-while tentativas < max_tentativas:
-    palpite = int(input(f"Tentativa {tentativas + 1}/{max_tentativas}: "))
-    tentativas += 1
-    
-    if palpite == numero_secreto:
-        print("✅ Porta aberta!")
-        pontos += 50
-        break
-    elif palpite < numero_secreto:
-        print("📈 Maior!")
-    else:
-        print("📉 Menor!")
-    
-    if tentativas == max_tentativas:
-        print("❌ Porta permanece trancada!")
-        vidas -= 1</code></pre>
-</div>
-
-<div class="content-section">
-    <h2>📦 Sistema de Inventário</h2>
-    
-    <pre><code># Mostrar inventário
-print("\n🎒 SEU INVENTÁRIO:")
-if len(inventario) == 0:
-    print("  Vazio")
-else:
-    for i in range(len(inventario)):
-        print(f"  {i+1}. {inventario[i]}")
-
-# Usar item
-print("\nItens disponíveis para usar:")
-for i in range(len(inventario)):
-    print(f"{i+1}. {inventario[i]}")
-
-escolha = int(input("Usar item (0 para cancelar): "))
-
-if escolha > 0 and escolha <= len(inventario):
-    item_usado = inventario[escolha - 1]
-    print(f"Você usou: {item_usado}")
-    inventario.remove(item_usado)</code></pre>
-</div>
-
-<div class="content-section">
-    <h2>💰 Sistema de Coleta</h2>
-    
-    <pre><code># Procurar tesouros
-tesouros_encontrados = 0
-total_salas = 5
-
-print("🔍 PROCURANDO TESOUROS...")
-
-for sala in range(1, total_salas + 1):
-    print(f"\nSala {sala}:")
-    
-    # Simular busca (usuário digita 's' para procurar)
-    acao = input("Procurar nesta sala? (s/n): ")
-    
-    if acao.lower() == 's':
-        # Chance de encontrar
-        encontrou = sala % 2 == 0  # Salas pares têm tesouro
+        <h2>📚 Conceitos: Divisão por Zero</h2>
+        <p>A divisão por zero é uma operação matemática <strong>indefinida</strong> e causa erro em Python:</p>
         
-        if encontrou:
-            print("💎 Tesouro encontrado!")
-            tesouros_encontrados += 1
-            pontos += 50
-        else:
-            print("😔 Nada aqui...")
-    else:
-        print("⏭️ Pulou a sala")
-        continue
+        <h3>Erro sem tratamento:</h3>
+        <pre><code>resultado = 10 / 0  # ZeroDivisionError!</code></pre>
+        
+        <h3>✅ Tratamento correto:</h3>
+        <pre><code>numerador = 10
+denominador = 0
 
-print(f"\n✨ Total de tesouros: {tesouros_encontrados}")</code></pre>
-</div>
-
-<div class="content-section">
-    <h2>🏆 Sistema de Pontuação Final</h2>
-    
-    <pre><code># Calcular pontuação final
-print("\n" + "="*40)
-print("🏆 RESULTADO FINAL")
-print("="*40)
-
-# Bônus por sobrevivência
-bonus_vidas = vidas * 100
-
-# Bônus por itens
-bonus_itens = len(inventario) * 50
-
-# Total
-pontuacao_final = pontos + bonus_vidas + bonus_itens
-
-print(f"Pontos base: {pontos}")
-print(f"Bônus vidas: {bonus_vidas} ({vidas} x 100)")
-print(f"Bônus itens: {bonus_itens} ({len(inventario)} x 50)")
-print(f"\n⭐ PONTUAÇÃO FINAL: {pontuacao_final}")
-
-# Classificação
-if pontuacao_final >= 500:
-    print("🥇 LENDÁRIO!")
-elif pontuacao_final >= 300:
-    print("🥈 HERÓI!")
-elif pontuacao_final >= 100:
-    print("🥉 AVENTUREIRO!")
+if denominador == 0:
+    print("Impossivel dividir por zero!")
 else:
-    print("📝 INICIANTE")
+    resultado = numerador / denominador
+    print(f"Resultado: {resultado}")</code></pre>
+        
+        <h3>Método alternativo - try/except:</h3>
+        <pre><code>try:
+    resultado = numerador / denominador
+    print(f"Resultado: {resultado}")
+except ZeroDivisionError:
+    print("Impossivel dividir por zero!")</code></pre>
+        
+        <h3>💡 Para este exercício:</h3>
+        <p>Use o método com <code>if</code>, que é mais simples e didático:</p>
+        <pre><code>if divisor != 0:
+    resultado = dividendo / divisor
+    print(f"{resultado:.1f}")
+else:
+    print("divisao impossivel")</code></pre>
 
-print("="*40)</code></pre>
-</div>
+    </section>
 
-<div class="content-section">
-    <h2>💡 Conceitos Utilizados</h2>
-    <ul>
-        <li><strong>While loops:</strong> Menu principal e desafios</li>
-        <li><strong>For loops:</strong> Percorrer salas e inventário</li>
-        <li><strong>Break:</strong> Sair de desafios quando acertar</li>
-        <li><strong>Continue:</strong> Pular salas</li>
-        <li><strong>Listas:</strong> Inventário e salas</li>
-        <li><strong>Contadores:</strong> Pontos, vidas, tentativas</li>
-    </ul>
-</div>
+    <section>
+
+        <h2>🔁 Padrão: Processar N Pares</h2>
+        <p>Para processar N pares de valores e realizar operação:</p>
+        
+        <h3>Estrutura:</h3>
+        <pre><code>n = int(input("Quantos casos? "))
+
+for i in range(n):
+    # Ler par de valores
+    valor1 = int(input("Valor 1: "))
+    valor2 = int(input("Valor 2: "))
+    
+    # Validar e processar
+    if validacao_ok:
+        resultado = operacao(valor1, valor2)
+        print(resultado)
+    else:
+        print("Operacao invalida")</code></pre>
+        
+        <h3>Aplicação - Divisões:</h3>
+        <pre><code>n = int(input("Quantos casos de teste? "))
+
+for i in range(n):
+    numerador = int(input("Numerador: "))
+    denominador = int(input("Denominador: "))
+    
+    if denominador == 0:
+        print("divisao impossivel")
+    else:
+        divisao = numerador / denominador
+        print(f"{divisao:.1f}")</code></pre>
+
+    </section>
+
+    <section>
+
+        <h2>💡 Problema: Divisão</h2>
+        <p>Escreva um algoritmo que leia dois números e imprima o resultado da divisão do primeiro pelo segundo. Caso não for possível, mostre a mensagem "divisao impossivel".</p>
+
+    </section>
 {% endblock %}
 
 {% block exercise_description %}
-    <h4>🎮 Projeto Final!</h4>
-    
-    <p><strong>Sua Missão:</strong> Criar o Jogo de Aventura Completo!</p>
-    
-    <p><strong>Requisitos Mínimos:</strong></p>
-    <ol>
-        <li>Menu principal com loop while</li>
-        <li>Sistema de vidas (mínimo 3)</li>
-        <li>Sistema de pontos</li>
-        <li>Lista de inventário funcionando</li>
-        <li>Pelo menos 5 salas para explorar</li>
-        <li>Pelo menos 2 tipos de desafios</li>
-        <li>Sistema de coleta de itens</li>
-        <li>Pontuação final com classificação</li>
-    </ol>
-    
-    <p><strong>Exemplo de fluxo do jogo:</strong></p>
-    <pre><code>🎮 AVENTURA NA CAVERNA
-1. Iniciar Aventura
-2. Ver Inventário  
-3. Sair
-Escolha: 1
 
-📍 Sala 1: Entrada
-💖 Vidas: 3 | ⭐ Pontos: 0
-O que fazer? (1-Avançar, 2-Procurar): 2
-💎 Você encontrou uma Tocha!
+        <h4>📝 Exemplo:</h4>
+        <pre><code>Quantos casos voce vai digitar? 3
+Entre com o numerador: 8
+Entre com o denominador: 2
+DIVISAO = 4.0
 
-📍 Sala 2: Corredor Escuro
-💖 Vidas: 3 | ⭐ Pontos: 50
-...</code></pre>
+Entre com o numerador: 8
+Entre com o denominador: 0
+DIVISAO IMPOSSIVEL
+
+Entre com o numerador: 10
+Entre com o denominador: 4
+DIVISAO = 2.5</code></pre>
+
 {% endblock %}
 
-{% block initial_code %}print("="*40)
-print("🎮 AVENTURA NA CAVERNA")
-print("="*40)
+{% block initial_code %}# Leia a quantidade de casos
+n = int(input("Quantos casos voce vai digitar? "))
 
-# Variáveis do jogo
-vidas = 3
-pontos = 0
-inventario = []
-sala_atual = 0
-salas = ["Entrada", "Corredor", "Tesouro", "Armadilha", "Saída"]
+# Para cada caso
+for i in range(n):
+    numerador = int(input("Entre com o numerador: "))
+    denominador = int(input("Entre com o denominador: "))
+    
+    # Verifique se pode dividir e exiba o resultado
+{% endblock %}
 
-# SEU CÓDIGO AQUI
-# Implemente o jogo completo com menu e aventura{% endblock %}
+{% block extra_js %}
+<script>
+    function getExerciseDescription() {
+        return `Problema "divisao":
+
+Escreva um algoritmo que leia dois números e imprima o resultado da divisão do primeiro pelo segundo. Caso não for possível, mostre a mensagem "DIVISAO IMPOSSIVEL".
+
+ENTRADA:
+- N (quantidade de casos)
+- Para cada caso:
+  - Numerador (int)
+  - Denominador (int)
+
+SAÍDA (para cada caso):
+- "DIVISAO = [resultado com 1 casa decimal]"
+- OU "DIVISAO IMPOSSIVEL" (se denominador = 0)
+
+VALIDAÇÃO:
+- Verificar se denominador != 0 antes de dividir`;
+    }
+</script>
+{% endblock %}

@@ -1,217 +1,146 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 9 - Algoritmos com Loops | CodeLogic{% endblock %}
+{% block title %}Aula 9 - Problema "tabuada" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 9 – Algoritmos Básicos com Loops{% endblock %}
+{% block lesson_title %}Aula 9 – Tabuada{% endblock %}
 
 {% block lesson_content %}
     <section>
+
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Implementar algoritmos básicos usando loops</li>
-            <li>Entender busca em listas</li>
-            <li>Resolver problemas algorítmicos simples</li>
+            <li>Gerar tabuada de multiplicação</li>
+            <li>Formatar saída com operações matemáticas</li>
+            <li>Usar loop FOR simples</li>
         </ul>
+
     </section>
 
     <section>
-        <h2>🔍 Busca Linear</h2>
-        <p>Percorre a lista elemento por elemento até encontrar o valor procurado.</p>
+
+        <h2>📚 Conceitos: Formatação de Saída</h2>
+        <p>Podemos formatar a saída para mostrar operações matemáticas de forma clara:</p>
         
-        <h3>Buscar um Valor:</h3>
-        <pre><code>numeros = [64, 34, 25, 12, 22, 11, 90]
-valor_procurado = 22
-posicao = -1  # -1 significa não encontrado
+        <h3>Usando f-strings:</h3>
+        <pre><code>a = 5
+b = 3
+resultado = a * b
 
-# Buscar
-for i in range(len(numeros)):
-    if numeros[i] == valor_procurado:
-        posicao = i
-        break  # Parar quando encontrar
-
-# Resultado
-if posicao != -1:
-    print(f"✅ Valor {valor_procurado} encontrado na posição {posicao}")
-else:
-    print(f"❌ Valor {valor_procurado} não encontrado")</code></pre>
+print(f"{a} x {b} = {resultado}")
+# Saída: 5 x 3 = 15</code></pre>
         
-        <h3>Buscar Todas as Ocorrências:</h3>
-        <pre><code>numeros = [1, 3, 5, 3, 7, 3, 9]
-valor = 3
-posicoes = []
+        <h3>Exemplo - Tabuada:</h3>
+        <pre><code>numero = 7
 
-# Buscar todas
-for i in range(len(numeros)):
-    if numeros[i] == valor:
-        posicoes.append(i)
+for i in range(1, 11):
+    produto = numero * i
+    print(f"{numero} x {i} = {produto}")
 
-print(f"Valor {valor} encontrado nas posições: {posicoes}")
-# Saída: [1, 3, 5]</code></pre>
+# Saída:
+# 7 x 1 = 7
+# 7 x 2 = 14
+# 7 x 3 = 21
+# ...
+# 7 x 10 = 70</code></pre>
+
     </section>
 
     <section>
-        <h2>📊 Encontrar Maior e Menor</h2>
+
+        <h2>🔢 Estrutura de Tabuada</h2>
+        <p>Uma tabuada de multiplicação mostra o produto de um número por 1 a 10:</p>
         
-        <h3>Encontrar o Maior Valor:</h3>
-        <pre><code>numeros = [34, 87, 12, 56, 90, 23]
-maior = numeros[0]  # Começa com o primeiro
-
-for num in numeros:
-    if num > maior:
-        maior = num
-
-print(f"Maior valor: {maior}")</code></pre>
+        <h3>Padrão:</h3>
+        <pre><code>N x 1 = N
+N x 2 = N × 2
+N x 3 = N × 3
+...
+N x 10 = N × 10</code></pre>
         
-        <h3>Encontrar Menor e sua Posição:</h3>
-        <pre><code>numeros = [34, 87, 12, 56, 90, 23]
-menor = numeros[0]
-posicao_menor = 0
+        <h3>Implementação completa:</h3>
+        <pre><code>numero = int(input("Deseja a tabuada para qual valor? "))
 
-for i in range(len(numeros)):
-    if numeros[i] < menor:
-        menor = numeros[i]
-        posicao_menor = i
+print(f"\nTabuada do {numero}:")
+print("-" * 20)
 
-print(f"Menor valor: {menor} na posição {posicao_menor}")</code></pre>
-    </section>
+for multiplicador in range(1, 11):
+    resultado = numero * multiplicador
+    print(f"{numero} x {multiplicador:2d} = {resultado:3d}")
 
-    <section>
-        <h2>🔄 Inverter Lista</h2>
+print("-" * 20)</code></pre>
         
-        <h3>Criar Lista Invertida:</h3>
-        <pre><code>original = [1, 2, 3, 4, 5]
-invertida = []
-
-# Percorrer de trás para frente
-for i in range(len(original) - 1, -1, -1):
-    invertida.append(original[i])
-
-print(f"Original: {original}")
-print(f"Invertida: {invertida}")</code></pre>
-        
-        <h3>Inverter no Lugar (Troca):</h3>
-        <pre><code>lista = [1, 2, 3, 4, 5]
-print(f"Antes: {lista}")
-
-# Trocar elementos das pontas
-n = len(lista)
-for i in range(n // 2):
-    # Trocar posição i com posição n-1-i
-    temp = lista[i]
-    lista[i] = lista[n - 1 - i]
-    lista[n - 1 - i] = temp
-
-print(f"Depois: {lista}")</code></pre>
-    </section>
-
-    <section>
-        <h2>🎯 Remover Duplicatas</h2>
-        <pre><code>numeros = [1, 2, 2, 3, 4, 4, 4, 5, 1]
-sem_duplicatas = []
-
-# Adicionar apenas se não existir
-for num in numeros:
-    if num not in sem_duplicatas:
-        sem_duplicatas.append(num)
-
-print(f"Original: {numeros}")
-print(f"Sem duplicatas: {sem_duplicatas}")</code></pre>
-    </section>
-
-    <section>
-        <h2>📈 Contar Frequências</h2>
-        <pre><code>votos = ["A", "B", "A", "C", "B", "A", "B", "B"]
-
-# Contar cada candidato
-count_a = 0
-count_b = 0
-count_c = 0
-
-for voto in votos:
-    if voto == "A":
-        count_a += 1
-    elif voto == "B":
-        count_b += 1
-    elif voto == "C":
-        count_c += 1
-
-print(f"Candidato A: {count_a} votos")
-print(f"Candidato B: {count_b} votos")
-print(f"Candidato C: {count_c} votos")
-
-# Determinar vencedor
-if count_a > count_b and count_a > count_c:
-    print("Vencedor: A")
-elif count_b > count_a and count_b > count_c:
-    print("Vencedor: B")
-else:
-    print("Vencedor: C")</code></pre>
-    </section>
-
-    <section>
-        <h2>🔢 Verificar se é Palíndromo</h2>
-        <pre><code>texto = input("Digite uma palavra: ").lower()
-eh_palindromo = True
-
-# Comparar caractere por caractere
-n = len(texto)
-for i in range(n // 2):
-    if texto[i] != texto[n - 1 - i]:
-        eh_palindromo = False
-        break
-
-if eh_palindromo:
-    print(f"✅ '{texto}' é um palíndromo!")
-else:
-    print(f"❌ '{texto}' não é um palíndromo")</code></pre>
-    </section>
-
-    <section>
-        <h2>💡 Dicas de Algoritmos</h2>
+        <h3>💡 Dica - Alinhamento:</h3>
+        <p>Use formatação para alinhar colunas:</p>
         <ul>
-            <li>🎯 Use break para parar quando encontrar o que procura</li>
-            <li>📝 Use variáveis auxiliares para guardar resultados temporários</li>
-            <li>🔄 range() reverso: range(n-1, -1, -1)</li>
-            <li>📊 Para trocar valores: use variável temporária</li>
-            <li>🔍 Para verificar se existe: use "in lista"</li>
+            <li><code>{valor:2d}</code> - alinha inteiro em 2 espaços</li>
+            <li><code>{valor:3d}</code> - alinha inteiro em 3 espaços</li>
         </ul>
+
+    </section>
+
+    <section>
+
+        <h2>💡 Problema: Tabuada</h2>
+        <p>Ler um número inteiro N e mostrar a tabuada de N, conforme exemplo, onde N pode ser qualquer número inteiro.</p>
+
     </section>
 {% endblock %}
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
-    
-    <p><strong>Tarefa:</strong> Analisador de Notas</p>
-    <ul>
-        <li>Dada uma lista de notas: [7.5, 4.0, 9.0, 6.5, 8.5, 5.0, 10.0]</li>
-        <li>Encontre a maior nota e sua posição</li>
-        <li>Encontre a menor nota e sua posição</li>
-        <li>Conte quantas notas são >= 7.0 (aprovados)</li>
-        <li>Conte quantas notas são < 5.0 (reprovados)</li>
-        <li>Crie lista com notas ordenadas (maior para menor)</li>
-        <li>Exiba relatório completo</li>
-    </ul>
-    
-    <p><strong>Exemplo de saída esperada:</strong></p>
-    <pre><code>📊 ANALISADOR DE NOTAS
 
-Notas: [7.5, 4.0, 9.0, 6.5, 8.5, 5.0, 10.0]
+        <h4>📝 Exemplo 1:</h4>
+        <pre><code>Deseja a tabuada para qual valor? 140
+140 x 1 = 140
+140 x 2 = 280
+140 x 3 = 420
+140 x 4 = 560
+140 x 5 = 700
+140 x 6 = 840
+140 x 7 = 980
+140 x 8 = 1120
+140 x 9 = 1260
+140 x 10 = 1400</code></pre>
+        
+        <h4>📝 Exemplo 2:</h4>
+        <pre><code>Deseja a tabuada para qual valor? 7
+7 x 1 = 7
+7 x 2 = 14
+7 x 3 = 21
+7 x 4 = 28
+7 x 5 = 35
+7 x 6 = 42
+7 x 7 = 49
+7 x 8 = 56
+7 x 9 = 63
+7 x 10 = 70</code></pre>
 
-Maior nota: 10.0 (posição 6)
-Menor nota: 4.0 (posição 1)
-
-Aprovados (>=7.0): 4 alunos
-Reprovados (<5.0): 1 aluno
-
-Ranking: [10.0, 9.0, 8.5, 7.5, 6.5, 5.0, 4.0]</code></pre>
 {% endblock %}
 
-{% block initial_code %}print("📊 ANALISADOR DE NOTAS")
-print()
+{% block initial_code %}# Leia o número
+n = int(input("Deseja a tabuada para qual valor? "))
 
-notas = [7.5, 4.0, 9.0, 6.5, 8.5, 5.0, 10.0]
-print(f"Notas: {notas}")
-print()
+# Gere a tabuada de 1 a 10
 
-# SEU CÓDIGO AQUI
-# Implemente todas as análises{% endblock %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function getExerciseDescription() {
+        return `Problema "tabuada":
+
+Ler um número inteiro N e mostrar a tabuada de N, de 1 a 10.
+
+ENTRADA:
+- N (int)
+
+SAÍDA:
+- N x 1 = [resultado]
+- N x 2 = [resultado]
+- ...
+- N x 10 = [resultado]
+
+FORMATO:
+- "[N] x [multiplicador] = [produto]" `;
+    }
+</script>
+{% endblock %}

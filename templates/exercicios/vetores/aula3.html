@@ -1,293 +1,170 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 3 - Métodos de Lista | CodeLogic{% endblock %}
+{% block title %}Aula 3 - Problema "alturas" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 3 – Métodos de Lista{% endblock %}
+{% block lesson_title %}Aula 3 – Dados Compostos (Nome + Idade + Altura){% endblock %}
 
 {% block lesson_content %}
     <section>
+
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Dominar os métodos fundamentais de listas</li>
-            <li>Adicionar e remover elementos eficientemente</li>
-            <li>Organizar e modificar listas dinamicamente</li>
+            <li>Trabalhar com múltiplas listas relacionadas</li>
+            <li>Calcular média e percentual</li>
+            <li>Filtrar dados por condição</li>
         </ul>
+
     </section>
 
     <section>
-        <h2>➕ Adicionando Elementos</h2>
+
+        <h2>📚 Conceitos: Listas Paralelas</h2>
+        <p>Quando precisamos armazenar múltiplos dados de cada pessoa/item, usamos <strong>listas paralelas</strong>:</p>
         
-        <h3>1. append() - Adicionar no Final</h3>
-        <pre><code>frutas = ["maçã", "banana"]
-print(f"Inicial: {frutas}")
+        <h3>Estrutura:</h3>
+        <pre><code># Três listas paralelas (mesmo tamanho, índices relacionados)
+nomes = []
+idades = []
+alturas = []
 
-frutas.append("uva")
-print(f"Após append: {frutas}")  # ['maçã', 'banana', 'uva']
+# Ler dados
+for i in range(3):
+    nome = input("Nome: ")
+    idade = int(input("Idade: "))
+    altura = float(input("Altura: "))
+    
+    nomes.append(nome)
+    idades.append(idade)
+    alturas.append(altura)
 
-# Adicionando múltiplos elementos
-frutas.append("pêra")
-frutas.append("manga")
-print(f"Final: {frutas}")  # ['maçã', 'banana', 'uva', 'pêra', 'manga']</code></pre>
+# Acessar dados relacionados
+for i in range(len(nomes)):
+    print(f"{nomes[i]} tem {idades[i]} anos e {alturas[i]}m")</code></pre>
         
-        <h3>2. insert() - Adicionar em Posição Específica</h3>
-        <pre><code>cores = ["azul", "verde", "amarelo"]
-print(f"Inicial: {cores}")
+        <h3>💡 Vantagem:</h3>
+        <p>O índice conecta os dados: <code>nomes[0]</code>, <code>idades[0]</code> e <code>alturas[0]</code> são da mesma pessoa.</p>
 
-cores.insert(1, "vermelho")  # Inserir na posição 1
-print(f"Após insert: {cores}")  # ['azul', 'vermelho', 'verde', 'amarelo']
-
-cores.insert(0, "preto")  # Inserir no início
-print(f"No início: {cores}")  # ['preto', 'azul', 'vermelho', 'verde', 'amarelo']
-
-cores.insert(-1, "branco")  # Inserir antes do último
-print(f"Antes do último: {cores}")  # ['preto', 'azul', 'vermelho', 'verde', 'branco', 'amarelo']</code></pre>
-        
-        <h3>3. extend() - Adicionar Múltiplos Elementos</h3>
-        <pre><code>numeros = [1, 2, 3]
-print(f"Inicial: {numeros}")
-
-# extend() adiciona cada elemento individualmente
-numeros.extend([4, 5, 6])
-print(f"Após extend: {numeros}")  # [1, 2, 3, 4, 5, 6]
-
-# Diferença entre append e extend
-lista1 = [1, 2, 3]
-lista2 = [1, 2, 3]
-
-lista1.append([4, 5, 6])  # Adiciona a lista como um elemento
-lista2.extend([4, 5, 6])  # Adiciona cada elemento da lista
-
-print(f"append: {lista1}")  # [1, 2, 3, [4, 5, 6]]
-print(f"extend: {lista2}")  # [1, 2, 3, 4, 5, 6]</code></pre>
     </section>
 
     <section>
-        <h2>➖ Removendo Elementos</h2>
+
+        <h2>📊 Cálculos com Listas Paralelas</h2>
         
-        <h3>1. remove() - Remove Primeira Ocorrência</h3>
-        <pre><code>animais = ["gato", "cachorro", "gato", "pássaro"]
-print(f"Inicial: {animais}")
-
-animais.remove("gato")  # Remove o primeiro "gato"
-print(f"Após remove: {animais}")  # ['cachorro', 'gato', 'pássaro']
-
-# Cuidado: remove() gera erro se elemento não existir
-# Sempre verificar se existe antes de remover
-if "elefante" in animais:
-    animais.remove("elefante")
-else:
-    print("Elemento 'elefante' não encontrado")</code></pre>
+        <h3>1. Média de valores:</h3>
+        <pre><code>alturas = [1.70, 1.65, 1.80, 1.75]
+media = sum(alturas) / len(alturas)
+print(f"Média: {media:.2f}m")  # 1.73m</code></pre>
         
-        <h3>2. pop() - Remove e Retorna Elemento</h3>
-        <pre><code>pilha = [1, 2, 3, 4, 5]
-print(f"Inicial: {pilha}")
+        <h3>2. Contar elementos com condição:</h3>
+        <pre><code>idades = [15, 12, 18, 10, 20]
+menores = 0
 
-# pop() sem parâmetro remove o último elemento
-ultimo = pilha.pop()
-print(f"Removido: {ultimo}")  # 5
-print(f"Pilha: {pilha}")  # [1, 2, 3, 4]
+for idade in idades:
+    if idade < 16:
+        menores += 1
 
-# pop() com índice remove elemento específico
-segundo = pilha.pop(1)  # Remove elemento no índice 1
-print(f"Removido: {segundo}")  # 2
-print(f"Pilha: {pilha}")  # [1, 3, 4]
-
-# Usando pop() em fila (primeiro elemento)
-primeiro = pilha.pop(0)
-print(f"Primeiro removido: {primeiro}")  # 1
-print(f"Fila: {pilha}")  # [3, 4]</code></pre>
+print(f"Menores de 16: {menores}")  # 3</code></pre>
         
-        <h3>3. clear() - Remove Todos os Elementos</h3>
-        <pre><code>numeros = [1, 2, 3, 4, 5]
-print(f"Antes: {numeros}")
-
-numeros.clear()
-print(f"Depois: {numeros}")  # []
-print(f"Tamanho: {len(numeros)}")  # 0</code></pre>
+        <h3>3. Calcular percentual:</h3>
+        <pre><code>total = len(idades)
+percentual = (menores / total) * 100
+print(f"Percentual: {percentual:.1f}%")  # 60.0%</code></pre>
         
-        <h3>4. del - Remove por Índice ou Slice</h3>
-        <pre><code>letras = ['a', 'b', 'c', 'd', 'e', 'f']
-print(f"Inicial: {letras}")
+        <h3>4. Filtrar por condição com listas paralelas:</h3>
+        <pre><code>nomes = ["Ana", "João", "Maria", "Pedro"]
+idades = [15, 12, 18, 10]
 
-# Remover elemento específico
-del letras[2]  # Remove 'c'
-print(f"Após del: {letras}")  # ['a', 'b', 'd', 'e', 'f']
+print("Menores de 16 anos:")
+for i in range(len(idades)):
+    if idades[i] < 16:
+        print(nomes[i])</code></pre>
 
-# Remover slice
-del letras[1:3]  # Remove 'b' e 'd'
-print(f"Após del slice: {letras}")  # ['a', 'e', 'f']
-
-# Remover elementos alternados
-del letras[::2]  # Remove índices 0, 2, 4...
-print(f"Após del alternados: {letras}")  # ['e']</code></pre>
     </section>
 
     <section>
-        <h2>🔍 Métodos de Busca</h2>
-        
-        <h3>1. index() - Encontrar Posição</h3>
-        <pre><code>frutas = ["maçã", "banana", "uva", "banana", "pêra"]
 
-# Encontrar primeira ocorrência
-posicao = frutas.index("banana")
-print(f"Primeira banana na posição: {posicao}")  # 1
+        <h2>💡 Problema: Alturas</h2>
+        <p>Fazer um programa para ler nome, idade e altura de N pessoas. Depois, mostrar na tela a altura média das pessoas, e mostrar também a porcentagem de pessoas com menos de 16 anos, bem como os nomes dessas pessoas caso houver.</p>
 
-# Busca com início e fim
-posicao2 = frutas.index("banana", 2)  # Buscar a partir do índice 2
-print(f"Segunda banana na posição: {posicao2}")  # 3
-
-# Busca segura com verificação
-elemento_busca = 'kiwi'
-if elemento_busca in frutas:
-    posicao_kiwi = frutas.index(elemento_busca)
-    print(f"Posição de '{elemento_busca}': {posicao_kiwi}")
-else:
-    print(f"Posição de '{elemento_busca}': -1")  # -1 indica não encontrado</code></pre>
-        
-        <h3>2. count() - Contar Ocorrências</h3>
-        <pre><code>numeros = [1, 2, 3, 2, 4, 2, 5]
-
-count_2 = numeros.count(2)
-print(f"Número 2 aparece {count_2} vezes")  # 3
-
-count_6 = numeros.count(6)
-print(f"Número 6 aparece {count_6} vezes")  # 0
-
-# Contagem de elementos únicos
-contagem = {}
-for elemento in numeros:
-    contagem[elemento] = numeros.count(elemento)
-
-print(f"Contagem: {contagem}")  # {1: 1, 2: 3, 3: 1, 4: 1, 5: 1}</code></pre>
-    </section>
-
-    <section>
-        <h2>📊 Métodos de Organização</h2>
-        
-        <h3>1. sort() - Ordenar Lista</h3>
-        <pre><code>numeros = [3, 1, 4, 1, 5, 9, 2, 6]
-print(f"Original: {numeros}")
-
-# Ordenação crescente
-numeros.sort()
-print(f"Crescente: {numeros}")  # [1, 1, 2, 3, 4, 5, 6, 9]
-
-# Ordenação decrescente
-numeros.sort(reverse=True)
-print(f"Decrescente: {numeros}")  # [9, 6, 5, 4, 3, 2, 1, 1]
-
-# Ordenação de strings
-nomes = ["Carlos", "Ana", "Bruno", "Diana"]
-nomes.sort()
-print(f"Nomes ordenados: {nomes}")  # ['Ana', 'Bruno', 'Carlos', 'Diana']
-
-# Ordenação personalizada (por tamanho)
-palavras = ["python", "java", "c", "javascript"]
-palavras.sort(key=len)
-print(f"Por tamanho: {palavras}")  # ['c', 'java', 'python', 'javascript']</code></pre>
-        
-        <h3>2. reverse() - Inverter Lista</h3>
-        <pre><code>letras = ['a', 'b', 'c', 'd', 'e']
-print(f"Original: {letras}")
-
-letras.reverse()
-print(f"Invertida: {letras}")  # ['e', 'd', 'c', 'b', 'a']
-
-# Diferença entre reverse() e sort(reverse=True)
-numeros1 = [3, 1, 4, 2]
-numeros2 = [3, 1, 4, 2]
-
-numeros1.reverse()  # Apenas inverte ordem atual
-numeros2.sort(reverse=True)  # Ordena e depois inverte
-
-print(f"reverse(): {numeros1}")  # [2, 4, 1, 3]
-print(f"sort(reverse=True): {numeros2}")  # [4, 3, 2, 1]</code></pre>
-        
-        <h3>3. copy() - Copiar Lista</h3>
-        <pre><code>original = [1, 2, 3, 4, 5]
-
-# Cópia rasa (shallow copy)
-copia = original.copy()
-copia_slice = original[:]  # Equivalente
-copia_list = list(original)  # Equivalente
-
-print(f"Original: {original}")
-print(f"Cópia: {copia}")
-
-# Modificar cópia não afeta original
-copia.append(6)
-print(f"Após modificar cópia:")
-print(f"Original: {original}")  # [1, 2, 3, 4, 5]
-print(f"Cópia: {copia}")  # [1, 2, 3, 4, 5, 6]
-
-# CUIDADO: Atribuição não cria cópia!
-nao_copia = original  # Mesma referência
-nao_copia.append(7)
-print(f"Original após 'não cópia': {original}")  # [1, 2, 3, 4, 5, 7]</code></pre>
-    </section>
-<section>
-        <h2>⚡ Métodos Úteis Combinados</h2>
-        
-        <h3>1. Limpeza e Filtragem:</h3>
-        <pre><code>dados = [1, 2, '', 3, None, 4, 0, 5]
-print(f"Original: {dados}")
-
-# Remover elementos "falsy" (vazios, None, 0)
-limpos = []
-for item in dados:
-    if item:  # Se item é "truthy"
-        limpos.append(item)
-
-print(f"Limpos: {limpos}")  # [1, 2, 3, 4, 5]</code></pre>
-        
-        <h3>2. Remoção Segura em Loop:</h3>
-        <pre><code># CUIDADO: Não modifique lista durante iteração!
-numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-# ❌ ERRADO - pode pular elementos
-# for num in numeros:
-#     if num % 2 == 0:
-#         numeros.remove(num)
-
-# ✅ CORRETO - iterar de trás para frente
-for i in range(len(numeros) - 1, -1, -1):
-    if numeros[i] % 2 == 0:
-        numeros.pop(i)
-
-print(f"Apenas ímpares: {numeros}")  # [1, 3, 5, 7, 9]</code></pre>
-    </section>
-
-    <section>
-        <h2>💡 Dicas Importantes</h2>
-        <div class="tip-box">
-            <ul>
-                <li>➕ append() é mais rápido que insert() para adicionar no final</li>
-                <li>🔍 Sempre verifique se elemento existe antes de usar remove()</li>
-                <li>📊 sort() modifica a lista original; use sorted() para criar nova</li>
-                <li>📋 copy() cria cópia independente; atribuição não!</li>
-                <li>🔄 pop() é eficiente para pilhas; use deque para filas</li>
-                <li>⚠️ Não modifique lista durante iteração direta</li>
-            </ul>
-        </div>
     </section>
 {% endblock %}
-
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
-    <p>Complete o exercício no editor ao lado.</p>
+
+        <h4>📝 Exemplo:</h4>
+        <pre><code>Quantas pessoas serao digitadas? 5
+Dados da 1a pessoa:
+Nome: Joao
+Idade: 15
+Altura: 1.82
+Dados da 2a pessoa:
+Nome: Maria
+Idade: 16
+Altura: 1.60
+Dados da 3a pessoa:
+Nome: Teresa
+Idade: 14
+Altura: 1.58
+Dados da 4a pessoa:
+Nome: Carlos
+Idade: 21
+Altura: 1.65
+Dados da 5a pessoa:
+Nome: Paulo
+Idade: 17
+Altura: 1.78
+
+Altura media: 1.69
+Pessoas com menos de 16 anos: 40.0%
+Joao
+Teresa</code></pre>
+
 {% endblock %}
 
-{% block initial_code %}# Seu código aqui
+{% block initial_code %}# Leia a quantidade
+n = int(input("Quantas pessoas serao digitadas? "))
+
+# Crie as listas
+nomes = []
+idades = []
+alturas = []
+
+# Leia os dados
+for i in range(n):
+    print(f"Dados da {i+1}a pessoa:")
+    nome = input("Nome: ")
+    idade = int(input("Idade: "))
+    altura = float(input("Altura: "))
+    
+    nomes.append(nome)
+    idades.append(idade)
+    alturas.append(altura)
+
+# Calcule a altura média
+
+
+# Calcule percentual de menores de 16
+
+
+# Exiba os resultados
+
 {% endblock %}
 
 {% block extra_js %}
 <script>
-function runCode() {
-    const code = document.getElementById('code-input').value;
-    const output = document.getElementById('output');
-    
-    output.innerHTML = '<div class="output-success">Sistema de tarefas executado! Veja como os métodos de lista trabalham juntos.</div>';
-}
+    function getExerciseDescription() {
+        return `Problema "alturas":
+
+Fazer um programa para ler nome, idade e altura de N pessoas. Depois, mostrar a altura média, a porcentagem de pessoas com menos de 16 anos e os nomes dessas pessoas.
+
+ENTRADA:
+- N (quantidade)
+- Para cada pessoa: nome, idade, altura
+
+SAÍDA:
+- Altura media: [valor com 2 casas]
+- Pessoas com menos de 16 anos: [percentual com 1 casa]%
+- Nomes dos menores de 16 (um por linha)`;
+    }
 </script>
 {% endblock %}

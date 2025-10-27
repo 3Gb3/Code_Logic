@@ -1,94 +1,166 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 7 - Soma de Matrizes | CodeLogic{% endblock %}
+{% block title %}Aula 7 - Problema "soma_matrizes" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 7 – Soma e Subtração de Matrizes{% endblock %}
+{% block lesson_title %}Aula 7 – Soma de Matrizes{% endblock %}
 
 {% block lesson_content %}
     <section>
+
         <h2>🎯 Objetivo</h2>
-        <p>Aprender operações de soma e subtração entre matrizes.</p>
-    </section>
-
-    <section>
-        <h2>➕ Soma de Matrizes</h2>
-        <p>Para somar matrizes, elas devem ter as mesmas dimensões.</p>
-        <pre><code>A = [
-    [1, 2, 3],
-    [4, 5, 6]
-]
-
-B = [
-    [7, 8, 9],
-    [10, 11, 12]
-]
-
-# Criar matriz resultado
-resultado = []
-
-for i in range(len(A)):
-    linha = []
-    for j in range(len(A[i])):
-        soma = A[i][j] + B[i][j]
-        linha.append(soma)
-    resultado.append(linha)
-
-print("Resultado da soma:")
-for linha in resultado:
-    print(linha)</code></pre>
-    </section>
-
-    <section>
-        <h2>➖ Subtração de Matrizes</h2>
-        <pre><code>X = [
-    [10, 20, 30],
-    [40, 50, 60]
-]
-
-Y = [
-    [5, 10, 15],
-    [20, 25, 30]
-]
-
-# X - Y
-diferenca = []
-
-for i in range(len(X)):
-    linha = []
-    for j in range(len(X[i])):
-        sub = X[i][j] - Y[i][j]
-        linha.append(sub)
-    diferenca.append(linha)
-
-print("X - Y:")
-for linha in diferenca:
-    print(linha)</code></pre>
-    </section>
-<section>
-        <h2>📚 Resumo</h2>
         <ul>
-            <li>✅ Somar matrizes de mesma dimensão</li>
-            <li>✅ Subtrair matrizes</li>
-            <li>✅ Analisar diferenças entre períodos</li>
-            <li>✅ Calcular totais combinados</li>
+            <li>Ler duas matrizes MxN</li>
+            <li>Somar matrizes elemento a elemento</li>
+            <li>Gerar matriz resultado</li>
         </ul>
+
+    </section>
+
+    <section>
+
+        <h2>📚 Conceitos: Operações com Matrizes</h2>
+        <p>A soma de matrizes é feita elemento por elemento (posição a posição):</p>
+        
+        <h3>Regra da Soma:</h3>
+        <p>C[i][j] = A[i][j] + B[i][j]</p>
+        
+        <h3>Exemplo visual:</h3>
+        <pre><code>Matriz A:      Matriz B:      Matriz C (A+B):
+[1  2]    +    [5  6]    =    [6   8]
+[3  4]         [7  8]         [10 12]
+
+C[0][0] = A[0][0] + B[0][0] = 1 + 5 = 6
+C[0][1] = A[0][1] + B[0][1] = 2 + 6 = 8
+C[1][0] = A[1][0] + B[1][0] = 3 + 7 = 10
+C[1][1] = A[1][1] + B[1][1] = 4 + 8 = 12</code></pre>
+        
+        <h3>⚠️ Condição:</h3>
+        <p>As duas matrizes DEVEM ter as mesmas dimensões (mesmo M e N)</p>
+
+    </section>
+
+    <section>
+
+        <h2>💻 Implementação: Soma de Matrizes</h2>
+        <p>Para somar duas matrizes:</p>
+        
+        <h3>Passo a passo:</h3>
+        <pre><code># 1. Ler dimensões
+m = int(input("Linhas? "))
+n = int(input("Colunas? "))
+
+# 2. Ler matriz A
+print("Digite os valores da matriz A:")
+matrizA = []
+for i in range(m):
+    linha = []
+    for j in range(n):
+        valor = int(input(f"A[{i},{j}]: "))
+        linha.append(valor)
+    matrizA.append(linha)
+
+# 3. Ler matriz B
+print("Digite os valores da matriz B:")
+matrizB = []
+for i in range(m):
+    linha = []
+    for j in range(n):
+        valor = int(input(f"B[{i},{j}]: "))
+        linha.append(valor)
+    matrizB.append(linha)
+
+# 4. Criar matriz C (soma)
+matrizC = []
+for i in range(m):
+    linha = []
+    for j in range(n):
+        soma = matrizA[i][j] + matrizB[i][j]
+        linha.append(soma)
+    matrizC.append(linha)
+
+# 5. Exibir matriz C
+print("MATRIZ SOMA:")
+for i in range(m):
+    for j in range(n):
+        print(matrizC[i][j], end=" ")
+    print()</code></pre>
+
+    </section>
+
+    <section>
+
+        <h2>💡 Problema: Soma Matrizes</h2>
+        <p>Fazer um programa para ler duas matrizes de números inteiros A e B, contendo de M linhas e N colunas cada. Depois, gerar uma terceira matriz C onde cada elemento desta é a soma dos elementos correspondentes das matrizes originais. Imprimir na tela a matriz gerada.</p>
+
     </section>
 {% endblock %}
-
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
-    <p>Complete o exercício no editor ao lado.</p>
+
+        <h4>📝 Exemplo:</h4>
+        <pre><code>Quantas linhas vai ter cada matriz? 2
+Quantas colunas vai ter cada matriz? 3
+
+Digite os valores da matriz A:
+Elemento [0,0]: 1
+Elemento [0,1]: 2
+Elemento [0,2]: 3
+Elemento [1,0]: 4
+Elemento [1,1]: 5
+Elemento [1,2]: 6
+
+Digite os valores da matriz B:
+Elemento [0,0]: 10
+Elemento [0,1]: 20
+Elemento [0,2]: 30
+Elemento [1,0]: 40
+Elemento [1,1]: 50
+Elemento [1,2]: 60
+
+MATRIZ SOMA:
+11 22 33
+44 55 66</code></pre>
+
 {% endblock %}
 
-{% block initial_code %}# Seu código aqui
+{% block initial_code %}# Leia as dimensões
+m = int(input("Quantas linhas vai ter cada matriz? "))
+n = int(input("Quantas colunas vai ter cada matriz? "))
+
+# Leia matriz A
+print("\nDigite os valores da matriz A:")
+matrizA = []
+
+
+# Leia matriz B
+print("\nDigite os valores da matriz B:")
+matrizB = []
+
+
+# Crie matriz C (soma)
+
+
+# Exiba matriz C
+print("\nMATRIZ SOMA:")
+
 {% endblock %}
 
 {% block extra_js %}
 <script>
-function runCode() {
-    const output = document.getElementById('output');
-    output.innerHTML = '<div class="output-success">✅ Análise completa! Operações matriciais aplicadas.</div>';
-}
+    function getExerciseDescription() {
+        return `Problema "soma_matrizes":
+
+Ler duas matrizes MxN de inteiros (A e B). Gerar matriz C onde C[i][j] = A[i][j] + B[i][j]. Imprimir matriz C.
+
+ENTRADA:
+- M (linhas)
+- N (colunas)
+- M×N elementos da matriz A
+- M×N elementos da matriz B
+
+SAÍDA:
+- MATRIZ SOMA:
+- Matriz C com soma elemento a elemento`;
+    }
 </script>
 {% endblock %}

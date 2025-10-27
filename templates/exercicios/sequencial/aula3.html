@@ -1,121 +1,146 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 3 - Entrada de Dados com input() | CodeLogic{% endblock %}
+{% block title %}Aula 3 - Problema "retangulo" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 3 – Entrada de Dados com input(){% endblock %}
+{% block lesson_title %}Aula 3 – Cálculos com Retângulo{% endblock %}
 
 {% block lesson_content %}
     <section>
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Aprender a receber dados do usuário</li>
-            <li>Entender a função input()</li>
-            <li>Trabalhar com conversão de tipos</li>
+            <li>Trabalhar com múltiplos cálculos matemáticos</li>
+            <li>Usar a biblioteca math para funções matemáticas</li>
+            <li>Calcular área, perímetro e diagonal de retângulo</li>
+            <li>Formatar números com 4 casas decimais</li>
         </ul>
     </section>
 
     <section>
-        <h2>⌨️ A Função input()</h2>
-        <p>A função <code>input()</code> permite que o programa "converse" com o usuário, pedindo informações.</p>
+        <h2>📐 Fórmulas do Retângulo</h2>
+        <p>Para um retângulo de base <strong>b</strong> e altura <strong>h</strong>:</p>
         
-        <h3>Sintaxe básica:</h3>
-        <pre><code>variavel = input("Mensagem para o usuário: ")</code></pre>
+        <h3>1. Área</h3>
+        <p><code>area = base × altura</code></p>
+        
+        <h3>2. Perímetro</h3>
+        <p><code>perimetro = 2 × (base + altura)</code></p>
+        <p>O perímetro é a soma de todos os lados.</p>
+        
+        <h3>3. Diagonal</h3>
+        <p><code>diagonal = √(base² + altura²)</code></p>
+        <p>Usamos o teorema de Pitágoras!</p>
+    </section>
+
+    <section>
+        <h2>🔢 Biblioteca math</h2>
+        <p>Python possui uma biblioteca para operações matemáticas avançadas:</p>
+        
+        <h3>Importando:</h3>
+        <pre><code>import math</code></pre>
+        
+        <h3>Funções úteis:</h3>
+        <ul>
+            <li><code>math.sqrt(x)</code> - raiz quadrada de x</li>
+            <li><code>math.pow(x, y)</code> - x elevado a y</li>
+            <li><code>math.pi</code> - valor de π (pi)</li>
+        </ul>
         
         <h3>Exemplo:</h3>
-        <pre><code>nome = input("Digite seu nome: ")
-print("Olá,", nome)</code></pre>
-        
-        <blockquote>
-            <strong>Importante:</strong> O input() SEMPRE retorna uma string (texto), mesmo que o usuário digite números!
-        </blockquote>
+        <pre><code>import math
+diagonal = math.sqrt(base**2 + altura**2)</code></pre>
     </section>
 
     <section>
-        <h2>🔄 Conversão de Tipos</h2>
-        <p>Para trabalhar com números digitados pelo usuário, precisamos converter:</p>
-        
-        <h3>Convertendo para inteiro:</h3>
-        <pre><code>idade_texto = input("Digite sua idade: ")
-idade = int(idade_texto)
-# ou direto:
-idade = int(input("Digite sua idade: "))</code></pre>
-        
-        <h3>Convertendo para float:</h3>
-        <pre><code>altura = float(input("Digite sua altura: "))</code></pre>
-        
-        <h3>Funções de conversão:</h3>
-        <ul>
-            <li><code>int()</code> - converte para número inteiro</li>
-            <li><code>float()</code> - converte para número decimal</li>
-            <li><code>str()</code> - converte para texto</li>
-            <li><code>bool()</code> - converte para True/False</li>
-        </ul>
+        <h2>📊 Potenciação em Python</h2>
+        <p>Para elevar ao quadrado, use o operador <code>**</code>:</p>
+        <pre><code>base = 4.0
+quadrado = base ** 2  # 16.0</code></pre>
     </section>
 
     <section>
-        <h2>💡 Exemplos Práticos</h2>
-        
-        <h3>Exemplo 1: Calculando a idade em dias</h3>
-        <pre><code>nome = input("Qual é o seu nome? ")
-idade = int(input("Quantos anos você tem? "))
-dias = idade * 365
-
-print(f"Olá {nome}!")
-print(f"Você já viveu aproximadamente {dias} dias.")</code></pre>
-        
-        <h3>Exemplo 2: Calculadora simples</h3>
-        <pre><code>num1 = float(input("Digite o primeiro número: "))
-num2 = float(input("Digite o segundo número: "))
-soma = num1 + num2
-
-print(f"A soma é: {soma}")</code></pre>
-    </section>
-
-    <section>
-        <h2>⚠️ Cuidados com Conversões</h2>
-        <p>Se o usuário digitar algo inválido, o programa pode dar erro:</p>
-        
-        <h3>❌ Erro comum:</h3>
-        <pre><code>idade = int(input("Digite sua idade: "))
-# Se usuário digitar "abc", dará erro!</code></pre>
-        
-        <p>Por enquanto, vamos assumir que o usuário sempre digitará corretamente. Mais tarde aprenderemos a tratar erros.</p>
+        <h2>💡 Problema: Retângulo</h2>
+        <p>Vamos criar um programa que:</p>
+        <ol>
+            <li>Lê a base do retângulo</li>
+            <li>Lê a altura do retângulo</li>
+            <li>Calcula a área (base × altura)</li>
+            <li>Calcula o perímetro (2 × (base + altura))</li>
+            <li>Calcula a diagonal usando √(base² + altura²)</li>
+            <li>Exibe todos os resultados com 4 casas decimais</li>
+        </ol>
     </section>
 {% endblock %}
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
+    <h4>🎮 Problema "retangulo"</h4>
+    <p>Fazer um programa para ler as medidas da base e altura de um retângulo. Em seguida, mostrar o valor da área, perímetro e diagonal deste retângulo, com quatro casas decimais.</p>
     
-    <p><strong>Tarefa 1:</strong> Crie um programa que:</p>
-    <ul>
-        <li>Peça o nome do usuário</li>
-        <li>Peça a idade do usuário</li>
-        <li>Peça a altura do usuário</li>
-        <li>Exiba todas as informações de forma organizada</li>
-    </ul>
+    <h4>📝 Exemplo 1:</h4>
+    <pre><code>Base do retangulo: 4.0
+Altura do retangulo: 5.0
+AREA = 20.0000
+PERIMETRO = 18.0000
+DIAGONAL = 6.4031</code></pre>
     
-    <p><strong>Tarefa 2:</strong> Crie uma mini calculadora que:</p>
-    <ul>
-        <li>Peça dois números</li>
-        <li>Calcule e exiba: soma, subtração, multiplicação e divisão</li>
-    </ul>
-    
-    <p><strong>Dica:</strong> Use f-strings para formatar a saída: <code>f"Texto {variavel}"</code></p>
-    
-    <p><strong>Exemplo de saída esperada:</strong></p>
-    <pre><code>Nome: João Silva
-Idade: 25 anos
-Altura: 1.80 metros
-
-Calculadora:
-5.0 + 3.0 = 8.0
-5.0 - 3.0 = 2.0
-5.0 * 3.0 = 15.0
-5.0 / 3.0 = 1.67</code></pre>
+    <h4>📝 Exemplo 2:</h4>
+    <pre><code>Base do retangulo: 10.3
+Altura do retangulo: 13.1
+AREA = 134.9300
+PERIMETRO = 46.8000
+DIAGONAL = 16.6643</code></pre>
 {% endblock %}
 
-{% block initial_code %}# Exemplo básico
-nome = input("Digite seu nome: ")
-print(f"Olá, {nome}!")
+{% block initial_code %}import math
 
-# Agora tente criar o programa completo{% endblock %}
+# Leia a base e altura
+base = float(input("Base do retangulo: "))
+altura = float(input("Altura do retangulo: "))
+
+# Calcule área, perímetro e diagonal
+area = base * altura
+perimetro = 2 * (base + altura)
+diagonal = math.sqrt(base**2 + altura**2)
+
+# Exiba os resultados
+print(f"AREA = {area:.4f}")
+print(f"PERIMETRO = {perimetro:.4f}")
+print(f"DIAGONAL = {diagonal:.4f}")
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function getExerciseDescription() {
+        return `Problema "retangulo":
+
+Fazer um programa para ler as medidas da base e altura de um retângulo. Em seguida, mostrar o valor da área, perímetro e diagonal deste retângulo, com quatro casas decimais.
+
+ENTRADA:
+- Base do retângulo (float)
+- Altura do retângulo (float)
+
+SAÍDA:
+- AREA = [valor com 4 casas decimais]
+- PERIMETRO = [valor com 4 casas decimais]
+- DIAGONAL = [valor com 4 casas decimais]
+
+FÓRMULAS:
+- Área = base × altura
+- Perímetro = 2 × (base + altura)
+- Diagonal = √(base² + altura²)
+
+EXEMPLO 1:
+Base do retangulo: 4.0
+Altura do retangulo: 5.0
+AREA = 20.0000
+PERIMETRO = 18.0000
+DIAGONAL = 6.4031
+
+EXEMPLO 2:
+Base do retangulo: 10.3
+Altura do retangulo: 13.1
+AREA = 134.9300
+PERIMETRO = 46.8000
+DIAGONAL = 16.6643`;
+    }
+</script>
+{% endblock %}

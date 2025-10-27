@@ -1,194 +1,163 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 10 - Projeto Final Vetores | CodeLogic{% endblock %}
+{% block title %}Aula 10 - Problema "aprovados" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 10 – Projeto Final: Sistema de Análise de Vendas{% endblock %}
+{% block lesson_title %}Aula 10 – Alunos Aprovados{% endblock %}
 
 {% block lesson_content %}
     <section>
-        <h2>🎯 Objetivo do Projeto</h2>
-        <p>Integrar todos os conceitos aprendidos sobre listas, tuplas, sets e dicionários em um projeto completo!</p>
+
+        <h2>🎯 Objetivo</h2>
         <ul>
-            <li>✅ Trabalhar com estruturas de dados combinadas</li>
-            <li>✅ Processar e analisar dados reais</li>
-            <li>✅ Gerar relatórios completos</li>
-            <li>✅ Aplicar tudo que aprendeu no módulo</li>
+            <li>Filtrar dados compostos por múltiplas condições</li>
+            <li>Trabalhar com três listas paralelas</li>
+            <li>Aplicar regra de negócio (aprovação)</li>
         </ul>
+
     </section>
 
     <section>
-        <h2>📊 O Projeto: Sistema de Análise de Vendas</h2>
-        <p>Você vai criar um sistema que analisa vendas de uma empresa, gerando estatísticas e relatórios.</p>
+
+        <h2>📚 Conceitos: Múltiplas Listas Relacionadas</h2>
+        <p>Quando temos vários dados por item, usamos várias listas paralelas:</p>
         
-        <div class="highlight-box">
-            <h3>Funcionalidades do Sistema:</h3>
-            <ul>
-                <li>📥 Armazenar dados de vendas</li>
-                <li>📊 Calcular estatísticas (média, máxima, mínima)</li>
-                <li>🏆 Identificar melhores vendedores e produtos</li>
-                <li>📈 Gerar gráfico simples de vendas</li>
-                <li>📋 Criar relatórios formatados</li>
-            </ul>
-        </div>
+        <h3>Estrutura com 3 listas:</h3>
+        <pre><code>nomes = []
+nota1 = []
+nota2 = []
+
+# Ler dados
+for i in range(n):
+    nome = input("Nome: ")
+    n1 = float(input("Nota 1: "))
+    n2 = float(input("Nota 2: "))
+    
+    nomes.append(nome)
+    nota1.append(n1)
+    nota2.append(n2)
+
+# Processar dados relacionados
+for i in range(len(nomes)):
+    media = (nota1[i] + nota2[i]) / 2
+    if media >= 6.0:
+        print(f"{nomes[i]}: {media:.1f} - APROVADO")</code></pre>
+
     </section>
 
     <section>
-        <h2>💡 Estrutura de Dados</h2>
-        <p>Vamos usar diferentes estruturas para armazenar os dados:</p>
+
+        <h2>📋 Aplicando Regras de Negócio</h2>
+        <p>Regras de aprovação são comuns em sistemas acadêmicos:</p>
         
-        <pre><code># Lista de vendas (cada venda é um dicionário)
-vendas = [
-    {'vendedor': 'Ana Silva', 'produto': 'Notebook', 'valor': 3500.00, 'mes': 'Janeiro'},
-    {'vendedor': 'Bruno Costa', 'produto': 'Mouse', 'valor': 45.00, 'mes': 'Janeiro'},
-    {'vendedor': 'Ana Silva', 'produto': 'Teclado', 'valor': 120.00, 'mes': 'Fevereiro'},
-    # ... mais vendas
-]
+        <h3>Critério de aprovação:</h3>
+        <pre><code>media = (nota1 + nota2) / 2
 
-# Dicionário para acumular totais
-totais_vendedor = {}
-
-# Set para produtos únicos
-produtos_vendidos = set()
-
-# Tupla para categorias
-categorias = ('Hardware', 'Software', 'Acessórios')</code></pre>
-    </section>
-<section>
-        <h2>🎯 Conceitos Aplicados</h2>
-        <p>Este projeto integra TUDO que você aprendeu no módulo:</p>
+if media >= 6.0:
+    print("APROVADO")
+else:
+    print("REPROVADO")</code></pre>
         
-        <div class="concepts-grid">
-            <div class="concept-card">
-                <h3>📋 Listas</h3>
-                <ul>
-                    <li>Armazenar múltiplas vendas</li>
-                    <li>Percorrer com for</li>
-                    <li>Ordenar dados</li>
-                </ul>
-            </div>
-            
-            <div class="concept-card">
-                <h3>📖 Dicionários</h3>
-                <ul>
-                    <li>Estruturar cada venda</li>
-                    <li>Acumular totais por chave</li>
-                    <li>Mapear vendedor → valor</li>
-                </ul>
-            </div>
-            
-            <div class="concept-card">
-                <h3>🎲 Sets</h3>
-                <ul>
-                    <li>Produtos únicos</li>
-                    <li>Eliminar duplicatas</li>
-                    <li>Contar distintos</li>
-                </ul>
-            </div>
-            
-            <div class="concept-card">
-                <h3>📌 Tuplas</h3>
-                <ul>
-                    <li>Ordenar (valor, nome)</li>
-                    <li>Estrutura imutável</li>
-                    <li>Desempacotamento</li>
-                </ul>
-            </div>
-        </div>
-    </section>
+        <h3>Para este problema:</h3>
+        <pre><code># Após ler todos os dados
+print("Alunos aprovados:")
 
-    <section>
-        <h2>💡 Desafios Extras</h2>
-        <div class="challenge-box">
-            <p>Tente melhorar o sistema:</p>
-            <ul>
-                <li>🎯 Adicionar filtro por período (mês específico)</li>
-                <li>🎯 Calcular comissão dos vendedores (5% do total)</li>
-                <li>🎯 Identificar produtos sem vendas</li>
-                <li>🎯 Criar alerta para vendedores com baixo desempenho</li>
-                <li>🎯 Comparar vendas entre meses (crescimento/queda)</li>
-                <li>🎯 Gerar gráfico de evolução mensal</li>
-            </ul>
-        </div>
-    </section>
-
-    <section>
-        <h2>🎓 O Que Você Domina Agora</h2>
-        <p>Parabéns! Ao completar este módulo, você é capaz de:</p>
+for i in range(len(nomes)):
+    # Calcular média
+    media = (nota1[i] + nota2[i]) / 2
+    
+    # Verificar se aprovado (média >= 6.0)
+    if media >= 6.0:
+        print(nomes[i])</code></pre>
         
-        <div class="skills-box">
-            <h3>✅ Habilidades Conquistadas:</h3>
-            <ul>
-                <li>✅ Trabalhar com listas (criar, modificar, percorrer)</li>
-                <li>✅ Usar tuplas para dados imutáveis</li>
-                <li>✅ Aplicar sets para valores únicos</li>
-                <li>✅ Dominar dicionários (chave-valor)</li>
-                <li>✅ Ordenar e buscar dados</li>
-                <li>✅ Acumular totais e calcular estatísticas</li>
-                <li>✅ Agrupar e filtrar informações</li>
-                <li>✅ Criar sistemas completos de análise</li>
-                <li>✅ Escolher a estrutura certa para cada problema</li>
-            </ul>
-        </div>
+        <h3>💡 Ordem de operações:</h3>
+        <ol>
+            <li>Ler TODOS os dados primeiro</li>
+            <li>Depois processar e filtrar</li>
+            <li>Exibir apenas os aprovados</li>
+        </ol>
+
     </section>
 
     <section>
-        <h2>🚀 Próximos Passos</h2>
-        <p>Agora você está pronto para o próximo módulo: <strong>MATRIZES</strong></p>
-        <p>Lá você aprenderá a trabalhar com estruturas bidimensionais e problemas ainda mais complexos!</p>
+
+        <h2>💡 Problema: Aprovados</h2>
+        <p>Fazer um programa para ler um conjunto de N nomes de alunos, bem como as notas que eles tiraram no 1º e 2º semestres. Cada uma dessas informações deve ser armazenada em um vetor. Depois, imprimir os nomes dos alunos aprovados, considerando aprovados aqueles cuja média das notas seja maior ou igual a 6.0 (seis).</p>
+
     </section>
+{% endblock %}
+
+{% block exercise_description %}
+
+        <h4>📝 Exemplo:</h4>
+        <pre><code>Quantos alunos serao digitados? 4
+Digite nome, primeira e segunda nota do 1o aluno:
+Joao Silva
+7.0
+8.5
+Digite nome, primeira e segunda nota do 2o aluno:
+Maria Teixeira
+9.2
+6.5
+Digite nome, primeira e segunda nota do 3o aluno:
+Carlos Carvalho
+5.0
+6.0
+Digite nome, primeira e segunda nota do 4o aluno:
+Teresa Pires
+5.5
+6.5
+
+Alunos aprovados:
+Joao Silva
+Maria Teixeira
+Teresa Pires</code></pre>
+
+{% endblock %}
+
+{% block initial_code %}# Leia a quantidade
+n = int(input("Quantos alunos serao digitados? "))
+
+# Crie as listas
+nomes = []
+nota1 = []
+nota2 = []
+
+# Leia os dados
+for i in range(n):
+    print(f"Digite nome, primeira e segunda nota do {i+1}o aluno:")
+    nome = input()
+    n1 = float(input())
+    n2 = float(input())
+    
+    nomes.append(nome)
+    nota1.append(n1)
+    nota2.append(n2)
+
+# Exiba os aprovados
+print("\nAlunos aprovados:")
+
 {% endblock %}
 
 {% block extra_js %}
 <script>
-function runCode() {
-    const code = document.getElementById('code-input').value;
-    const output = document.getElementById('output');
-    
-    output.innerHTML = '<div class="output-success">✅ Sistema executado! Você integrou listas, dicionários, sets e tuplas em um projeto real!</div>';
-}
+    function getExerciseDescription() {
+        return `Problema "aprovados":
+
+Fazer um programa para ler N nomes de alunos e suas notas do 1º e 2º semestres. Imprimir os nomes dos alunos aprovados (média >= 6.0).
+
+ENTRADA:
+- N (quantidade)
+- Para cada aluno:
+  - Nome (string)
+  - Nota 1º semestre (float)
+  - Nota 2º semestre (float)
+
+SAÍDA:
+- Alunos aprovados:
+- Nome de cada aluno aprovado (um por linha)
+
+CRITÉRIO:
+- Aprovado se (nota1 + nota2) / 2 >= 6.0`;
+    }
 </script>
-
-<style>
-.concepts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-    margin: 20px 0;
-}
-
-.concept-card {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-    border-left: 4px solid #007bff;
-}
-
-.concept-card h3 {
-    margin-top: 0;
-    color: #007bff;
-}
-
-.challenge-box {
-    background: #fff3cd;
-    padding: 20px;
-    border-radius: 8px;
-    border-left: 4px solid #ffc107;
-    margin: 15px 0;
-}
-
-.skills-box {
-    background: #d4edda;
-    padding: 20px;
-    border-radius: 8px;
-    border-left: 4px solid #28a745;
-    margin: 15px 0;
-}
-
-.highlight-box {
-    background: #e7f3ff;
-    padding: 15px;
-    border-radius: 8px;
-    margin: 15px 0;
-}
-</style>
 {% endblock %}

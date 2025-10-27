@@ -1,129 +1,215 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 10 - Projeto Final Matrizes | CodeLogic{% endblock %}
+{% block title %}Aula 10 - Problema "matriz_completa" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 10 – Projeto Final: Sistema Completo de Análise{% endblock %}
+{% block lesson_title %}Aula 10 – Análise Completa de Matriz{% endblock %}
 
 {% block lesson_content %}
     <section>
-        <h2>🎯 Objetivo do Projeto Final</h2>
-        <p>Integrar TODOS os conceitos de matrizes em um sistema real e completo!</p>
+
+        <h2>🎯 Objetivo</h2>
         <ul>
-            <li>✅ Criar e manipular matrizes</li>
-            <li>✅ Percorrer e modificar dados</li>
-            <li>✅ Realizar operações (soma, transposição, etc.)</li>
-            <li>✅ Gerar análises e relatórios</li>
+            <li>Integrar múltiplas operações com matrizes</li>
+            <li>Calcular somas, médias e filtros</li>
+            <li>Criar relatório completo</li>
         </ul>
-    </section>
-<section>
-        <h2>🎯 Conceitos Aplicados no Projeto</h2>
-        <div class="concepts-grid">
-            <div class="concept-card">
-                <h3>✅ Criação</h3>
-                <p>Matrizes 2D para armazenar notas</p>
-            </div>
-            <div class="concept-card">
-                <h3>🔄 Percorrimento</h3>
-                <p>Loops aninhados em todas as direções</p>
-            </div>
-            <div class="concept-card">
-                <h3>📊 Análise</h3>
-                <p>Médias, máximos, mínimos por linha e coluna</p>
-            </div>
-            <div class="concept-card">
-                <h3>🔄 Transposição</h3>
-                <p>Mudar perspectiva dos dados</p>
-            </div>
-            <div class="concept-card">
-                <h3>➕ Operações</h3>
-                <p>Soma escalar (prova extra)</p>
-            </div>
-            <div class="concept-card">
-                <h3>📈 Ordenação</h3>
-                <p>Ranking de alunos por média</p>
-            </div>
-        </div>
+
     </section>
 
     <section>
-        <h2>🎓 Parabéns!</h2>
-        <div class="success-box">
-            <h3>✅ Você Completou o Módulo MATRIZES!</h3>
-            <p>Agora você domina:</p>
-            <ul>
-                <li>✅ Criar e manipular matrizes 2D e 3D</li>
-                <li>✅ Percorrer matrizes com loops aninhados</li>
-                <li>✅ Realizar operações (soma, subtração, transposição)</li>
-                <li>✅ Trabalhar com matrizes especiais (identidade, diagonal, triangular)</li>
-                <li>✅ Multiplicação por escalar</li>
-                <li>✅ Analisar dados multidimensionais</li>
-                <li>✅ Criar sistemas completos de análise</li>
-            </ul>
-        </div>
+
+        <h2>📚 Conceitos: Análise Completa</h2>
+        <p>Projeto final integrando todos os conceitos aprendidos:</p>
+        
+        <h3>Operações comuns:</h3>
+        <ol>
+            <li><strong>Soma total:</strong> Somar todos os elementos</li>
+            <li><strong>Média:</strong> Soma total / quantidade de elementos</li>
+            <li><strong>Maior valor:</strong> Máximo da matriz</li>
+            <li><strong>Menor valor:</strong> Mínimo da matriz</li>
+            <li><strong>Contagens:</strong> Positivos, negativos, zeros</li>
+            <li><strong>Soma diagonal:</strong> Apenas diagonal principal</li>
+            <li><strong>Soma regiões:</strong> Acima/abaixo diagonal</li>
+        </ol>
+
     </section>
 
     <section>
-        <h2>🚀 Próximos Passos</h2>
-        <p>Com o domínio de Matrizes, você está pronto para desafios ainda maiores!</p>
-        <ul>
-            <li>🎯 Aplicar em projetos reais</li>
-            <li>🎯 Combinar com outros conceitos de programação</li>
-            <li>🎯 Explorar bibliotecas especializadas</li>
-            <li>🎯 Criar sistemas cada vez mais complexos</li>
-        </ul>
+
+        <h2>💻 Implementação: Relatório Completo</h2>
+        
+        <h3>Template de análise:</h3>
+        <pre><code>n = int(input("Ordem? "))
+
+# Ler matriz
+matriz = []
+for i in range(n):
+    linha = []
+    for j in range(n):
+        v = float(input(f"[{i},{j}]: "))
+        linha.append(v)
+    matriz.append(linha)
+
+# 1. Soma total e média
+soma_total = 0
+for i in range(n):
+    for j in range(n):
+        soma_total += matriz[i][j]
+
+quantidade = n * n
+media = soma_total / quantidade
+
+print(f"SOMA TOTAL: {soma_total:.1f}")
+print(f"MEDIA: {media:.1f}")
+
+# 2. Maior e menor
+maior = matriz[0][0]
+menor = matriz[0][0]
+for i in range(n):
+    for j in range(n):
+        if matriz[i][j] > maior:
+            maior = matriz[i][j]
+        if matriz[i][j] < menor:
+            menor = matriz[i][j]
+
+print(f"MAIOR: {maior:.1f}")
+print(f"MENOR: {menor:.1f}")
+
+# 3. Contagens
+positivos = 0
+negativos = 0
+zeros = 0
+for i in range(n):
+    for j in range(n):
+        if matriz[i][j] > 0:
+            positivos += 1
+        elif matriz[i][j] < 0:
+            negativos += 1
+        else:
+            zeros += 1
+
+print(f"POSITIVOS: {positivos}")
+print(f"NEGATIVOS: {negativos}")
+print(f"ZEROS: {zeros}")
+
+# 4. Diagonal principal
+print("DIAGONAL PRINCIPAL:")
+for i in range(n):
+    print(f"{matriz[i][i]:.1f} ", end="")
+print()
+
+# 5. Soma acima da diagonal
+soma_acima = 0
+for i in range(n):
+    for j in range(n):
+        if i < j:
+            soma_acima += matriz[i][j]
+
+print(f"SOMA ACIMA DIAGONAL: {soma_acima:.1f}")</code></pre>
+
     </section>
+
+    <section>
+
+        <h2>💡 Problema: Matriz Completa</h2>
+        <p>Fazer um programa para ler uma matriz quadrada de ordem N, contendo números reais. Em seguida, fazer um relatório completo com as seguintes informações:</p>
+        <ol>
+            <li>Soma de todos os elementos</li>
+            <li>Média de todos os elementos</li>
+            <li>Maior e menor valor</li>
+            <li>Quantidade de positivos, negativos e zeros</li>
+            <li>Diagonal principal</li>
+            <li>Soma dos elementos acima da diagonal</li>
+        </ol>
+
+    </section>
+{% endblock %}
+
+{% block exercise_description %}
+
+        <h4>📝 Exemplo:</h4>
+        <pre><code>Qual a ordem da matriz? 3
+Elemento [0,0]: 5.0
+Elemento [0,1]: -3.0
+Elemento [0,2]: 10.0
+Elemento [1,0]: 15.0
+Elemento [1,1]: 8.0
+Elemento [1,2]: 2.0
+Elemento [2,0]: 7.0
+Elemento [2,1]: 9.0
+Elemento [2,2]: -4.0
+
+RELATORIO DA MATRIZ:
+
+SOMA TOTAL: 49.0
+MEDIA: 5.4
+
+MAIOR VALOR: 15.0
+MENOR VALOR: -4.0
+
+POSITIVOS: 7
+NEGATIVOS: 2
+ZEROS: 0
+
+DIAGONAL PRINCIPAL:
+5.0 8.0 -4.0
+
+SOMA ACIMA DA DIAGONAL: 9.0</code></pre>
+
+{% endblock %}
+
+{% block initial_code %}# Leia a ordem
+n = int(input("Qual a ordem da matriz? "))
+
+# Leia a matriz
+matriz = []
+for i in range(n):
+    linha = []
+    for j in range(n):
+        elemento = float(input(f"Elemento [{i},{j}]: "))
+        linha.append(elemento)
+    matriz.append(linha)
+
+print("\nRELATORIO DA MATRIZ:\n")
+
+# 1. Soma total e média
+
+
+# 2. Maior e menor
+
+
+# 3. Contagens
+
+
+# 4. Diagonal principal
+
+
+# 5. Soma acima da diagonal
+
 {% endblock %}
 
 {% block extra_js %}
 <script>
-function runCode() {
-    const output = document.getElementById('output');
-    output.innerHTML = '<div class="output-success">🎉 PROJETO FINAL COMPLETO! Você integrou todos os conceitos de Matrizes com sucesso!</div>';
-}
+    function getExerciseDescription() {
+        return `Problema "matriz_completa":
+
+Ler matriz quadrada NxN de reais. Gerar relatório: soma total, média, maior, menor, contagens (pos/neg/zeros), diagonal principal, soma acima diagonal.
+
+ENTRADA:
+- N (ordem)
+- N² elementos reais
+
+SAÍDA:
+- RELATORIO DA MATRIZ:
+- SOMA TOTAL: [soma, 1 casa]
+- MEDIA: [média, 1 casa]
+- MAIOR VALOR: [maior, 1 casa]
+- MENOR VALOR: [menor, 1 casa]
+- POSITIVOS: [qtd]
+- NEGATIVOS: [qtd]
+- ZEROS: [qtd]
+- DIAGONAL PRINCIPAL: [elementos, 1 casa]
+- SOMA ACIMA DA DIAGONAL: [soma, 1 casa]`;
+    }
 </script>
-
-<style>
-.concepts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 15px;
-    margin: 20px 0;
-}
-
-.concept-card {
-    background: #f0f7ff;
-    padding: 15px;
-    border-radius: 8px;
-    border-left: 4px solid #007bff;
-}
-
-.concept-card h3 {
-    margin-top: 0;
-    color: #007bff;
-    font-size: 1.1em;
-}
-
-.concept-card p {
-    margin: 5px 0 0 0;
-    font-size: 0.9em;
-    color: #555;
-}
-
-.success-box {
-    background: #d4edda;
-    padding: 25px;
-    border-radius: 10px;
-    border-left: 5px solid #28a745;
-    margin: 20px 0;
-}
-
-.success-box h3 {
-    color: #155724;
-    margin-top: 0;
-}
-
-.success-box ul {
-    margin: 15px 0 0 0;
-}
-</style>
 {% endblock %}

@@ -1,87 +1,120 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 3 - Estrutura elif | CodeLogic{% endblock %}
+{% block title %}Aula 3 - Problema "operadora" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 3 – Estrutura elif{% endblock %}
+{% block lesson_title %}Aula 3 – Conta de Telefone{% endblock %}
 
 {% block lesson_content %}
     <section>
+
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Compreender quando usar elif</li>
-            <li>Criar condições múltiplas e sequenciais</li>
-            <li>Otimizar código com estruturas elif</li>
+            <li>Implementar regras de negócio com condicionais</li>
+            <li>Calcular valores baseados em condições</li>
+            <li>Trabalhar com valores fixos e variáveis</li>
         </ul>
+
     </section>
 
     <section>
-        <h2>💡 O que é elif?</h2>
-        <p>A palavra-chave <code>elif</code> (abreviação de "else if") permite testar múltiplas condições em sequência.</p>
-        <p>É muito útil quando você tem várias possibilidades mutuamente exclusivas.</p>
+
+        <h2>📚 Conceitos: Condicionais em Cálculos</h2>
+        <p>Muitas vezes precisamos calcular valores diferentes dependendo de uma condição:</p>
         
-        <blockquote>
-            <strong>Exemplo do mundo real:</strong> "Se a nota for maior que 9, é excelente; senão, se for maior que 7, é bom; senão, se for maior que 5, é regular; senão, é insuficiente."
-        </blockquote>
-    </section>
-
-    <section>
-        <h2>🔧 Sintaxe do elif</h2>
-        <pre><code>if condição1:
-    # código se condição1 for verdadeira
-elif condição2:
-    # código se condição2 for verdadeira
-elif condição3:
-    # código se condição3 for verdadeira
+        <h3>Padrão comum:</h3>
+        <pre><code>if condicao:
+    valor = calculo_tipo_1
 else:
-    # código se nenhuma condição for verdadeira</code></pre>
-    </section>
+    valor = calculo_tipo_2</code></pre>
+        
+        <h3>Exemplo - Desconto progressivo:</h3>
+        <pre><code>preco = 100.0
+quantidade = int(input("Quantidade: "))
 
-    <section>
-        <h2>📝 Exemplo Prático: Sistema de Notas</h2>
-        <pre><code>nota = float(input("Digite sua nota: "))
-
-if nota >= 9:
-    print("Excelente! 🌟")
-elif nota >= 7:
-    print("Bom trabalho! 👍")
-elif nota >= 5:
-    print("Regular, pode melhorar 📚")
+if quantidade > 10:
+    total = preco * quantidade * 0.9  # 10% desconto
 else:
-    print("Precisa estudar mais 💪")</code></pre>
+    total = preco * quantidade  # sem desconto
+    
+print(f"Total: R$ {total:.2f}")</code></pre>
+
     </section>
 
     <section>
-        <h2>⚠️ Pontos Importantes</h2>
+
+        <h2>📞 Regras da Operadora</h2>
+        <p>A operadora tem um plano básico com franquia de minutos:</p>
+        
+        <h3>Valores:</h3>
         <ul>
-            <li>O Python testa as condições em ordem</li>
-            <li>Quando uma condição é verdadeira, as outras não são testadas</li>
-            <li>Você pode ter quantos elif quiser</li>
-            <li>O else é sempre opcional</li>
+            <li><strong>Plano básico:</strong> R$ 50.00 por 100 minutos</li>
+            <li><strong>Excedente:</strong> R$ 2.00 por minuto adicional</li>
         </ul>
+        
+        <h3>Lógica:</h3>
+        <pre><code>if minutos <= 100:
+    valor = 50.00
+else:
+    excedente = minutos - 100
+    valor = 50.00 + (excedente * 2.00)</code></pre>
+        
+        <h3>Exemplos:</h3>
+        <ul>
+            <li>80 minutos → R$ 50.00 (dentro da franquia)</li>
+            <li>103 minutos → R$ 56.00 (50 + 3×2)</li>
+            <li>200 minutos → R$ 250.00 (50 + 100×2)</li>
+        </ul>
+
+    </section>
+
+    <section>
+
+        <h2>💡 Problema: Conta de Telefone</h2>
+        <p>Uma operadora de telefonia cobra R$ 50.00 por um plano básico que dá direito a 100 minutos de telefone. Cada minuto que exceder a franquia de 100 minutos custa R$ 2.00. Fazer um programa para ler a quantidade de minutos que uma pessoa consumiu, calcular e mostrar o valor a ser pago.</p>
+
     </section>
 {% endblock %}
 
 {% block exercise_description %}
-    <h4>🎮 Exercício Prático</h4>
-    
-    <h3>Sistema de Classificação Etária</h3>
-    <p>Crie um programa que receba a idade de uma pessoa e classifique em:</p>
-    <ul>
-        <li>0-12 anos: "Criança"</li>
-        <li>13-17 anos: "Adolescente"</li>
-        <li>18-59 anos: "Adulto"</li>
-        <li>60+ anos: "Idoso"</li>
-    </ul>
-    
-    <p><strong>Exemplo de saída esperada:</strong></p>
-    <pre><code>Digite sua idade: 25
-Adulto
 
-Digite sua idade: 10
-Criança</code></pre>
+        <h4>📝 Exemplo 1:</h4>
+        <pre><code>Digite a quantidade de minutos: 22
+Valor a pagar: R$ 50.00</code></pre>
+        
+        <h4>📝 Exemplo 2:</h4>
+        <pre><code>Digite a quantidade de minutos: 103
+Valor a pagar: R$ 56.00</code></pre>
+        
+        <h4>📝 Exemplo 3:</h4>
+        <pre><code>Digite a quantidade de minutos: 200
+Valor a pagar: R$ 250.00</code></pre>
+
 {% endblock %}
 
-{% block initial_code %}idade = int(input('Digite sua idade: '))
+{% block initial_code %}# Leia a quantidade de minutos
+minutos = int(input("Digite a quantidade de minutos: "))
 
-# Complete o código...
+# Calcule o valor a pagar
+
+# Exiba o resultado
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function getExerciseDescription() {
+        return `Problema "operadora":
+
+Uma operadora de telefonia cobra R$ 50.00 por um plano básico que dá direito a 100 minutos de telefone. Cada minuto que exceder a franquia de 100 minutos custa R$ 2.00. Fazer um programa para ler a quantidade de minutos que uma pessoa consumiu, calcular e mostrar o valor a ser pago.
+
+ENTRADA:
+- Quantidade de minutos (int)
+
+SAÍDA:
+- Valor a pagar: R$ [valor com 2 casas decimais]
+
+REGRAS:
+- Até 100 minutos: R$ 50.00
+- Acima de 100 minutos: R$ 50.00 + (minutos - 100) × R$ 2.00`;
+    }
+</script>
 {% endblock %}

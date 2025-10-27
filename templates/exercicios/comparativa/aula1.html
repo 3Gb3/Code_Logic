@@ -1,166 +1,159 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 1 - Introdução ao if/else | CodeLogic{% endblock %}
+{% block title %}Aula 1 - Problema "baskara" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 1 – Introdução ao if/else{% endblock %}
+{% block lesson_title %}Aula 1 – Fórmula de Baskara{% endblock %}
 
 {% block lesson_content %}
     <section>
+
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Entender o conceito de estruturas condicionais</li>
-            <li>Aprender a usar if e else em Python</li>
-            <li>Criar programas que tomam decisões simples</li>
+            <li>Entender estruturas condicionais (if/else)</li>
+            <li>Trabalhar com raízes quadradas (math.sqrt)</li>
+            <li>Validar entrada de dados</li>
+            <li>Implementar fórmula matemática complexa</li>
         </ul>
+
     </section>
 
     <section>
-        <h2>💡 O que são Estruturas Condicionais?</h2>
-        <p>Estruturas condicionais permitem que nossos programas tomem decisões baseadas em condições específicas.</p>
-        <p>É como se o programa pudesse "pensar": <em>"Se isso for verdade, faça aquilo; caso contrário, faça outra coisa"</em></p>
-        
-        <blockquote>
-            <strong>Exemplo do mundo real:</strong> "Se estiver chovendo, leve um guarda-chuva; caso contrário, não precisa levar."
-        </blockquote>
-    </section>
 
-    <section>
-        <h2>🔧 A Estrutura if</h2>
-        <p>A palavra-chave <code>if</code> é usada para executar código apenas quando uma condição é verdadeira.</p>
+        <h2>📚 Conceitos: Estruturas Condicionais</h2>
+        <p>As estruturas condicionais permitem que o programa tome decisões:</p>
         
-        <h3>Sintaxe Básica:</h3>
-        <pre><code>if condição:
-    # código que executa se a condição for verdadeira
-    print("A condição é verdadeira!")</code></pre>
+        <h3>Sintaxe básica:</h3>
+        <pre><code>if condicao:
+    # código executado se condição for True
+else:
+    # código executado se condição for False</code></pre>
         
-        <h3>Exemplo Prático:</h3>
-        <pre><code>idade = 18
-if idade >= 18:
-    print("Você é maior de idade!")</code></pre>
-        
-        <p><strong>Pontos importantes:</strong></p>
+        <h3>Operadores de comparação:</h3>
         <ul>
-            <li>Use dois pontos <code>:</code> após a condição</li>
-            <li>O código dentro do if deve estar <strong>indentado</strong> (4 espaços)</li>
-            <li>A condição deve resultar em True ou False</li>
+            <li><code>==</code> igual a</li>
+            <li><code>!=</code> diferente de</li>
+            <li><code>&gt;</code> maior que</li>
+            <li><code>&lt;</code> menor que</li>
+            <li><code>&gt;=</code> maior ou igual</li>
+            <li><code>&lt;=</code> menor ou igual</li>
         </ul>
-    </section>
-
-    <section>
-        <h2>⚖️ A Estrutura if/else</h2>
-        <p>O <code>else</code> permite executar código quando a condição do if é falsa.</p>
         
-        <h3>Sintaxe:</h3>
-        <pre><code>if condição:
-    # executa se condição for verdadeira
-    print("Condição verdadeira")
-else:
-    # executa se condição for falsa
-    print("Condição falsa")</code></pre>
-        
-        <h3>Exemplo Completo:</h3>
+        <h3>Exemplo:</h3>
         <pre><code>idade = int(input("Digite sua idade: "))
-
 if idade >= 18:
-    print("Você pode dirigir!")
+    print("Você é maior de idade")
 else:
-    print("Você ainda não pode dirigir.")</code></pre>
+    print("Você é menor de idade")</code></pre>
+
     </section>
 
     <section>
-        <h2>🌡️ Exemplos Práticos</h2>
-        
-        <h3>Exemplo 1: Verificador de Temperatura</h3>
-        <pre><code>temperatura = 25
 
-if temperatura > 30:
-    print("Está muito quente!")
-else:
-    print("Temperatura agradável.")</code></pre>
+        <h2>📐 Fórmula de Baskara</h2>
+        <p>A fórmula de Baskara resolve equações do segundo grau: <strong>ax² + bx + c = 0</strong></p>
         
-        <h3>Exemplo 2: Verificador de Nota</h3>
-        <pre><code>nota = float(input("Digite sua nota: "))
-
-if nota >= 7.0:
-    print("Parabéns! Você foi aprovado!")
-else:
-    print("Estude mais e tente novamente.")</code></pre>
+        <h3>Passo 1: Calcular o delta (Δ)</h3>
+        <pre><code>Δ = b² - 4ac</code></pre>
         
-        <h3>Exemplo 3: Par ou Ímpar</h3>
-        <pre><code>numero = int(input("Digite um número: "))
+        <h3>Passo 2: Verificar se há raízes reais</h3>
+        <ul>
+            <li>Se Δ &lt; 0: não há raízes reais</li>
+            <li>Se Δ ≥ 0: há raízes reais</li>
+        </ul>
+        
+        <h3>Passo 3: Calcular as raízes (se Δ ≥ 0)</h3>
+        <pre><code>x1 = (-b + √Δ) / (2a)
+x2 = (-b - √Δ) / (2a)</code></pre>
+        
+        <h3>Em Python:</h3>
+        <pre><code>import math
 
-if numero % 2 == 0:
-    print("O número é par")
+delta = b**2 - 4*a*c
+if delta < 0:
+    print("Esta equacao nao possui raizes reais")
 else:
-    print("O número é ímpar")</code></pre>
+    x1 = (-b + math.sqrt(delta)) / (2 * a)
+    x2 = (-b - math.sqrt(delta)) / (2 * a)</code></pre>
+
+    </section>
+
+    <section>
+
+        <h2>💡 Problema: Fórmula de Baskara</h2>
+        <p>Fazer um programa para ler os três coeficientes de uma equação do segundo grau. Usando a fórmula de Baskara, calcular e mostrar o valor das raízes x1 e x2 da equação com cinco casas decimais. Se a equação não possuir raízes reais, mostrar uma mensagem.</p>
+        
+        <h3>Casos especiais:</h3>
+        <ul>
+            <li>Se <strong>a = 0</strong>: "Esta equacao nao e do segundo grau"</li>
+            <li>Se <strong>Δ &lt; 0</strong>: "Esta equacao nao possui raizes reais"</li>
+        </ul>
+
     </section>
 {% endblock %}
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
-    <p><strong>Desafio:</strong> Crie um programa que funcione como um "detector de idade para filmes".</p>
-    
-    <p><strong>Requisitos:</strong></p>
-    <ol>
-        <li>Solicite a idade do usuário</li>
-        <li>Se a idade for maior ou igual a 18, exiba: "Você pode assistir filmes para maiores!"</li>
-        <li>Caso contrário, exiba: "Você só pode assistir filmes livres!"</li>
-        <li>Teste com diferentes idades</li>
-    </ol>
-    
-    <p><strong>Dicas:</strong></p>
-    <ul>
-        <li>Use <code>int(input("..."))</code> para ler um número inteiro</li>
-        <li>Lembre-se da indentação (4 espaços)</li>
-        <li>Use dois pontos <code>:</code> após if e else</li>
-    </ul>
-    
-    <h4>📝 Exemplo de execução:</h4>
-    <pre><code>Digite sua idade: 20
-Você pode assistir filmes para maiores!
 
-Digite sua idade: 15
-Você só pode assistir filmes livres!</code></pre>
+        <h4>📝 Exemplo 1:</h4>
+        <pre><code>Coeficiente a: 1
+Coeficiente b: 0
+Coeficiente c: -9
+X1 = 3.00000
+X2 = -3.00000</code></pre>
+        
+        <h4>📝 Exemplo 2:</h4>
+        <pre><code>Coeficiente a: 1
+Coeficiente b: -7
+Coeficiente c: 12
+X1 = 4.00000
+X2 = 3.00000</code></pre>
+        
+        <h4>📝 Exemplo 3:</h4>
+        <pre><code>Coeficiente a: 1
+Coeficiente b: 3
+Coeficiente c: 4
+Esta equacao nao possui raizes reais</code></pre>
+
 {% endblock %}
 
-{% block initial_code %}idade = int(input("Digite sua idade: "))
+{% block initial_code %}import math
 
-# Complete o código aqui{% endblock %}
+# Leia os coeficientes
+a = float(input("Coeficiente a: "))
+b = float(input("Coeficiente b: "))
+c = float(input("Coeficiente c: "))
+
+# Valide se é equação de segundo grau
+
+# Calcule o delta
+
+# Verifique se há raízes reais e calcule-as
+{% endblock %}
 
 {% block extra_js %}
 <script>
-    // Descrição específica do exercício da Aula 1 - Comparativa
     function getExerciseDescription() {
-        return `Aula 1 - Introdução ao if/else:
+        return `Problema "baskara":
 
-DESAFIO: Criar um detector de idade para filmes
+Fazer um programa para ler os três coeficientes de uma equação do segundo grau. Usando a fórmula de Baskara, calcular e mostrar o valor das raízes x1 e x2 da equação com cinco casas decimais.
 
-REQUISITOS:
-1. Solicitar a idade do usuário usando input()
-2. Se idade >= 18: exibir "Você pode assistir filmes para maiores!"
-3. Caso contrário: exibir "Você só pode assistir filmes livres!"
-4. Testar com diferentes idades
+CASOS ESPECIAIS:
+- Se a = 0: "Esta equacao nao e do segundo grau"
+- Se Δ < 0: "Esta equacao nao possui raizes reais"
 
-CRITÉRIOS DE AVALIAÇÃO:
-- Uso correto da estrutura if/else
-- Indentação adequada (4 espaços)
-- Uso correto de int(input()) para ler a idade
-- Mensagens exatas conforme especificado
-- Dois pontos após if e else
+ENTRADA:
+- Coeficiente a (float)
+- Coeficiente b (float)
+- Coeficiente c (float)
 
-EXEMPLO DE SAÍDA ESPERADA:
-Digite sua idade: 20
-Você pode assistir filmes para maiores!
+SAÍDA:
+- X1 = [valor com 5 casas decimais]
+- X2 = [valor com 5 casas decimais]
+OU mensagem de erro
 
-OU
-
-Digite sua idade: 15
-Você só pode assistir filmes livres!
-
-PONTOS IMPORTANTES:
-- A condição deve usar >= 18
-- As mensagens devem ser exatamente como especificado
-- Usar print() para exibir as mensagens`;
+FÓRMULAS:
+- Δ = b² - 4ac
+- x1 = (-b + √Δ) / (2a)
+- x2 = (-b - √Δ) / (2a)`;
     }
 </script>
 {% endblock %}

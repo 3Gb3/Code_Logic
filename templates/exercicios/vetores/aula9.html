@@ -1,307 +1,152 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 9 - Dicionários | CodeLogic{% endblock %}
+{% block title %}Aula 9 - Problema "mais_velho" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 9 – Dicionários{% endblock %}
+{% block lesson_title %}Aula 9 – Pessoa Mais Velha{% endblock %}
 
 {% block lesson_content %}
     <section>
+
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Compreender o conceito de dicionários (dict)</li>
-            <li>Trabalhar com pares chave-valor</li>
-            <li>Aplicar dicionários em problemas práticos</li>
+            <li>Encontrar máximo em listas paralelas</li>
+            <li>Retornar dados relacionados ao máximo</li>
+            <li>Trabalhar com dados compostos</li>
         </ul>
+
     </section>
 
     <section>
-        <h2>📖 O que são Dicionários?</h2>
-        <p>Dicionários são coleções que armazenam pares de <strong>chave-valor</strong>. Cada chave é única e permite acesso rápido ao valor correspondente.</p>
+
+        <h2>📚 Conceitos: Buscar Máximo com Dados Relacionados</h2>
+        <p>Quando temos listas paralelas e queremos o dado relacionado ao máximo:</p>
         
-        <h3>Características dos Dicionários:</h3>
-        <ul>
-            <li>🔑 <strong>Chave-Valor</strong> - cada elemento é um par</li>
-            <li>🚫 <strong>Chaves únicas</strong> - não pode haver chaves duplicadas</li>
-            <li>✏️ <strong>Mutável</strong> - pode ser modificado</li>
-            <li>⚡ <strong>Acesso rápido</strong> - busca por chave é muito eficiente</li>
-            <li>📋 <strong>Ordenado</strong> - a partir do Python 3.7+</li>
-        </ul>
+        <h3>Estratégia 1: Guardar posição do máximo</h3>
+        <pre><code>nomes = ["Ana", "João", "Maria"]
+idades = [25, 30, 28]
+
+# Encontrar posição da maior idade
+idade_maxima = idades[0]
+posicao_maxima = 0
+
+for i in range(1, len(idades)):
+    if idades[i] > idade_maxima:
+        idade_maxima = idades[i]
+        posicao_maxima = i
+
+# Usar a posição para pegar o nome
+nome_mais_velho = nomes[posicao_maxima]
+print(f"Mais velho: {nome_mais_velho} ({idade_maxima} anos)")</code></pre>
         
-        <h3>Criação de Dicionários:</h3>
-        <pre><code># Dicionário vazio
-dicionario_vazio = {}
-print(f"Vazio: {dicionario_vazio}")
+        <h3>Estratégia 2: Usar max() e index()</h3>
+        <pre><code>nomes = ["Ana", "João", "Maria"]
+idades = [25, 30, 28]
 
-# Dicionário com elementos
-aluno = {
-    "nome": "Ana Silva",
-    "idade": 20,
-    "curso": "Engenharia",
-    "ativo": True
-}
+idade_maxima = max(idades)
+posicao = idades.index(idade_maxima)
+nome_mais_velho = nomes[posicao]
 
-print(f"Aluno: {aluno}")
+print(f"Pessoa mais velha: {nome_mais_velho}")</code></pre>
 
-# Usando dict()
-pessoa = dict(nome="Carlos", idade=25, cidade="São Paulo")
-print(f"Pessoa: {pessoa}")</code></pre>
     </section>
 
     <section>
-        <h2>🎯 Acessando Valores</h2>
+
+        <h2>🎯 Padrão: Ler Dados Compostos</h2>
+        <p>Estrutura para ler múltiplos dados de cada item:</p>
         
-        <h3>Acesso por Chave:</h3>
-        <pre><code>aluno = {
-    "nome": "Ana Silva",
-    "idade": 20,
-    "curso": "Engenharia"
-}
+        <h3>Template completo:</h3>
+        <pre><code># Ler quantidade
+n = int(input("Quantas pessoas? "))
 
-# Acesso direto com []
-nome = aluno["nome"]
-print(f"Nome: {nome}")
+# Criar listas paralelas
+nomes = []
+idades = []
 
-# Acesso seguro com get()
-idade = aluno.get("idade")
-print(f"Idade: {idade}")
+# Ler dados
+print("Dados das pessoas:")
+for i in range(n):
+    nome = input(f"Nome da {i+1}a pessoa: ")
+    idade = int(input(f"Idade da {i+1}a pessoa: "))
+    
+    nomes.append(nome)
+    idades.append(idade)
 
-# get() com valor padrão
-email = aluno.get("email", "Não informado")
-print(f"Email: {email}")  # Retorna valor padrão</code></pre>
-        
-        <h3>Verificar se Chave Existe:</h3>
-        <pre><code>produto = {
-    "nome": "Notebook",
-    "preco": 3500.00,
-    "estoque": 10
-}
+# Processar (exemplo: encontrar mais velho)
+idade_maxima = max(idades)
+posicao = idades.index(idade_maxima)
 
-# Verificar com in
-if "preco" in produto:
-    print(f"Preço: R$ {produto['preco']:.2f}")
+print(f"\nPessoa mais velha: {nomes[posicao]}")</code></pre>
 
-if "desconto" not in produto:
-    print("Produto sem desconto")</code></pre>
     </section>
 
     <section>
-        <h2>➕ Adicionando e Modificando</h2>
-        
-        <h3>Adicionar/Modificar Elementos:</h3>
-        <pre><code>pessoa = {
-    "nome": "Bruno",
-    "idade": 25
-}
 
-print(f"Antes: {pessoa}")
+        <h2>💡 Problema: Mais Velho</h2>
+        <p>Fazer um programa para ler um conjunto de nomes de pessoas e suas respectivas idades. Depois, mostrar na tela o nome da pessoa mais velha.</p>
 
-# Adicionar novo par chave-valor
-pessoa["cidade"] = "São Paulo"
-print(f"Após adicionar cidade: {pessoa}")
-
-# Modificar valor existente
-pessoa["idade"] = 26
-print(f"Após modificar idade: {pessoa}")
-
-# update() - atualizar múltiplos valores
-pessoa.update({"profissao": "Programador", "salario": 5000})
-print(f"Após update: {pessoa}")</code></pre>
-        
-        <h3>Remover Elementos:</h3>
-        <pre><code>dados = {
-    "nome": "Carlos",
-    "idade": 30,
-    "cidade": "Rio",
-    "temp": "valor temporário"
-}
-
-print(f"Inicial: {dados}")
-
-# del - remover chave específica
-del dados["temp"]
-print(f"Após del: {dados}")
-
-# pop() - remover e retornar valor
-idade = dados.pop("idade")
-print(f"Idade removida: {idade}")
-print(f"Após pop: {dados}")
-
-# popitem() - remover último item
-ultimo = dados.popitem()
-print(f"Último removido: {ultimo}")
-print(f"Após popitem: {dados}")
-
-# clear() - limpar tudo
-dados.clear()
-print(f"Após clear: {dados}")</code></pre>
-    </section>
-
-    <section>
-        <h2>🔄 Percorrendo Dicionários</h2>
-        
-        <h3>Percorrer Chaves:</h3>
-        <pre><code>notas = {
-    "Ana": 8.5,
-    "Bruno": 7.0,
-    "Carlos": 9.5,
-    "Diana": 8.0
-}
-
-# Percorrer apenas as chaves
-print("Alunos:")
-for aluno in notas:
-    print(f"  - {aluno}")
-
-# Ou explicitamente com keys()
-print("\nAlunos (com keys()):")
-for aluno in notas.keys():
-    print(f"  - {aluno}")</code></pre>
-        
-        <h3>Percorrer Valores:</h3>
-        <pre><code>print("Notas:")
-for nota in notas.values():
-    print(f"  - {nota}")</code></pre>
-        
-        <h3>Percorrer Chaves e Valores:</h3>
-        <pre><code>print("Alunos e suas notas:")
-for aluno, nota in notas.items():
-    print(f"{aluno}: {nota}")</code></pre>
-    </section>
-
-    <section>
-        <h2>📊 Operações Úteis</h2>
-        
-        <h3>Contar Ocorrências:</h3>
-        <pre><code>texto = "python é incrível e python é poderoso"
-palavras = texto.split()
-
-# Contar quantas vezes cada palavra aparece
-contagem = {}
-for palavra in palavras:
-    if palavra in contagem:
-        contagem[palavra] += 1
-    else:
-        contagem[palavra] = 1
-
-print("Contagem de palavras:")
-for palavra, count in contagem.items():
-    print(f"{palavra}: {count}")</code></pre>
-        
-        <h3>Agrupar Dados:</h3>
-        <pre><code>alunos = [
-    {"nome": "Ana", "curso": "Eng"},
-    {"nome": "Bruno", "curso": "Med"},
-    {"nome": "Carlos", "curso": "Eng"},
-    {"nome": "Diana", "curso": "Med"},
-    {"nome": "Eduardo", "curso": "Eng"}
-]
-
-# Agrupar alunos por curso
-por_curso = {}
-for aluno in alunos:
-    curso = aluno["curso"]
-    if curso not in por_curso:
-        por_curso[curso] = []
-    por_curso[curso].append(aluno["nome"])
-
-print("Alunos por curso:")
-for curso, lista_alunos in por_curso.items():
-    print(f"{curso}: {lista_alunos}")</code></pre>
-        
-        <h3>Inverter Chave-Valor:</h3>
-        <pre><code>capitais = {
-    "Brasil": "Brasília",
-    "Argentina": "Buenos Aires",
-    "Chile": "Santiago"
-}
-
-# Inverter para cidade: país
-invertido = {}
-for pais, capital in capitais.items():
-    invertido[capital] = pais
-
-print("Invertido:")
-for capital, pais in invertido.items():
-    print(f"{capital} é capital de {pais}")</code></pre>
-    </section>
-
-    <section>
-        <h2>📚 Dicionários Aninhados</h2>
-        
-        <pre><code># Dicionário contendo dicionários
-empresa = {
-    "TI": {
-        "gerente": "Ana",
-        "funcionarios": 15,
-        "orcamento": 500000
-    },
-    "Vendas": {
-        "gerente": "Bruno",
-        "funcionarios": 20,
-        "orcamento": 300000
-    },
-    "RH": {
-        "gerente": "Carlos",
-        "funcionarios": 5,
-        "orcamento": 150000
-    }
-}
-
-# Acessar dados aninhados
-print(f"Gerente de TI: {empresa['TI']['gerente']}")
-print(f"Funcionários de Vendas: {empresa['Vendas']['funcionarios']}")
-
-# Percorrer dicionário aninhado
-print("\nTodos os departamentos:")
-for depto, dados in empresa.items():
-    print(f"\n{depto}:")
-    print(f"  Gerente: {dados['gerente']}")
-    print(f"  Funcionários: {dados['funcionarios']}")
-    print(f"  Orçamento: R$ {dados['orcamento']:,}")</code></pre>
-    </section>
-<section>
-        <h2>💡 Dicas Importantes</h2>
-        <div class="tip-box">
-            <ul>
-                <li>🔑 Chaves devem ser imutáveis (strings, números, tuplas)</li>
-                <li>⚡ Acesso por chave é muito rápido (O(1))</li>
-                <li>🛡️ Use <code>get()</code> para evitar erros ao acessar chaves inexistentes</li>
-                <li>🔄 Use <code>items()</code> para percorrer chaves e valores juntos</li>
-                <li>📊 Dicionários são ideais para contar, agrupar e mapear dados</li>
-                <li>🎯 Chaves não podem ser repetidas - valor mais recente sobrescreve</li>
-            </ul>
-        </div>
-    </section>
-
-    <section>
-        <h2>📚 Resumo</h2>
-        <p>Nesta aula você aprendeu:</p>
-        <ul>
-            <li>✅ O que são dicionários e como criar</li>
-            <li>✅ Acessar, adicionar e remover elementos</li>
-            <li>✅ Percorrer dicionários de diferentes formas</li>
-            <li>✅ Aplicações práticas: contar, agrupar, mapear</li>
-            <li>✅ Trabalhar com dicionários aninhados</li>
-        </ul>
     </section>
 {% endblock %}
-
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
-    <p>Complete o exercício no editor ao lado.</p>
+
+        <h4>📝 Exemplo:</h4>
+        <pre><code>Quantas pessoas voce vai digitar? 5
+Dados da 1a pessoa:
+Nome: Joao
+Idade: 16
+Dados da 2a pessoa:
+Nome: Maria
+Idade: 21
+Dados da 3a pessoa:
+Nome: Teresa
+Idade: 15
+Dados da 4a pessoa:
+Nome: Carlos
+Idade: 23
+Dados da 5a pessoa:
+Nome: Paulo
+Idade: 17
+
+PESSOA MAIS VELHA: Carlos</code></pre>
+
 {% endblock %}
 
-{% block initial_code %}# Seu código aqui
+{% block initial_code %}# Leia a quantidade
+n = int(input("Quantas pessoas voce vai digitar? "))
+
+# Crie as listas
+nomes = []
+idades = []
+
+# Leia os dados
+for i in range(n):
+    print(f"Dados da {i+1}a pessoa:")
+    nome = input("Nome: ")
+    idade = int(input("Idade: "))
+    
+    nomes.append(nome)
+    idades.append(idade)
+
+# Encontre a pessoa mais velha
+
+
+# Exiba o resultado
 {% endblock %}
 
 {% block extra_js %}
 <script>
-function runCode() {
-    const code = document.getElementById('code-input').value;
-    const output = document.getElementById('output');
-    
-    output.innerHTML = '<div class="output-success">Sistema de estoque executado! Veja como dicionários organizam dados de forma eficiente.</div>';
-}
+    function getExerciseDescription() {
+        return `Problema "mais_velho":
+
+Fazer um programa para ler nomes e idades de N pessoas. Mostrar o nome da pessoa mais velha.
+
+ENTRADA:
+- N (quantidade)
+- Para cada pessoa: nome e idade
+
+SAÍDA:
+- PESSOA MAIS VELHA: [nome]`;
+    }
 </script>
 {% endblock %}

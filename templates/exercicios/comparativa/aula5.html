@@ -1,123 +1,160 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 5 - Condições Aninhadas | CodeLogic{% endblock %}
+{% block title %}Aula 5 - Problema "comerciante" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 5 – Condições Aninhadas{% endblock %}
+{% block lesson_title %}Aula 5 – Análise de Lucro{% endblock %}
 
 {% block lesson_content %}
     <section>
+
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Entender o conceito de if aninhados</li>
-            <li>Organizar condições complexas</li>
-            <li>Evitar código confuso e melhorar legibilidade</li>
+            <li>Trabalhar com múltiplos dados de entrada</li>
+            <li>Classificar valores em categorias</li>
+            <li>Calcular estatísticas (contadores e totais)</li>
+            <li>Usar loops para processar vários itens</li>
         </ul>
+
     </section>
 
     <section>
-        <h2>🏗️ O que são Condições Aninhadas?</h2>
-        <p>São estruturas if-else colocadas dentro de outras estruturas if-else, criando múltiplos níveis de decisão.</p>
+
+        <h2>📚 Conceitos: Loops e Contadores</h2>
+        <p>Para processar múltiplos itens, usamos loops (laços de repetição):</p>
         
-        <h3>Estrutura Básica:</h3>
-        <pre><code>if condicao1:
-    if condicao2:
-        # Executado se ambas forem True
-        print("Condições 1 e 2 são verdadeiras")
-    else:
-        # Executado se apenas condicao1 for True
-        print("Apenas condição 1 é verdadeira")
-else:
-    print("Condição 1 é falsa")</code></pre>
-    </section>
-
-    <section>
-        <h2>📝 Exemplo Prático: Sistema de Notas</h2>
-        <pre><code>nota = float(input("Digite sua nota: "))
-
-if nota >= 7:
-    print("Aprovado!")
-    if nota >= 9:
-        print("Parabéns! Excelente desempenho!")
-    elif nota >= 8:
-        print("Muito bom!")
-    else:
-        print("Bom trabalho!")
-else:
-    print("Reprovado.")
-    if nota >= 5:
-        print("Você pode fazer recuperação.")
-    else:
-        print("Precisa refazer a matéria.")</code></pre>
-    </section>
-
-    <section>
-        <h2>⚖️ Quando Usar vs Operadores Lógicos</h2>
+        <h3>Loop com FOR:</h3>
+        <pre><code># Repetir N vezes
+n = int(input("Quantos itens? "))
+for i in range(n):
+    valor = float(input(f"Item {i+1}: "))
+    # processar valor</code></pre>
         
-        <h3>✅ Use Condições Aninhadas quando:</h3>
+        <h3>Contadores:</h3>
+        <pre><code>total = 0
+aprovados = 0
+
+for i in range(10):
+    nota = float(input("Nota: "))
+    total += nota  # acumula no total
+    if nota >= 7:
+        aprovados += 1  # incrementa contador
+
+media = total / 10
+print(f"Aprovados: {aprovados}")</code></pre>
+
+    </section>
+
+    <section>
+
+        <h2>📊 Classificação por Lucro</h2>
+        <p>Vamos classificar produtos em três categorias baseadas no percentual de lucro:</p>
+        
+        <h3>Cálculo do lucro:</h3>
+        <pre><code>lucro_percentual = ((preco_venda - preco_compra) / preco_compra) * 100</code></pre>
+        
+        <h3>Categorias:</h3>
         <ul>
-            <li>As condições internas dependem da externa</li>
-            <li>Cada nível precisa de ações diferentes</li>
-            <li>A lógica fica mais clara dividida em etapas</li>
+            <li><strong>Lucro &lt; 10%:</strong> Lucro abaixo de 10%</li>
+            <li><strong>10% ≤ Lucro ≤ 20%:</strong> Lucro entre 10% e 20%</li>
+            <li><strong>Lucro &gt; 20%:</strong> Lucro acima de 20%</li>
         </ul>
         
-        <h3>✅ Use Operadores Lógicos quando:</h3>
-        <ul>
-            <li>Todas as condições são independentes</li>
-            <li>A ação é a mesma para diferentes combinações</li>
-            <li>A condição é simples</li>
-        </ul>
+        <h3>Exemplo de classificação:</h3>
+        <pre><code>if lucro_percentual < 10:
+    abaixo_10 += 1
+elif lucro_percentual <= 20:
+    entre_10_20 += 1
+else:
+    acima_20 += 1</code></pre>
+
     </section>
 
     <section>
-        <h2>🔄 Comparação: Aninhado vs Lógico</h2>
-        
-        <h3>Versão com Operadores Lógicos:</h3>
-        <pre><code>if idade >= 18 and tem_carteira and tem_carro:
-    print("Pode dirigir sozinho")</code></pre>
-    
-        <h3>Versão Aninhada (mais detalhada):</h3>
-        <pre><code>if idade >= 18:
-    print("Maior de idade ✓")
-    if tem_carteira:
-        print("Tem carteira ✓")
-        if tem_carro:
-            print("Pode dirigir sozinho!")
-        else:
-            print("Precisa de um carro")
-    else:
-        print("Precisa tirar carteira")
-else:
-    print("Menor de idade")</code></pre>
-    </section>
-<section>
-        <h2>💡 Dicas Importantes</h2>
-        <div class="tip-box">
-            <ul>
-                <li>🎯 Mantenha no máximo 3 níveis de aninhamento</li>
-                <li>📏 Use indentação correta (4 espaços por nível)</li>
-                <li>💭 Comente código complexo</li>
-                <li>🔄 Considere usar elif quando possível</li>
-            </ul>
-        </div>
+
+        <h2>💡 Problema: Análise de Lucro</h2>
+        <p>Um comerciante deseja fazer o levantamento do lucro das mercadorias que ele comercializa. Para isto, mandou digitar um conjunto de N mercadorias, cada uma contendo nome, preço de compra e preço de venda das mesmas. Fazer um programa que leia tais dados e determine e escreva quantas mercadorias proporcionaram:</p>
+        <ul>
+            <li>Lucro &lt; 10%</li>
+            <li>Lucro entre 10% e 20%</li>
+            <li>Lucro &gt; 20%</li>
+        </ul>
+        <p>O programa também deve determinar e escrever o valor total de compra e de venda de todas as mercadorias, assim como o lucro total.</p>
+
     </section>
 {% endblock %}
-
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
-    <p>Complete o exercício no editor ao lado.</p>
+
+        <h4>📝 Exemplo:</h4>
+        <pre><code>Serao digitados dados de quantos produtos? 3
+Produto 1:
+Nome: Feijao
+Preco de compra: 10.00
+Preco de venda: 12.50
+Produto 2:
+Nome: Arroz
+Preco de compra: 8.00
+Preco de venda: 11.00
+Produto 3:
+Nome: Oleo
+Preco de compra: 6.00
+Preco de venda: 8.50
+
+RELATORIO:
+Lucro abaixo de 10%: 0
+Lucro entre 10% e 20%: 1
+Lucro acima de 20%: 2
+Valor total de compra: 24.00
+Valor total de venda: 32.00
+Lucro total: 8.00</code></pre>
+
 {% endblock %}
 
-{% block initial_code %}# Seu código aqui
+{% block initial_code %}# Leia a quantidade de produtos
+n = int(input("Serao digitados dados de quantos produtos? "))
+
+# Inicialize os contadores e totais
+
+# Para cada produto
+for i in range(n):
+    print(f"Produto {i+1}:")
+    nome = input("Nome: ")
+    preco_compra = float(input("Preco de compra: "))
+    preco_venda = float(input("Preco de venda: "))
+    
+    # Calcule o lucro percentual
+    
+    # Classifique e conte
+    
+    # Acumule os totais
+
+# Exiba o relatório
 {% endblock %}
 
 {% block extra_js %}
 <script>
-function runCode() {
-    const code = document.getElementById('code-input').value;
-    const output = document.getElementById('output');
-    
-    output.innerHTML = '<div class="output-success">Código executado! Teste diferentes cenários de cadastro.</div>';
-}
+    function getExerciseDescription() {
+        return `Problema "comerciante":
+
+Um comerciante deseja fazer o levantamento do lucro das mercadorias que ele comercializa. Para isto, mandou digitar um conjunto de N mercadorias, cada uma contendo nome, preço de compra e preço de venda das mesmas.
+
+ENTRADA:
+- N (quantidade de produtos)
+- Para cada produto:
+  - Nome (string)
+  - Preço de compra (float)
+  - Preço de venda (float)
+
+SAÍDA:
+- Lucro abaixo de 10%: [quantidade]
+- Lucro entre 10% e 20%: [quantidade]
+- Lucro acima de 20%: [quantidade]
+- Valor total de compra: [valor com 2 casas]
+- Valor total de venda: [valor com 2 casas]
+- Lucro total: [valor com 2 casas]
+
+CÁLCULO:
+- Lucro % = ((venda - compra) / compra) × 100`;
+    }
 </script>
 {% endblock %}

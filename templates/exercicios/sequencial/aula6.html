@@ -1,172 +1,86 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 6 - Operações Matemáticas Avançadas | CodeLogic{% endblock %}
+{% block title %}Aula 6 - Problema "troco" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 6 – Operações Matemáticas Avançadas{% endblock %}
+{% block lesson_title %}Aula 6 – Cálculo de Troco{% endblock %}
 
 {% block lesson_content %}
     <section>
-        <h2>🎯 Objetivo</h2>
+        <h2>�� Objetivo</h2>
         <ul>
-            <li>Conhecer funções matemáticas básicas do Python</li>
-            <li>Trabalhar com potências e raízes</li>
-            <li>Resolver problemas matemáticos com programação</li>
+            <li>Trabalhar com sequência de cálculos</li>
+            <li>Misturar int e float no mesmo programa</li>
+            <li>Calcular total de compra e troco</li>
         </ul>
     </section>
 
     <section>
-        <h2>🔢 Funções Matemáticas Embutidas</h2>
-        
-        <p>Python já vem com várias funções matemáticas úteis que não precisam de importação:</p>
-        
-        <h3>1. abs() - Valor Absoluto</h3>
-        <pre><code># Remove o sinal negativo
-numero = -15
-positivo = abs(numero)
-print(positivo)  # 15
-
-# Útil para calcular distâncias
-ponto1 = 10
-ponto2 = 25
-distancia = abs(ponto2 - ponto1)
-print(f"Distância: {distancia}")  # 15</code></pre>
-        
-        <h3>2. round() - Arredondamento</h3>
-        <pre><code># Arredonda para o inteiro mais próximo
-print(round(3.7))      # 4
-print(round(3.2))      # 3
-print(round(3.5))      # 4
-
-# Arredonda com casas decimais
-pi = 3.14159
-print(round(pi, 2))    # 3.14
-print(round(pi, 3))    # 3.142</code></pre>
-        
-        <h3>3. max() e min() - Maior e Menor</h3>
-        <pre><code># Encontra o maior valor
-maior = max(5, 8, 2, 10, 3)
-print(f"Maior: {maior}")  # 10
-
-# Encontra o menor valor
-menor = min(5, 8, 2, 10, 3)
-print(f"Menor: {menor}")  # 2
-
-# Pode usar com variáveis
-nota1 = 7.5
-nota2 = 8.0
-nota3 = 6.5
-melhor_nota = max(nota1, nota2, nota3)
-print(f"Melhor nota: {melhor_nota}")  # 8.0</code></pre>
-        
-        <h3>4. pow() ou ** - Potenciação</h3>
-        <pre><code># Usando pow()
-resultado = pow(2, 3)    # 2³ = 8
-print(resultado)
-
-# Usando ** (mais comum)
-quadrado = 5 ** 2        # 5² = 25
-print(quadrado)
-
-cubo = 3 ** 3            # 3³ = 27
-print(cubo)
-
-# Raiz quadrada (potência fracionária)
-raiz = 16 ** 0.5         # √16 = 4.0
-print(raiz)</code></pre>
+        <h2>🛒 Cálculo de Compras</h2>
+        <p>Para calcular o total de uma compra:</p>
+        <pre><code>total = preco_unitario * quantidade</code></pre>
+        <p>Exemplo: R$ 8,00 × 2 unidades = R$ 16,00</p>
     </section>
 
     <section>
-        <h2>🧮 Exemplos Práticos</h2>
-        
-        <h3>Exemplo 1: Calculadora de Quadrados e Cubos</h3>
-        <pre><code>numero = int(input("Digite um número: "))
-
-quadrado = numero ** 2
-cubo = numero ** 3
-
-print(f"{numero} ao quadrado = {quadrado}")
-print(f"{numero} ao cubo = {cubo}")</code></pre>
-        
-        <h3>Exemplo 2: Média de Notas com Arredondamento</h3>
-        <pre><code>nota1 = float(input("Nota 1: "))
-nota2 = float(input("Nota 2: "))
-nota3 = float(input("Nota 3: "))
-
-media = (nota1 + nota2 + nota3) / 3
-media_arredondada = round(media, 2)
-
-print(f"Média: {media_arredondada}")
-print(f"Maior nota: {max(nota1, nota2, nota3)}")
-print(f"Menor nota: {min(nota1, nota2, nota3)}")</code></pre>
-        
-        <h3>Exemplo 3: Cálculo de Área do Círculo (aproximado)</h3>
-        <pre><code># Usando pi aproximado: 3.14159
-pi = 3.14159
-
-raio = float(input("Digite o raio: "))
-area = pi * (raio ** 2)
-circunferencia = 2 * pi * raio
-
-print(f"Área: {round(area, 2)}")
-print(f"Circunferência: {round(circunferencia, 2)}")</code></pre>
-        
-        <h3>Exemplo 4: Teorema de Pitágoras</h3>
-        <pre><code># Calcular hipotenusa de triângulo retângulo
-cateto1 = float(input("Cateto 1: "))
-cateto2 = float(input("Cateto 2: "))
-
-# c² = a² + b², então c = √(a² + b²)
-soma_quadrados = (cateto1 ** 2) + (cateto2 ** 2)
-hipotenusa = soma_quadrados ** 0.5
-
-print(f"Hipotenusa: {round(hipotenusa, 2)}")</code></pre>
+        <h2>💵 Cálculo do Troco</h2>
+        <p>O troco é o dinheiro recebido menos o total:</p>
+        <pre><code>troco = dinheiro - total</code></pre>
+        <p>Exemplo: R$ 20,00 - R$ 16,00 = R$ 4,00</p>
     </section>
 
     <section>
-        <h2>💡 Dicas Importantes</h2>
-        <ul>
-            <li><strong>Raiz quadrada:</strong> Use exponenciação com 0.5: <code>numero ** 0.5</code></li>
-            <li><strong>Raiz cúbica:</strong> Use exponenciação com 1/3: <code>numero ** (1/3)</code></li>
-            <li><strong>Pi aproximado:</strong> Use 3.14159 para cálculos geométricos</li>
-            <li><strong>Sempre arredonde:</strong> Use round() para resultados limpos</li>
-        </ul>
+        <h2>🔀 Misturando int e float</h2>
+        <p>Podemos usar int para quantidade e float para valores monetários:</p>
+        <pre><code>preco_unitario = float(input(...))
+quantidade = int(input(...))
+dinheiro = float(input(...))</code></pre>
     </section>
 {% endblock %}
 
 {% block exercise_description %}
-    <h4>🎮 Exercício Prático</h4>
+    <h4>🎮 Problema "troco"</h4>
+    <p>Fazer um programa para calcular o troco no processo de pagamento de um produto de uma mercearia.</p>
     
-    <p><strong>Crie um programa que:</strong></p>
-    <ol>
-        <li>Peça ao usuário um número</li>
-        <li>Calcule e exiba:
-            <ul>
-                <li>O número ao quadrado</li>
-                <li>O número ao cubo</li>
-                <li>A raiz quadrada do número (use ** 0.5)</li>
-                <li>O valor absoluto do número</li>
-            </ul>
-        </li>
-        <li>Arredonde todos os resultados para 2 casas decimais</li>
-    </ol>
+    <h4>📝 Exemplo 1:</h4>
+    <pre><code>Preço unitário do produto: 8.00
+Quantidade comprada: 2
+Dinheiro recebido: 20.00
+TROCO = 4.00</code></pre>
     
-    <p><strong>Exemplo de saída:</strong></p>
-    <pre>Digite um número: 9
-Número: 9
-Quadrado: 81.0
-Cubo: 729.0
-Raiz quadrada: 3.0
-Valor absoluto: 9.0</pre>
-    
-    <p><strong>Dica:</strong> Use <code>abs()</code>, <code>round()</code> e <code>** 0.5</code></p>
+    <h4>📝 Exemplo 2:</h4>
+    <pre><code>Preço unitário do produto: 30.00
+Quantidade comprada: 3
+Dinheiro recebido: 100.00
+TROCO = 10.00</code></pre>
 {% endblock %}
 
-{% block initial_code %}# Exercício: Calculadora Matemática
-# Complete o código abaixo
+{% block initial_code %}preco_unitario = float(input("Preço unitário do produto: "))
+quantidade = int(input("Quantidade comprada: "))
+dinheiro = float(input("Dinheiro recebido: "))
 
-numero = float(input("Digite um número: "))
+total = preco_unitario * quantidade
+troco = dinheiro - total
 
-# Seu código aqui
-# Calcule: quadrado, cubo, raiz quadrada e valor absoluto
-# Use round() para arredondar para 2 casas decimais
+print(f"TROCO = {troco:.2f}"){% endblock %}
+
+{% block extra_js %}
+<script>
+    function getExerciseDescription() {
+        return `Problema "troco":
+
+Fazer um programa para calcular o troco no processo de pagamento de um produto de uma mercearia.
+
+EXEMPLO 1:
+Preço unitário do produto: 8.00
+Quantidade comprada: 2
+Dinheiro recebido: 20.00
+TROCO = 4.00
+
+EXEMPLO 2:
+Preço unitário do produto: 30.00
+Quantidade comprada: 3
+Dinheiro recebido: 100.00
+TROCO = 10.00`;
+    }
+</script>
 {% endblock %}

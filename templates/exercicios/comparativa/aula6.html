@@ -1,163 +1,134 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 6 - Validação de Dados | CodeLogic{% endblock %}
+{% block title %}Aula 6 - Problema "lanchonete" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 6 – Validação de Dados{% endblock %}
+{% block lesson_title %}Aula 6 – Sistema de Lanchonete{% endblock %}
 
 {% block lesson_content %}
     <section>
+
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Validar entrada de dados do usuário</li>
-            <li>Tratar erros de digitação e formato</li>
-            <li>Criar sistemas mais robustos e seguros</li>
+            <li>Implementar menu de opções</li>
+            <li>Trabalhar com tabela de preços</li>
+            <li>Calcular total baseado em código e quantidade</li>
         </ul>
+
     </section>
 
     <section>
-        <h2>🛡️ Por que Validar Dados?</h2>
-        <p>A validação de dados é essencial para:</p>
-        <ul>
-            <li>🔒 Garantir segurança do sistema</li>
-            <li>🎯 Evitar erros e crashes</li>
-            <li>✅ Manter qualidade dos dados</li>
-            <li>😊 Melhorar experiência do usuário</li>
-        </ul>
-    </section>
 
-    <section>
-        <h2>📊 Tipos de Validação</h2>
+        <h2>📚 Conceitos: Estrutura de Decisão Múltipla</h2>
+        <p>Quando temos múltiplas opções baseadas em um mesmo valor, usamos <code>if/elif/else</code>:</p>
         
-        <h3>1. Validação de Intervalo</h3>
-        <pre><code>idade = int(input("Digite sua idade: "))
+        <h3>Exemplo - Menu:</h3>
+        <pre><code>codigo = int(input("Código do produto: "))
 
-if idade >= 0 and idade <= 120:
-    print(f"Idade válida: {idade}")
+if codigo == 1:
+    preco = 5.00
+elif codigo == 2:
+    preco = 3.50
+elif codigo == 3:
+    preco = 4.80
+elif codigo == 4:
+    preco = 8.90
+elif codigo == 5:
+    preco = 7.32
 else:
-    print("Idade deve estar entre 0 e 120 anos")</code></pre>
-    
-        <h3>2. Validação de Formato</h3>
-        <pre><code>email = input("Digite seu email: ")
+    print("Codigo invalido!")
+    preco = 0</code></pre>
+        
+        <h3>💡 Alternativa - Dicionário:</h3>
+        <pre><code>precos = {
+    1: 5.00,
+    2: 3.50,
+    3: 4.80,
+    4: 8.90,
+    5: 7.32
+}
 
-# Verificar se tem @ e .
-if "@" in email and "." in email:
-    # Verificar posições
-    pos_arroba = email.find("@")
-    pos_ponto = email.find(".", pos_arroba)
-    
-    if pos_arroba > 0 and pos_ponto > pos_arroba + 1:
-        print("Email válido!")
-    else:
-        print("Formato de email inválido")
-else:
-    print("Email deve conter @ e .")</code></pre>
-    
-        <h3>3. Validação de Tamanho</h3>
-        <pre><code>nome = input("Digite seu nome: ")
-tamanho = len(nome)
+codigo = int(input("Código: "))
+preco = precos.get(codigo, 0)  # 0 se código inválido</code></pre>
 
-if tamanho >= 3 and tamanho <= 50:
-    print(f"Nome válido: {nome}")
-else:
-    print("Nome deve ter entre 3 e 50 caracteres")</code></pre>
     </section>
 
     <section>
-        <h2>🔐 Validação de Senha Simples</h2>
-        <pre><code>senha = input("Digite sua senha: ")
-tamanho_senha = len(senha)
 
-# Verificar tamanho mínimo
-if tamanho_senha >= 8:
-    print("Senha forte! ✅")
-    print(f"Sua senha tem {tamanho_senha} caracteres")
-else:
-    print("Senha fraca! ❌")
-    print("Senha deve ter pelo menos 8 caracteres")
-    faltam = 8 - tamanho_senha
-    print(f"Faltam {faltam} caracteres")</code></pre>
+        <h2>🍔 Tabela de Produtos</h2>
+        <table border="1" cellpadding="8" style="border-collapse: collapse; margin: 20px 0;">
+            <thead>
+                <tr style="background-color: #f0f0f0;">
+                    <th>Código</th>
+                    <th>Produto</th>
+                    <th>Preço</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>1</td><td>Cachorro quente</td><td>R$ 5.00</td></tr>
+                <tr><td>2</td><td>X-Salada</td><td>R$ 3.50</td></tr>
+                <tr><td>3</td><td>X-Bacon</td><td>R$ 4.80</td></tr>
+                <tr><td>4</td><td>Torrada simples</td><td>R$ 8.90</td></tr>
+                <tr><td>5</td><td>Refrigerante</td><td>R$ 7.32</td></tr>
+            </tbody>
+        </table>
+        
+        <h3>Cálculo:</h3>
+        <pre><code>total = preco_unitario × quantidade</code></pre>
+
     </section>
 
     <section>
-        <h2>📞 Validação de Telefone</h2>
-        <pre><code>telefone = input("Digite seu telefone (apenas números): ")
-tamanho_tel = len(telefone)
 
-# Verificar se só tem números
-if telefone.isdigit():
-    # Verificar tamanho (10 ou 11 dígitos)
-    if tamanho_tel == 10 or tamanho_tel == 11:
-        print("Telefone válido! ✅")
-        if tamanho_tel == 11:
-            print("Telefone com DDD e 9º dígito")
-        else:
-            print("Telefone com DDD")
-    else:
-        print("Telefone deve ter 10 ou 11 dígitos")
-else:
-    print("Telefone deve conter apenas números")</code></pre>
-    </section>
+        <h2>💡 Problema: Lanchonete</h2>
+        <p>Uma lanchonete possui vários produtos. Cada produto tem um código e um preço. Você deve fazer um programa para ler o código de um produto e a quantidade comprada, e daí informar qual o valor a ser pago, com duas casas decimais.</p>
 
-    <section>
-        <h2>🎮 Validação de Nota</h2>
-        <pre><code>nota = float(input("Digite a nota (0-10): "))
-
-if nota >= 0 and nota <= 10:
-    print(f"Nota registrada: {nota}")
-    
-    # Feedback adicional
-    if nota >= 7:
-        print("Aprovado! 🎉")
-    elif nota >= 5:
-        print("Recuperação ⚠️")
-    else:
-        print("Reprovado ❌")
-else:
-    print("Nota inválida! Deve estar entre 0 e 10")</code></pre>
-    </section>
-
-    <section>
-        <h2>💡 Dicas de Boas Práticas</h2>
-        <ul>
-            <li>📝 Sempre informe o formato esperado</li>
-            <li>🎯 Seja específico nas mensagens de erro</li>
-            <li>✅ Use comparações encadeadas (0 <= nota <= 10)</li>
-            <li>� Verifique tamanho com len()</li>
-            <li>⚡ Valide no momento da entrada</li>
-        </ul>
     </section>
 {% endblock %}
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
-    
-    <p><strong>Tarefa:</strong> Sistema de Validação de Cadastro</p>
-    <ul>
-        <li>Peça nome completo (deve ter mais de 5 caracteres)</li>
-        <li>Peça idade (deve estar entre 18 e 100)</li>
-        <li>Peça email (deve conter @ e .)</li>
-        <li>Peça senha (deve ter pelo menos 6 caracteres)</li>
-        <li>Para cada dado, mostre se é válido ou inválido</li>
-        <li>No final, mostre se o cadastro foi aceito ou negado</li>
-    </ul>
-    
-    <p><strong>Exemplo de saída esperada:</strong></p>
-    <pre><code>🔐 VALIDAÇÃO DE CADASTRO 🔐
-Nome: João Silva ✅
-Idade: 25 ✅
-Email: joao@email.com ✅
-Senha: segura123 ✅
-✅ CADASTRO APROVADO!</code></pre>
+
+        <h4>📝 Exemplo 1:</h4>
+        <pre><code>Codigo do produto: 3
+Quantidade: 2
+Valor a pagar: R$ 9.60</code></pre>
+        
+        <h4>📝 Exemplo 2:</h4>
+        <pre><code>Codigo do produto: 2
+Quantidade: 3
+Valor a pagar: R$ 10.50</code></pre>
+
 {% endblock %}
 
-{% block initial_code %}print("🔐 VALIDAÇÃO DE CADASTRO 🔐")
-print()
+{% block initial_code %}# Leia o código e quantidade
+codigo = int(input("Codigo do produto: "))
+quantidade = int(input("Quantidade: "))
 
-# Entrada de dados
-nome = input("Digite seu nome completo: ")
-idade = int(input("Digite sua idade: "))
-email = input("Digite seu email: ")
-senha = input("Digite sua senha: ")
+# Determine o preço baseado no código
 
-# SEU CÓDIGO AQUI
-# Valide cada campo e mostre o resultado final{% endblock %}
+# Calcule e exiba o valor total
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function getExerciseDescription() {
+        return `Problema "lanchonete":
+
+Uma lanchonete possui vários produtos. Cada produto tem um código e um preço. Você deve fazer um programa para ler o código de um produto e a quantidade comprada, e daí informar qual o valor a ser pago.
+
+TABELA DE PRODUTOS:
+Código | Produto          | Preço
+   1   | Cachorro quente  | R$ 5.00
+   2   | X-Salada         | R$ 3.50
+   3   | X-Bacon          | R$ 4.80
+   4   | Torrada simples  | R$ 8.90
+   5   | Refrigerante     | R$ 7.32
+
+ENTRADA:
+- Código do produto (int)
+- Quantidade (int)
+
+SAÍDA:
+- Valor a pagar: R$ [valor com 2 casas decimais]`;
+    }
+</script>
+{% endblock %}

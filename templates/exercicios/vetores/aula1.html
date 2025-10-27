@@ -1,183 +1,156 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 1 - Introdução às Listas | CodeLogic{% endblock %}
-{% block lesson_title %}Aula 1 - Introdução às Listas{% endblock %}
+{% block title %}Aula 1 - Problema "negativos" | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 1 – Introdução a Listas e Números Negativos{% endblock %}
 
 {% block lesson_content %}
-<div class="content-section">
-    <h2>🎯 Objetivos da Aula</h2>
-    <ul>
-        <li>Entender o conceito de listas (vetores)</li>
-        <li>Aprender a criar e manipular listas</li>
-        <li>Conhecer os principais métodos de lista</li>
-        <li>Praticar com exemplos reais</li>
-    </ul>
-</div>
+    <section>
 
-<div class="content-section">
-    <h2>📊 O que são Listas?</h2>
-    <p>
-        Listas (ou vetores) são estruturas de dados que permitem armazenar 
-        múltiplos valores em uma única variável, organizados em sequência.
-    </p>
-    
-    <div class="highlight-box">
-        <h3>💡 Analogia do Dia a Dia</h3>
-        <p>
-            Uma lista é como uma estante de livros:
-            <br>• Cada posição (prateleira) tem um índice (0, 1, 2...)
-            <br>• Você pode adicionar, remover ou trocar livros
-            <br>• Você pode ver quantos livros tem no total
-        </p>
-    </div>
-</div>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Entender o conceito de listas (arrays/vetores)</li>
+            <li>Ler valores e armazenar em lista</li>
+            <li>Percorrer lista com índices</li>
+            <li>Filtrar elementos por condição</li>
+        </ul>
 
-<div class="content-section">
-    <h2>🔧 Criando Listas</h2>
-    
-    <div class="code-example">
-        <h3>Diferentes formas de criar listas:</h3>
+    </section>
+
+    <section>
+
+        <h2>📚 Conceitos: Listas em Python</h2>
+        <p>Listas são estruturas que armazenam múltiplos valores em uma única variável:</p>
+        
+        <h3>Criar listas:</h3>
         <pre><code># Lista vazia
-lista_vazia = []
+numeros = []
 
-# Lista com números
-numeros = [1, 2, 3, 4, 5]
+# Lista com valores
+notas = [8.5, 9.0, 7.5, 6.0]
 
-# Lista com strings
-frutas = ["maçã", "banana", "laranja"]
-
-# Lista mista
-mista = [1, "texto", 3.14, True]
-
-# Lista com range
-sequencia = list(range(1, 6))  # [1, 2, 3, 4, 5]</code></pre>
-    </div>
-</div>
-
-<div class="content-section">
-    <h2>🔍 Acessando Elementos</h2>
-    
-    <div class="code-example">
-        <h3>Usando índices:</h3>
-        <pre><code>frutas = ["maçã", "banana", "laranja", "uva"]
-
-# Acessando elementos (índice começa em 0)
-print(frutas[0])    # maçã
-print(frutas[1])    # banana
-print(frutas[-1])   # uva (último elemento)
-
-# Verificando tamanho
-print(len(frutas))  # 4</code></pre>
-    </div>
-
-    <div class="index-diagram">
-        <h3>📍 Diagrama de Índices:</h3>
-        <table>
-            <tr><td>Valor</td><td>"maçã"</td><td>"banana"</td><td>"laranja"</td><td>"uva"</td></tr>
-            <tr><td>Índice</td><td>0</td><td>1</td><td>2</td><td>3</td></tr>
-            <tr><td>Índice Negativo</td><td>-4</td><td>-3</td><td>-2</td><td>-1</td></tr>
-        </table>
-    </div>
-</div>
-
-<div class="content-section">
-    <h2>🔨 Métodos Básicos de Lista</h2>
-    
-    <div class="methods-grid">
-        <div class="method">
-            <h4>append()</h4>
-            <p>Adiciona elemento no final</p>
-            <pre><code>lista.append("novo")</code></pre>
-        </div>
+# Lista com tamanho fixo (N zeros)
+n = 5
+valores = [0] * n  # [0, 0, 0, 0, 0]</code></pre>
         
-        <div class="method">
-            <h4>insert()</h4>
-            <p>Adiciona elemento em posição específica</p>
-            <pre><code>lista.insert(1, "meio")</code></pre>
-        </div>
+        <h3>Acessar elementos:</h3>
+        <pre><code>notas = [8.5, 9.0, 7.5, 6.0]
+
+# Índices começam em 0
+print(notas[0])  # 8.5 (primeiro)
+print(notas[1])  # 9.0 (segundo)
+print(notas[-1]) # 6.0 (último)</code></pre>
         
-        <div class="method">
-            <h4>remove()</h4>
-            <p>Remove primeira ocorrência do valor</p>
-            <pre><code>lista.remove("valor")</code></pre>
-        </div>
+        <h3>Modificar elementos:</h3>
+        <pre><code>notas[0] = 10.0  # Altera primeiro elemento</code></pre>
         
-        <div class="method">
-            <h4>pop()</h4>
-            <p>Remove e retorna elemento por índice</p>
-            <pre><code>elemento = lista.pop(0)</code></pre>
-        </div>
-    </div>
-</div>
+        <h3>Percorrer lista:</h3>
+        <pre><code># Método 1: Com índice
+for i in range(len(notas)):
+    print(f"Nota {i}: {notas[i]}")
 
-<div class="content-section">
-    <h2>🎮 Exemplo Prático</h2>
-    
-    <div class="example-box">
-        <h3>Lista de Compras:</h3>
-        <pre><code># Criando lista de compras
-compras = ["pão", "leite", "ovos"]
+# Método 2: Direto
+for nota in notas:
+    print(nota)</code></pre>
 
-# Adicionando itens
-compras.append("queijo")
-compras.insert(1, "manteiga")
+    </section>
 
-print("Lista de compras:")
-for item in compras:
-    print(f"- {item}")
+    <section>
 
-print(f"\nTotal de itens: {len(compras)}")
+        <h2>🎯 Padrão: Ler N Valores em Lista</h2>
+        <p>Padrão comum para ler valores do usuário e armazenar em lista:</p>
+        
+        <h3>Estrutura completa:</h3>
+        <pre><code># 1. Ler quantidade
+n = int(input("Quantos valores? "))
 
-# Removendo item
-compras.remove("ovos")
-print(f"Após remover ovos: {compras}")</code></pre>
-    </div>
-</div>
+# 2. Criar lista vazia
+valores = []
+
+# 3. Ler e adicionar valores
+for i in range(n):
+    valor = int(input(f"Valor {i}: "))
+    valores.append(valor)  # Adiciona ao final
+
+# 4. Processar lista
+for i in range(len(valores)):
+    if valores[i] < 0:
+        print(f"Negativo na posição {i}")</code></pre>
+        
+        <h3>Alternativa - Criar lista com tamanho fixo:</h3>
+        <pre><code># 1. Ler quantidade
+n = int(input("Quantos valores? "))
+
+# 2. Criar lista com N posições
+valores = [0] * n
+
+# 3. Ler valores diretamente
+for i in range(n):
+    valores[i] = int(input(f"Valor {i}: "))
+
+# 4. Processar
+for i in range(n):
+    if valores[i] < 0:
+        print(f"Negativo: {valores[i]}")</code></pre>
+
+    </section>
+
+    <section>
+
+        <h2>💡 Problema: Negativos</h2>
+        <p>Faça um programa que leia um número inteiro positivo N (máximo = 10) e depois N números inteiros e armazene-os em um vetor. Em seguida, mostrar na tela todos os números negativos lidos.</p>
+
+    </section>
 {% endblock %}
 
 {% block exercise_description %}
-<div class="exercise-header">
-    <h2>🏋️‍♂️ Exercício Prático</h2>
-    <p>Crie uma lista de suas matérias favoritas e manipule ela</p>
-</div>
 
-<div class="exercise-description">
-    <h3>📋 Instruções:</h3>
-    <ol>
-        <li>Crie uma lista chamada <code>materias</code> com 3 matérias</li>
-        <li>Imprima a lista completa</li>
-        <li>Adicione mais uma matéria usando <code>append()</code></li>
-        <li>Imprima o total de matérias</li>
-        <li>Imprima a primeira matéria da lista</li>
-        <li>Imprima a última matéria da lista</li>
-    </ol>
-</div>
+        <h4>📝 Exemplo:</h4>
+        <pre><code>Quantos numeros voce vai digitar? 6
+Digite um numero: 8
+Digite um numero: -2
+Digite um numero: 9
+Digite um numero: 10
+Digite um numero: -3
+Digite um numero: -7
 
-<div class="exercise-hints">
-    <h3>💡 Dicas:</h3>
-    <ul>
-        <li>Use colchetes [] para criar a lista</li>
-        <li>Use <code>len()</code> para obter o tamanho</li>
-        <li>Lembre-se: primeiro índice é 0, último é -1</li>
-        <li>Use aspas para strings</li>
-    </ul>
-</div>
+NUMEROS NEGATIVOS:
+-2
+-3
+-7</code></pre>
 
-<div class="expected-output">
-    <h3>📤 Resultado Esperado:</h3>
-    <pre>Matérias: ['Matemática', 'Python', 'História', 'Geografia']
-Total de matérias: 4
-Primeira matéria: Matemática
-Última matéria: Geografia</pre>
-</div>
 {% endblock %}
 
-{% block initial_code %}
-# Exercício: Lista de matérias favoritas
-# Complete o código abaixo
+{% block initial_code %}# Leia a quantidade
+n = int(input("Quantos numeros voce vai digitar? "))
 
-# Criar lista com 3 matérias
-materias = ["Matemática", "Python", "História"]
+# Crie a lista
+numeros = []
 
-# Seu código aqui
+# Leia os números
+for i in range(n):
+    num = int(input("Digite um numero: "))
+    numeros.append(num)
+
+# Mostre os negativos
+print("\nNUMEROS NEGATIVOS:")
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function getExerciseDescription() {
+        return `Problema "negativos":
+
+Faça um programa que leia um número inteiro positivo N (máximo = 10) e depois N números inteiros e armazene-os em um vetor. Em seguida, mostrar na tela todos os números negativos lidos.
+
+ENTRADA:
+- N (quantidade de números, máx 10)
+- N números inteiros
+
+SAÍDA:
+- "NUMEROS NEGATIVOS:"
+- Cada número negativo em uma linha`;
+    }
+</script>
 {% endblock %}

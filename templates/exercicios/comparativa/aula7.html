@@ -1,169 +1,134 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 7 - Expressões Condicionais | CodeLogic{% endblock %}
+{% block title %}Aula 7 - Problema "multiplos" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 7 – Expressões Condicionais{% endblock %}
+{% block lesson_title %}Aula 7 – Verificação de Múltiplos{% endblock %}
 
 {% block lesson_content %}
     <section>
+
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Aprender o operador ternário em Python</li>
-            <li>Escrever condições de forma mais concisa</li>
-            <li>Usar expressões condicionais em atribuições</li>
+            <li>Verificar relação de divisibilidade</li>
+            <li>Usar operador módulo (%)</li>
+            <li>Trabalhar com lógica de múltiplos</li>
         </ul>
+
     </section>
 
     <section>
-        <h2>⚡ O que são Expressões Condicionais?</h2>
-        <p>Também conhecidas como "operador ternário", permitem escrever condições simples em uma única linha.</p>
+
+        <h2>📚 Conceitos: Operador Módulo (%)</h2>
+        <p>O operador <code>%</code> retorna o <strong>resto</strong> da divisão entre dois números:</p>
         
         <h3>Sintaxe:</h3>
-        <pre><code>variavel = valor_se_true if condicao else valor_se_false</code></pre>
+        <pre><code>resto = dividendo % divisor</code></pre>
         
-        <h3>Equivale a:</h3>
-        <pre><code>if condicao:
-    variavel = valor_se_true
-else:
-    variavel = valor_se_false</code></pre>
-    </section>
-
-    <section>
-        <h2>📝 Exemplos Básicos</h2>
-        
-        <h3>Exemplo 1: Determinando Status</h3>
-        <pre><code># Forma tradicional
-idade = 20
-if idade >= 18:
-    status = "Maior de idade"
-else:
-    status = "Menor de idade"
-
-# Com expressão condicional
-status = "Maior de idade" if idade >= 18 else "Menor de idade"
-print(status)  # Maior de idade</code></pre>
-    
-        <h3>Exemplo 2: Calculando Desconto</h3>
-        <pre><code>valor = 100
-eh_vip = True
-
-# Aplicar desconto de 20% se for VIP, senão 5%
-desconto = 0.20 if eh_vip else 0.05
-valor_final = valor * (1 - desconto)
-
-print(f"Valor final: R$ {valor_final}")  # R$ 80.0</code></pre>
-    </section>
-
-    <section>
-        <h2>🔢 Expressões Condicionais com Números</h2>
-        <pre><code># Encontrar o maior número
-a = 10
-b = 15
-maior = a if a > b else b
-print(f"Maior número: {maior}")
-
-# Determinar paridade
-numero = 7
-tipo = "par" if numero % 2 == 0 else "ímpar"
-print(f"{numero} é {tipo}")
-
-# Nota mínima para aprovação
-nota = 8.5
-resultado = "Aprovado" if nota >= 7 else "Reprovado"
-print(resultado)</code></pre>
-    </section>
-
-    <section>
-        <h2>📚 Expressões Condicionais Aninhadas</h2>
-        <p>⚠️ Use com moderação para manter legibilidade!</p>
-        
-        <pre><code># Classificação de notas
-nota = 8.5
-conceito = ("A" if nota >= 9 else 
-           "B" if nota >= 7 else 
-           "C" if nota >= 5 else "D")
-print(f"Conceito: {conceito}")
-
-# Melhor usar if-elif para casos complexos
-if nota >= 9:
-    conceito = "A"
-elif nota >= 7:
-    conceito = "B"
-elif nota >= 5:
-    conceito = "C"
-else:
-    conceito = "D"</code></pre>
-    </section>
-
-    <section>
-        <h2>🎨 Casos de Uso Práticos</h2>
-        
-        <h3>1. Formatação de Texto</h3>
-        <pre><code>produtos = 3
-mensagem = f"Você tem {produtos} produto{'s' if produtos != 1 else ''} no carrinho"
-print(mensagem)</code></pre>
-    
-        <h3>2. Valores Padrão</h3>
-        <pre><code>nome = input("Seu nome: ")
-nome_final = nome if nome.strip() else "Usuário Anônimo"
-print(f"Olá, {nome_final}!")</code></pre>
-    
-        <h3>3. Cálculos Condicionais</h3>
-        <pre><code>salario = 3000
-eh_funcionario = True
-bonus = salario * 0.1 if eh_funcionario else 0
-print(f"Bônus: R$ {bonus}")</code></pre>
-    </section>
-<section>
-        <h2>⚖️ Quando Usar Expressões Condicionais</h2>
-        
-        <h3>✅ Use quando:</h3>
+        <h3>Exemplos:</h3>
         <ul>
-            <li>A condição é simples e clara</li>
-            <li>Há apenas dois resultados possíveis</li>
-            <li>A linha não fica muito longa</li>
-            <li>Melhora a legibilidade do código</li>
+            <li><code>10 % 2</code> → 0 (10 é divisível por 2)</li>
+            <li><code>10 % 3</code> → 1 (resto da divisão de 10 por 3)</li>
+            <li><code>15 % 5</code> → 0 (15 é divisível por 5)</li>
+            <li><code>17 % 4</code> → 1 (resto da divisão de 17 por 4)</li>
         </ul>
         
-        <h3>❌ Evite quando:</h3>
-        <ul>
-            <li>A condição é complexa</li>
-            <li>Há múltiplas condições aninhadas</li>
-            <li>A linha fica muito longa</li>
-            <li>Prejudica a legibilidade</li>
-        </ul>
+        <h3>💡 Verificar se é múltiplo:</h3>
+        <pre><code>numero = 20
+divisor = 5
+
+if numero % divisor == 0:
+    print(f"{numero} é múltiplo de {divisor}")
+else:
+    print(f"{numero} NÃO é múltiplo de {divisor}")</code></pre>
+
     </section>
 
     <section>
-        <h2>💡 Dicas de Boas Práticas</h2>
-        <div class="tip-box">
-            <ul>
-                <li>📏 Mantenha expressões curtas e simples</li>
-                <li>🔤 Use parênteses para agrupar condições complexas</li>
-                <li>📖 Priorize sempre a legibilidade</li>
-                <li>🧪 Teste com diferentes valores</li>
-                <li>💭 Considere usar if tradicional para lógica complexa</li>
-            </ul>
-        </div>
+
+        <h2>🔢 O que são Múltiplos?</h2>
+        <p>Um número <strong>A</strong> é múltiplo de <strong>B</strong> quando <strong>A</strong> dividido por <strong>B</strong> tem resto zero.</p>
+        
+        <h3>Exemplos:</h3>
+        <ul>
+            <li>20 é múltiplo de 5 (20 ÷ 5 = 4, resto 0)</li>
+            <li>15 é múltiplo de 3 (15 ÷ 3 = 5, resto 0)</li>
+            <li>12 NÃO é múltiplo de 5 (12 ÷ 5 = 2, resto 2)</li>
+        </ul>
+        
+        <h3>🔄 Múltiplos ou divisores?</h3>
+        <ul>
+            <li><strong>A é múltiplo de B:</strong> <code>A % B == 0</code></li>
+            <li><strong>B é divisor de A:</strong> <code>A % B == 0</code> (mesma coisa!)</li>
+        </ul>
+        
+        <h3>Implementação:</h3>
+        <pre><code>a = 20
+b = 5
+
+if a % b == 0 or b % a == 0:
+    print("Sao multiplos")
+else:
+    print("Nao sao multiplos")</code></pre>
+
+    </section>
+
+    <section>
+
+        <h2>💡 Problema: Múltiplos</h2>
+        <p>Fazer um programa para ler dois números inteiros e dizer se um número é múltiplo do outro. Os números podem ser digitados em qualquer ordem.</p>
+
     </section>
 {% endblock %}
-
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
-    <p>Complete o exercício no editor ao lado.</p>
+
+        <h4>📝 Exemplo 1:</h4>
+        <pre><code>Digite dois numeros inteiros:
+6
+24
+Sao multiplos</code></pre>
+        
+        <h4>📝 Exemplo 2:</h4>
+        <pre><code>Digite dois numeros inteiros:
+15
+2
+Nao sao multiplos</code></pre>
+        
+        <h4>📝 Exemplo 3:</h4>
+        <pre><code>Digite dois numeros inteiros:
+100
+20
+Sao multiplos</code></pre>
+
 {% endblock %}
 
-{% block initial_code %}# Seu código aqui
+{% block initial_code %}# Leia dois números
+print("Digite dois numeros inteiros:")
+num1 = int(input())
+num2 = int(input())
+
+# Verifique se são múltiplos
+
+# Exiba o resultado
 {% endblock %}
 
 {% block extra_js %}
 <script>
-function runCode() {
-    const code = document.getElementById('code-input').value;
-    const output = document.getElementById('output');
-    
-    output.innerHTML = '<div class="output-success">Calculadora executada! Teste com diferentes valores e tipos de cliente.</div>';
-}
+    function getExerciseDescription() {
+        return `Problema "multiplos":
+
+Fazer um programa para ler dois números inteiros e dizer se um número é múltiplo do outro. Os números podem ser digitados em qualquer ordem.
+
+ENTRADA:
+- Primeiro número (int)
+- Segundo número (int)
+
+SAÍDA:
+- "Sao multiplos" ou "Nao sao multiplos"
+
+LÓGICA:
+- A é múltiplo de B se A % B == 0
+- OU B é múltiplo de A se B % A == 0`;
+    }
 </script>
 {% endblock %}

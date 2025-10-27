@@ -1,223 +1,145 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 2 - Indexação e Slicing | CodeLogic{% endblock %}
+{% block title %}Aula 2 - Problema "soma_vetor" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 2 – Indexação e Slicing{% endblock %}
+{% block lesson_title %}Aula 2 – Soma e Média de Vetores{% endblock %}
 
 {% block lesson_content %}
     <section>
+
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Acessar elementos individuais das listas</li>
-            <li>Usar índices positivos e negativos</li>
-            <li>Extrair partes de listas com slicing</li>
+            <li>Calcular soma de elementos de lista</li>
+            <li>Calcular média aritmética</li>
+            <li>Exibir elementos de lista formatados</li>
         </ul>
+
     </section>
 
     <section>
-        <h2>📍 Indexação em Listas</h2>
-        <p>Cada elemento da lista tem uma posição (índice) que permite acessá-lo diretamente.</p>
-        
-        <h3>Índices Positivos:</h3>
-        <pre><code>frutas = ["maçã", "banana", "uva", "pêra", "manga"]
-#         0       1        2      3       4
 
-print(frutas[0])  # maçã (primeiro elemento)
-print(frutas[2])  # uva (terceiro elemento)
-print(frutas[4])  # manga (último elemento)</code></pre>
+        <h2>📚 Conceitos: Operações com Listas</h2>
+        <p>Podemos realizar diversas operações com listas:</p>
         
-        <h3>Índices Negativos:</h3>
-        <pre><code>frutas = ["maçã", "banana", "uva", "pêra", "manga"]
-#         -5      -4      -3     -2      -1
+        <h3>Soma de elementos:</h3>
+        <pre><code># Método 1: Loop manual
+numeros = [5, 10, 15, 20]
+soma = 0
+for num in numeros:
+    soma += num
+print(soma)  # 50
 
-print(frutas[-1])  # manga (último elemento)
-print(frutas[-2])  # pêra (penúltimo elemento)
-print(frutas[-5])  # maçã (primeiro elemento)</code></pre>
+# Método 2: Função sum()
+soma = sum(numeros)
+print(soma)  # 50</code></pre>
+        
+        <h3>Média aritmética:</h3>
+        <pre><code>numeros = [8, 9, 7, 6]
+soma = sum(numeros)
+media = soma / len(numeros)
+print(f"Média: {media:.2f}")  # Média: 7.50</code></pre>
+        
+        <h3>Tamanho da lista:</h3>
+        <pre><code>notas = [8.5, 9.0, 7.5]
+quantidade = len(notas)
+print(f"Quantidade: {quantidade}")  # 3</code></pre>
+
     </section>
 
     <section>
-        <h2>⚠️ Tratando Erros de Índice</h2>
-        <pre><code>numeros = [10, 20, 30]
 
-# Acesso seguro com verificação de índice
-indice = 1
-if 0 <= indice < len(numeros):
-    print(f"Elemento no índice {indice}: {numeros[indice]}")  # 20
-else:
-    print(f"Índice {indice} não existe na lista")
+        <h2>📊 Exibindo Listas</h2>
+        <p>Várias formas de exibir elementos de uma lista:</p>
+        
+        <h3>Método 1: Um por linha</h3>
+        <pre><code>valores = [10, 20, 30]
+for valor in valores:
+    print(valor)
+# Saída:
+# 10
+# 20
+# 30</code></pre>
+        
+        <h3>Método 2: Na mesma linha com espaço</h3>
+        <pre><code>valores = [10, 20, 30]
+for valor in valores:
+    print(valor, end=" ")
+print()  # Quebra linha no final
+# Saída: 10 20 30</code></pre>
+        
+        <h3>Método 3: Formatado</h3>
+        <pre><code>valores = [8.5, 9.123, 7.8]
+for i in range(len(valores)):
+    print(f"Posição {i}: {valores[i]:.2f}")
+# Saída:
+# Posição 0: 8.50
+# Posição 1: 9.12
+# Posição 2: 7.80</code></pre>
+        
+        <h3>Método 4: Join (para strings)</h3>
+        <pre><code>valores = [10, 20, 30]
+# Converter para strings
+valores_str = [str(v) for v in valores]
+print(" ".join(valores_str))
+# Saída: 10 20 30</code></pre>
 
-# Tentando acessar índice inválido
-indice = 5
-if 0 <= indice < len(numeros):
-    print(f"Elemento no índice {indice}: {numeros[indice]}")
-else:
-    print(f"Índice {indice} não existe na lista")  # Esta mensagem será exibida</code></pre>
     </section>
 
     <section>
-        <h2>✂️ Slicing (Fatiamento)</h2>
-        <p>O slicing permite extrair partes de uma lista usando a sintaxe <code>[início:fim:passo]</code></p>
-        
-        <h3>Sintaxe Básica:</h3>
-        <pre><code>lista[início:fim]  # elementos do índice início até fim-1</code></pre>
-        
-        <h3>Exemplos:</h3>
-        <pre><code>numeros = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-# Slicing básico
-print(numeros[2:5])    # [2, 3, 4] (índices 2, 3, 4)
-print(numeros[1:4])    # [1, 2, 3] (índices 1, 2, 3)
+        <h2>�� Problema: Soma Vetor</h2>
+        <p>Faça um programa que leia N números reais e armazene-os em um vetor. Em seguida, mostrar na tela todos os elementos do vetor, a soma de todos os valores e a média dos valores.</p>
 
-# Omitindo início ou fim
-print(numeros[:4])     # [0, 1, 2, 3] (do início até índice 3)
-print(numeros[6:])     # [6, 7, 8, 9] (do índice 6 até o fim)
-print(numeros[:])      # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] (cópia completa)</code></pre>
-    </section>
-
-    <section>
-        <h2>🔢 Slicing com Passo</h2>
-        <pre><code>numeros = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-
-# Com passo
-print(numeros[::2])    # [0, 2, 4, 6, 8] (todos, pulando de 2 em 2)
-print(numeros[1::2])   # [1, 3, 5, 7, 9] (do índice 1, pulando de 2 em 2)
-print(numeros[2:8:3])  # [2, 5] (do índice 2 ao 7, pulando de 3 em 3)
-
-# Passo negativo (reverso)
-print(numeros[::-1])   # [9, 8, 7, 6, 5, 4, 3, 2, 1, 0] (lista invertida)
-print(numeros[8:2:-2]) # [8, 6, 4] (do índice 8 ao 3, pulando de 2 em 2)</code></pre>
-    </section>
-
-    <section>
-        <h2>📝 Modificando Elementos</h2>
-        
-        <h3>Alterando Elemento Individual:</h3>
-        <pre><code>cores = ["azul", "verde", "amarelo"]
-print(f"Antes: {cores}")
-
-cores[1] = "vermelho"  # Trocar "verde" por "vermelho"
-print(f"Depois: {cores}")  # ['azul', 'vermelho', 'amarelo']</code></pre>
-        
-        <h3>Modificando com Slicing:</h3>
-        <pre><code>numeros = [1, 2, 3, 4, 5]
-print(f"Original: {numeros}")
-
-# Substituir múltiplos elementos
-numeros[1:4] = [20, 30, 40]
-print(f"Após substituição: {numeros}")  # [1, 20, 30, 40, 5]
-
-# Inserir elementos
-numeros[2:2] = [25, 35]  # Inserir na posição 2
-print(f"Após inserção: {numeros}")  # [1, 20, 25, 35, 30, 40, 5]
-
-# Remover elementos
-del numeros[2:4]  # Remove índices 2 e 3
-print(f"Após remoção: {numeros}")  # [1, 20, 30, 40, 5]</code></pre>
-    </section>
-<section>
-        <h2>🔍 Operações Avançadas</h2>
-        
-        <h3>1. Encontrando Índices:</h3>
-        <pre><code>frutas = ["maçã", "banana", "uva", "banana", "pêra"]
-
-# Primeiro índice de um elemento
-indice = frutas.index("banana")
-print(f"Primeira banana está no índice: {indice}")  # 1
-
-# Encontrar todos os índices de um elemento
-indices_banana = []
-for i in range(len(frutas)):
-    if frutas[i] == "banana":
-        indices_banana.append(i)
-
-print(f"Todas as bananas estão nos índices: {indices_banana}")  # [1, 3]</code></pre>
-        
-        <h3>2. Comparando Listas:</h3>
-        <pre><code>lista1 = [1, 2, 3, 4, 5]
-lista2 = [1, 2, 3, 4, 5]
-lista3 = [1, 2, 3, 5, 4]
-
-print(lista1 == lista2)  # True (mesmos elementos, mesma ordem)
-print(lista1 == lista3)  # False (mesmos elementos, ordens diferentes)
-
-# Verificar se contém os mesmos elementos (sem considerar ordem)
-lista1_ordenada = sorted(lista1)
-lista3_ordenada = sorted(lista3)
-tem_mesmos_elementos = lista1_ordenada == lista3_ordenada
-print(tem_mesmos_elementos)  # True</code></pre>
-    </section>
-
-    <section>
-        <h2>🎨 Padrões Úteis</h2>
-        
-        <h3>1. Dividir Lista em Partes:</h3>
-        <pre><code>numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-# Dividir em duas metades
-meio = len(numeros) // 2
-primeira_metade = numeros[:meio]
-segunda_metade = numeros[meio:]
-
-print(f"Primeira metade: {primeira_metade}")
-print(f"Segunda metade: {segunda_metade}")
-
-# Dividir em grupos de tamanho específico (exemplo: grupos de 3)
-tamanho_grupo = 3
-grupos = []
-for i in range(0, len(numeros), tamanho_grupo):
-    grupo = numeros[i:i + tamanho_grupo]
-    grupos.append(grupo)
-
-print(f"Grupos de 3: {grupos}")  # [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10]]</code></pre>
-        
-        <h3>2. Filtrar com Slicing:</h3>
-        <pre><code>notas = [7.5, 8.0, 6.2, 9.1, 5.5, 8.8, 7.0, 9.5]
-
-# Primeiras 5 notas
-primeiras_5 = notas[:5]
-
-# Notas de posições pares
-posicoes_pares = notas[::2]
-
-# Últimas 3 notas em ordem inversa
-ultimas_3_invertidas = notas[-3:][::-1]
-
-print(f"Primeiras 5: {primeiras_5}")
-print(f"Posições pares: {posicoes_pares}")
-print(f"Últimas 3 invertidas: {ultimas_3_invertidas}")</code></pre>
-    </section>
-
-    <section>
-        <h2>💡 Dicas Importantes</h2>
-        <div class="tip-box">
-            <ul>
-                <li>📍 Índices começam em 0, não em 1</li>
-                <li>🔄 Índices negativos contam do fim para o início</li>
-                <li>✂️ Slicing não modifica a lista original</li>
-                <li>⚠️ Cuidado com IndexError ao acessar índices inexistentes</li>
-                <li>🎯 Use len(lista) para verificar o tamanho</li>
-                <li>🔍 Use in para verificar se elemento existe antes de buscar índice</li>
-            </ul>
-        </div>
     </section>
 {% endblock %}
-
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
-    <p>Complete o exercício no editor ao lado.</p>
+
+        <h4>📝 Exemplo:</h4>
+        <pre><code>Quantos numeros voce vai digitar? 4
+Digite um numero: 8.0
+Digite um numero: 4.0
+Digite um numero: 10.0
+Digite um numero: 14.0
+
+VALORES = 8.0 4.0 10.0 14.0
+SOMA = 36.00
+MEDIA = 9.00</code></pre>
+
 {% endblock %}
 
-{% block initial_code %}# Seu código aqui
+{% block initial_code %}# Leia a quantidade
+n = int(input("Quantos numeros voce vai digitar? "))
+
+# Crie a lista e leia os valores
+numeros = []
+for i in range(n):
+    num = float(input("Digite um numero: "))
+    numeros.append(num)
+
+# Calcule soma e média
+
+
+# Exiba os resultados
+print("\nVALORES = ", end="")
+
 {% endblock %}
 
 {% block extra_js %}
 <script>
-function runCode() {
-    const code = document.getElementById('code-input').value;
-    const output = document.getElementById('output');
-    
-    output.innerHTML = '<div class="output-success">Manipulador de playlist executado! Veja como indexação e slicing funcionam com dados reais.</div>';
-}
+    function getExerciseDescription() {
+        return `Problema "soma_vetor":
+
+Faça um programa que leia N números reais e armazene-os em um vetor. Em seguida, mostrar todos os elementos do vetor, a soma e a média dos valores.
+
+ENTRADA:
+- N (quantidade)
+- N números reais
+
+SAÍDA:
+- VALORES = [valores separados por espaço]
+- SOMA = [valor com 2 casas]
+- MEDIA = [valor com 2 casas]`;
+    }
 </script>
 {% endblock %}

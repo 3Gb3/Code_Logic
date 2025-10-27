@@ -1,121 +1,159 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 6 - Transposição | CodeLogic{% endblock %}
+{% block title %}Aula 6 - Problema "negativos_matriz" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 6 – Transposição de Matrizes{% endblock %}
+{% block lesson_title %}Aula 6 – Contagem de Negativos em Matriz{% endblock %}
 
 {% block lesson_content %}
     <section>
+
         <h2>🎯 Objetivo</h2>
-        <p>Aprender a transpor matrizes (trocar linhas por colunas).</p>
+        <ul>
+            <li>Ler matriz MxN (retangular)</li>
+            <li>Contar elementos negativos</li>
+            <li>Percorrer matriz completa</li>
+        </ul>
+
     </section>
 
     <section>
-        <h2>🔄 O que é Transposição?</h2>
-        <p>Transpor uma matriz significa transformar linhas em colunas e colunas em linhas.</p>
-        <pre><code># Matriz original 3x2
-original = [
-    [1, 2],
-    [3, 4],
-    [5, 6]
-]
 
-# Transposta será 2x3
-# [1, 3, 5]
-# [2, 4, 6]</code></pre>
-    </section>
-
-    <section>
-        <h2>📐 Transpor Matriz Quadrada</h2>
+        <h2>📚 Conceitos: Matrizes Retangulares</h2>
+        <p>Matrizes não precisam ser quadradas - podem ter M linhas e N colunas diferentes:</p>
+        
+        <h3>Matriz 2x3 (2 linhas, 3 colunas):</h3>
         <pre><code>matriz = [
     [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9]
+    [4, 5, 6]
 ]
 
-print("Matriz Original:")
-for linha in matriz:
-    print(linha)
+# M=2 linhas, N=3 colunas</code></pre>
+        
+        <h3>Percorrer matriz MxN:</h3>
+        <pre><code>m = 2  # linhas
+n = 3  # colunas
 
-# Criar matriz transposta
-n = len(matriz)
-transposta = []
-
-for i in range(n):
+# Ler matriz
+matriz = []
+for i in range(m):
     linha = []
     for j in range(n):
-        linha.append(matriz[j][i])  # Inverter índices
-    transposta.append(linha)
+        valor = int(input())
+        linha.append(valor)
+    matriz.append(linha)
 
-print("\nMatriz Transposta:")
-for linha in transposta:
-    print(linha)</code></pre>
+# Percorrer todos os elementos
+for i in range(m):
+    for j in range(n):
+        print(f"[{i}][{j}] = {matriz[i][j]}")</code></pre>
+
     </section>
 
     <section>
-        <h2>📊 Transpor Matriz Retangular</h2>
-        <pre><code># Matriz 3x2
-matriz = [
-    [1, 2],
-    [3, 4],
-    [5, 6]
-]
 
-print("Matriz Original (3x2):")
+        <h2>📊 Contar Elementos com Condição</h2>
+        <p>Para contar quantos elementos atendem uma condição:</p>
+        
+        <h3>Método 1: Contador manual</h3>
+        <pre><code>matriz = [[5, -3, 10], [15, -8, 2]]
+m = 2
+n = 3
+
+negativos = 0
+for i in range(m):
+    for j in range(n):
+        if matriz[i][j] < 0:
+            negativos += 1
+
+print(f"Negativos: {negativos}")  # 2</code></pre>
+        
+        <h3>Método 2: List comprehension</h3>
+        <pre><code># Contar negativos em matriz
+negativos = sum(1 for linha in matriz for elem in linha if elem < 0)
+
+# Ou mais simples:
+negativos = 0
 for linha in matriz:
-    print(linha)
+    for elem in linha:
+        if elem < 0:
+            negativos += 1</code></pre>
 
-# Transposta será 2x3
-linhas_original = len(matriz)
-colunas_original = len(matriz[0])
-
-transposta = []
-
-for j in range(colunas_original):
-    linha = []
-    for i in range(linhas_original):
-        linha.append(matriz[i][j])
-    transposta.append(linha)
-
-print("\nMatriz Transposta (2x3):")
-for linha in transposta:
-    print(linha)</code></pre>
-    </section>
-<section>
-        <h2>💡 Aplicações Práticas</h2>
-        <ul>
-            <li>📊 Reorganizar dados de análise</li>
-            <li>🔄 Trocar perspectiva dos dados</li>
-            <li>📈 Facilitar cálculos em diferentes direções</li>
-            <li>🗂️ Reformatar relatórios</li>
-        </ul>
     </section>
 
     <section>
-        <h2>📚 Resumo</h2>
-        <ul>
-            <li>✅ Entender conceito de transposição</li>
-            <li>✅ Transpor matrizes quadradas</li>
-            <li>✅ Transpor matrizes retangulares</li>
-            <li>✅ Aplicar em análise de dados</li>
-        </ul>
+
+        <h2>💡 Problema: Negativos Matriz</h2>
+        <p>Ler dois números M e N, e depois ler uma matriz MxN de números inteiros, podendo haver repetições. Em seguida, ler um número inteiro X que pertence à matriz. Para este valor X, mostrar sua localização(ões) na matriz, ou uma mensagem caso o valor não se encontre na matriz.</p>
+        
+        <p><strong>Simplificação:</strong> Mostrar apenas a quantidade de valores negativos da matriz.</p>
+
     </section>
 {% endblock %}
-
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
-    <p>Complete o exercício no editor ao lado.</p>
+
+        <h4>📝 Exemplo 1:</h4>
+        <pre><code>Qual a quantidade de linhas da matriz? 2
+Qual a quantidade de colunas da matriz? 3
+Elemento [0,0]: 5
+Elemento [0,1]: -3
+Elemento [0,2]: 10
+Elemento [1,0]: 15
+Elemento [1,1]: -8
+Elemento [1,2]: 2
+
+QUANTIDADE DE NEGATIVOS = 2</code></pre>
+        
+        <h4>📝 Exemplo 2:</h4>
+        <pre><code>Qual a quantidade de linhas da matriz? 3
+Qual a quantidade de colunas da matriz? 3
+Elemento [0,0]: 1
+Elemento [0,1]: 2
+Elemento [0,2]: 3
+Elemento [1,0]: 4
+Elemento [1,1]: 5
+Elemento [1,2]: 6
+Elemento [2,0]: 7
+Elemento [2,1]: 8
+Elemento [2,2]: 9
+
+QUANTIDADE DE NEGATIVOS = 0</code></pre>
+
 {% endblock %}
 
-{% block initial_code %}# Seu código aqui
+{% block initial_code %}# Leia as dimensões
+m = int(input("Qual a quantidade de linhas da matriz? "))
+n = int(input("Qual a quantidade de colunas da matriz? "))
+
+# Leia a matriz
+matriz = []
+for i in range(m):
+    linha = []
+    for j in range(n):
+        elemento = int(input(f"Elemento [{i},{j}]: "))
+        linha.append(elemento)
+    matriz.append(linha)
+
+# Conte os negativos
+
+
+# Exiba o resultado
 {% endblock %}
 
 {% block extra_js %}
 <script>
-function runCode() {
-    const output = document.getElementById('output');
-    output.innerHTML = '<div class="output-success">✅ Transposição realizada! Linhas ↔ Colunas.</div>';
-}
+    function getExerciseDescription() {
+        return `Problema "negativos_matriz":
+
+Ler matriz MxN de inteiros. Mostrar a quantidade de valores negativos.
+
+ENTRADA:
+- M (linhas)
+- N (colunas)
+- M×N elementos inteiros
+
+SAÍDA:
+- QUANTIDADE DE NEGATIVOS = [quantidade]`;
+    }
 </script>
 {% endblock %}

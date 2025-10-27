@@ -1,143 +1,129 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 2 - Operadores de Comparação | CodeLogic{% endblock %}
-{% block lesson_title %}Aula 2 - Operadores de Comparação{% endblock %}
+{% block title %}Aula 2 - Problema "menor_de_tres" | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 2 – Menor de Três Números{% endblock %}
 
 {% block lesson_content %}
-<div class="content-section">
-    <h2>🎯 Objetivos da Aula</h2>
-    <ul>
-        <li>Conhecer todos os operadores de comparação</li>
-        <li>Entender como comparar valores</li>
-        <li>Usar comparações em estruturas condicionais</li>
-        <li>Praticar com diferentes tipos de dados</li>
-    </ul>
-</div>
+    <section>
 
-<div class="content-section">
-    <h2>📊 Operadores de Comparação</h2>
-    <p>
-        Os operadores de comparação são usados para comparar valores e sempre retornam 
-        <code>True</code> ou <code>False</code>.
-    </p>
-    
-    <div class="comparison-table">
-        <table>
-            <tr><th>Operador</th><th>Significado</th><th>Exemplo</th><th>Resultado</th></tr>
-            <tr><td>==</td><td>Igual a</td><td>5 == 5</td><td>True</td></tr>
-            <tr><td>!=</td><td>Diferente de</td><td>5 != 3</td><td>True</td></tr>
-            <tr><td>&gt;</td><td>Maior que</td><td>8 &gt; 5</td><td>True</td></tr>
-            <tr><td>&lt;</td><td>Menor que</td><td>3 &lt; 7</td><td>True</td></tr>
-            <tr><td>&gt;=</td><td>Maior ou igual</td><td>5 &gt;= 5</td><td>True</td></tr>
-            <tr><td>&lt;=</td><td>Menor ou igual</td><td>4 &lt;= 6</td><td>True</td></tr>
-        </table>
-    </div>
-</div>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Comparar múltiplos valores</li>
+            <li>Usar estruturas condicionais encadeadas (elif)</li>
+            <li>Encontrar o menor valor entre três números</li>
+        </ul>
 
-<div class="content-section">
-    <h2>🔍 Exemplos Práticos</h2>
-    
-    <div class="code-example">
-        <h3>Comparando Números:</h3>
-        <pre><code>a = 10
-b = 15
+    </section>
 
-print(a == b)    # False
-print(a != b)    # True
-print(a > b)     # False
-print(a < b)     # True
-print(a >= 10)   # True
-print(b <= 20)   # True</code></pre>
-    </div>
+    <section>
 
-    <div class="code-example">
-        <h3>Comparando Strings:</h3>
-        <pre><code>nome1 = "Ana"
-nome2 = "Bruno"
-
-print(nome1 == nome2)    # False
-print(nome1 != nome2)    # True
-print(nome1 < nome2)     # True (ordem alfabética)</code></pre>
-    </div>
-</div>
-
-<div class="content-section">
-    <h2>🎮 Usando em Condições</h2>
-    
-    <div class="example-box">
-        <h3>Exemplo: Sistema de Notas</h3>
-        <pre><code>nota = 8.5
+        <h2>📚 Conceitos: Condicionais Encadeadas (elif)</h2>
+        <p>Quando precisamos testar múltiplas condições, usamos <code>elif</code> (else if):</p>
+        
+        <h3>Sintaxe:</h3>
+        <pre><code>if condicao1:
+    # executa se condicao1 for True
+elif condicao2:
+    # executa se condicao1 for False e condicao2 for True
+else:
+    # executa se todas as condições forem False</code></pre>
+        
+        <h3>Operadores Lógicos:</h3>
+        <ul>
+            <li><code>and</code> - E lógico (ambas condições devem ser True)</li>
+            <li><code>or</code> - OU lógico (pelo menos uma condição deve ser True)</li>
+            <li><code>not</code> - NÃO lógico (inverte a condição)</li>
+        </ul>
+        
+        <h3>Exemplo:</h3>
+        <pre><code>nota = float(input("Digite a nota: "))
 
 if nota >= 9.0:
     print("Excelente!")
+elif nota >= 7.0:
+    print("Bom")
+elif nota >= 5.0:
+    print("Regular")
 else:
-    if nota >= 7.0:
-        print("Bom!")
-    else:
-        print("Precisa melhorar")</code></pre>
-    </div>
+    print("Insuficiente")</code></pre>
 
-    <div class="example-box">
-        <h3>Exemplo: Verificação de Senha</h3>
-        <pre><code>senha_correta = "1234"
-senha_digitada = "1234"
+    </section>
 
-if senha_digitada == senha_correta:
-    print("Acesso liberado!")
+    <section>
+
+        <h2>🎯 Estratégia: Encontrar o Menor</h2>
+        <p>Para encontrar o menor de três valores, comparamos dois a dois:</p>
+        
+        <h3>Método 1: Comparações encadeadas</h3>
+        <pre><code>if valor1 <= valor2 and valor1 <= valor3:
+    menor = valor1
+elif valor2 <= valor3:
+    menor = valor2
 else:
-    print("Senha incorreta!")</code></pre>
-    </div>
-</div>
+    menor = valor3</code></pre>
+        
+        <h3>Método 2: Função min() do Python</h3>
+        <pre><code>menor = min(valor1, valor2, valor3)</code></pre>
+        
+        <p><strong>💡 Dica:</strong> A função <code>min()</code> é mais simples, mas é importante entender a lógica das comparações!</p>
 
-<div class="content-section">
-    <h2>⚠️ Cuidados Importantes</h2>
-    <ul>
-        <li><strong>== vs =:</strong> Use == para comparar, = para atribuir</li>
-        <li><strong>Tipos compatíveis:</strong> Compare valores do mesmo tipo quando possível</li>
-        <li><strong>Strings:</strong> Comparação é case-sensitive ("A" != "a")</li>
-        <li><strong>Números:</strong> Cuidado ao comparar int com float</li>
-    </ul>
-</div>
+    </section>
+
+    <section>
+
+        <h2>💡 Problema: Menor de Três</h2>
+        <p>Fazer um programa para ler três números inteiros e mostrar na tela o menor deles.</p>
+
+    </section>
 {% endblock %}
 
 {% block exercise_description %}
-<div class="exercise-header">
-    <h2>🏋️‍♂️ Exercício Prático</h2>
-    <p>Crie um programa que compara duas idades e informa qual é maior</p>
-</div>
 
-<div class="exercise-description">
-    <h3>📋 Instruções:</h3>
-    <ol>
-        <li>Crie duas variáveis: <code>idade1 = 25</code> e <code>idade2 = 30</code></li>
-        <li>Compare as idades usando operadores de comparação</li>
-        <li>Se idade1 for maior, imprima "A primeira pessoa é mais velha"</li>
-        <li>Se idade2 for maior, imprima "A segunda pessoa é mais velha"</li>
-        <li>Se forem iguais, imprima "As duas pessoas têm a mesma idade"</li>
-    </ol>
-</div>
+        <h4>📝 Exemplo 1:</h4>
+        <pre><code>Primeiro valor: 7
+Segundo valor: 3
+Terceiro valor: 8
+MENOR = 3</code></pre>
+        
+        <h4>📝 Exemplo 2:</h4>
+        <pre><code>Primeiro valor: 5
+Segundo valor: 12
+Terceiro valor: 5
+MENOR = 5</code></pre>
+        
+        <h4>📝 Exemplo 3:</h4>
+        <pre><code>Primeiro valor: 9
+Segundo valor: 9
+Terceiro valor: 9
+MENOR = 9</code></pre>
 
-<div class="exercise-hints">
-    <h3>💡 Dicas:</h3>
-    <ul>
-        <li>Use if, elif e else para cobrir todos os casos</li>
-        <li>Lembre-se dos operadores >, < e ==</li>
-        <li>Teste alterando os valores das idades</li>
-    </ul>
-</div>
-
-<div class="expected-output">
-    <h3>📤 Resultado Esperado:</h3>
-    <pre>A segunda pessoa é mais velha</pre>
-</div>
 {% endblock %}
 
-{% block initial_code %}
-# Exercício: Comparação de idades
-# Complete o código abaixo
+{% block initial_code %}# Leia os três valores
+valor1 = int(input("Primeiro valor: "))
+valor2 = int(input("Segundo valor: "))
+valor3 = int(input("Terceiro valor: "))
 
-idade1 = 25
-idade2 = 30
+# Encontre o menor valor
 
-# Seu código aqui
+# Exiba o resultado
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function getExerciseDescription() {
+        return `Problema "menor_de_tres":
+
+Fazer um programa para ler três números inteiros e mostrar na tela o menor deles.
+
+ENTRADA:
+- Primeiro valor (int)
+- Segundo valor (int)
+- Terceiro valor (int)
+
+SAÍDA:
+- MENOR = [valor]`;
+    }
+</script>
 {% endblock %}

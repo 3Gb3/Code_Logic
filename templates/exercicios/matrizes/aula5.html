@@ -1,136 +1,200 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 5 - Matrizes Especiais | CodeLogic{% endblock %}
+{% block title %}Aula 5 - Problema "matriz_geral" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 5 – Matrizes Especiais{% endblock %}
+{% block lesson_title %}Aula 5 – Análise Geral de Matriz{% endblock %}
 
 {% block lesson_content %}
     <section>
+
         <h2>🎯 Objetivo</h2>
-        <p>Trabalhar com tipos especiais de matrizes: identidade, diagonal, triangular.</p>
-    </section>
-
-    <section>
-        <h2>🔢 Matriz Identidade</h2>
-        <p>Matriz onde a diagonal principal tem 1 e o resto é 0.</p>
-        <pre><code># Criar matriz identidade 4x4
-tamanho = 4
-identidade = []
-
-for i in range(tamanho):
-    linha = []
-    for j in range(tamanho):
-        if i == j:
-            linha.append(1)
-        else:
-            linha.append(0)
-    identidade.append(linha)
-
-print("Matriz Identidade 4x4:")
-for linha in identidade:
-    print(linha)</code></pre>
-    </section>
-
-    <section>
-        <h2>📐 Diagonal Principal</h2>
-        <pre><code>matriz = [
-    [10, 2, 3, 4],
-    [5, 20, 7, 8],
-    [9, 10, 30, 12],
-    [13, 14, 15, 40]
-]
-
-print("Matriz:")
-for linha in matriz:
-    print(linha)
-
-# Extrair diagonal principal
-print("\nDiagonal principal:")
-for i in range(len(matriz)):
-    print(matriz[i][i], end=" ")
-
-# Soma da diagonal
-soma_diagonal = 0
-for i in range(len(matriz)):
-    soma_diagonal += matriz[i][i]
-
-print(f"\nSoma da diagonal: {soma_diagonal}")</code></pre>
-    </section>
-
-    <section>
-        <h2>🔺 Matriz Triangular Superior</h2>
-        <p>Elementos abaixo da diagonal são zero.</p>
-        <pre><code># Criar matriz triangular superior
-tamanho = 4
-triangular = []
-
-numero = 1
-for i in range(tamanho):
-    linha = []
-    for j in range(tamanho):
-        if j >= i:  # Diagonal e acima
-            linha.append(numero)
-            numero += 1
-        else:  # Abaixo da diagonal
-            linha.append(0)
-    triangular.append(linha)
-
-print("Matriz Triangular Superior:")
-for linha in triangular:
-    for elem in linha:
-        print(f"{elem:3}", end=" ")
-    print()</code></pre>
-    </section>
-
-    <section>
-        <h2>🔻 Matriz Triangular Inferior</h2>
-        <p>Elementos acima da diagonal são zero.</p>
-        <pre><code># Criar matriz triangular inferior
-tamanho = 4
-triangular = []
-
-numero = 1
-for i in range(tamanho):
-    linha = []
-    for j in range(tamanho):
-        if j <= i:  # Diagonal e abaixo
-            linha.append(numero)
-            numero += 1
-        else:  # Acima da diagonal
-            linha.append(0)
-    triangular.append(linha)
-
-print("Matriz Triangular Inferior:")
-for linha in triangular:
-    for elem in linha:
-        print(f"{elem:3}", end=" ")
-    print()</code></pre>
-    </section>
-<section>
-        <h2>📚 Resumo</h2>
         <ul>
-            <li>✅ Criar matriz identidade</li>
-            <li>✅ Trabalhar com diagonal principal</li>
-            <li>✅ Gerar matrizes triangulares</li>
-            <li>✅ Verificar tipos de matrizes</li>
+            <li>Realizar múltiplas análises em uma matriz</li>
+            <li>Somar apenas elementos positivos</li>
+            <li>Escolher e exibir linha específica</li>
+            <li>Elevar elementos ao quadrado</li>
         </ul>
+
+    </section>
+
+    <section>
+
+        <h2>📚 Conceitos: Análises Múltiplas</h2>
+        <p>Podemos realizar várias operações em uma mesma matriz:</p>
+        
+        <h3>1. Soma condicional:</h3>
+        <pre><code># Somar apenas positivos
+soma_positivos = 0
+for i in range(n):
+    for j in range(n):
+        if matriz[i][j] > 0:
+            soma_positivos += matriz[i][j]</code></pre>
+        
+        <h3>2. Escolher linha:</h3>
+        <pre><code>linha_escolhida = int(input("Escolha uma linha: "))
+print(f"LINHA ESCOLHIDA: {matriz[linha_escolhida]}")</code></pre>
+        
+        <h3>3. Escolher coluna:</h3>
+        <pre><code>coluna_escolhida = int(input("Escolha uma coluna: "))
+print("COLUNA ESCOLHIDA:")
+for i in range(n):
+    print(matriz[i][coluna_escolhida])</code></pre>
+        
+        <h3>4. Elevar ao quadrado:</h3>
+        <pre><code># Diagonal principal ao quadrado
+for i in range(n):
+    matriz[i][i] = matriz[i][i] ** 2</code></pre>
+
+    </section>
+
+    <section>
+
+        <h2>🎯 Padrão: Programa Completo</h2>
+        <p>Estrutura para programa com múltiplas operações:</p>
+        
+        <h3>Template:</h3>
+        <pre><code># 1. Ler matriz
+n = int(input("Ordem? "))
+matriz = []
+for i in range(n):
+    linha = []
+    for j in range(n):
+        v = float(input(f"[{i},{j}]: "))
+        linha.append(v)
+    matriz.append(linha)
+
+# 2. Soma positivos
+soma_pos = 0
+for i in range(n):
+    for j in range(n):
+        if matriz[i][j] > 0:
+            soma_pos += matriz[i][j]
+print(f"\nSOMA DOS POSITIVOS: {soma_pos:.1f}")
+
+# 3. Escolher linha
+linha = int(input("\nEscolha uma linha: "))
+print("LINHA ESCOLHIDA: ", end="")
+for elemento in matriz[linha]:
+    print(f"{elemento:.1f} ", end="")
+
+# 4. Escolher coluna
+coluna = int(input("\n\nEscolha uma coluna: "))
+print("COLUNA ESCOLHIDA: ", end="")
+for i in range(n):
+    print(f"{matriz[i][coluna]:.1f} ", end="")
+
+# 5. Diagonal ao quadrado
+for i in range(n):
+    matriz[i][i] = matriz[i][i] ** 2
+
+print("\n\nDIAGONAL PRINCIPAL:")
+for i in range(n):
+    print(f"{matriz[i][i]:.1f} ", end="")
+
+# 6. Matriz alterada
+print("\n\nMATRIZ ALTERADA:")
+for i in range(n):
+    for j in range(n):
+        print(f"{matriz[i][j]:.1f} ", end="")
+    print()</code></pre>
+
+    </section>
+
+    <section>
+
+        <h2>💡 Problema: Matriz Geral</h2>
+        <p>Ler uma matriz quadrada de ordem N, contendo números reais. Em seguida, fazer as seguintes ações:</p>
+        <ol>
+            <li>Calcular e mostrar a soma de todos os elementos positivos da matriz</li>
+            <li>Fazer a leitura do índice de uma linha e mostrar esta linha</li>
+            <li>Fazer a leitura do índice de uma coluna e mostrar esta coluna</li>
+            <li>Calcular e mostrar a diagonal principal</li>
+            <li>Alterar a matriz elevando ao quadrado todos os números negativos</li>
+            <li>Mostrar a matriz alterada</li>
+        </ol>
+
     </section>
 {% endblock %}
-
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
-    <p>Complete o exercício no editor ao lado.</p>
+
+        <h4>📝 Exemplo:</h4>
+        <pre><code>Qual a ordem da matriz? 3
+Elemento [0,0]: 5.0
+Elemento [0,1]: -3.0
+Elemento [0,2]: 10.0
+Elemento [1,0]: 15.0
+Elemento [1,1]: 8.0
+Elemento [1,2]: 2.0
+Elemento [2,0]: 7.0
+Elemento [2,1]: 9.0
+Elemento [2,2]: -4.0
+
+SOMA DOS POSITIVOS: 56.0
+
+Escolha uma linha: 1
+LINHA ESCOLHIDA: 15.0 8.0 2.0
+
+Escolha uma coluna: 2
+COLUNA ESCOLHIDA: 10.0 2.0 -4.0
+
+DIAGONAL PRINCIPAL:
+5.0 8.0 -4.0
+
+MATRIZ ALTERADA:
+5.0 9.0 10.0
+15.0 8.0 2.0
+7.0 9.0 16.0</code></pre>
+
 {% endblock %}
 
-{% block initial_code %}# Seu código aqui
+{% block initial_code %}# Leia a matriz
+n = int(input("Qual a ordem da matriz? "))
+matriz = []
+for i in range(n):
+    linha = []
+    for j in range(n):
+        elemento = float(input(f"Elemento [{i},{j}]: "))
+        linha.append(elemento)
+    matriz.append(linha)
+
+# 1. Soma dos positivos
+
+
+# 2. Linha escolhida
+
+
+# 3. Coluna escolhida
+
+
+# 4. Diagonal principal
+
+
+# 5. Elevar negativos ao quadrado
+
+
+# 6. Matriz alterada
 {% endblock %}
 
 {% block extra_js %}
 <script>
-function runCode() {
-    const output = document.getElementById('output');
-    output.innerHTML = '<div class="output-success">✅ Matrizes especiais geradas com sucesso!</div>';
-}
+    function getExerciseDescription() {
+        return `Problema "matriz_geral":
+
+Ler matriz NxN de reais. Realizar análises: soma positivos, exibir linha/coluna escolhida, diagonal principal, elevar negativos ao quadrado, exibir matriz alterada.
+
+ENTRADA:
+- N (ordem)
+- N² elementos reais
+- Índice de linha
+- Índice de coluna
+
+SAÍDA:
+- SOMA DOS POSITIVOS: [soma com 1 casa]
+- LINHA ESCOLHIDA: [elementos com 1 casa]
+- COLUNA ESCOLHIDA: [elementos com 1 casa]
+- DIAGONAL PRINCIPAL: [elementos com 1 casa]
+- MATRIZ ALTERADA: [matriz com negativos ao quadrado]`;
+    }
 </script>
 {% endblock %}

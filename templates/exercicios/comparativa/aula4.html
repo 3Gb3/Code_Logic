@@ -1,86 +1,126 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 4 - Operadores Lógicos | CodeLogic{% endblock %}
+{% block title %}Aula 4 - Problema "temperatura" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 4 – Operadores Lógicos{% endblock %}
+{% block lesson_title %}Aula 4 – Conversão de Temperatura{% endblock %}
 
 {% block lesson_content %}
     <section>
+
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Entender os operadores and, or e not</li>
-            <li>Combinar múltiplas condições</li>
-            <li>Usar parênteses para agrupar condições</li>
+            <li>Trabalhar com escolhas do usuário</li>
+            <li>Implementar fórmulas de conversão</li>
+            <li>Validar entrada de caracteres</li>
         </ul>
+
     </section>
 
     <section>
-        <h2>💡 Operadores Lógicos em Python</h2>
-        <p>Os operadores lógicos permitem combinar ou modificar condições:</p>
-        
-        <h3>🔗 Operador <code>and</code></h3>
-        <p>Retorna True apenas se AMBAS as condições forem verdadeiras.</p>
-        <pre><code>idade >= 18 and tem_carteira == True</code></pre>
-        
-        <h3>🔀 Operador <code>or</code></h3>
-        <p>Retorna True se PELO MENOS UMA das condições for verdadeira.</p>
-        <pre><code>dia == "sábado" or dia == "domingo"</code></pre>
-        
-        <h3>🚫 Operador <code>not</code></h3>
-        <p>Inverte o valor lógico (True vira False e vice-versa).</p>
-        <pre><code>not chovendo</code></pre>
-    </section>
 
-    <section>
-        <h2>📊 Tabela Verdade</h2>
-        <table>
-            <tr><th>A</th><th>B</th><th>A and B</th><th>A or B</th><th>not A</th></tr>
-            <tr><td>True</td><td>True</td><td>True</td><td>True</td><td>False</td></tr>
-            <tr><td>True</td><td>False</td><td>False</td><td>True</td><td>False</td></tr>
-            <tr><td>False</td><td>True</td><td>False</td><td>True</td><td>True</td></tr>
-            <tr><td>False</td><td>False</td><td>False</td><td>False</td><td>True</td></tr>
-        </table>
-    </section>
-
-    <section>
-        <h2>📝 Exemplos Práticos</h2>
+        <h2>📚 Conceitos: Comparação de Strings</h2>
+        <p>Podemos comparar strings (textos) usando os mesmos operadores de números:</p>
         
-        <h3>Exemplo 1: Sistema de Login</h3>
-        <pre><code>usuario = input("Usuário: ")
-senha = input("Senha: ")
+        <h3>Exemplo:</h3>
+        <pre><code>opcao = input("Escolha (S/N): ")
 
-if usuario == "admin" and senha == "123456":
-    print("Login realizado com sucesso!")
+if opcao == "S":
+    print("Você escolheu SIM")
+elif opcao == "N":
+    print("Você escolheu NÃO")
 else:
-    print("Usuário ou senha incorretos.")</code></pre>
-    
-        <h3>Exemplo 2: Desconto em Loja</h3>
-        <pre><code>idade = int(input("Sua idade: "))
-eh_estudante = input("É estudante? (s/n): ") == "s"
+    print("Opção inválida")</code></pre>
+        
+        <h3>⚠️ IMPORTANTE:</h3>
+        <ul>
+            <li>Python diferencia maiúsculas de minúsculas: "S" ≠ "s"</li>
+            <li>Use <code>.upper()</code> ou <code>.lower()</code> para padronizar</li>
+        </ul>
+        
+        <h3>Exemplo com conversão:</h3>
+        <pre><code>opcao = input("Escolha (S/N): ").upper()  # Converte para maiúscula
+if opcao == "S":
+    print("SIM")</code></pre>
 
-if idade >= 60 or eh_estudante:
-    print("Você tem direito a 15% de desconto!")
-else:
-    print("Sem desconto disponível.")</code></pre>
+    </section>
+
+    <section>
+
+        <h2>🌡️ Fórmulas de Conversão</h2>
+        
+        <h3>Celsius para Fahrenheit:</h3>
+        <pre><code>F = (9 × C / 5) + 32</code></pre>
+        
+        <h3>Fahrenheit para Celsius:</h3>
+        <pre><code>C = (F - 32) × 5 / 9</code></pre>
+        
+        <h3>Em Python:</h3>
+        <pre><code># Celsius → Fahrenheit
+celsius = 25.0
+fahrenheit = (9 * celsius / 5) + 32
+print(f"{celsius}°C = {fahrenheit}°F")
+
+# Fahrenheit → Celsius
+fahrenheit = 77.0
+celsius = (fahrenheit - 32) * 5 / 9
+print(f"{fahrenheit}°F = {celsius}°C")</code></pre>
+        
+        <h3>📊 Referências:</h3>
+        <ul>
+            <li>0°C = 32°F (ponto de congelamento da água)</li>
+            <li>100°C = 212°F (ponto de ebulição da água)</li>
+            <li>37°C = 98.6°F (temperatura corporal)</li>
+        </ul>
+
+    </section>
+
+    <section>
+
+        <h2>💡 Problema: Conversão de Temperatura</h2>
+        <p>Deseja-se converter uma medida de temperatura da escala Celsius para Fahrenheit ou vice-versa. Para isso, você deve construir um programa que leia a letra "C" ou "F" indicando em qual escala vai ser informada uma temperatura. Em seguida o programa deve mostrar a temperatura na outra escala com duas casas decimais.</p>
+
     </section>
 {% endblock %}
-
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
-    <p>Complete o exercício no editor ao lado.</p>
+
+        <h4>📝 Exemplo 1:</h4>
+        <pre><code>Voce vai digitar a temperatura em qual escala (C/F)? F
+Digite a temperatura em Fahrenheit: 77.00
+Temperatura equivalente em Celsius: 25.00</code></pre>
+        
+        <h4>📝 Exemplo 2:</h4>
+        <pre><code>Voce vai digitar a temperatura em qual escala (C/F)? C
+Digite a temperatura em Celsius: 28.00
+Temperatura equivalente em Fahrenheit: 82.40</code></pre>
+
 {% endblock %}
 
-{% block initial_code %}# Seu código aqui
+{% block initial_code %}# Leia a escala
+escala = input("Voce vai digitar a temperatura em qual escala (C/F)? ").upper()
+
+# Leia a temperatura e converta
+
+# Exiba o resultado
 {% endblock %}
 
 {% block extra_js %}
 <script>
-function runCode() {
-    const code = document.getElementById('code-input').value;
-    const output = document.getElementById('output');
-    
-    output.innerHTML = '<div class="output-success">Código executado! Teste com diferentes idades e situações.</div>';
-}
+    function getExerciseDescription() {
+        return `Problema "temperatura":
+
+Deseja-se converter uma medida de temperatura da escala Celsius para Fahrenheit ou vice-versa. Para isso, você deve construir um programa que leia a letra "C" ou "F" indicando em qual escala vai ser informada uma temperatura. Em seguida o programa deve mostrar a temperatura na outra escala com duas casas decimais.
+
+ENTRADA:
+- Escala (C ou F)
+- Temperatura (float)
+
+SAÍDA:
+- Temperatura equivalente em [outra escala]: [valor com 2 casas decimais]
+
+FÓRMULAS:
+- Celsius → Fahrenheit: F = (9 × C / 5) + 32
+- Fahrenheit → Celsius: C = (F - 32) × 5 / 9`;
+    }
 </script>
 {% endblock %}

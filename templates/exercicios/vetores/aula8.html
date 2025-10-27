@@ -1,308 +1,151 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 8 - Sets (Conjuntos) | CodeLogic{% endblock %}
+{% block title %}Aula 8 - Problema "media_pares" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 8 – Sets (Conjuntos){% endblock %}
+{% block lesson_title %}Aula 8 – Média de Números Pares{% endblock %}
 
 {% block lesson_content %}
     <section>
+
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Compreender o conceito de sets (conjuntos)</li>
-            <li>Trabalhar com coleções de elementos únicos</li>
-            <li>Aplicar operações matemáticas de conjuntos</li>
+            <li>Filtrar e calcular média de números pares</li>
+            <li>Tratar caso sem elementos válidos</li>
+            <li>Combinar múltiplas condições</li>
         </ul>
+
     </section>
 
     <section>
-        <h2>🔵 O que são Sets?</h2>
-        <p>Sets são coleções <strong>não ordenadas</strong> de elementos <strong>únicos</strong>. São baseados na teoria matemática de conjuntos.</p>
+
+        <h2>📚 Conceitos: Filtragem + Cálculos</h2>
+        <p>Combinar filtragem com cálculos estatísticos:</p>
         
-        <h3>Características dos Sets:</h3>
-        <ul>
-            <li>🚫 <strong>Sem duplicatas</strong> - cada elemento aparece apenas uma vez</li>
-            <li>🔄 <strong>Não ordenados</strong> - não mantêm ordem específica</li>
-            <li>✏️ <strong>Mutáveis</strong> - podem ser modificados</li>
-            <li>⚡ <strong>Busca rápida</strong> - verificação muito eficiente</li>
-            <li>🧮 <strong>Operações matemáticas</strong> - união, interseção, diferença</li>
-        </ul>
-        
-        <h3>Criação de Sets:</h3>
-        <pre><code># Set vazio (ATENÇÃO: usar set(), não {})
-set_vazio = set()
-print(f"Set vazio: {set_vazio}")
+        <h3>Padrão: Média condicional</h3>
+        <pre><code>numeros = [10, 15, 20, 25, 30]
 
-# {} cria dicionário, não set!
-dicionario = {}
-print(f"Tipo de {{}}: {type(dicionario)}")  # dict
+soma_pares = 0
+contador_pares = 0
 
-# Set com elementos
-numeros = {1, 2, 3, 4, 5}
-cores = {"vermelho", "verde", "azul"}
-misto = {1, "Python", 3.14, True}
+for num in numeros:
+    if num % 2 == 0:  # Se for par
+        soma_pares += num
+        contador_pares += 1
 
-print(f"Números: {numeros}")
-print(f"Cores: {cores}")
+if contador_pares > 0:
+    media_pares = soma_pares / contador_pares
+    print(f"Média dos pares: {media_pares:.1f}")
+else:
+    print("Nenhum número par")</code></pre>
 
-# Sets eliminam duplicatas automaticamente
-com_duplicatas = {1, 2, 2, 3, 3, 3, 4}
-print(f"Com duplicatas: {com_duplicatas}")  # {1, 2, 3, 4}
-
-# Criar set a partir de lista
-lista = [1, 2, 2, 3, 3, 3, 4, 5, 5]
-set_da_lista = set(lista)
-print(f"Set da lista: {set_da_lista}")  # {1, 2, 3, 4, 5}</code></pre>
     </section>
 
     <section>
-        <h2>➕ Adicionando e Removendo Elementos</h2>
+
+        <h2>✅ Validação: Divisão por Zero</h2>
+        <p>Sempre verificar se há elementos antes de calcular média:</p>
         
-        <h3>Adicionar Elementos:</h3>
-        <pre><code>frutas = {"maçã", "banana", "uva"}
-print(f"Inicial: {frutas}")
+        <h3>Por que validar?</h3>
+        <pre><code># ERRADO - pode dar divisão por zero!
+media = soma / contador  # Se contador = 0 → ERRO!
 
-# add() - adicionar um elemento
-frutas.add("laranja")
-print(f"Após add: {frutas}")
-
-# Tentar adicionar duplicata (não tem efeito)
-frutas.add("maçã")
-print(f"Após add duplicata: {frutas}")  # Sem mudança
-
-# update() - adicionar múltiplos elementos
-frutas.update(["pêra", "kiwi", "manga"])
-print(f"Após update: {frutas}")</code></pre>
+# CORRETO
+if contador > 0:
+    media = soma / contador
+    print(f"Media: {media}")
+else:
+    print("NENHUM NUMERO PAR")</code></pre>
         
-        <h3>Remover Elementos:</h3>
-        <pre><code>numeros = {1, 2, 3, 4, 5}
-print(f"Inicial: {numeros}")
+        <h3>Aplicação completa:</h3>
+        <pre><code>n = int(input("Quantos elementos? "))
+valores = []
 
-# remove() - remove elemento (erro se não existir)
-numeros.remove(3)
-print(f"Após remove(3): {numeros}")
+for i in range(n):
+    v = int(input())
+    valores.append(v)
 
-# discard() - remove elemento (não dá erro se não existir)
-numeros.discard(10)  # Não existe, mas não dá erro
-print(f"Após discard(10): {numeros}")
+# Calcular média dos pares
+soma_pares = 0
+qtd_pares = 0
 
-# pop() - remove elemento aleatório
-removido = numeros.pop()
-print(f"Removido: {removido}")
-print(f"Após pop: {numeros}")
+for valor in valores:
+    if valor % 2 == 0:
+        soma_pares += valor
+        qtd_pares += 1
 
-# clear() - remove todos
-numeros_temp = {1, 2, 3}
-numeros_temp.clear()
-print(f"Após clear: {numeros_temp}")  # set()</code></pre>
+# Validar antes de dividir
+if qtd_pares == 0:
+    print("NENHUM NUMERO PAR")
+else:
+    media = soma_pares / qtd_pares
+    print(f"MEDIA DOS PARES = {media:.1f}")</code></pre>
+
     </section>
 
     <section>
-        <h2>🔍 Operações com Sets</h2>
-        
-        <h3>Verificar Pertinência:</h3>
-        <pre><code>vogais = {"a", "e", "i", "o", "u"}
 
-# Operador in (muito rápido em sets!)
-if "a" in vogais:
-    print("'a' é uma vogal")
+        <h2>💡 Problema: Média Pares</h2>
+        <p>Fazer um programa para ler um vetor de N números inteiros. Em seguida, mostrar na tela a média aritmética somente dos números pares lidos, com uma casa decimal. Se nenhum número par for digitado, mostrar a mensagem "NENHUM NUMERO PAR".</p>
 
-if "b" not in vogais:
-    print("'b' não é uma vogal")
-
-# Verificar múltiplas letras
-letras = ["a", "b", "c"]
-for letra in letras:
-    if letra in vogais:
-        print(f"{letra} é vogal")
-    else:
-        print(f"{letra} é consoante")</code></pre>
-        
-        <h3>Tamanho e Conversão:</h3>
-        <pre><code>numeros = {1, 2, 3, 4, 5}
-
-# Tamanho
-print(f"Tamanho: {len(numeros)}")
-
-# Converter para lista (para ordenar, por exemplo)
-lista = list(numeros)
-lista.sort()
-print(f"Como lista ordenada: {lista}")
-
-# Converter para tupla
-tupla = tuple(numeros)
-print(f"Como tupla: {tupla}")</code></pre>
-    </section>
-
-    <section>
-        <h2>🧮 Operações Matemáticas</h2>
-        
-        <h3>União (|):</h3>
-        <pre><code>set_a = {1, 2, 3, 4}
-set_b = {3, 4, 5, 6}
-
-# União: todos os elementos (sem duplicatas)
-uniao = set_a | set_b
-print(f"A: {set_a}")
-print(f"B: {set_b}")
-print(f"União (A | B): {uniao}")  # {1, 2, 3, 4, 5, 6}
-
-# Método union()
-uniao2 = set_a.union(set_b)
-print(f"União com método: {uniao2}")</code></pre>
-        
-        <h3>Interseção (&):</h3>
-        <pre><code>set_a = {1, 2, 3, 4}
-set_b = {3, 4, 5, 6}
-
-# Interseção: elementos comuns
-intersecao = set_a & set_b
-print(f"Interseção (A & B): {intersecao}")  # {3, 4}
-
-# Método intersection()
-intersecao2 = set_a.intersection(set_b)
-print(f"Interseção com método: {intersecao2}")</code></pre>
-        
-        <h3>Diferença (-):</h3>
-        <pre><code>set_a = {1, 2, 3, 4}
-set_b = {3, 4, 5, 6}
-
-# Diferença: elementos em A mas não em B
-diferenca = set_a - set_b
-print(f"Diferença (A - B): {diferenca}")  # {1, 2}
-
-# Diferença inversa
-diferenca2 = set_b - set_a
-print(f"Diferença (B - A): {diferenca2}")  # {5, 6}
-
-# Método difference()
-diferenca3 = set_a.difference(set_b)
-print(f"Diferença com método: {diferenca3}")</code></pre>
-        
-        <h3>Diferença Simétrica (^):</h3>
-        <pre><code>set_a = {1, 2, 3, 4}
-set_b = {3, 4, 5, 6}
-
-# Diferença simétrica: elementos que estão em apenas um dos sets
-dif_simetrica = set_a ^ set_b
-print(f"Diferença simétrica (A ^ B): {dif_simetrica}")  # {1, 2, 5, 6}
-
-# Método symmetric_difference()
-dif_simetrica2 = set_a.symmetric_difference(set_b)
-print(f"Diferença simétrica com método: {dif_simetrica2}")</code></pre>
-    </section>
-
-    <section>
-        <h2>📊 Subconjuntos e Superconjuntos</h2>
-        
-        <pre><code>numeros = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-pares = {2, 4, 6, 8, 10}
-impares = {1, 3, 5, 7, 9}
-pequeno = {2, 4}
-
-# issubset() - verificar se é subconjunto
-if pares.issubset(numeros):
-    print("Pares é subconjunto de números")
-
-if pequeno.issubset(pares):
-    print("Pequeno é subconjunto de pares")
-
-# issuperset() - verificar se é superconjunto
-if numeros.issuperset(pares):
-    print("Números é superconjunto de pares")
-
-# isdisjoint() - verificar se não têm elementos em comum
-if pares.isdisjoint(impares):
-    print("Pares e ímpares são disjuntos (sem elementos comuns)")</code></pre>
-    </section>
-
-    <section>
-        <h2>🔄 Percorrendo Sets</h2>
-        
-        <pre><code>frutas = {"maçã", "banana", "uva", "laranja", "pêra"}
-
-# Sets não são ordenados, então a ordem pode variar
-print("Frutas no set:")
-for fruta in frutas:
-    print(f"  - {fruta}")
-
-# Para percorrer em ordem, converter para lista ordenada
-frutas_ordenadas = sorted(frutas)
-print("\nFrutas em ordem alfabética:")
-for fruta in frutas_ordenadas:
-    print(f"  - {fruta}")</code></pre>
-    </section>
-
-    <section>
-        <h2>💡 Casos de Uso Práticos</h2>
-        
-        <h3>Remover Duplicatas:</h3>
-        <pre><code>numeros = [1, 2, 2, 3, 3, 3, 4, 5, 5]
-print(f"Lista com duplicatas: {numeros}")
-
-# Converter para set remove duplicatas
-sem_duplicatas = list(set(numeros))
-sem_duplicatas.sort()  # Reordenar
-print(f"Lista sem duplicatas: {sem_duplicatas}")</code></pre>
-        
-        <h3>Encontrar Elementos Únicos:</h3>
-        <pre><code>lista1 = [1, 2, 3, 4, 5]
-lista2 = [4, 5, 6, 7, 8]
-
-# Elementos únicos de lista1
-unicos_1 = set(lista1) - set(lista2)
-print(f"Únicos de lista1: {unicos_1}")  # {1, 2, 3}
-
-# Elementos únicos de lista2
-unicos_2 = set(lista2) - set(lista1)
-print(f"Únicos de lista2: {unicos_2}")  # {6, 7, 8}
-
-# Elementos comuns
-comuns = set(lista1) & set(lista2)
-print(f"Elementos comuns: {comuns}")  # {4, 5}</code></pre>
-    </section>
-<section>
-        <h2>💡 Dicas Importantes</h2>
-        <div class="tip-box">
-            <ul>
-                <li>🚫 Sets não permitem duplicatas - útil para remover repetições</li>
-                <li>⚡ Verificar se elemento está no set é muito rápido</li>
-                <li>🔄 Sets não têm ordem - não use se precisar de ordem específica</li>
-                <li>🧮 Use operações matemáticas (|, &, -, ^) para análise de dados</li>
-                <li>📊 <code>discard()</code> é mais seguro que <code>remove()</code></li>
-                <li>🎯 Sets são ideais para operações de conjunto e remoção de duplicatas</li>
-            </ul>
-        </div>
-    </section>
-
-    <section>
-        <h2>📚 Resumo</h2>
-        <p>Nesta aula você aprendeu:</p>
-        <ul>
-            <li>✅ O que são sets e suas características</li>
-            <li>✅ Como criar e manipular sets</li>
-            <li>✅ Operações matemáticas: união, interseção, diferença</li>
-            <li>✅ Trabalhar com subconjuntos e superconjuntos</li>
-            <li>✅ Casos práticos de uso de sets</li>
-        </ul>
     </section>
 {% endblock %}
-
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
-    <p>Complete o exercício no editor ao lado.</p>
+
+        <h4>📝 Exemplo 1:</h4>
+        <pre><code>Quantos elementos vai ter o vetor? 6
+Digite um numero: 8
+Digite um numero: 2
+Digite um numero: 11
+Digite um numero: 14
+Digite um numero: 13
+Digite um numero: 20
+
+MEDIA DOS PARES = 11.0</code></pre>
+        
+        <h4>📝 Exemplo 2:</h4>
+        <pre><code>Quantos elementos vai ter o vetor? 3
+Digite um numero: 7
+Digite um numero: 5
+Digite um numero: 9
+
+NENHUM NUMERO PAR</code></pre>
+
 {% endblock %}
 
-{% block initial_code %}# Seu código aqui
+{% block initial_code %}# Leia a quantidade
+n = int(input("Quantos elementos vai ter o vetor? "))
+
+# Leia os valores
+valores = []
+for i in range(n):
+    v = int(input("Digite um numero: "))
+    valores.append(v)
+
+# Calcule a média dos pares
+
+
+# Exiba o resultado
 {% endblock %}
 
 {% block extra_js %}
 <script>
-function runCode() {
-    const code = document.getElementById('code-input').value;
-    const output = document.getElementById('output');
-    
-    output.innerHTML = '<div class="output-success">Sistema de cursos executado! Veja o poder das operações de conjuntos.</div>';
-}
+    function getExerciseDescription() {
+        return `Problema "media_pares":
+
+Fazer um programa para ler um vetor de N números inteiros. Mostrar a média aritmética somente dos números pares, com 1 casa decimal. Se nenhum par, mostrar "NENHUM NUMERO PAR".
+
+ENTRADA:
+- N (quantidade)
+- N números inteiros
+
+SAÍDA:
+- MEDIA DOS PARES = [valor com 1 casa]
+- OU "NENHUM NUMERO PAR"
+
+VALIDAÇÃO:
+- Somar apenas números pares
+- Verificar se há pares antes de dividir`;
+    }
 </script>
 {% endblock %}

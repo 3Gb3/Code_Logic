@@ -1,148 +1,76 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 8 - Operações com Números e Strings | CodeLogic{% endblock %}
+{% block title %}Aula 8 - Problema "pagamento" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 8 – Operações com Números e Strings{% endblock %}
+{% block lesson_title %}Aula 8 – Cálculo de Pagamento{% endblock %}
 
 {% block lesson_content %}
     <section>
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Trabalhar com operações numéricas</li>
-            <li>Manipular strings e caracteres</li>
-            <li>Criar programas interativos com entrada do usuário</li>
+            <li>Combinar dados textuais e numéricos</li>
+            <li>Calcular salário baseado em horas</li>
+            <li>Formatar mensagens personalizadas</li>
         </ul>
     </section>
 
     <section>
-        <h2>🔢 Operações com Números</h2>
-        <p>Podemos usar operações matemáticas para criar valores interessantes:</p>
-        
-        <h3>Operações com Resto (%):</h3>
-        <pre><code># Verificar se número é par ou ímpar
-numero = int(input("Digite um número: "))
-resto = numero % 2
-print(f"Resto da divisão por 2: {resto}")
-
-if resto == 0:
-    print("O número é par!")
-else:
-    print("O número é ímpar!")</code></pre>
-        
-        <h3>Operações com Potência (**):</h3>
-        <pre><code># Calcular área do quadrado
-lado = float(input("Digite o lado do quadrado: "))
-area = lado ** 2
-print(f"Área do quadrado: {area}")</code></pre>
-        
-        <h3>Trabalhando com Strings:</h3>
-        <pre><code># Repetir strings
-nome = input("Digite seu nome: ")
-print(nome * 3)  # Repete o nome 3 vezes
-
-# Contar caracteres
-tamanho = len(nome)
-print(f"Seu nome tem {tamanho} letras")</code></pre>
+        <h2>💰 Cálculo de Pagamento</h2>
+        <p>O pagamento é calculado multiplicando o valor por hora pelas horas trabalhadas:</p>
+        <pre><code>pagamento = valor_hora * horas</code></pre>
+        <p>Exemplo: R$ 50,00/hora × 60 horas = R$ 3.000,00</p>
     </section>
 
     <section>
-        <h2>🎮 Exemplos Práticos</h2>
-        
-        <h3>Calculadora de IMC:</h3>
-        <pre><code>nome = input("Digite seu nome: ")
-peso = float(input("Digite seu peso (kg): "))
-altura = float(input("Digite sua altura (m): "))
-
-imc = peso / (altura ** 2)
-print(f"{nome}, seu IMC é: {imc:.2f}")
-
-if imc < 18.5:
-    print("Abaixo do peso")
-elif imc < 25:
-    print("Peso normal")
-elif imc < 30:
-    print("Sobrepeso")
-else:
-    print("Obesidade")</code></pre>
-        
-        <h3>Conversor de Temperatura:</h3>
-        <pre><code>celsius = float(input("Digite a temperatura em Celsius: "))
-
-fahrenheit = (celsius * 9/5) + 32
-kelvin = celsius + 273.15
-
-print(f"Fahrenheit: {fahrenheit:.1f}°F")
-print(f"Kelvin: {kelvin:.1f}K")</code></pre>
-        
-        <h3>Calculadora de Desconto:</h3>
-        <pre><code>produto = input("Nome do produto: ")
-preco = float(input("Preço original: R$ "))
-desconto = float(input("Percentual de desconto: "))
-
-valor_desconto = preco * (desconto / 100)
-preco_final = preco - valor_desconto
-
-print(f"Produto: {produto}")
-print(f"Desconto: R$ {valor_desconto:.2f}")
-print(f"Preço final: R$ {preco_final:.2f}")</code></pre>
-    </section>
-
-    <section>
-        <h2>📊 Formatação Avançada</h2>
-        
-        <h3>Trabalhando com números decimais:</h3>
-        <pre><code>valor = float(input("Digite um valor: "))
-
-# Arredondar
-arredondado = round(valor, 2)
-print(f"Arredondado: {arredondado}")
-
-# Valor absoluto
-absoluto = abs(valor)
-print(f"Valor absoluto: {absoluto}")
-
-# Potência
-quadrado = valor ** 2
-cubo = valor ** 3
-print(f"Quadrado: {quadrado:.2f}")
-print(f"Cubo: {cubo:.2f}")</code></pre>
+        <h2>📝 Mensagens Personalizadas</h2>
+        <p>Use f-strings para incluir o nome do funcionário:</p>
+        <pre><code>print(f"O pagamento para {nome} deve ser {pagamento:.2f}")</code></pre>
     </section>
 {% endblock %}
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
+    <h4>🎮 Problema "pagamento"</h4>
+    <p>Fazer um programa para ler o nome de um funcionário, o valor que ele recebe por hora, e a quantidade de horas trabalhadas por ele. Ao final, mostrar o valor do pagamento do funcionário.</p>
     
-    <p><strong>Tarefa:</strong> Sistema de Avaliação de Produtos</p>
-    <ul>
-        <li>Peça o nome do produto</li>
-        <li>Peça o preço original</li>
-        <li>Peça a nota de avaliação (0 a 10)</li>
-        <li>Peça o número de avaliações</li>
-        <li>Calcule um desconto baseado na nota (nota * 5)%</li>
-        <li>Calcule o preço final com desconto</li>
-        <li>Exiba todas as informações formatadas</li>
-        <li>Mostre uma mensagem se a nota for maior ou igual a 8</li>
-    </ul>
+    <h4>📝 Exemplo 1:</h4>
+    <pre><code>Nome: Joao Silva
+Valor por hora: 50.00
+Horas trabalhadas: 60
+O pagamento para Joao Silva deve ser 3000.00</code></pre>
     
-    <p><strong>Exemplo de saída esperada:</strong></p>
-    <pre><code>📦 AVALIAÇÃO DO PRODUTO 📦
-Produto: Notebook Gamer
-Preço Original: R$ 3500.00
-Nota: 9.5 ⭐ (150 avaliações)
-Desconto: 47.5% (R$ 1662.50)
-Preço Final: R$ 1837.50
-🎉 Produto Altamente Recomendado!</code></pre>
+    <h4>📝 Exemplo 2:</h4>
+    <pre><code>Nome: Maria Dias
+Valor por hora: 60.00
+Horas trabalhadas: 100
+O pagamento para Maria Dias deve ser 6000.00</code></pre>
 {% endblock %}
 
-{% block initial_code %}# Sistema de Avaliação de Produtos
-print("📦 AVALIAÇÃO DO PRODUTO 📦")
-print()
+{% block initial_code %}nome = input("Nome: ")
+valor_hora = float(input("Valor por hora: "))
+horas = int(input("Horas trabalhadas: "))
 
-# Entrada de dados
-produto = input("Nome do produto: ")
-preco = float(input("Preço original: R$ "))
-nota = float(input("Nota de avaliação (0-10): "))
-avaliacoes = int(input("Número de avaliações: "))
+pagamento = valor_hora * horas
 
-# SEU CÓDIGO AQUI
-# Calcule o desconto, preço final e exiba as informações{% endblock %}
+print(f"O pagamento para {nome} deve ser {pagamento:.2f}"){% endblock %}
+
+{% block extra_js %}
+<script>
+    function getExerciseDescription() {
+        return `Problema "pagamento":
+
+Fazer um programa para ler o nome de um funcionário, o valor que ele recebe por hora, e a quantidade de horas trabalhadas por ele.
+
+EXEMPLO 1:
+Nome: Joao Silva
+Valor por hora: 50.00
+Horas trabalhadas: 60
+O pagamento para Joao Silva deve ser 3000.00
+
+EXEMPLO 2:
+Nome: Maria Dias
+Valor por hora: 60.00
+Horas trabalhadas: 100
+O pagamento para Maria Dias deve ser 6000.00`;
+    }
+</script>
+{% endblock %}

@@ -1,298 +1,129 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 7 - Tuplas | CodeLogic{% endblock %}
+{% block title %}Aula 7 - Problema "abaixo_da_media" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 7 – Tuplas{% endblock %}
+{% block lesson_title %}Aula 7 – Valores Abaixo da Média{% endblock %}
 
 {% block lesson_content %}
     <section>
+
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Compreender o conceito de tuplas</li>
-            <li>Trabalhar com estruturas imutáveis</li>
-            <li>Saber quando usar tuplas vs listas</li>
+            <li>Calcular média de valores</li>
+            <li>Filtrar elementos abaixo da média</li>
+            <li>Combinar cálculos estatísticos com filtragem</li>
         </ul>
+
     </section>
 
     <section>
-        <h2>📦 O que são Tuplas?</h2>
-        <p>Tuplas são estruturas de dados <strong>imutáveis</strong> que armazenam uma coleção ordenada de elementos. Uma vez criadas, não podem ser modificadas.</p>
+
+        <h2>📚 Conceitos: Cálculos Estatísticos</h2>
+        <p>Estatísticas básicas com listas:</p>
         
-        <h3>Características das Tuplas:</h3>
-        <ul>
-            <li>🔒 <strong>Imutáveis</strong> - não podem ser alteradas após criação</li>
-            <li>📋 <strong>Ordenadas</strong> - mantêm a ordem dos elementos</li>
-            <li>🔢 <strong>Indexadas</strong> - acesso por índice como listas</li>
-            <li>🔄 <strong>Permitem duplicatas</strong> - podem ter elementos repetidos</li>
-            <li>⚡ <strong>Mais rápidas</strong> que listas para acesso</li>
-        </ul>
-        
-        <h3>Criação de Tuplas:</h3>
-        <pre><code># Tupla vazia
-tupla_vazia = ()
-print(f"Tupla vazia: {tupla_vazia}")
-print(f"Tipo: {type(tupla_vazia)}")
-
-# Tupla com elementos
-cores = ("vermelho", "verde", "azul")
-numeros = (1, 2, 3, 4, 5)
-mista = ("Python", 3.9, True, 42)
-
-print(f"Cores: {cores}")
-print(f"Números: {numeros}")
-print(f"Mista: {mista}")
-
-# Tupla de um elemento (cuidado com a vírgula!)
-um_elemento_errado = ("Python")  # Isso é uma string!
-um_elemento_correto = ("Python",)  # Isso é uma tupla!
-
-print(f"Tipo sem vírgula: {type(um_elemento_errado)}")  # str
-print(f"Tipo com vírgula: {type(um_elemento_correto)}")  # tuple
-
-# Criação sem parênteses
-coordenadas = 10, 20, 30
-print(f"Coordenadas: {coordenadas}")
-print(f"Tipo: {type(coordenadas)}")  # tuple</code></pre>
-    </section>
-
-    <section>
-        <h2>🎯 Acessando Elementos</h2>
-        
-        <h3>Acesso por Índice:</h3>
-        <pre><code>frutas = ("maçã", "banana", "uva", "laranja", "pêra")
-
-# Acesso positivo
-print(f"Primeira fruta: {frutas[0]}")  # maçã
-print(f"Terceira fruta: {frutas[2]}")  # uva
-
-# Acesso negativo (do final para início)
-print(f"Última fruta: {frutas[-1]}")  # pêra
-print(f"Penúltima: {frutas[-2]}")  # laranja</code></pre>
-        
-        <h3>Slicing (Fatiamento):</h3>
-        <pre><code>numeros = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
-
-# Slicing básico
-print(f"Primeiros 5: {numeros[:5]}")  # (0, 1, 2, 3, 4)
-print(f"Do 3 ao 7: {numeros[3:7]}")   # (3, 4, 5, 6)
-print(f"Últimos 3: {numeros[-3:]}")   # (7, 8, 9)
-
-# Com passo
-print(f"Pares: {numeros[::2]}")       # (0, 2, 4, 6, 8)
-print(f"Ímpares: {numeros[1::2]}")    # (1, 3, 5, 7, 9)
-print(f"Invertida: {numeros[::-1]}") # (9, 8, 7, 6, 5, 4, 3, 2, 1, 0)</code></pre>
-        
-        <h3>Desempacotamento:</h3>
-        <pre><code># Desempacotamento básico
-coordenadas = (10, 20, 30)
-x, y, z = coordenadas
-print(f"x={x}, y={y}, z={z}")
-
-# Desempacotamento parcial com *
-numeros = (1, 2, 3, 4, 5)
-primeiro, *meio, ultimo = numeros
-print(f"Primeiro: {primeiro}")  # 1
-print(f"Meio: {meio}")          # [2, 3, 4]
-print(f"Último: {ultimo}")      # 5
-
-# Trocar valores
-a = 10
-b = 20
-print(f"Antes: a={a}, b={b}")
-
-a, b = b, a  # Troca usando tupla implícita
-print(f"Depois: a={a}, b={b}")</code></pre>
-    </section>
-
-    <section>
-        <h2>🔍 Operações com Tuplas</h2>
-        
-        <h3>Operador in:</h3>
-        <pre><code>cores = ("vermelho", "verde", "azul")
-
-if "verde" in cores:
-    print("Verde está na tupla")
-
-if "amarelo" not in cores:
-    print("Amarelo não está na tupla")</code></pre>
-        
-        <h3>Concatenação e Repetição:</h3>
-        <pre><code>tupla1 = (1, 2, 3)
-tupla2 = (4, 5, 6)
-
-# Concatenação
-resultado = tupla1 + tupla2
-print(f"Concatenação: {resultado}")  # (1, 2, 3, 4, 5, 6)
-
-# Repetição
-repetida = tupla1 * 3
-print(f"Repetida: {repetida}")  # (1, 2, 3, 1, 2, 3, 1, 2, 3)</code></pre>
-        
-        <h3>Métodos de Tupla:</h3>
-        <pre><code>numeros = (1, 2, 3, 2, 4, 2, 5)
-
-# count() - contar ocorrências
-count_2 = numeros.count(2)
-print(f"Número 2 aparece {count_2} vezes")  # 3
-
-# index() - encontrar posição
-posicao = numeros.index(4)
-print(f"Número 4 está na posição {posicao}")  # 4
-
-# Buscar a partir de uma posição
-if 2 in numeros[2:]:
-    posicao_segunda = numeros.index(2, 2)  # Buscar após índice 2
-    print(f"Segunda ocorrência de 2 na posição: {posicao_segunda}")</code></pre>
-        
-        <h3>len(), min(), max(), sum():</h3>
-        <pre><code>valores = (15, 8, 23, 4, 16, 42)
-
-print(f"Tamanho: {len(valores)}")   # 6
-print(f"Mínimo: {min(valores)}")    # 4
-print(f"Máximo: {max(valores)}")    # 42
-print(f"Soma: {sum(valores)}")      # 108
-
-# Média
+        <h3>Média:</h3>
+        <pre><code>valores = [10, 20, 30, 40]
 media = sum(valores) / len(valores)
-print(f"Média: {media:.2f}")</code></pre>
+print(f"Média: {media}")  # 25.0</code></pre>
+        
+        <h3>Mínimo e Máximo:</h3>
+        <pre><code>valores = [10, 20, 30, 40]
+minimo = min(valores)
+maximo = max(valores)
+print(f"Min: {minimo}, Max: {maximo}")  # Min: 10, Max: 40</code></pre>
+        
+        <h3>Desvio da média:</h3>
+        <pre><code>valores = [10, 20, 30, 40]
+media = sum(valores) / len(valores)
+
+for valor in valores:
+    desvio = valor - media
+    print(f"{valor}: desvio = {desvio:+.1f}")</code></pre>
+
     </section>
 
     <section>
-        <h2>🔄 Percorrendo Tuplas</h2>
+
+        <h2>🔍 Filtrar por Comparação com Média</h2>
+        <p>Para encontrar valores acima/abaixo da média:</p>
         
-        <h3>Loop For:</h3>
-        <pre><code>frutas = ("maçã", "banana", "uva", "laranja")
+        <h3>Padrão completo:</h3>
+        <pre><code># Ler valores
+n = int(input("Quantos valores? "))
+valores = []
+for i in range(n):
+    v = float(input())
+    valores.append(v)
 
-# Percorrer elementos
-print("Frutas:")
-for fruta in frutas:
-    print(f"  - {fruta}")
+# Calcular média
+media = sum(valores) / len(valores)
+print(f"\nMEDIA DO VETOR = {media:.3f}")
 
-# Percorrer com índice
-print("\nFrutas numeradas:")
-for i in range(len(frutas)):
-    print(f"{i + 1}. {frutas[i]}")
+# Filtrar abaixo da média
+print("ELEMENTOS ABAIXO DA MEDIA:")
+for valor in valores:
+    if valor < media:
+        print(f"{valor:.1f}")</code></pre>
+        
+        <h3>💡 Dica:</h3>
+        <p>Sempre calcule a média PRIMEIRO, antes de filtrar!</p>
 
-# Percorrer com enumerate
-print("\nCom enumerate:")
-for indice, fruta in enumerate(frutas):
-    print(f"Índice {indice}: {fruta}")</code></pre>
     </section>
 
     <section>
-        <h2>🔒 Imutabilidade</h2>
-        
-        <h3>Tuplas NÃO podem ser modificadas:</h3>
-        <pre><code>cores = ("vermelho", "verde", "azul")
 
-# Isso geraria erro:
-# cores[0] = "amarelo"  # TypeError: 'tuple' object does not support item assignment
+        <h2>💡 Problema: Abaixo da Média</h2>
+        <p>Fazer um programa para ler um número inteiro N e depois um vetor de N números reais. Em seguida, mostrar na tela a média aritmética de todos elementos. Depois mostrar todos os elementos do vetor que estejam abaixo da média.</p>
 
-# Para "modificar", criar nova tupla
-cores_nova = ("amarelo",) + cores[1:]
-print(f"Nova tupla: {cores_nova}")  # ('amarelo', 'verde', 'azul')
-print(f"Original: {cores}")  # ('vermelho', 'verde', 'azul')</code></pre>
-        
-        <h3>Tuplas com Objetos Mutáveis:</h3>
-        <pre><code># Tupla contendo uma lista
-dados = ("Nome", 25, [100, 200, 300])
-
-print(f"Antes: {dados}")
-
-# A tupla é imutável, mas a lista dentro pode mudar!
-dados[2].append(400)
-print(f"Depois: {dados}")  # A lista mudou!
-
-# Mas não podemos trocar a lista por outra:
-# dados[2] = [1, 2, 3]  # TypeError!</code></pre>
-    </section>
-
-    <section>
-        <h2>🆚 Tuplas vs Listas</h2>
-        
-        <table class="performance-table">
-            <tr>
-                <th>Característica</th>
-                <th>Tupla</th>
-                <th>Lista</th>
-            </tr>
-            <tr>
-                <td>Mutabilidade</td>
-                <td>❌ Imutável</td>
-                <td>✅ Mutável</td>
-            </tr>
-            <tr>
-                <td>Sintaxe</td>
-                <td>( )</td>
-                <td>[ ]</td>
-            </tr>
-            <tr>
-                <td>Performance</td>
-                <td>⚡ Mais rápida</td>
-                <td>Mais lenta</td>
-            </tr>
-            <tr>
-                <td>Uso de memória</td>
-                <td>💾 Menor</td>
-                <td>Maior</td>
-            </tr>
-            <tr>
-                <td>Métodos</td>
-                <td>count(), index()</td>
-                <td>append(), remove(), etc.</td>
-            </tr>
-        </table>
-        
-        <h3>Quando usar cada uma?</h3>
-        <ul>
-            <li><strong>Tuplas:</strong> Dados que não devem mudar (coordenadas, configurações, retorno de funções)</li>
-            <li><strong>Listas:</strong> Dados que precisam ser modificados (carrinho de compras, histórico, fila)</li>
-        </ul>
-    </section>
-<section>
-        <h2>💡 Dicas Importantes</h2>
-        <div class="tip-box">
-            <ul>
-                <li>📍 Use tuplas para dados que não devem ser alterados</li>
-                <li>🔒 Tuplas são mais eficientes que listas para acesso</li>
-                <li>⚠️ Tupla de um elemento precisa de vírgula: <code>(elemento,)</code></li>
-                <li>🔄 Desempacotamento facilita trabalhar com múltiplos valores</li>
-                <li>🎯 Use <code>count()</code> e <code>index()</code> para buscar</li>
-                <li>💾 Tuplas ocupam menos memória que listas</li>
-            </ul>
-        </div>
-    </section>
-
-    <section>
-        <h2>📚 Resumo</h2>
-        <p>Nesta aula você aprendeu:</p>
-        <ul>
-            <li>✅ O que são tuplas e suas características</li>
-            <li>✅ Como criar e acessar elementos de tuplas</li>
-            <li>✅ Desempacotar tuplas de forma eficiente</li>
-            <li>✅ Operações disponíveis para tuplas</li>
-            <li>✅ Diferenças entre tuplas e listas</li>
-            <li>✅ Quando usar tuplas vs listas</li>
-        </ul>
     </section>
 {% endblock %}
-
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
-    <p>Complete o exercício no editor ao lado.</p>
+
+        <h4>📝 Exemplo:</h4>
+        <pre><code>Quantos elementos vai ter o vetor? 4
+Digite um numero: 10.0
+Digite um numero: 15.5
+Digite um numero: 13.2
+Digite um numero: 9.8
+
+MEDIA DO VETOR = 12.125
+ELEMENTOS ABAIXO DA MEDIA:
+10.0
+9.8</code></pre>
+
 {% endblock %}
 
-{% block initial_code %}# Seu código aqui
+{% block initial_code %}# Leia a quantidade
+n = int(input("Quantos elementos vai ter o vetor? "))
+
+# Leia os valores
+valores = []
+for i in range(n):
+    v = float(input("Digite um numero: "))
+    valores.append(v)
+
+# Calcule a média
+
+
+# Exiba elementos abaixo da média
 {% endblock %}
 
 {% block extra_js %}
 <script>
-function runCode() {
-    const code = document.getElementById('code-input').value;
-    const output = document.getElementById('output');
-    
-    output.innerHTML = '<div class="output-success">Sistema de alunos executado! Veja como tuplas são úteis para dados imutáveis.</div>';
-}
+    function getExerciseDescription() {
+        return `Problema "abaixo_da_media":
+
+Fazer um programa para ler N números reais em um vetor. Mostrar a média aritmética e depois todos os elementos abaixo da média.
+
+ENTRADA:
+- N (quantidade)
+- N números reais
+
+SAÍDA:
+- MEDIA DO VETOR = [valor com 3 casas]
+- ELEMENTOS ABAIXO DA MEDIA:
+- Cada elemento abaixo da média (1 casa, um por linha)`;
+    }
 </script>
 {% endblock %}

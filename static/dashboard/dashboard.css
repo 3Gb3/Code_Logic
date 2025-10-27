@@ -57,7 +57,8 @@ body {
 
 .nav-link {
     text-decoration: none;
-    color: #ECEFF1;
+    background: #00DC6E;
+    color: #111B2C;
     font-weight: 500;
     padding: 8px 16px;
     border-radius: 8px;
@@ -65,8 +66,8 @@ body {
 }
 
 .nav-link:hover {
-    background: #3D5A80;
-    color: white;
+    background: #01ff80;
+    color: #151e2f;
     transform: translateY(-2px);
 }
 
@@ -105,7 +106,7 @@ body {
 }
 
 .module-card {
-    background: rgba(30, 42, 58, 0.95);
+    background: rgba(23, 32, 44, 0.95);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border-radius: 20px;

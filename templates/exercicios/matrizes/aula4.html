@@ -1,132 +1,140 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 4 - Modificando Matrizes | CodeLogic{% endblock %}
+{% block title %}Aula 4 - Problema "acima_diagonal" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 4 – Modificando Matrizes{% endblock %}
+{% block lesson_title %}Aula 4 – Soma Acima da Diagonal{% endblock %}
 
 {% block lesson_content %}
     <section>
+
         <h2>🎯 Objetivo</h2>
-        <p>Aprender a modificar elementos, linhas e colunas de matrizes.</p>
+        <ul>
+            <li>Identificar elementos acima da diagonal</li>
+            <li>Somar elementos condicionalmente</li>
+            <li>Trabalhar com índices de matriz</li>
+        </ul>
+
     </section>
 
     <section>
-        <h2>✏️ Modificar Elementos</h2>
-        <pre><code>matriz = [
+
+        <h2>📚 Conceitos: Regiões da Matriz</h2>
+        <p>Em uma matriz quadrada, podemos identificar diferentes regiões:</p>
+        
+        <h3>Diagonal Principal:</h3>
+        <p>Elementos onde <code>i == j</code></p>
+        <pre><code>[X  .  .]
+[.  X  .]
+[.  .  X]</code></pre>
+        
+        <h3>Acima da Diagonal:</h3>
+        <p>Elementos onde <code>i < j</code> (linha menor que coluna)</p>
+        <pre><code>[.  X  X]
+[.  .  X]
+[.  .  .]</code></pre>
+        
+        <h3>Abaixo da Diagonal:</h3>
+        <p>Elementos onde <code>i > j</code> (linha maior que coluna)</p>
+        <pre><code>[.  .  .]
+[X  .  .]
+[X  X  .]</code></pre>
+
+    </section>
+
+    <section>
+
+        <h2>📐 Somar Região Específica</h2>
+        <p>Para somar apenas elementos acima da diagonal:</p>
+        
+        <h3>Implementação:</h3>
+        <pre><code>n = 3
+matriz = [
     [1, 2, 3],
     [4, 5, 6],
     [7, 8, 9]
 ]
 
-print("Matriz original:")
-for linha in matriz:
-    print(linha)
+soma = 0
+for i in range(n):
+    for j in range(n):
+        if i < j:  # Acima da diagonal
+            soma += matriz[i][j]
 
-# Modificar elemento específico
-matriz[1][1] = 50
-print(f"\nApós modificar [1][1]: {matriz[1]}")
+print(f"Soma acima da diagonal: {soma}")
+# Elementos: 2, 3, 6 → Soma = 11</code></pre>
+        
+        <h3>Visualização:</h3>
+        <pre><code>Matriz 3x3:
+[1  2  3]  ← linha 0: soma 2+3 (colunas 1,2)
+[4  5  6]  ← linha 1: soma 6 (coluna 2)
+[7  8  9]  ← linha 2: não soma nada
 
-# Modificar múltiplos elementos
-matriz[0][0] = 10
-matriz[0][2] = 30
-matriz[2][2] = 90
+Acima da diagonal: posições onde j > i</code></pre>
 
-print("\nMatriz modificada:")
-for linha in matriz:
-    print(linha)</code></pre>
     </section>
 
     <section>
-        <h2>➕ Adicionar 10 a Todos</h2>
-        <pre><code>valores = [
-    [5, 10, 15],
-    [20, 25, 30]
-]
 
-print("Antes:")
-for linha in valores:
-    print(linha)
+        <h2>💡 Problema: Acima Diagonal</h2>
+        <p>Ler uma matriz quadrada de ordem N, contendo números inteiros. Fazer um programa para calcular a soma dos elementos acima da diagonal principal.</p>
 
-# Adicionar 10 a cada elemento
-for i in range(len(valores)):
-    for j in range(len(valores[i])):
-        valores[i][j] += 10
-
-print("\nDepois de adicionar 10:")
-for linha in valores:
-    print(linha)</code></pre>
-    </section>
-
-    <section>
-        <h2>✖️ Multiplicar por Valor</h2>
-        <pre><code>precos = [
-    [100, 200, 150],
-    [300, 250, 180]
-]
-
-# Aplicar desconto de 10% (multiplicar por 0.9)
-print("Preços originais:")
-for linha in precos:
-    print(linha)
-
-for i in range(len(precos)):
-    for j in range(len(precos[i])):
-        precos[i][j] = precos[i][j] * 0.9
-
-print("\nPreços com desconto:")
-for linha in precos:
-    for preco in linha:
-        print(f"R$ {preco:.2f}", end=" ")
-    print()</code></pre>
-    </section>
-
-    <section>
-        <h2>🔄 Zerar Elementos Negativos</h2>
-        <pre><code>saldos = [
-    [100, -50, 200],
-    [-30, 150, -80],
-    [120, -10, 90]
-]
-
-print("Saldos originais:")
-for linha in saldos:
-    print(linha)
-
-# Substituir negativos por zero
-for i in range(len(saldos)):
-    for j in range(len(saldos[i])):
-        if saldos[i][j] < 0:
-            saldos[i][j] = 0
-
-print("\nSaldos ajustados (negativos = 0):")
-for linha in saldos:
-    print(linha)</code></pre>
-    </section>
-<section>
-        <h2>📚 Resumo</h2>
-        <ul>
-            <li>✅ Modificar elementos individuais</li>
-            <li>✅ Aplicar operações em todos os elementos</li>
-            <li>✅ Fazer ajustes condicionais</li>
-            <li>✅ Simular operações de estoque</li>
-        </ul>
     </section>
 {% endblock %}
-
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
-    <p>Complete o exercício no editor ao lado.</p>
+
+        <h4>📝 Exemplo:</h4>
+        <pre><code>Qual a ordem da matriz? 3
+Elemento [0,0]: 5
+Elemento [0,1]: -3
+Elemento [0,2]: 10
+Elemento [1,0]: 15
+Elemento [1,1]: 8
+Elemento [1,2]: 2
+Elemento [2,0]: 7
+Elemento [2,1]: 9
+Elemento [2,2]: -4
+
+SOMA DOS ELEMENTOS ACIMA DA DIAGONAL PRINCIPAL = 9</code></pre>
+        
+        <p><strong>Explicação:</strong> -3 + 10 + 2 = 9</p>
+
 {% endblock %}
 
-{% block initial_code %}# Seu código aqui
+{% block initial_code %}# Leia a ordem
+n = int(input("Qual a ordem da matriz? "))
+
+# Leia a matriz
+matriz = []
+for i in range(n):
+    linha = []
+    for j in range(n):
+        elemento = int(input(f"Elemento [{i},{j}]: "))
+        linha.append(elemento)
+    matriz.append(linha)
+
+# Calcule a soma acima da diagonal
+
+
+# Exiba o resultado
 {% endblock %}
 
 {% block extra_js %}
 <script>
-function runCode() {
-    const output = document.getElementById('output');
-    output.innerHTML = '<div class="output-success">✅ Sistema executado! Estoque atualizado com sucesso.</div>';
-}
+    function getExerciseDescription() {
+        return `Problema "acima_diagonal":
+
+Ler matriz quadrada NxN de inteiros. Calcular a soma dos elementos acima da diagonal principal.
+
+ENTRADA:
+- N (ordem)
+- N² elementos inteiros
+
+SAÍDA:
+- SOMA DOS ELEMENTOS ACIMA DA DIAGONAL PRINCIPAL = [soma]
+
+REGRA:
+- Acima da diagonal: i < j (linha < coluna)`;
+    }
 </script>
 {% endblock %}

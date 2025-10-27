@@ -1,160 +1,133 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 1 - Introdução aos Loops | CodeLogic{% endblock %}
-{% block lesson_title %}Aula 1 - Introdução aos Loops{% endblock %}
+{% block title %}Aula 1 - Problema "validacao_de_nota" | CodeLogic{% endblock %}
+
+{% block lesson_title %}Aula 1 – Validação com Loop{% endblock %}
 
 {% block lesson_content %}
-<div class="content-section">
-    <h2>🎯 Objetivos da Aula</h2>
-    <ul>
-        <li>Entender o conceito de repetição (loops)</li>
-        <li>Conhecer os tipos de loops em Python</li>
-        <li>Aprender quando usar cada tipo de loop</li>
-        <li>Praticar com exemplos básicos</li>
-    </ul>
-</div>
+    <section>
 
-<div class="content-section">
-    <h2>🔄 O que são Loops?</h2>
-    <p>
-        Loops (ou estruturas de repetição) permitem executar um bloco de código 
-        várias vezes, evitando repetição desnecessária no código.
-    </p>
-    
-    <div class="highlight-box">
-        <h3>💡 Analogia do Dia a Dia</h3>
-        <p>
-            Imagine que você precisa escovar os dentes:
-            <br><br>
-            <strong>ENQUANTO</strong> não estiver limpo, <strong>REPITA:</strong>
-            <br>1. Aplique pasta de dente
-            <br>2. Escove por 30 segundos
-            <br>3. Enxágue
-        </p>
-    </div>
-</div>
+        <h2>🎯 Objetivo</h2>
+        <ul>
+            <li>Entender estruturas de repetição (while)</li>
+            <li>Validar entrada de dados</li>
+            <li>Repetir até condição ser satisfeita</li>
+        </ul>
 
-<div class="content-section">
-    <h2>🔧 Tipos de Loops em Python</h2>
-    
-    <div class="loop-types">
-        <div class="loop-type">
-            <h3>🔢 Loop for</h3>
-            <p>Usado quando sabemos quantas vezes queremos repetir</p>
-            <pre><code>for i in range(5):
-    print(f"Repetição {i}")</code></pre>
-        </div>
+    </section>
 
-        <div class="loop-type">
-            <h3>⏰ Loop while</h3>
-            <p>Usado quando repetimos enquanto uma condição for verdadeira</p>
-            <pre><code>contador = 0
-while contador < 5:
-    print(f"Contador: {contador}")
-    contador += 1</code></pre>
-        </div>
-    </div>
-</div>
+    <section>
 
-<div class="content-section">
-    <h2>🎮 Exemplos Práticos</h2>
-    
-    <div class="example-box">
-        <h3>Exemplo 1: Contagem com for</h3>
-        <pre><code>print("Contagem de 1 a 5:")
-for numero in range(1, 6):
-    print(numero)</code></pre>
-        <p><strong>Resultado:</strong></p>
-        <pre>Contagem de 1 a 5:
-1
-2
-3
-4
-5</pre>
-    </div>
+        <h2>📚 Conceitos: Estrutura WHILE</h2>
+        <p>O <code>while</code> repete um bloco de código enquanto uma condição for verdadeira:</p>
+        
+        <h3>Sintaxe:</h3>
+        <pre><code>while condicao:
+    # código a repetir
+    # IMPORTANTE: a condição deve mudar em algum momento!</code></pre>
+        
+        <h3>Exemplo - Contagem:</h3>
+        <pre><code>contador = 1
+while contador <= 5:
+    print(f"Contagem: {contador}")
+    contador += 1  # Incrementa contador</code></pre>
+        
+        <h3>⚠️ Cuidado com loop infinito:</h3>
+        <pre><code># ERRADO - loop infinito!
+contador = 1
+while contador <= 5:
+    print(contador)
+    # Esqueceu de incrementar!</code></pre>
 
-    <div class="example-box">
-        <h3>Exemplo 2: Tabuada com for</h3>
-        <pre><code>numero = 3
-print(f"Tabuada do {numero}:")
-for i in range(1, 11):
-    resultado = numero * i
-    print(f"{numero} x {i} = {resultado}")</code></pre>
-        <p><strong>Resultado:</strong> Tabuada completa do 3</p>
-    </div>
-</div>
+    </section>
 
-<div class="content-section">
-    <h2>🧮 A função range()</h2>
-    <p>A função <code>range()</code> é muito usada com loops for:</p>
-    
-    <ul>
-        <li><code>range(5)</code> → 0, 1, 2, 3, 4</li>
-        <li><code>range(1, 6)</code> → 1, 2, 3, 4, 5</li>
-        <li><code>range(0, 10, 2)</code> → 0, 2, 4, 6, 8</li>
-    </ul>
-</div>
+    <section>
 
-<div class="content-section">
-    <h2>⚠️ Pontos Importantes</h2>
-    <ul>
-        <li><strong>Indentação:</strong> O código dentro do loop deve estar indentado</li>
-        <li><strong>Condição de parada:</strong> Todo loop precisa ter um fim</li>
-        <li><strong>Loop infinito:</strong> Cuidado para não criar loops que nunca param</li>
-        <li><strong>Performance:</strong> Loops podem ser lentos com muitas repetições</li>
-    </ul>
-</div>
+        <h2>✅ Padrão de Validação</h2>
+        <p>Uma aplicação comum do <code>while</code> é validar entrada de dados:</p>
+        
+        <h3>Padrão:</h3>
+        <pre><code># Lê o primeiro valor
+valor = float(input("Digite um valor válido: "))
+
+# Continua pedindo até ser válido
+while valor < minimo or valor > maximo:
+    print("Valor invalido!")
+    valor = float(input("Digite um valor válido: "))
+
+print(f"Valor aceito: {valor}")</code></pre>
+        
+        <h3>Exemplo - Validar idade:</h3>
+        <pre><code>idade = int(input("Digite sua idade (0-120): "))
+
+while idade < 0 or idade > 120:
+    print("Idade invalida! Tente novamente.")
+    idade = int(input("Digite sua idade (0-120): "))
+
+print(f"Idade registrada: {idade}")</code></pre>
+        
+        <h3>💡 Lógica:</h3>
+        <ul>
+            <li>Primeiro, lê o valor</li>
+            <li>Verifica se é inválido</li>
+            <li>Se inválido, pede novamente</li>
+            <li>Repete até ser válido</li>
+        </ul>
+
+    </section>
+
+    <section>
+
+        <h2>💡 Problema: Validação de Nota</h2>
+        <p>Faça um programa que leia as notas referentes às duas avaliações de um aluno. Calcule e imprima a média semestral. Faça com que o algoritmo só aceite notas válidas (uma nota válida deve pertencer ao intervalo [0, 10]). Cada nota deve ser validada separadamente.</p>
+
+    </section>
 {% endblock %}
 
 {% block exercise_description %}
-<div class="exercise-header">
-    <h2>🏋️‍♂️ Exercício Prático</h2>
-    <p>Crie um programa que imprima os números de 1 a 10</p>
-</div>
 
-<div class="exercise-description">
-    <h3>📋 Instruções:</h3>
-    <ol>
-        <li>Use um loop <code>for</code> com <code>range()</code></li>
-        <li>Imprima cada número de 1 a 10</li>
-        <li>Adicione uma mensagem antes da contagem</li>
-        <li>Adicione uma mensagem após a contagem</li>
-    </ol>
-</div>
+        <h4>📝 Exemplo 1:</h4>
+        <pre><code>Digite a primeira nota: -3.5
+Valor invalido! Tente novamente: 3.5
+Digite a segunda nota: 11.0
+Valor invalido! Tente novamente: 10.0
+MEDIA = 6.75</code></pre>
+        
+        <h4>📝 Exemplo 2:</h4>
+        <pre><code>Digite a primeira nota: 8.0
+Digite a segunda nota: 9.5
+MEDIA = 8.75</code></pre>
 
-<div class="exercise-hints">
-    <h3>💡 Dicas:</h3>
-    <ul>
-        <li>Use <code>range(1, 11)</code> para números de 1 a 10</li>
-        <li>Lembre-se da indentação dentro do loop</li>
-        <li>Use <code>print()</code> para as mensagens</li>
-    </ul>
-</div>
-
-<div class="expected-output">
-    <h3>📤 Resultado Esperado:</h3>
-    <pre>Iniciando contagem:
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-Contagem finalizada!</pre>
-</div>
 {% endblock %}
 
-{% block initial_code %}
-# Exercício: Contagem de 1 a 10
-# Complete o código abaixo
+{% block initial_code %}# Leia e valide a primeira nota
+nota1 = float(input("Digite a primeira nota: "))
 
-print("Iniciando contagem:")
 
-# Seu código aqui (loop for)
+# Leia e valide a segunda nota
+nota2 = float(input("Digite a segunda nota: "))
 
-print("Contagem finalizada!")
+
+# Calcule e exiba a média
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function getExerciseDescription() {
+        return `Problema "validacao_de_nota":
+
+Faça um programa que leia as notas referentes às duas avaliações de um aluno. Calcule e imprima a média semestral. Faça com que o algoritmo só aceite notas válidas (uma nota válida deve pertencer ao intervalo [0, 10]). Cada nota deve ser validada separadamente.
+
+ENTRADA:
+- Primeira nota (float, entre 0 e 10)
+- Segunda nota (float, entre 0 e 10)
+
+SAÍDA:
+- MEDIA = [valor com 2 casas decimais]
+
+VALIDAÇÃO:
+- Se nota < 0 ou nota > 10: "Valor invalido! Tente novamente:"
+- Continua pedindo até o usuário digitar valor válido`;
+    }
+</script>
 {% endblock %}

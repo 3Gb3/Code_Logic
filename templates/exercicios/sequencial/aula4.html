@@ -1,118 +1,101 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 4 - Operadores Aritméticos | CodeLogic{% endblock %}
+{% block title %}Aula 4 - Problema "idades" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 4 – Operadores Aritméticos{% endblock %}
+{% block lesson_title %}Aula 4 – Média de Idades{% endblock %}
 
 {% block lesson_content %}
     <section>
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Conhecer os operadores aritméticos em Python</li>
-            <li>Aprender precedência de operadores</li>
-            <li>Criar programas que fazem cálculos</li>
+            <li>Trabalhar com múltiplas entradas de dados</li>
+            <li>Combinar strings e números na saída</li>
+            <li>Calcular média aritmética</li>
+            <li>Formatar saída com 1 casa decimal</li>
         </ul>
     </section>
 
     <section>
-        <h2>🧮 Operadores Aritméticos</h2>
+        <h2>📝 Lendo Dados de Múltiplas Pessoas</h2>
+        <p>Quando precisamos ler dados de várias pessoas, organizamos em blocos:</p>
+        <pre><code>print("Dados da primeira pessoa:")
+nome1 = input("Nome: ")
+idade1 = int(input("Idade: "))
+
+print("Dados da segunda pessoa:")
+nome2 = input("Nome: ")
+idade2 = int(input("Idade: "))</code></pre>
         
-        <h3>Operadores básicos:</h3>
-        <ul>
-            <li><code>+</code> - Adição</li>
-            <li><code>-</code> - Subtração</li>
-            <li><code>*</code> - Multiplicação</li>
-            <li><code>/</code> - Divisão (resultado decimal)</li>
-            <li><code>//</code> - Divisão inteira (sem decimais)</li>
-            <li><code>%</code> - Módulo (resto da divisão)</li>
-            <li><code>**</code> - Potenciação</li>
-        </ul>
-        
-        <h3>Exemplos:</h3>
-        <pre><code>print(10 + 3)   # 13
-print(10 - 3)   # 7
-print(10 * 3)   # 30
-print(10 / 3)   # 3.333...
-print(10 // 3)  # 3
-print(10 % 3)   # 1
-print(10 ** 3)  # 1000</code></pre>
+        <p>Usamos nomes de variáveis diferentes (nome1, nome2, idade1, idade2) para cada pessoa.</p>
     </section>
 
     <section>
-        <h2>📊 Precedência de Operadores</h2>
-        <p>Python segue a ordem matemática tradicional:</p>
-        <ol>
-            <li>Parênteses: <code>()</code></li>
-            <li>Potenciação: <code>**</code></li>
-            <li>Multiplicação, Divisão, Módulo: <code>*</code>, <code>/</code>, <code>//</code>, <code>%</code></li>
-            <li>Adição e Subtração: <code>+</code>, <code>-</code></li>
-        </ol>
+        <h2>📊 Média Aritmética</h2>
+        <p>A média aritmética é a soma dos valores dividida pela quantidade:</p>
+        <pre><code>media = (idade1 + idade2) / 2</code></pre>
         
-        <h3>Exemplos:</h3>
-        <pre><code>print(2 + 3 * 4)        # 14 (não 20)
-print((2 + 3) * 4)      # 20
-print(2 ** 3 * 4)       # 32
-print(2 ** (3 * 4))     # 4096</code></pre>
+        <p>Para 3 valores seria: <code>(a + b + c) / 3</code></p>
     </section>
 
     <section>
-        <h2>🔧 Operadores de Atribuição</h2>
-        <p>Shortcuts para operações comuns:</p>
+        <h2>💡 Combinando Strings e Números</h2>
+        <p>Use f-strings para combinar texto e variáveis:</p>
+        <pre><code>print(f"A idade média de {nome1} e {nome2} é de {media:.1f} anos")</code></pre>
         
-        <pre><code>x = 10
-x += 5    # x = x + 5  → x = 15
-x -= 3    # x = x - 3  → x = 12
-x *= 2    # x = x * 2  → x = 24
-x /= 4    # x = x / 4  → x = 6.0
-x //= 2   # x = x // 2 → x = 3.0
-x %= 2    # x = x % 2  → x = 1.0
-x **= 3   # x = x ** 3 → x = 1.0</code></pre>
-    </section>
-
-    <section>
-        <h2>💡 Aplicações Práticas</h2>
-        
-        <h3>Calculando área de um círculo:</h3>
-        <pre><code>raio = float(input("Digite o raio: "))
-pi = 3.14159
-area = pi * raio ** 2
-print(f"A área é: {area:.2f}")</code></pre>
-        
-        <h3>Convertendo temperatura:</h3>
-        <pre><code>celsius = float(input("Temperatura em °C: "))
-fahrenheit = (celsius * 9/5) + 32
-print(f"{celsius}°C = {fahrenheit}°F")</code></pre>
+        <p>O <code>:.1f</code> formata o número com 1 casa decimal.</p>
     </section>
 {% endblock %}
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
+    <h4>🎮 Problema "idades"</h4>
+    <p>Fazer um programa para ler o nome e idade de duas pessoas. Ao final mostrar uma mensagem com os nomes e a idade média entre essas pessoas, com uma casa decimal.</p>
     
-    <p><strong>Tarefa 1:</strong> Calculadora de IMC</p>
-    <ul>
-        <li>Peça o peso (kg) e altura (m) do usuário</li>
-        <li>Calcule o IMC usando: peso / (altura ** 2)</li>
-        <li>Exiba o resultado formatado</li>
-    </ul>
-    
-    <p><strong>Tarefa 2:</strong> Calculadora de juros simples</p>
-    <ul>
-        <li>Peça: capital inicial, taxa de juros (%), tempo (meses)</li>
-        <li>Calcule: montante = capital * (1 + (taxa/100) * tempo)</li>
-        <li>Exiba capital inicial, juros ganhos e montante final</li>
-    </ul>
-    
-    <p><strong>Tarefa 3:</strong> Teste de precedência</p>
-    <ul>
-        <li>Calcule: 2 + 3 * 4 ** 2 / 8 - 1</li>
-        <li>Mostre o resultado passo a passo</li>
-    </ul>
+    <h4>📝 Exemplo:</h4>
+    <pre><code>Dados da primeira pessoa:
+Nome: Maria Silva
+Idade: 19
+Dados da segunda pessoa:
+Nome: Joao Melo
+Idade: 20
+A idade média de Maria Silva e Joao Melo é de 19.5 anos</code></pre>
 {% endblock %}
 
-{% block initial_code %}# Exemplo: Calculadora de área do retângulo
-largura = float(input("Digite a largura: "))
-altura = float(input("Digite a altura: "))
-area = largura * altura
-print(f"A área do retângulo é: {area}")
+{% block initial_code %}print("Dados da primeira pessoa:")
+nome1 = input("Nome: ")
+idade1 = int(input("Idade: "))
 
-# Agora implemente os exercícios{% endblock %}
+print("Dados da segunda pessoa:")
+nome2 = input("Nome: ")
+idade2 = int(input("Idade: "))
+
+media = (idade1 + idade2) / 2
+
+print(f"A idade média de {nome1} e {nome2} é de {media:.1f} anos"){% endblock %}
+
+{% block extra_js %}
+<script>
+    function getExerciseDescription() {
+        return `Problema "idades":
+
+Fazer um programa para ler o nome e idade de duas pessoas. Ao final mostrar uma mensagem com os nomes e a idade média entre essas pessoas, com uma casa decimal.
+
+ENTRADA:
+- Nome da primeira pessoa
+- Idade da primeira pessoa
+- Nome da segunda pessoa
+- Idade da segunda pessoa
+
+SAÍDA:
+A idade média de [nome1] e [nome2] é de [media] anos
+
+EXEMPLO:
+Dados da primeira pessoa:
+Nome: Maria Silva
+Idade: 19
+Dados da segunda pessoa:
+Nome: Joao Melo
+Idade: 20
+A idade média de Maria Silva e Joao Melo é de 19.5 anos`;
+    }
+</script>
+{% endblock %}

@@ -1,314 +1,158 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 5 - Loops Aninhados | CodeLogic{% endblock %}
+{% block title %}Aula 5 - Problema "pares_consecutivos" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 5 – Loops Aninhados{% endblock %}
+{% block lesson_title %}Aula 5 – Soma de Pares Consecutivos{% endblock %}
 
 {% block lesson_content %}
     <section>
+
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Entender loops dentro de outros loops</li>
-            <li>Criar padrões e matrizes</li>
-            <li>Resolver problemas bidimensionais</li>
+            <li>Gerar sequências numéricas</li>
+            <li>Usar loop FOR com range</li>
+            <li>Processar números pares</li>
         </ul>
+
     </section>
 
     <section>
-        <h2>🔄 O que são Loops Aninhados?</h2>
-        <p>São loops colocados dentro de outros loops. Para cada iteração do loop externo, o loop interno executa completamente.</p>
+
+        <h2>📚 Conceitos: Loop FOR com Range</h2>
+        <p>O <code>for</code> com <code>range()</code> é perfeito para sequências numéricas:</p>
         
-        <h3>Estrutura Básica:</h3>
-        <pre><code>for i in range(linhas):        # Loop externo
-    for j in range(colunas):   # Loop interno
-        # código executado linhas × colunas vezes</code></pre>
-    </section>
-
-    <section>
-        <h2>📊 Exemplo Simples: Tabuada Completa</h2>
-        <pre><code>print("=== TABUADAS DE 1 A 5 ===\n")
-
-for numero in range(1, 6):        # Loop externo: números 1 a 5
-    print(f"Tabuada do {numero}:")
-    
-    for multiplicador in range(1, 11):  # Loop interno: 1 a 10
-        resultado = numero * multiplicador
-        print(f"{numero} x {multiplicador} = {resultado}")
-    
-    print("-" * 15)  # Separador</code></pre>
-    </section>
-
-    <section>
-        <h2>🎨 Criando Padrões</h2>
+        <h3>Sintaxe básica:</h3>
+        <pre><code>for i in range(inicio, fim, passo):
+    print(i)</code></pre>
         
-        <h3>1. Retângulo de Estrelas</h3>
-        <pre><code>linhas = 4
-colunas = 6
-
-for i in range(linhas):
-    for j in range(colunas):
-        print("*", end="")
-    print()  # Nova linha
-
-# Saída:
-# ******
-# ******
-# ******
-# ******</code></pre>
-    
-        <h3>2. Triângulo Crescente</h3>
-        <pre><code>altura = 5
-
-for i in range(1, altura + 1):
-    for j in range(i):
-        print("*", end="")
-    print()
-
-# Saída:
-# *
-# **
-# ***
-# ****
-# *****</code></pre>
-    
-        <h3>3. Triângulo com Números</h3>
-        <pre><code>altura = 4
-
-for i in range(1, altura + 1):
-    for j in range(1, i + 1):
-        print(j, end="")
-    print()
-
-# Saída:
-# 1
-# 12
-# 123
-# 1234</code></pre>
-    </section>
-
-    <section>
-        <h2>📋 Trabalhando com Matrizes</h2>
+        <h3>Parâmetros:</h3>
+        <ul>
+            <li><code>inicio</code>: primeiro número (incluso)</li>
+            <li><code>fim</code>: último número (excluso)</li>
+            <li><code>passo</code>: incremento (padrão: 1)</li>
+        </ul>
         
-        <h3>1. Criando uma Matriz</h3>
-        <pre><code># Criar matriz 3x4 com zeros
-linhas = 3
-colunas = 4
+        <h3>Exemplos:</h3>
+        <pre><code># Contar de 1 a 5
+for i in range(1, 6):
+    print(i)  # 1, 2, 3, 4, 5
 
-matriz = []
-for i in range(linhas):
-    linha = []
-    for j in range(colunas):
-        linha.append(0)
-    matriz.append(linha)
+# Contar de 2 em 2
+for i in range(0, 11, 2):
+    print(i)  # 0, 2, 4, 6, 8, 10
 
-print(matriz)
-# [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]</code></pre>
-    
-        <h3>2. Preenchendo uma Matriz</h3>
-        <pre><code>linhas = 3
-colunas = 3
+# Contar regressivo
+for i in range(10, 0, -1):
+    print(i)  # 10, 9, 8, ..., 1</code></pre>
 
-# Criar matriz com números sequenciais
-matriz = []
-numero = 1
-
-for i in range(linhas):
-    linha = []
-    for j in range(colunas):
-        linha.append(numero)
-        numero += 1
-    matriz.append(linha)
-
-# Exibir matriz formatada
-for linha in matriz:
-    for elemento in linha:
-        print(f"{elemento:2}", end=" ")
-    print()
-
-# Saída:
-#  1  2  3 
-#  4  5  6 
-#  7  8  9</code></pre>
     </section>
 
     <section>
-        <h2>🎮 Jogo da Velha - Exibindo Tabuleiro</h2>
-        <pre><code>tabuleiro = [
-    ['X', 'O', ' '],
-    [' ', 'X', 'O'],
-    ['O', ' ', 'X']
-]
 
-print("=== JOGO DA VELHA ===")
-print("   0   1   2")
-
-for i in range(3):
-    print(f"{i}  ", end="")
-    
-    for j in range(3):
-        print(f"{tabuleiro[i][j]}", end="")
+        <h2>🔢 Trabalhando com Pares</h2>
+        <p>Como identificar e gerar números pares?</p>
         
-        if j < 2:  # Não imprime | na última coluna
-            print(" | ", end="")
-    
-    print()  # Nova linha
-    
-    if i < 2:  # Não imprime linha na última linha
-        print("  -----------")
-
-# Saída:
-#    0   1   2
-# 0  X | O |  
-#   -----------
-# 1    | X | O
-#   -----------
-# 2  O |   | X</code></pre>
-    </section>
-<section>
-        <h2>🔍 Busca em Matriz</h2>
-        <pre><code>matriz = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9]
-]
-
-numero_procurado = int(input("Que número você procura? "))
-encontrou = False
-
-for i in range(len(matriz)):
-    for j in range(len(matriz[i])):
-        if matriz[i][j] == numero_procurado:
-            print(f"✅ Número {numero_procurado} encontrado na posição ({i},{j})")
-            encontrou = True
-            break
-    
-    if encontrou:
-        break
-
-if not encontrou:
-    print(f"❌ Número {numero_procurado} não encontrado")</code></pre>
-    </section>
-
-    <section>
-        <h2>📊 Operações com Matrizes</h2>
+        <h3>Método 1: Verificar com %</h3>
+        <pre><code>numero = 10
+if numero % 2 == 0:
+    print("É par!")</code></pre>
         
-        <h3>1. Soma de Duas Matrizes</h3>
-        <pre><code>matriz_a = [[1, 2], [3, 4]]
-matriz_b = [[5, 6], [7, 8]]
-
-resultado = []
-
-for i in range(len(matriz_a)):
-    linha = []
-    for j in range(len(matriz_a[i])):
-        soma = matriz_a[i][j] + matriz_b[i][j]
-        linha.append(soma)
-    resultado.append(linha)
-
-print("Matriz A + Matriz B:")
-for linha in resultado:
-    print(linha)</code></pre>
-    
-        <h3>2. Transposta de uma Matriz</h3>
-        <pre><code>matriz = [
-    [1, 2, 3],
-    [4, 5, 6]
-]
-
-# Criar matriz transposta
-linhas = len(matriz)
-colunas = len(matriz[0])
-
-transposta = []
-for j in range(colunas):
-    linha = []
-    for i in range(linhas):
-        linha.append(matriz[i][j])
-    transposta.append(linha)
-
-print("Matriz original:")
-for linha in matriz:
-    print(linha)
-
-print("\nMatriz transposta:")
-for linha in transposta:
-    print(linha)</code></pre>
-    </section>
-
-    <section>
-        <h2>🎯 Controle de Fluxo em Loops Aninhados</h2>
+        <h3>Método 2: Gerar somente pares com range</h3>
+        <pre><code># Gerar pares de 2 a 20
+for par in range(2, 21, 2):
+    print(par)  # 2, 4, 6, 8, ..., 20</code></pre>
         
-        <h3>Break em Loops Aninhados</h3>
-        <pre><code># break só afeta o loop mais interno
-for i in range(3):
-    print(f"Linha {i}:")
-    for j in range(5):
-        if j == 3:
-            print("Break!")
-            break  # Só sai do loop j
-        print(j, end=" ")
-    print()
+        <h3>Método 3: Calcular próximo par</h3>
+        <pre><code>x = 11  # Número ímpar
 
-print("Programa continua...")</code></pre>
-    
-        <h3>Usando Flag para Sair de Ambos</h3>
-        <pre><code>encontrou = False
+# Próximo par após x
+if x % 2 == 0:
+    proximo_par = x + 2
+else:
+    proximo_par = x + 1
 
-for i in range(3):
-    for j in range(3):
-        if i == 1 and j == 1:
-            print(f"Encontrado em ({i},{j})")
-            encontrou = True
-            break
-    
-    if encontrou:
-        break  # Sai do loop externo também</code></pre>
+print(proximo_par)  # 12</code></pre>
+        
+        <h3>Para este problema:</h3>
+        <p>Precisamos encontrar 5 pares consecutivos a partir de X (ou X+1 se X for ímpar):</p>
+        <pre><code>x = 11  # Exemplo
+
+# Ajustar para o próximo par se X for ímpar
+if x % 2 != 0:
+    x = x + 1
+
+# Somar 5 pares consecutivos: x, x+2, x+4, x+6, x+8
+soma = 0
+for i in range(5):
+    par = x + (i * 2)
+    soma += par
+
+print(f"Soma: {soma}")</code></pre>
+
     </section>
 
     <section>
-        <h2>⚡ Complexidade e Performance</h2>
-        <div class="performance-tip">
-            <h3>💡 Dica de Performance:</h3>
-            <p>Um loop aninhado com n×m iterações tem complexidade O(n×m). Para n=m=1000, são 1 milhão de operações!</p>
-            
-            <pre><code># Exemplo: matriz 1000x1000
-for i in range(1000):     # 1000 iterações
-    for j in range(1000): # 1000 iterações cada
-        # Total: 1.000.000 operações!</code></pre>
-        </div>
-    </section>
 
-    <section>
-        <h2>💡 Dicas Importantes</h2>
-        <div class="tip-box">
-            <ul>
-                <li>🎯 Loops aninhados = loop dentro de loop</li>
-                <li>📊 Úteis para matrizes e padrões 2D</li>
-                <li>⚡ Cuidado com a performance em loops grandes</li>
-                <li>🔍 Use flags para sair de múltiplos loops</li>
-                <li>📏 Mantenha indentação clara e consistente</li>
-                <li>🧪 Teste com valores pequenos primeiro</li>
-            </ul>
-        </div>
+        <h2>💡 Problema: Pares Consecutivos</h2>
+        <p>O programa deve ler um valor inteiro X indefinidas vezes. (O programa irá parar quando o valor de X for igual a 0). Para cada X lido, imprima a soma dos 5 pares consecutivos a partir de X (inclusive o X, se for par). Se o valor de entrada for 4, por exemplo, a saída deve ser 40, que é o resultado da soma: 4 + 6 + 8 + 10 + 12.</p>
+
     </section>
 {% endblock %}
-
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
-    <p>Complete o exercício no editor ao lado.</p>
+
+        <h4>📝 Exemplo:</h4>
+        <pre><code>Digite um numero (0 para sair):
+4
+40
+11
+80
+0</code></pre>
+        
+        <p><strong>Explicação:</strong></p>
+        <ul>
+            <li>X = 4: pares = 4, 6, 8, 10, 12 → soma = 40</li>
+            <li>X = 11: próximo par = 12; pares = 12, 14, 16, 18, 20 → soma = 80</li>
+        </ul>
+
 {% endblock %}
 
-{% block initial_code %}# Seu código aqui
+{% block initial_code %}# Leia o primeiro valor
+x = int(input("Digite um numero (0 para sair):\n"))
+
+# Processe até x == 0
+
+
+    # Ajuste x para o próximo par se for ímpar
+    
+    
+    # Some os 5 pares consecutivos
+    
+    
+    # Exiba a soma
+    
+    
+    # Leia próximo valor
 {% endblock %}
 
 {% block extra_js %}
 <script>
-function runCode() {
-    const code = document.getElementById('code-input').value;
-    const output = document.getElementById('output');
-    
-    output.innerHTML = '<div class="output-success">Gerador de padrões executado! Experimente diferentes opções e tamanhos.</div>';
-}
+    function getExerciseDescription() {
+        return `Problema "pares_consecutivos":
+
+O programa deve ler um valor inteiro X indefinidas vezes. Para cada X lido, imprimir a soma dos 5 pares consecutivos a partir de X (inclusive o X, se for par). O programa para quando X = 0.
+
+ENTRADA:
+- Valores X (int)
+- Para quando X = 0
+
+SAÍDA (para cada X):
+- Soma dos 5 pares consecutivos
+
+LÓGICA:
+- Se X for ímpar, começar do próximo par (X+1)
+- Se X for par, começar do próprio X
+- Somar: x, x+2, x+4, x+6, x+8`;
+    }
 </script>
 {% endblock %}

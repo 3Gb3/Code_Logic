@@ -1,153 +1,149 @@
 {% extends "base_aula.html" %}
 
-{% block title %}Aula 2 - Variáveis e Tipos de Dados | CodeLogic{% endblock %}
+{% block title %}Aula 2 - Problema "terreno" | CodeLogic{% endblock %}
 
-{% block lesson_title %}Aula 2 – Variáveis e Tipos de Dados{% endblock %}
+{% block lesson_title %}Aula 2 – Cálculo de Área e Preço de Terreno{% endblock %}
 
 {% block lesson_content %}
     <section>
         <h2>🎯 Objetivo</h2>
         <ul>
-            <li>Entender o conceito de variáveis</li>
-            <li>Conhecer os tipos básicos de dados em Python</li>
-            <li>Aprender a declarar e usar variáveis</li>
+            <li>Ler dados de entrada do usuário usando input()</li>
+            <li>Converter strings para números (int e float)</li>
+            <li>Realizar cálculos matemáticos básicos</li>
+            <li>Formatar saída com casas decimais</li>
         </ul>
     </section>
 
     <section>
-        <h2>📦 O que são Variáveis</h2>
-        <p>Variáveis são "caixinhas" na memória onde guardamos informações para usar depois.</p>
-        <p>Imagine uma variável como uma etiqueta colada em uma caixa:</p>
+        <h2>📥 Leitura de Dados com input()</h2>
+        <p>A função <code>input()</code> permite ler dados do usuário:</p>
+        <pre><code>nome = input("Digite seu nome: ")
+print("Olá,", nome)</code></pre>
+        
+        <p><strong>⚠️ IMPORTANTE:</strong> O input() sempre retorna uma <strong>string</strong> (texto)!</p>
+        <p>Para trabalhar com números, precisamos converter:</p>
+        
+        <h3>Conversão de Tipos:</h3>
         <ul>
-            <li>A <strong>etiqueta</strong> é o nome da variável</li>
-            <li>O <strong>conteúdo da caixa</strong> é o valor armazenado</li>
+            <li><code>int()</code> - converte para número inteiro</li>
+            <li><code>float()</code> - converte para número decimal</li>
+        </ul>
+        
+        <pre><code>idade = int(input("Digite sua idade: "))
+altura = float(input("Digite sua altura: "))</code></pre>
+    </section>
+
+    <section>
+        <h2>🔢 Operações Matemáticas</h2>
+        <p>Python suporta as operações básicas:</p>
+        <ul>
+            <li><code>+</code> adição</li>
+            <li><code>-</code> subtração</li>
+            <li><code>*</code> multiplicação</li>
+            <li><code>/</code> divisão</li>
+            <li><code>**</code> potenciação</li>
         </ul>
         
         <h3>Exemplo:</h3>
-        <pre><code>nome = "João"
-idade = 25</code></pre>
+        <pre><code>largura = 10.0
+comprimento = 30.0
+area = largura * comprimento  # 300.0</code></pre>
     </section>
 
     <section>
-        <h2>🔢 Tipos Básicos de Dados</h2>
+        <h2>📊 Formatação de Saída</h2>
+        <p>Para controlar as casas decimais na saída, usamos f-strings:</p>
         
-        <h3>1. String (str) - Texto</h3>
-        <p>Usado para armazenar texto. Sempre entre aspas.</p>
-        <pre><code>nome = "Maria"
-cidade = 'São Paulo'
-mensagem = "Olá, mundo!"</code></pre>
+        <h3>Sintaxe:</h3>
+        <pre><code>valor = 12.3456
+print(f"Valor com 2 casas: {valor:.2f}")  # 12.35</code></pre>
         
-        <h3>2. Integer (int) - Números Inteiros</h3>
-        <p>Números sem vírgula (positivos, negativos ou zero).</p>
-        <pre><code>idade = 30
-pontos = -5
-zero = 0</code></pre>
-        
-        <h3>3. Float - Números Decimais</h3>
-        <p>Números com vírgula (usa ponto em Python).</p>
-        <pre><code>altura = 1.75
-preco = 29.90
-temperatura = -3.5</code></pre>
-        
-        <h3>4. Boolean (bool) - Verdadeiro/Falso</h3>
-        <p>Apenas dois valores possíveis: True ou False.</p>
-        <pre><code>aprovado = True
-chovendo = False</code></pre>
-    </section>
-
-    <section>
-        <h2>📝 Regras para Nomes de Variáveis</h2>
         <ul>
-            <li>Deve começar com letra ou underscore (_)</li>
-            <li>Pode conter letras, números e underscores</li>
-            <li>Não pode ter espaços</li>
-            <li>Não pode ser uma palavra reservada do Python</li>
-            <li>Python diferencia maiúsculas de minúsculas</li>
+            <li><code>f""</code> - indica uma f-string</li>
+            <li><code>{variavel}</code> - insere o valor da variável</li>
+            <li><code>:.2f</code> - formata com 2 casas decimais</li>
         </ul>
-        
-        <h3>✅ Válidos:</h3>
-        <pre><code>nome, idade, _privado, numero1, data_nascimento</code></pre>
-        
-        <h3>❌ Inválidos:</h3>
-        <pre><code>2nome, meu nome, class, if, nome-completo</code></pre>
     </section>
 
     <section>
-        <h2>🔍 Função type()</h2>
-        <p>Use type() para descobrir o tipo de uma variável:</p>
-        <pre><code>print(type("João"))    # &lt;class 'str'&gt;
-print(type(25))        # &lt;class 'int'&gt;
-print(type(1.75))      # &lt;class 'float'&gt;
-print(type(True))      # &lt;class 'bool'&gt;</code></pre>
+        <h2>💡 Problema: Cálculo de Terreno</h2>
+        <p>Vamos criar um programa que:</p>
+        <ol>
+            <li>Lê a largura do terreno</li>
+            <li>Lê o comprimento do terreno</li>
+            <li>Lê o valor do metro quadrado</li>
+            <li>Calcula a área (largura × comprimento)</li>
+            <li>Calcula o preço total (área × valor do m²)</li>
+            <li>Exibe os resultados com 2 casas decimais</li>
+        </ol>
+        
+        <h3>Fórmulas:</h3>
+        <ul>
+            <li><strong>Área:</strong> largura × comprimento</li>
+            <li><strong>Preço:</strong> área × valor_m2</li>
+        </ul>
     </section>
 {% endblock %}
 
 {% block exercise_description %}
-    <h4>🎮 Vamos praticar!</h4>
+    <h4>🎮 Problema "terreno"</h4>
+    <p>Fazer um programa para ler as medidas da largura e comprimento de um terreno retangular com uma casa decimal, bem como o valor do metro quadrado do terreno com duas casas decimais. Em seguida, o programa deve mostrar o valor da área do terreno, bem como o valor do preço do terreno, ambos com duas casas decimais.</p>
     
-    <p><strong>Tarefa 1:</strong> Crie variáveis com diferentes tipos de dados:</p>
-    <ul>
-        <li>Uma string com seu nome</li>
-        <li>Um inteiro com sua idade</li>
-        <li>Um float com sua altura</li>
-        <li>Um boolean indicando se você gosta de programar</li>
-    </ul>
+    <h4>📝 Exemplo 1:</h4>
+    <pre><code>Digite a largura do terreno: 10.0
+Digite o comprimento do terreno: 30.0
+Digite o valor do metro quadrado: 200.00
+Area do terreno = 300.00
+Preco do terreno = 60000.00</code></pre>
     
-    <p><strong>Tarefa 2:</strong> Use print() para exibir todas as variáveis.</p>
-    
-    <p><strong>Tarefa 3:</strong> Use type() para mostrar o tipo de cada variável.</p>
-    
-    <p><strong>Exemplo de saída esperada:</strong></p>
-    <pre><code>Ana
-22
-1.65
-True
-&lt;class 'str'&gt;
-&lt;class 'int'&gt;
-&lt;class 'float'&gt;
-&lt;class 'bool'&gt;</code></pre>
+    <h4>📝 Exemplo 2:</h4>
+    <pre><code>Digite a largura do terreno: 12.0
+Digite o comprimento do terreno: 20.0
+Digite o valor do metro quadrado: 150.00
+Area do terreno = 240.00
+Preco do terreno = 36000.00</code></pre>
 {% endblock %}
 
-{% block initial_code %}# Crie suas variáveis aqui
-nome = "Seu nome"
-idade = 20
+{% block initial_code %}# Leia os dados do terreno
+largura = float(input("Digite a largura do terreno: "))
+comprimento = float(input("Digite o comprimento do terreno: "))
+valor_m2 = float(input("Digite o valor do metro quadrado: "))
 
-# Exiba as variáveis
-print(nome)
-print(idade){% endblock %}
+# Calcule a área e o preço
+
+# Exiba os resultados
+{% endblock %}
 
 {% block extra_js %}
 <script>
-    // Descrição específica do exercício da Aula 2
     function getExerciseDescription() {
-        return `Aula 2 - Variáveis e Tipos de Dados:
+        return `Problema "terreno":
 
-TAREFAS:
-1. Crie 4 variáveis:
-   - Uma string com seu nome
-   - Um inteiro com sua idade  
-   - Um float com sua altura
-   - Um boolean indicando se você gosta de programar
+Fazer um programa para ler as medidas da largura e comprimento de um terreno retangular com uma casa decimal, bem como o valor do metro quadrado do terreno com duas casas decimais. Em seguida, o programa deve mostrar o valor da área do terreno, bem como o valor do preço do terreno, ambos com duas casas decimais.
 
-2. Use print() para exibir todas as variáveis
+ENTRADA:
+- Largura do terreno (float)
+- Comprimento do terreno (float)
+- Valor do metro quadrado (float)
 
-3. Use type() para mostrar o tipo de cada variável
+SAÍDA:
+- Area do terreno = [valor com 2 casas decimais]
+- Preco do terreno = [valor com 2 casas decimais]
 
-CRITÉRIOS DE AVALIAÇÃO:
-- Deve criar exatamente 4 variáveis com os tipos corretos
-- Deve usar print() para exibir os valores
-- Deve usar type() para mostrar os tipos
-- Variáveis devem ter nomes descritivos
+EXEMPLO 1:
+Digite a largura do terreno: 10.0
+Digite o comprimento do terreno: 30.0
+Digite o valor do metro quadrado: 200.00
+Area do terreno = 300.00
+Preco do terreno = 60000.00
 
-EXEMPLO DE SAÍDA ESPERADA:
-Ana
-22
-1.65
-True
-<class 'str'>
-<class 'int'>
-<class 'float'>
-<class 'bool'>`;
+EXEMPLO 2:
+Digite a largura do terreno: 12.0
+Digite o comprimento do terreno: 20.0
+Digite o valor do metro quadrado: 150.00
+Area do terreno = 240.00
+Preco do terreno = 36000.00`;
     }
 </script>
 {% endblock %}
