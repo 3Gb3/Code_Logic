@@ -32,23 +32,24 @@ const formTitle = document.getElementById("form-title");
 const submitBtn = document.getElementById("submit-btn");
 const toggleAuth = document.getElementById("toggle-auth");
 const toggleLink = document.getElementById("toggle-link");
+const toggleText = document.getElementById("toggle-text");
 const nomeContainer = document.getElementById("nome-container");
 
-toggleAuth.addEventListener("click", () => {
+toggleLink.addEventListener("click", () => {
   isCadastro = !isCadastro;
 
   if (isCadastro) {
-    formTitle.textContent = "Cadastrar no CodeLogic";
-    submitBtn.textContent = "Cadastrar";
-    toggleLink.textContent = "Entrar";
-    toggleAuth.childNodes[0].textContent = "Já tem conta? ";
-    nomeContainer.style.display = "flex";
+    formTitle.textContent = "Criar Conta no CodeLogic";
+    submitBtn.querySelector('.btn-text').textContent = "Cadastrar";
+    toggleLink.textContent = "Entre aqui";
+    toggleText.textContent = "Já tem conta?";
+    nomeContainer.classList.add('show');
   } else {
     formTitle.textContent = "Entrar no CodeLogic";
-    submitBtn.textContent = "Entrar";
-    toggleLink.textContent = "Cadastre-se";
-    toggleAuth.childNodes[0].textContent = "Não tem conta? ";
-    nomeContainer.style.display = "none";
+    submitBtn.querySelector('.btn-text').textContent = "Entrar";
+    toggleLink.textContent = "Cadastre-se aqui";
+    toggleText.textContent = "Não tem conta?";
+    nomeContainer.classList.remove('show');
   }
 
   clearError();
@@ -64,9 +65,17 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
   const senha = document.getElementById("senha").value;
 
   // Validação do nome no cadastro
-  if (isCadastro && !nome) {
-    showError("Por favor, informe seu nome.");
-    return;
+  if (isCadastro) {
+    if (!nome) {
+      showError("Por favor, informe seu nome.");
+      return;
+    }
+    
+    // Verifica se é nome completo (tem pelo menos um espaço)
+    if (!nome.includes(' ') || nome.split(' ').filter(n => n.length > 0).length < 2) {
+      showError("Por favor, informe seu nome completo (nome e sobrenome).");
+      return;
+    }
   }
 
   try {
@@ -75,15 +84,19 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
       // Cria usuário
       userCred = await createUserWithEmailAndPassword(auth, email, senha);
 
-      // Atualiza perfil com o nome
-      await updateProfile(userCred.user, { displayName: nome });
+      // Extrai o primeiro nome
+      const primeiroNome = nome.split(' ')[0];
 
-      // Salva no localStorage
-      localStorage.setItem("userName", nome);
+      // Atualiza perfil com o primeiro nome
+      await updateProfile(userCred.user, { displayName: primeiroNome });
 
-      // Salva no Firestore
+      // Salva o primeiro nome no localStorage
+      localStorage.setItem("userName", primeiroNome);
+
+      // Salva no Firestore com nome completo
       await setDoc(doc(db, "usuarios", userCred.user.uid), {
-        nome: nome,
+        nomeCompleto: nome,
+        primeiroNome: primeiroNome,
         email: email,
         criadoEm: new Date()
       });
@@ -91,7 +104,7 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
       // Login
       userCred = await signInWithEmailAndPassword(auth, email, senha);
 
-      // Salva nome no localStorage se existir
+      // Salva primeiro nome no localStorage se existir
       if (userCred.user.displayName) {
         localStorage.setItem("userName", userCred.user.displayName);
       }
