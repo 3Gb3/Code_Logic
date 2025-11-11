@@ -2,9 +2,9 @@ from flask import Blueprint, render_template
 
 auth_bp = Blueprint('auth', __name__)
 
-@auth_bp.route("/")
+@auth_bp.route("/login")
 def login_page():
-    """Página de login inicial"""
+    """Página de login"""
     return render_template("login/login.html")
 
 @auth_bp.route("/dashboard")

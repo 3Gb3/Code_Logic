@@ -89,13 +89,13 @@ button[type="submit"]:hover {
 #toggle-auth {
     margin-top: 25px;
     font-size: 16px;
-    color: #5B7C99;
+    color: #ECEFF1;
     cursor: pointer;
     transition: color 0.3s ease;
 }
 
 #toggle-auth:hover {
-    color: #3D5A80;
+    color: #afb1b3;
 }
 
 #toggle-link {

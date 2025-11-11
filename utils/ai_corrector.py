@@ -9,23 +9,25 @@ import logging
 
 class AICorrector:
     def __init__(self):
-        # Para desenvolvimento, sempre usar modo mock
-        # Remova esta linha quando tiver uma chave API real
+        # Modo desenvolvedor ativado - usando correção mock educativa
         self.mock_mode = True
         
         # Inicializa o cliente OpenAI
         api_key = os.getenv('OPENAI_API_KEY')
         if not api_key:
-            api_key = "sk-mock-key-for-development"
-            logging.warning("OPENAI_API_KEY não encontrada. Usando modo de desenvolvimento.")
+            logging.info("💡 OPENAI_API_KEY não configurada. Usando modo de desenvolvimento (mock).")
+            self.mock_mode = True
         
         # Só inicializa o cliente se não estiver em modo mock
         if not self.mock_mode:
             try:
                 self.client = OpenAI(api_key=api_key)
+                logging.info("✅ OpenAI API inicializada com sucesso")
             except Exception as e:
                 logging.warning(f"Erro ao inicializar OpenAI: {e}. Usando modo mock.")
                 self.mock_mode = True
+        else:
+            logging.info("🎯 Modo de desenvolvimento ativo - Usando correção educativa local")
     
     def correct_exercise(self, student_code: str, exercise_description: str, lesson_number: int) -> Dict[str, Any]:
         """
@@ -40,56 +42,93 @@ class AICorrector:
             Dict com 'correct', 'feedback', 'score' e 'suggestions'
         """
         try:
+            # Log da requisição
+            logging.info(f"🔍 Iniciando correção - Aula {lesson_number}")
+            logging.info(f"   Código: {len(student_code)} caracteres")
+            logging.info(f"   Descrição: {len(exercise_description)} caracteres")
+            logging.info(f"   Modo Mock: {self.mock_mode}")
+            
             if self.mock_mode:
                 return self._mock_correction(student_code, exercise_description)
             
-            # Prompt para a IA
-            system_prompt = """Você é um professor de programação Python especializado em corrigir exercícios básicos de programação sequencial. 
+            # Prompt melhorado para a IA
+            system_prompt = """Você é um professor de programação Python experiente e didático, especializado em corrigir exercícios de alunos iniciantes.
 
-Sua tarefa é:
-1. Analisar se o código do aluno resolve corretamente o exercício proposto
-2. Dar feedback construtivo sem entregar a solução completa
-3. Fornecer dicas direcionais para melhorar
+Sua tarefa é analisar o código do aluno comparando com o exercício proposto. 
+
+IMPORTANTE:
+1. Leia TODA a descrição do exercício, incluindo exemplos de entrada/saída
+2. Identifique TODAS as tarefas que o aluno deve completar
+3. Verifique se o código do aluno implementa CADA tarefa corretamente
+4. Compare os exemplos fornecidos com o que o código produziria
+5. Se houver exemplos de saída esperada, o código DEVE produzir exatamente aquela saída
 
 Responda SEMPRE em formato JSON com esta estrutura:
 {
     "correct": true/false,
-    "feedback": "mensagem para o aluno",
+    "feedback": "mensagem detalhada para o aluno",
     "score": 0-100,
-    "suggestions": ["dica1", "dica2"]
+    "suggestions": ["dica1", "dica2", "dica3"]
 }
 
-Regras:
-- Se correto: feedback positivo e motivador
-- Se incorreto: explicar o que está errado + dica para correção (SEM dar a solução completa)
-- Score: 0-100 baseado na correção e qualidade do código
-- Suggestions: máximo 3 dicas práticas
-- Seja encorajador e didático
-- Foque apenas no exercício proposto"""
+Critérios de avaliação:
+- correct: true APENAS se o código resolve TODAS as tarefas corretamente
+- feedback: Explique o que está certo/errado, mencione tarefas faltantes
+- score: 
+  * 90-100: Perfeito, todas as tarefas completas
+  * 70-89: Bom, tarefas principais feitas, mas pode melhorar
+  * 50-69: Incompleto, algumas tarefas faltando
+  * 30-49: Código parcial, várias tarefas faltando
+  * 0-29: Código muito incompleto ou com erros graves
+- suggestions: Máximo 3 dicas práticas e específicas
 
-            user_prompt = f"""EXERCÍCIO:
+Seja encorajador mas honesto. Se está errado, explique o porquê."""
+
+            user_prompt = f"""DESCRIÇÃO COMPLETA DO EXERCÍCIO:
 {exercise_description}
 
-CÓDIGO DO ALUNO:
+═══════════════════════════════════════════════
+
+CÓDIGO SUBMETIDO PELO ALUNO:
 ```python
 {student_code}
 ```
 
-Analise se o código resolve corretamente o exercício e forneça feedback educativo."""
+═══════════════════════════════════════════════
 
+Analise se o código do aluno:
+1. Completa TODAS as tarefas pedidas no exercício
+2. Produz a saída esperada (se exemplos foram fornecidos)
+3. Está funcionalmente correto
+4. Segue boas práticas básicas
+
+Forneça feedback detalhado e educativo em JSON."""
+
+            # Log antes de chamar API
+            logging.info(f"📤 Enviando para OpenAI API (gpt-3.5-turbo)...")
+            
             # Chama a API do OpenAI
             response = self.client.chat.completions.create(
-                model="gpt-3.5-turbo",  # Modelo mais barato
+                model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt}
                 ],
-                max_tokens=500,
+                max_tokens=800,  # Aumentado para respostas mais detalhadas
                 temperature=0.7
             )
             
+            logging.info(f"📥 Resposta recebida da OpenAI")
+            
             # Parse da resposta
             ai_response = response.choices[0].message.content.strip()
+            
+            # Remove markdown code blocks se presente
+            if ai_response.startswith('```'):
+                ai_response = ai_response.split('```')[1]
+                if ai_response.startswith('json'):
+                    ai_response = ai_response[4:]
+                ai_response = ai_response.strip()
             
             try:
                 result = json.loads(ai_response)
@@ -103,14 +142,18 @@ Analise se o código resolve corretamente o exercício e forneça feedback educa
                 result['score'] = max(0, min(100, int(result['score'])))
                 result['suggestions'] = result['suggestions'][:3]  # Máximo 3 sugestões
                 
+                logging.info(f"✅ Correção IA concluída: score={result['score']}, correct={result['correct']}")
                 return result
                 
             except (json.JSONDecodeError, ValueError) as e:
                 logging.error(f"Erro ao parsear resposta da IA: {e}")
+                logging.error(f"Resposta recebida: {ai_response[:200]}")
                 return self._fallback_response(student_code)
                 
         except Exception as e:
             logging.error(f"Erro na correção automática: {e}")
+            import traceback
+            logging.error(traceback.format_exc())
             return self._fallback_response(student_code)
     
     def _mock_correction(self, student_code: str, exercise_description: str) -> Dict[str, Any]:
@@ -315,16 +358,57 @@ Analise se o código resolve corretamente o exercício e forneça feedback educa
             }
     
     def _fallback_response(self, student_code: str) -> Dict[str, Any]:
-        """Resposta de fallback quando a IA falha"""
+        """Resposta de fallback quando a IA falha - com análise básica"""
+        code_lines = [line.strip() for line in student_code.strip().split('\n') if line.strip()]
+        code_lower = student_code.lower()
+        
+        # Análise básica do código
+        has_print = 'print(' in code_lower
+        has_input = 'input(' in code_lower
+        has_variables = '=' in code_lower and not '==' in code_lower
+        line_count = len(code_lines)
+        
+        # Gera feedback baseado no que detectou
+        feedback_parts = []
+        score = 50
+        suggestions = []
+        
+        if line_count == 0:
+            feedback_parts.append("Seu código está vazio.")
+            suggestions.append("Comece escrevendo algum código Python")
+            score = 0
+        elif line_count < 3:
+            feedback_parts.append("Seu código parece muito curto.")
+            suggestions.append("Verifique se implementou tudo que foi pedido")
+            score = 40
+        else:
+            feedback_parts.append("Você escreveu um código com várias linhas.")
+            score = 60
+        
+        if has_print:
+            feedback_parts.append("Detectei uso de print() - isso é bom!")
+            score += 10
+        else:
+            suggestions.append("Use print() para exibir resultados")
+        
+        if has_variables:
+            feedback_parts.append("Você está usando variáveis corretamente.")
+            score += 10
+        
+        if has_input:
+            feedback_parts.append("Seu código solicita entrada do usuário.")
+            score += 5
+        
+        suggestions.append("Teste seu código manualmente para garantir que funciona")
+        suggestions.append("Compare sua saída com os exemplos do exercício")
+        
+        feedback = " ".join(feedback_parts) + " Não foi possível uma análise completa automaticamente. Execute seu código e verifique se a saída está correta."
+        
         return {
-            "correct": None,  # Indica que não foi possível avaliar
-            "feedback": "Não foi possível avaliar automaticamente seu código. Verifique se está funcionando corretamente e tente novamente.",
-            "score": 50,
-            "suggestions": [
-                "Teste seu código manualmente",
-                "Verifique se não há erros de sintaxe",
-                "Confira se a lógica está correta"
-            ]
+            "correct": None,  # Indica que não foi possível avaliar definitivamente
+            "feedback": feedback,
+            "score": min(score, 75),  # Máximo 75 em fallback
+            "suggestions": suggestions[:3]
         }
 
 # Instância global do corretor

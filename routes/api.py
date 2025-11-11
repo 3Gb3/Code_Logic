@@ -87,6 +87,7 @@ def execute_code():
             return jsonify({"error": "Código não fornecido"}), 400
         
         code = data['code']
+        inputs = data.get('inputs', None)  # Lista de valores de entrada
         
         # Valida sintaxe primeiro
         validation = executor.validate_code(code)
@@ -98,7 +99,7 @@ def execute_code():
             })
         
         # Executa o código
-        result = executor.execute_python_code(code)
+        result = executor.execute_python_code(code, inputs)
         return jsonify(result)
         
     except Exception as e:

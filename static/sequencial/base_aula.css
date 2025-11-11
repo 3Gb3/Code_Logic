@@ -65,8 +65,8 @@ body {
 }
 
 .nav-link:hover {
-    background: #3D5A80;
-    color: white;
+    background: #00DC6E;
+    color: #111B2C;
     transform: translateY(-2px);
 }
 
@@ -208,9 +208,10 @@ body {
 /* Exercise container */
 .exercise-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-    height: 600px;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+    height: auto;
+    min-height: 500px;
 }
 
 .exercise-description {
@@ -218,18 +219,44 @@ body {
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border-radius: 20px;
-    padding: 30px;
+    padding: 25px 30px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.3);
     border: 1px solid rgba(61, 90, 128, 0.3);
     overflow-y: auto;
+    max-height: 500px;
 }
 
 .exercise-description h3 {
     color: #5B7C99;
-    margin-bottom: 20px;
-    font-size: 24px;
+    margin-bottom: 15px;
+    font-size: 22px;
     border-bottom: 2px solid #3D5A80;
-    padding-bottom: 10px;
+    padding-bottom: 8px;
+}
+
+.exercise-description h4 {
+    color: #5B7C99;
+    margin: 15px 0 10px 0;
+    font-size: 18px;
+}
+
+.exercise-description p {
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.exercise-description ul,
+.exercise-description ol {
+    margin: 10px 0 10px 20px;
+}
+
+.exercise-description li {
+    margin-bottom: 6px;
+}
+
+.exercise-description pre {
+    margin: 12px 0;
+    font-size: 14px;
 }
 
 .code-editor-container {
@@ -776,4 +803,56 @@ a:hover {
 .complete-btn.completed:hover {
     background: linear-gradient(135deg, #4CAF50, #45a049) !important;
     transform: scale(1.05) !important;
+}
+
+/* Input Request Styling */
+.input-request {
+    margin-top: 15px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.input-request label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: #ECEFF1;
+}
+
+.input-request textarea {
+    width: 100%;
+    padding: 10px;
+    background: #1a1a2e;
+    border: 2px solid #667eea;
+    border-radius: 8px;
+    color: #ECEFF1;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    resize: vertical;
+    margin-bottom: 10px;
+}
+
+.input-request textarea:focus {
+    outline: none;
+    border-color: #00DC6E;
+    box-shadow: 0 0 10px rgba(0, 220, 110, 0.3);
+}
+
+.input-request button {
+    width: 100%;
+}
+
+.info {
+    background: rgba(102, 126, 234, 0.1);
+    border-left: 4px solid #667eea;
+    padding: 15px;
+    border-radius: 8px;
+    color: #ECEFF1;
+}
+
+.info strong {
+    display: block;
+    margin-bottom: 10px;
+    color: #667eea;
 }

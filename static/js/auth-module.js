@@ -28,7 +28,7 @@ const checkAuth = (auth) => {
         auth.onAuthStateChanged((user) => {
             if (!user) {
                 // Redireciona para login se não autenticado
-                window.location.href = "/";
+                window.location.href = "/login";
             } else {
                 resolve(user);
             }

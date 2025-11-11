@@ -11,126 +11,78 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css">
     
+    <!-- Xterm.js para terminal interativo -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.min.css">
+    
     <style>
-        .output-container {
+        /* Estilos para o terminal interativo */
+        .terminal-container {
             background: #111B2C;
             border-radius: 8px;
-            padding: 15px;
+            padding: 10px;
             margin-top: 15px;
-            min-height: 300px;
-            max-height: 500px;
-            overflow-y: auto;
+            min-height: 400px;
+            max-height: 600px;
+            overflow: hidden;
             border: 1px solid rgba(102, 126, 234, 0.3);
-            font-family: 'Courier New', monospace;
-            color: #ECEFF1;
-            white-space: pre-wrap;
-            word-wrap: break-word;
         }
         
-        .output-header {
+        .terminal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 10px 15px;
             background: rgba(17, 27, 44, 0.95);
             border-radius: 6px 6px 0 0;
-            margin: -15px -15px 10px -15px;
+            margin: -10px -10px 10px -10px;
             border-bottom: 1px solid rgba(102, 126, 234, 0.2);
         }
         
-        .output-title {
+        .terminal-title {
             color: #ECEFF1;
             font-size: 14px;
             font-weight: 500;
         }
         
-        .input-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .input-modal.show {
+        .terminal-controls {
             display: flex;
+            gap: 8px;
         }
         
-        .input-modal-content {
-            background: #1e293b;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            max-width: 500px;
-            width: 90%;
-        }
-        
-        .input-modal-title {
-            color: #00DC6E;
-            font-size: 18px;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-        
-        .input-list {
-            margin-bottom: 20px;
-        }
-        
-        .input-group {
-            margin-bottom: 15px;
-        }
-        
-        .input-group label {
-            display: block;
-            color: #ECEFF1;
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-        
-        .input-group input {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid rgba(102, 126, 234, 0.3);
-            border-radius: 6px;
-            background: #111B2C;
-            color: #ECEFF1;
-            font-size: 14px;
-            font-family: 'Courier New', monospace;
-        }
-        
-        .input-group input:focus {
-            outline: none;
-            border-color: #00DC6E;
-        }
-        
-        .input-modal-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-        }
-        
-        .input-modal-btn {
-            padding: 10px 20px;
+        .terminal-control-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
             border: none;
-            border-radius: 6px;
             cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
         }
         
-        .input-modal-btn.submit {
-            background: #00DC6E;
-            color: #111B2C;
+        .terminal-control-btn.close { background: #ff5f56; }
+        .terminal-control-btn.minimize { background: #ffbd2e; }
+        .terminal-control-btn.maximize { background: #27c93f; }
+        
+        #terminal {
+            height: 500px;
+            padding: 10px;
         }
         
-        .input-modal-btn.cancel {
-            background: #dc2626;
-            color: white;
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-indicator.idle { background: #888; animation: none; }
+        .status-indicator.running { background: #00DC6E; }
+        .status-indicator.waiting { background: #ffbd2e; }
+        .status-indicator.error { background: #f92672; animation: none; }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
     </style>
     
@@ -168,7 +120,7 @@
                 </div>
             </div>
 
-            <!-- Exercício -->
+            <!-- Exercício com Terminal Interativo -->
             <div id="exercise-tab" class="tab-content">
                 <div class="exercise-container">
                     <div class="exercise-description">
@@ -181,33 +133,27 @@
                             <span>Editor Python</span>
                             <div class="editor-buttons">
                                 <button type="button" id="run-code" class="run-btn" title="Executar Código" aria-label="Executar código Python">▶️ Executar</button>
-                                <button type="button" id="clear-output" class="run-btn" title="Limpar Saída" aria-label="Limpar saída" style="background: #555;">🗑️ Limpar</button>
+                                <button type="button" id="stop-code" class="run-btn" title="Parar Execução" aria-label="Parar execução" style="background: #dc2626; display: none;">⏹️ Parar</button>
+                                <button type="button" id="clear-terminal" class="run-btn" title="Limpar Terminal" aria-label="Limpar terminal" style="background: #555;">🗑️ Limpar</button>
                                 <button type="button" id="check-code" class="check-btn" title="Verificar Resposta" aria-label="Verificar resposta do exercício">✅ Verificar</button>
                             </div>
                         </div>
                         <textarea id="code-editor" name="code-editor" placeholder="Digite seu código Python aqui..." aria-label="Editor de código Python">{% block initial_code %}print("Hello, World!"){% endblock %}</textarea>
                         
-                        <!-- Área de Saída -->
-                        <div class="output-container">
-                            <div class="output-header">
-                                <span class="output-title">📟 Saída do Programa</span>
-                            </div>
-                            <div id="output-content">Clique em "▶️ Executar" para ver a saída do seu código...</div>
-                        </div>
-                        
-                        <!-- Modal de Input -->
-                        <div id="input-modal" class="input-modal">
-                            <div class="input-modal-content">
-                                <h3 class="input-modal-title">📝 Valores de Entrada</h3>
-                                <p style="color: #94a3b8; margin-bottom: 20px; font-size: 14px;">
-                                    Seu código precisa de valores de entrada. Digite os valores abaixo:
-                                </p>
-                                <div id="input-list" class="input-list"></div>
-                                <div class="input-modal-buttons">
-                                    <button class="input-modal-btn cancel" onclick="closeInputModal()">Cancelar</button>
-                                    <button class="input-modal-btn submit" onclick="submitInputs()">Executar</button>
+                        <!-- Terminal Interativo -->
+                        <div class="terminal-container">
+                            <div class="terminal-header">
+                                <span class="terminal-title">
+                                    <span id="status-indicator" class="status-indicator idle"></span>
+                                    <span id="terminal-status">Terminal Interativo Python</span>
+                                </span>
+                                <div class="terminal-controls">
+                                    <button class="terminal-control-btn close" title="Fechar" disabled></button>
+                                    <button class="terminal-control-btn minimize" title="Minimizar" disabled></button>
+                                    <button class="terminal-control-btn maximize" title="Maximizar" disabled></button>
                                 </div>
                             </div>
+                            <div id="terminal"></div>
                         </div>
                         
                         <!-- Feedback da IA -->
@@ -235,6 +181,9 @@
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.min.js"></script>
     
     <script>
         // ============================================
@@ -251,155 +200,295 @@
         });
 
         // ============================================
-        // Executar código
+        // Inicialização do Terminal (xterm.js)
         // ============================================
-        document.getElementById('run-code').addEventListener('click', async () => {
-            const code = editor.getValue();
-            const outputDiv = document.getElementById('output-content');
-            const runBtn = document.getElementById('run-code');
-            
-            if (!code.trim()) {
-                outputDiv.textContent = '⚠️ Código vazio';
-                return;
-            }
-            
-            runBtn.textContent = '⏳ Executando...';
-            runBtn.disabled = true;
-            outputDiv.textContent = '⏳ Executando código...';
-            
-            try {
-                // Primeiro tenta executar sem inputs
-                const response = await fetch('/api/execute', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ code: code, inputs: null })
-                });
-                
-                const result = await response.json();
-                
-                // Se precisa de inputs, abre modal
-                if (result.input_needed) {
-                    openInputModal(result.input_count, code);
-                    runBtn.textContent = '▶️ Executar';
-                    runBtn.disabled = false;
-                    outputDiv.textContent = 'Aguardando valores de entrada...';
-                } else {
-                    displayOutput(result);
-                    runBtn.textContent = '▶️ Executar';
-                    runBtn.disabled = false;
-                }
-                
-            } catch (error) {
-                console.error('Erro:', error);
-                outputDiv.textContent = `❌ Erro de conexão: ${error.message}`;
-                runBtn.textContent = '▶️ Executar';
-                runBtn.disabled = false;
+        const term = new Terminal({
+            cursorBlink: true,
+            fontSize: 15,
+            fontFamily: 'Menlo, Monaco, "Courier New", monospace',
+            theme: {
+                background: '#111B2C',
+                foreground: '#ECEFF1',
+                cursor: '#00DC6E',
+                cursorAccent: '#111B2C',
+                selection: 'rgba(102, 126, 234, 0.4)',
+                black: '#1E2A3A',
+                red: '#f92672',
+                green: '#00DC6E',
+                yellow: '#FFD700',
+                blue: '#667eea',
+                magenta: '#ae81ff',
+                cyan: '#00DC6E',
+                white: '#ECEFF1',
+                brightBlack: '#555',
+                brightRed: '#ff6b9d',
+                brightGreen: '#4ade80',
+                brightYellow: '#fbbf24',
+                brightBlue: '#818cf8',
+                brightMagenta: '#c4b5fd',
+                brightCyan: '#4ade80',
+                brightWhite: '#ffffff'
             }
         });
         
-        // ============================================
-        // Modal de Input
-        // ============================================
-        function openInputModal(count, code) {
-            const modal = document.getElementById('input-modal');
-            const inputList = document.getElementById('input-list');
-            
-            // Limpa lista anterior
-            inputList.innerHTML = '';
-            
-            // Cria campos de input
-            for (let i = 1; i <= count; i++) {
-                const inputGroup = document.createElement('div');
-                inputGroup.className = 'input-group';
-                inputGroup.innerHTML = `
-                    <label for="input-${i}">Valor ${i}:</label>
-                    <input type="text" id="input-${i}" placeholder="Digite o valor ${i}">
-                `;
-                inputList.appendChild(inputGroup);
-            }
-            
-            // Armazena o código para executar depois
-            modal.dataset.code = code;
-            modal.dataset.count = count;
-            
-            modal.classList.add('show');
-            
-            // Foca no primeiro input
-            setTimeout(() => {
-                document.getElementById('input-1')?.focus();
-            }, 100);
-        }
+        const fitAddon = new FitAddon.FitAddon();
+        term.loadAddon(fitAddon);
+        term.open(document.getElementById('terminal'));
+        fitAddon.fit();
         
-        function closeInputModal() {
-            const modal = document.getElementById('input-modal');
-            modal.classList.remove('show');
-        }
+        term.writeln('\x1b[1;32m🐍 Terminal Python Interativo\x1b[0m');
+        term.writeln('\x1b[90mClique em "\x1b[32m▶️ Executar\x1b[90m" para rodar seu código.\x1b[0m\n');
         
-        async function submitInputs() {
-            const modal = document.getElementById('input-modal');
-            const code = modal.dataset.code;
-            const count = parseInt(modal.dataset.count);
-            const outputDiv = document.getElementById('output-content');
-            const runBtn = document.getElementById('run-code');
-            
-            // Coleta inputs
-            const inputs = [];
-            for (let i = 1; i <= count; i++) {
-                const input = document.getElementById(`input-${i}`).value;
-                if (input === '') {
-                    alert(`Por favor, preencha o Valor ${i}`);
-                    return;
-                }
-                inputs.push(input);
-            }
-            
-            closeInputModal();
-            
-            runBtn.textContent = '⏳ Executando...';
-            runBtn.disabled = true;
-            outputDiv.textContent = '⏳ Executando código com valores fornecidos...';
-            
-            try {
-                const response = await fetch('/api/execute', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ code: code, inputs: inputs })
-                });
-                
-                const result = await response.json();
-                displayOutput(result);
-                
-            } catch (error) {
-                console.error('Erro:', error);
-                outputDiv.textContent = `❌ Erro de conexão: ${error.message}`;
-            } finally {
-                runBtn.textContent = '▶️ Executar';
-                runBtn.disabled = false;
-            }
-        }
+        // Buffer para input do usuário
+        let inputBuffer = '';
+        let isWaitingForInput = false;
+        let executionTimeout = null;  // Timeout de segurança
+        let isExecuting = false;  // Flag para evitar múltiplas execuções
         
-        // ============================================
-        // Exibir saída
-        // ============================================
-        function displayOutput(result) {
-            const outputDiv = document.getElementById('output-content');
-            
-            if (result.success) {
-                let output = result.output || '(sem saída)';
-                if (result.error) {
-                    output += '\n\n⚠️ Avisos:\n' + result.error;
-                }
-                outputDiv.textContent = output;
+        // Função de debug
+        function debugLog(msg, data = null) {
+            const timestamp = new Date().toLocaleTimeString();
+            if (data) {
+                console.log(`[${timestamp}] ${msg}`, data);
             } else {
-                outputDiv.textContent = `❌ Erro:\n${result.error}`;
+                console.log(`[${timestamp}] ${msg}`);
             }
         }
         
         // ============================================
-        // Limpar saída
+        // WebSocket para comunicação em tempo real
         // ============================================
-        document.getElementById('clear-output').addEventListener('click', () => {
-            document.getElementById('output-content').textContent = 'Saída limpa. Clique em "▶️ Executar" para executar seu código.';
+        const socket = io();
+        
+        socket.on('connect', () => {
+            debugLog('✅ Conectado ao servidor WebSocket:', socket.id);
+            socket.emit('join_session', { session_id: socket.id });
+            updateStatus('idle', 'Pronto');
+        });
+        
+        socket.on('disconnect', () => {
+            debugLog('⚠️ Desconectado do servidor WebSocket');
+            updateStatus('error', 'Desconectado');
+        });
+        
+        socket.on('output', (data) => {
+            debugLog('[OUTPUT] Dados recebidos:', data.data.substring(0, 50));
+            term.write(data.data);
+        });
+        
+        socket.on('request_input', (data) => {
+            debugLog('[INPUT] Request recebido:', data.prompt);
+            term.write(data.prompt);
+            isWaitingForInput = true;
+            updateStatus('waiting', 'Aguardando entrada...');
+        });
+        
+        socket.on('execution_started', () => {
+            debugLog('[EXEC] Execução INICIADA pelo servidor');
+            isExecuting = true;
+            updateStatus('running', 'Executando...');
+        });
+        
+        socket.on('execution_complete', (data) => {
+            debugLog('[EXEC] Execução COMPLETA:', data);
+            
+            isExecuting = false;
+            
+            // Limpa o timeout de segurança
+            if (executionTimeout) {
+                clearTimeout(executionTimeout);
+                executionTimeout = null;
+            }
+            
+            // SEMPRE reseta o estado dos botões
+            isWaitingForInput = false;
+            inputBuffer = '';
+            
+            if (data.success) {
+                term.write('\n\r✅ Execução concluída.\n\r');
+            } else if (data.error) {
+                term.write(`\n\r❌ Erro: ${data.error}\n\r`);
+            }
+            
+            // Força volta ao estado idle
+            updateStatus('idle', 'Pronto');
+        });
+        
+        socket.on('error', (data) => {
+            debugLog('[ERROR] Erro recebido:', data);
+            term.write(`\n\r❌ ${data.message}\n\r`);
+            updateStatus('error', 'Erro');
+        });
+        
+        socket.on('reset_complete', (data) => {
+            debugLog('[RESET] Reset completo confirmado pelo servidor');
+        });
+        
+        // ============================================
+        // Handle terminal input
+        // ============================================
+        term.onData((data) => {
+            if (!isWaitingForInput) return;
+            
+            const code = data.charCodeAt(0);
+            
+            // Enter key
+            if (code === 13) {
+                term.write('\r\n');
+                socket.emit('provide_input', { input: inputBuffer });
+                inputBuffer = '';
+                isWaitingForInput = false;
+                return;
+            }
+            
+            // Backspace
+            if (code === 127 || code === 8) {
+                if (inputBuffer.length > 0) {
+                    inputBuffer = inputBuffer.slice(0, -1);
+                    term.write('\b \b');
+                }
+                return;
+            }
+            
+            // Control characters
+            if (code < 32) return;
+            
+            inputBuffer += data;
+            term.write(data);
+        });
+        
+        // ============================================
+        // Atualizar status
+        // ============================================
+        function updateStatus(state, message) {
+            debugLog(`📊 updateStatus: ${state} - ${message}`);
+            
+            const indicator = document.getElementById('status-indicator');
+            const statusText = document.getElementById('terminal-status');
+            const runBtn = document.getElementById('run-code');
+            const stopBtn = document.getElementById('stop-code');
+            
+            if (!runBtn || !stopBtn) {
+                console.error('❌ Botões não encontrados!');
+                return;
+            }
+            
+            indicator.className = `status-indicator ${state}`;
+            statusText.textContent = message;
+            
+            // Mostra/oculta botões baseado no estado
+            if (state === 'running' || state === 'waiting') {
+                debugLog('  → Escondendo Executar, mostrando Parar');
+                runBtn.style.display = 'none';
+                stopBtn.style.display = 'inline-block';
+            } else {
+                debugLog('  → Mostrando Executar, escondendo Parar');
+                runBtn.style.display = 'inline-block';
+                stopBtn.style.display = 'none';
+                runBtn.disabled = false;
+                runBtn.textContent = '▶️ Executar';
+            }
+        }
+        
+        // ============================================
+        // Executar código
+        // ============================================
+        document.getElementById('run-code').addEventListener('click', () => {
+            debugLog('🖱️ Botão EXECUTAR clicado');
+            
+            // Previne múltiplos cliques enquanto está executando
+            if (isExecuting) {
+                debugLog('⚠️  Já está executando, ignorando clique');
+                term.write('\r\n\x1b[33m⚠️  Aguarde a execução atual terminar ou clique em Parar\x1b[0m\r\n');
+                return;
+            }
+            
+            const code = editor.getValue();
+            
+            if (!code.trim()) {
+                term.write('⚠️  Código vazio\n\r');
+                return;
+            }
+            
+            // Limpa timeout anterior se existir
+            if (executionTimeout) {
+                clearTimeout(executionTimeout);
+            }
+            
+            // Marca como executando
+            isExecuting = true;
+            
+            // Muda para estado "executando" IMEDIATAMENTE
+            debugLog('🔄 Mudando estado para RUNNING');
+            updateStatus('running', 'Executando...');
+            
+            term.write('\n\r' + '='.repeat(50) + '\n\r');
+            
+            debugLog('📤 Enviando código para servidor', code.substring(0, 50) + '...');
+            socket.emit('execute_code', { code: code });
+            
+            // Timeout de segurança: 5 minutos máximo
+            executionTimeout = setTimeout(() => {
+                debugLog('[TIMEOUT] Execução demorou mais de 5 minutos');
+                isExecuting = false;
+                updateStatus('idle', 'Pronto');
+                term.write('\r\n\x1b[33m⚠️  Timeout: execução muito longa\x1b[0m\r\n');
+            }, 300000);
+        });
+        
+        // ============================================
+        // Parar execução
+        // ============================================
+        document.getElementById('stop-code').addEventListener('click', () => {
+            debugLog('🛑 Botão PARAR clicado');
+            
+            // Limpa o timeout de segurança
+            if (executionTimeout) {
+                clearTimeout(executionTimeout);
+                executionTimeout = null;
+            }
+            
+            isExecuting = false;
+            
+            term.write('\r\n\x1b[33m⚠️  Parando execução...\x1b[0m\r\n');
+            socket.emit('stop_execution');
+            updateStatus('idle', 'Pronto');
+        });
+        
+        // ============================================
+        // Limpar terminal
+        // ============================================
+        document.getElementById('clear-terminal').addEventListener('click', () => {
+            debugLog('🗑️ Botão LIMPAR clicado - Reset completo do sistema');
+            
+            // 1. Para qualquer execução em andamento
+            if (isExecuting || isWaitingForInput) {
+                socket.emit('stop_execution');
+            }
+            
+            // 2. Envia comando de reset para o servidor
+            socket.emit('reset_session');
+            
+            // 3. Limpa todos os timeouts
+            if (executionTimeout) {
+                clearTimeout(executionTimeout);
+                executionTimeout = null;
+            }
+            
+            // 4. Reseta todos os estados
+            isExecuting = false;
+            isWaitingForInput = false;
+            inputBuffer = '';
+            
+            // 5. Limpa o terminal
+            term.clear();
+            term.writeln('\x1b[1;32m🐍 Terminal Python Interativo\x1b[0m');
+            term.writeln('\x1b[90mClique em "\x1b[32m▶️ Executar\x1b[90m" para rodar seu código.\x1b[0m\n');
+            
+            // 6. Reseta o status
+            updateStatus('idle', 'Pronto');
+            
+            debugLog('✅ Reset completo realizado');
         });
         
         // ============================================
@@ -418,9 +507,17 @@
                 if (tabName === 'exercise') {
                     setTimeout(() => {
                         editor.refresh();
+                        fitAddon.fit();
                     }, 100);
                 }
             });
+        });
+        
+        // ============================================
+        // Resize terminal on window resize
+        // ============================================
+        window.addEventListener('resize', () => {
+            fitAddon.fit();
         });
         
         // ============================================
@@ -443,7 +540,9 @@
                 
                 const response = await fetch('/api/correct', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                     body: JSON.stringify({ 
                         code: code,
                         exercise_description: exerciseDescription,
@@ -539,6 +638,7 @@
                 completeBtn.disabled = true;
                 
                 const userId = localStorage.getItem('userId');
+                const userName = localStorage.getItem('userName');
                 
                 if (!userId) {
                     alert('Erro: Usuário não encontrado. Faça login novamente.');
@@ -548,7 +648,9 @@
                 
                 const response = await fetch('/api/complete-lesson', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                     body: JSON.stringify({
                         lesson_number: lessonNumber,
                         user_id: userId,
@@ -614,44 +716,7 @@
         // ============================================
         
         function getExerciseDescription() {
-            const descriptionElement = document.querySelector('.exercise-description');
-            if (!descriptionElement) {
-                return 'Exercício de programação Python';
-            }
-            
-            // Captura TODO o HTML interno, incluindo formatação e exemplos
-            const fullHTML = descriptionElement.innerHTML;
-            
-            // Remove tags HTML mas preserva a estrutura e exemplos
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = fullHTML;
-            
-            // Extrai o texto preservando quebras de linha e estrutura
-            let description = '';
-            
-            // Processa cada elemento filho
-            tempDiv.querySelectorAll('*').forEach(element => {
-                const tagName = element.tagName.toLowerCase();
-                
-                // Adiciona quebras de linha apropriadas
-                if (['h3', 'h4', 'p', 'li', 'div'].includes(tagName)) {
-                    description += '\n';
-                }
-                
-                // Captura código/exemplos especialmente
-                if (tagName === 'code' || tagName === 'pre') {
-                    description += '\n```\n' + element.textContent.trim() + '\n```\n';
-                } else if (element.textContent.trim()) {
-                    description += element.textContent.trim() + ' ';
-                }
-            });
-            
-            // Se não conseguiu processar, usa textContent direto
-            if (!description.trim()) {
-                description = descriptionElement.textContent;
-            }
-            
-            return description.trim() || 'Exercício de programação Python';
+            return document.querySelector('.exercise-description')?.textContent || 'Exercício de programação Python';
         }
         
         function getLessonNumber() {

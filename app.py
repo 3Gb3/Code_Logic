@@ -17,6 +17,7 @@ from routes.progress import progress_bp, set_firestore_client as set_progress_fi
 load_dotenv()
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
 
 # Função para verificar e ajustar tempo do sistema
 def check_system_time():
@@ -98,6 +99,12 @@ app.register_blueprint(progress_bp)
 
 print("Static folder:", app.static_folder)
 
+# Rota da Landing Page (página inicial)
+@app.route('/')
+def landing():
+    """Renderiza a landing page do CodeLogic"""
+    return render_template('landing.html')
+
 # Handler global para erros HTTP que retorna JSON
 @app.errorhandler(404)
 def not_found(e):
@@ -108,7 +115,19 @@ def internal_error(e):
     app.logger.error(f"Erro interno: {e}")
     return jsonify({"error": "Erro interno do servidor"}), 500
 
+
 if __name__ == "__main__":
     # Ativa logging para debug
     logging.basicConfig(level=logging.DEBUG)
-    app.run(debug=True)
+    
+    # Mensagem de inicialização
+    print("\n" + "="*60)
+    print("🚀 CodeLogic - Servidor Iniciado!")
+    print("="*60)
+    print("\n📍 Servidor rodando em:")
+    print("\n   🌐 http://localhost:5000")
+    print("   🌐 http://127.0.0.1:5000")
+    print("\n💡 Pressione CTRL+C para parar o servidor")
+    print("="*60 + "\n")
+    
+    app.run(debug=True, host='0.0.0.0', port=5000)

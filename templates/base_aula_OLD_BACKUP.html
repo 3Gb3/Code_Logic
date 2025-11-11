@@ -6,134 +6,8 @@
     <title>{% block title %}CodeLogic{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='sequencial/base_aula.css') }}">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/code_logic.ico') }}">
-    
-    <!-- CodeMirror -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css">
-    
-    <style>
-        .output-container {
-            background: #111B2C;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 15px;
-            min-height: 300px;
-            max-height: 500px;
-            overflow-y: auto;
-            border: 1px solid rgba(102, 126, 234, 0.3);
-            font-family: 'Courier New', monospace;
-            color: #ECEFF1;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-        
-        .output-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 15px;
-            background: rgba(17, 27, 44, 0.95);
-            border-radius: 6px 6px 0 0;
-            margin: -15px -15px 10px -15px;
-            border-bottom: 1px solid rgba(102, 126, 234, 0.2);
-        }
-        
-        .output-title {
-            color: #ECEFF1;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        
-        .input-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .input-modal.show {
-            display: flex;
-        }
-        
-        .input-modal-content {
-            background: #1e293b;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            max-width: 500px;
-            width: 90%;
-        }
-        
-        .input-modal-title {
-            color: #00DC6E;
-            font-size: 18px;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-        
-        .input-list {
-            margin-bottom: 20px;
-        }
-        
-        .input-group {
-            margin-bottom: 15px;
-        }
-        
-        .input-group label {
-            display: block;
-            color: #ECEFF1;
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-        
-        .input-group input {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid rgba(102, 126, 234, 0.3);
-            border-radius: 6px;
-            background: #111B2C;
-            color: #ECEFF1;
-            font-size: 14px;
-            font-family: 'Courier New', monospace;
-        }
-        
-        .input-group input:focus {
-            outline: none;
-            border-color: #00DC6E;
-        }
-        
-        .input-modal-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-        }
-        
-        .input-modal-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
-        }
-        
-        .input-modal-btn.submit {
-            background: #00DC6E;
-            color: #111B2C;
-        }
-        
-        .input-modal-btn.cancel {
-            background: #dc2626;
-            color: white;
-        }
-    </style>
-    
     {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -181,33 +55,14 @@
                             <span>Editor Python</span>
                             <div class="editor-buttons">
                                 <button type="button" id="run-code" class="run-btn" title="Executar Código" aria-label="Executar código Python">▶️ Executar</button>
-                                <button type="button" id="clear-output" class="run-btn" title="Limpar Saída" aria-label="Limpar saída" style="background: #555;">🗑️ Limpar</button>
-                                <button type="button" id="check-code" class="check-btn" title="Verificar Resposta" aria-label="Verificar resposta do exercício">✅ Verificar</button>
+                                <button type="button" id="check-code" class="check-btn" title="Verificar Resposta" aria-label="Verificar resposta do exercício">✅ Verificar Resposta</button>
                             </div>
                         </div>
                         <textarea id="code-editor" name="code-editor" placeholder="Digite seu código Python aqui..." aria-label="Editor de código Python">{% block initial_code %}print("Hello, World!"){% endblock %}</textarea>
                         
-                        <!-- Área de Saída -->
                         <div class="output-container">
-                            <div class="output-header">
-                                <span class="output-title">📟 Saída do Programa</span>
-                            </div>
-                            <div id="output-content">Clique em "▶️ Executar" para ver a saída do seu código...</div>
-                        </div>
-                        
-                        <!-- Modal de Input -->
-                        <div id="input-modal" class="input-modal">
-                            <div class="input-modal-content">
-                                <h3 class="input-modal-title">📝 Valores de Entrada</h3>
-                                <p style="color: #94a3b8; margin-bottom: 20px; font-size: 14px;">
-                                    Seu código precisa de valores de entrada. Digite os valores abaixo:
-                                </p>
-                                <div id="input-list" class="input-list"></div>
-                                <div class="input-modal-buttons">
-                                    <button class="input-modal-btn cancel" onclick="closeInputModal()">Cancelar</button>
-                                    <button class="input-modal-btn submit" onclick="submitInputs()">Executar</button>
-                                </div>
-                            </div>
+                            <div class="output-header">Resultado:</div>
+                            <div id="output" class="output-content"></div>
                         </div>
                         
                         <!-- Feedback da IA -->
@@ -219,7 +74,7 @@
                             <div id="feedback-content" class="feedback-content"></div>
                             <div id="feedback-suggestions" class="feedback-suggestions"></div>
                             
-                            <!-- Botão Concluído -->
+                            <!-- Botão Concluído - aparece apenas quando a resposta está correta -->
                             <div id="complete-lesson-container" class="complete-lesson-container">
                                 <button type="button" id="complete-lesson-btn" class="complete-btn">
                                     ✅ Marcar Aula como Concluída
@@ -235,11 +90,8 @@
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
-    
     <script>
-        // ============================================
-        // Inicialização do CodeMirror
-        // ============================================
+        // Configuração do CodeMirror
         const editor = CodeMirror.fromTextArea(document.getElementById('code-editor'), {
             mode: 'python',
             theme: 'monokai',
@@ -250,200 +102,181 @@
             matchBrackets: true
         });
 
-        // ============================================
-        // Executar código
-        // ============================================
+        // Alternância entre abas
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabName = btn.getAttribute('data-tab');
+                
+                // Remove active de todas as abas
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Ativa a aba selecionada
+                btn.classList.add('active');
+                document.getElementById(tabName + '-tab').classList.add('active');
+                
+                // Refresh do editor quando mudar para exercício
+                if (tabName === 'exercise') {
+                    setTimeout(() => editor.refresh(), 100);
+                }
+            });
+        });
+
+        // Execução de código
         document.getElementById('run-code').addEventListener('click', async () => {
             const code = editor.getValue();
-            const outputDiv = document.getElementById('output-content');
+            const output = document.getElementById('output');
             const runBtn = document.getElementById('run-code');
             
-            if (!code.trim()) {
-                outputDiv.textContent = '⚠️ Código vazio';
-                return;
-            }
-            
+            // Feedback visual
             runBtn.textContent = '⏳ Executando...';
             runBtn.disabled = true;
-            outputDiv.textContent = '⏳ Executando código...';
+            output.innerHTML = '<div class="loading">Executando código...</div>';
             
             try {
-                // Primeiro tenta executar sem inputs
                 const response = await fetch('/api/execute', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ code: code, inputs: null })
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ code: code })
                 });
                 
                 const result = await response.json();
                 
-                // Se precisa de inputs, abre modal
+                // Se o código precisa de inputs, solicita ao usuário
                 if (result.input_needed) {
-                    openInputModal(result.input_count, code);
+                    output.innerHTML = `
+                        <div class="info">
+                            <strong>ℹ️ Entrada Necessária:</strong>
+                            <p>${result.message}</p>
+                            <div class="input-request">
+                                <label>Digite os valores de entrada (um por linha):</label>
+                                <textarea id="user-inputs" rows="${result.input_count}" placeholder="Digite cada valor em uma linha"></textarea>
+                                <button type="button" id="run-with-inputs" class="run-btn">▶️ Executar com Entradas</button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Handler para executar com inputs
+                    document.getElementById('run-with-inputs').addEventListener('click', async () => {
+                        const inputsText = document.getElementById('user-inputs').value;
+                        const inputs = inputsText.split('\n').filter(line => line.trim() !== '');
+                        
+                        if (inputs.length < result.input_count) {
+                            alert(`Por favor, forneça ${result.input_count} valor(es) de entrada.`);
+                            return;
+                        }
+                        
+                        await executeCodeWithInputs(code, inputs, output, runBtn);
+                    });
+                    
                     runBtn.textContent = '▶️ Executar';
                     runBtn.disabled = false;
-                    outputDiv.textContent = 'Aguardando valores de entrada...';
-                } else {
-                    displayOutput(result);
-                    runBtn.textContent = '▶️ Executar';
-                    runBtn.disabled = false;
+                    return;
                 }
                 
+                // Execução normal sem inputs
+                if (result.success) {
+                    output.innerHTML = `
+                        <div class="success">
+                            <strong>✅ Sucesso!</strong>
+                            <pre class="output-text">${result.output || 'Código executado sem saída.'}</pre>
+                        </div>
+                    `;
+                } else {
+                    output.innerHTML = `
+                        <div class="error">
+                            <strong>❌ Erro:</strong>
+                            <pre class="error-text">${result.error}</pre>
+                        </div>
+                    `;
+                }
             } catch (error) {
-                console.error('Erro:', error);
-                outputDiv.textContent = `❌ Erro de conexão: ${error.message}`;
+                output.innerHTML = `
+                    <div class="error">
+                        <strong>❌ Erro de conexão:</strong>
+                        <pre class="error-text">${error.message}</pre>
+                    </div>
+                `;
+            } finally {
                 runBtn.textContent = '▶️ Executar';
                 runBtn.disabled = false;
             }
         });
-        
-        // ============================================
-        // Modal de Input
-        // ============================================
-        function openInputModal(count, code) {
-            const modal = document.getElementById('input-modal');
-            const inputList = document.getElementById('input-list');
-            
-            // Limpa lista anterior
-            inputList.innerHTML = '';
-            
-            // Cria campos de input
-            for (let i = 1; i <= count; i++) {
-                const inputGroup = document.createElement('div');
-                inputGroup.className = 'input-group';
-                inputGroup.innerHTML = `
-                    <label for="input-${i}">Valor ${i}:</label>
-                    <input type="text" id="input-${i}" placeholder="Digite o valor ${i}">
-                `;
-                inputList.appendChild(inputGroup);
-            }
-            
-            // Armazena o código para executar depois
-            modal.dataset.code = code;
-            modal.dataset.count = count;
-            
-            modal.classList.add('show');
-            
-            // Foca no primeiro input
-            setTimeout(() => {
-                document.getElementById('input-1')?.focus();
-            }, 100);
-        }
-        
-        function closeInputModal() {
-            const modal = document.getElementById('input-modal');
-            modal.classList.remove('show');
-        }
-        
-        async function submitInputs() {
-            const modal = document.getElementById('input-modal');
-            const code = modal.dataset.code;
-            const count = parseInt(modal.dataset.count);
-            const outputDiv = document.getElementById('output-content');
-            const runBtn = document.getElementById('run-code');
-            
-            // Coleta inputs
-            const inputs = [];
-            for (let i = 1; i <= count; i++) {
-                const input = document.getElementById(`input-${i}`).value;
-                if (input === '') {
-                    alert(`Por favor, preencha o Valor ${i}`);
-                    return;
-                }
-                inputs.push(input);
-            }
-            
-            closeInputModal();
-            
+
+        // Função auxiliar para executar código com inputs
+        async function executeCodeWithInputs(code, inputs, output, runBtn) {
             runBtn.textContent = '⏳ Executando...';
             runBtn.disabled = true;
-            outputDiv.textContent = '⏳ Executando código com valores fornecidos...';
+            output.innerHTML = '<div class="loading">Executando código com entradas...</div>';
             
             try {
                 const response = await fetch('/api/execute', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ code: code, inputs: inputs })
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        code: code,
+                        inputs: inputs
+                    })
                 });
                 
                 const result = await response.json();
-                displayOutput(result);
                 
+                if (result.success) {
+                    output.innerHTML = `
+                        <div class="success">
+                            <strong>✅ Sucesso!</strong>
+                            <pre class="output-text">${result.output || 'Código executado sem saída.'}</pre>
+                        </div>
+                    `;
+                } else {
+                    output.innerHTML = `
+                        <div class="error">
+                            <strong>❌ Erro:</strong>
+                            <pre class="error-text">${result.error}</pre>
+                        </div>
+                    `;
+                }
             } catch (error) {
-                console.error('Erro:', error);
-                outputDiv.textContent = `❌ Erro de conexão: ${error.message}`;
+                output.innerHTML = `
+                    <div class="error">
+                        <strong>❌ Erro de conexão:</strong>
+                        <pre class="error-text">${error.message}</pre>
+                    </div>
+                `;
             } finally {
                 runBtn.textContent = '▶️ Executar';
                 runBtn.disabled = false;
             }
         }
-        
-        // ============================================
-        // Exibir saída
-        // ============================================
-        function displayOutput(result) {
-            const outputDiv = document.getElementById('output-content');
-            
-            if (result.success) {
-                let output = result.output || '(sem saída)';
-                if (result.error) {
-                    output += '\n\n⚠️ Avisos:\n' + result.error;
-                }
-                outputDiv.textContent = output;
-            } else {
-                outputDiv.textContent = `❌ Erro:\n${result.error}`;
-            }
-        }
-        
-        // ============================================
-        // Limpar saída
-        // ============================================
-        document.getElementById('clear-output').addEventListener('click', () => {
-            document.getElementById('output-content').textContent = 'Saída limpa. Clique em "▶️ Executar" para executar seu código.';
-        });
-        
-        // ============================================
-        // Alternância entre abas
-        // ============================================
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const tabName = btn.getAttribute('data-tab');
-                
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                
-                btn.classList.add('active');
-                document.getElementById(tabName + '-tab').classList.add('active');
-                
-                if (tabName === 'exercise') {
-                    setTimeout(() => {
-                        editor.refresh();
-                    }, 100);
-                }
-            });
-        });
-        
-        // ============================================
-        // Correção automática com IA
-        // ============================================
+
+        // Correção automática
         document.getElementById('check-code').addEventListener('click', async () => {
             const code = editor.getValue();
             const checkBtn = document.getElementById('check-code');
             const feedbackContainer = document.getElementById('ai-feedback');
             
+            // Feedback visual
             checkBtn.textContent = '🤖 Verificando...';
             checkBtn.disabled = true;
             
+            // Mostra container de feedback
             feedbackContainer.classList.add('show');
             document.getElementById('feedback-content').innerHTML = '<div class="loading">Analisando seu código...</div>';
             
             try {
+                // Pega a descrição do exercício do template
                 const exerciseDescription = getExerciseDescription();
                 const lessonNumber = getLessonNumber();
                 
                 const response = await fetch('/api/correct', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                     body: JSON.stringify({ 
                         code: code,
                         exercise_description: exerciseDescription,
@@ -461,6 +294,7 @@
                         <div class="error">
                             <strong>❌ Erro na verificação:</strong>
                             <p>${errorMsg}</p>
+                            ${result.details ? `<p style="margin-top:10px; font-size:0.9em; opacity:0.8;">${result.details}</p>` : ''}
                         </div>
                     `;
                 }
@@ -470,17 +304,16 @@
                     <div class="error">
                         <strong>❌ Erro de conexão:</strong>
                         <p>${error.message}</p>
+                        <p style="margin-top:10px; font-size:0.9em; opacity:0.8;">Verifique sua conexão com a internet e tente novamente.</p>
                     </div>
                 `;
             } finally {
-                checkBtn.textContent = '✅ Verificar';
+                checkBtn.textContent = '✅ Verificar Resposta';
                 checkBtn.disabled = false;
             }
         });
 
-        // ============================================
-        // Exibir feedback da IA
-        // ============================================
+        // Função para exibir feedback da IA
         function displayFeedback(correction) {
             const feedbackTitle = document.getElementById('feedback-title');
             const feedbackScore = document.getElementById('feedback-score');
@@ -488,9 +321,11 @@
             const feedbackSuggestions = document.getElementById('feedback-suggestions');
             const completeLessonContainer = document.getElementById('complete-lesson-container');
             
+            // Atualiza título baseado no resultado
             if (correction.correct === true) {
                 feedbackTitle.textContent = '🎉 Resposta Correta!';
                 feedbackTitle.className = 'feedback-title correct';
+                // Mostra botão de concluir apenas se a resposta estiver correta
                 completeLessonContainer.style.display = 'block';
             } else if (correction.correct === false) {
                 feedbackTitle.textContent = '🤔 Precisa Melhorar';
@@ -502,15 +337,18 @@
                 completeLessonContainer.style.display = 'none';
             }
             
+            // Exibe pontuação
             feedbackScore.textContent = `${correction.score}/100`;
             feedbackScore.className = `feedback-score ${correction.score >= 70 ? 'good' : correction.score >= 40 ? 'average' : 'poor'}`;
             
+            // Exibe feedback principal
             feedbackContent.innerHTML = `
                 <div class="feedback-message ${correction.correct ? 'success' : 'warning'}">
                     <p>${correction.feedback}</p>
                 </div>
             `;
             
+            // Exibe sugestões se houver
             if (correction.suggestions && correction.suggestions.length > 0) {
                 const suggestionsHtml = correction.suggestions.map(suggestion => 
                     `<li>💡 ${suggestion}</li>`
@@ -527,9 +365,7 @@
             }
         }
 
-        // ============================================
-        // Marcar aula como concluída
-        // ============================================
+        // Funcionalidade do botão "Marcar como Concluída"
         document.getElementById('complete-lesson-btn').addEventListener('click', async () => {
             const completeBtn = document.getElementById('complete-lesson-btn');
             const lessonNumber = getLessonNumber();
@@ -538,7 +374,9 @@
                 completeBtn.textContent = '⏳ Salvando...';
                 completeBtn.disabled = true;
                 
+                // Pega o usuário logado do localStorage (mais confiável neste contexto)
                 const userId = localStorage.getItem('userId');
+                const userName = localStorage.getItem('userName');
                 
                 if (!userId) {
                     alert('Erro: Usuário não encontrado. Faça login novamente.');
@@ -546,9 +384,13 @@
                     return;
                 }
                 
+                console.log(`🎯 Marcando aula ${lessonNumber} como concluída para usuário:`, userName);
+                
                 const response = await fetch('/api/complete-lesson', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                     body: JSON.stringify({
                         lesson_number: lessonNumber,
                         user_id: userId,
@@ -562,14 +404,20 @@
                     completeBtn.textContent = '✅ Aula Concluída!';
                     completeBtn.classList.add('completed');
                     
+                    console.log('✅ Aula marcada como concluída:', result);
+                    
+                    // Mostra mensagem de sucesso
                     showSuccessMessage(`Parabéns! Aula ${lessonNumber} concluída. Progresso: ${result.total_completed}/10 aulas.`);
                     
+                    // Redireciona de volta para o lobby do módulo após alguns segundos
                     setTimeout(() => {
                         const moduleName = getModuleName();
+                        console.log(`Redirecionando para o lobby do módulo: ${moduleName}`);
                         window.location.href = `/aulas/${moduleName}`;
                     }, 2000);
                     
                 } else {
+                    console.error('❌ Erro do servidor:', result.error);
                     completeBtn.textContent = '❌ Erro ao salvar';
                     alert(`Erro ao salvar progresso: ${result.error}`);
                     setTimeout(() => {
@@ -589,9 +437,7 @@
             }
         });
 
-        // ============================================
-        // Mostrar mensagem de sucesso
-        // ============================================
+        // Função para mostrar mensagem de sucesso
         function showSuccessMessage(message) {
             const successDiv = document.createElement('div');
             successDiv.className = 'success-notification';
@@ -604,62 +450,27 @@
             
             document.body.appendChild(successDiv);
             
+            // Remove a mensagem após 5 segundos
             setTimeout(() => {
                 successDiv.remove();
             }, 5000);
         }
-        
-        // ============================================
-        // Funções auxiliares
-        // ============================================
-        
+
+        // Função para obter descrição do exercício (implementada em cada aula)
         function getExerciseDescription() {
-            const descriptionElement = document.querySelector('.exercise-description');
-            if (!descriptionElement) {
-                return 'Exercício de programação Python';
-            }
-            
-            // Captura TODO o HTML interno, incluindo formatação e exemplos
-            const fullHTML = descriptionElement.innerHTML;
-            
-            // Remove tags HTML mas preserva a estrutura e exemplos
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = fullHTML;
-            
-            // Extrai o texto preservando quebras de linha e estrutura
-            let description = '';
-            
-            // Processa cada elemento filho
-            tempDiv.querySelectorAll('*').forEach(element => {
-                const tagName = element.tagName.toLowerCase();
-                
-                // Adiciona quebras de linha apropriadas
-                if (['h3', 'h4', 'p', 'li', 'div'].includes(tagName)) {
-                    description += '\n';
-                }
-                
-                // Captura código/exemplos especialmente
-                if (tagName === 'code' || tagName === 'pre') {
-                    description += '\n```\n' + element.textContent.trim() + '\n```\n';
-                } else if (element.textContent.trim()) {
-                    description += element.textContent.trim() + ' ';
-                }
-            });
-            
-            // Se não conseguiu processar, usa textContent direto
-            if (!description.trim()) {
-                description = descriptionElement.textContent;
-            }
-            
-            return description.trim() || 'Exercício de programação Python';
+            // Esta função será sobrescrita em cada template de aula específica
+            return document.querySelector('.exercise-description')?.textContent || 'Exercício de programação Python';
         }
-        
+
+        // Função para obter número da aula
         function getLessonNumber() {
+            // Extrai o número da aula da URL ou do contexto
             const pathname = window.location.pathname;
             const match = pathname.match(/(\d+)/);
             return match ? parseInt(match[1]) : 1;
         }
-        
+
+        // Função para obter módulo da aula
         function getModuleName() {
             const pathname = window.location.pathname;
             if (pathname.includes('sequencial')) return 'sequencial';
@@ -667,16 +478,19 @@
             if (pathname.includes('repetitiva')) return 'repetitiva';
             if (pathname.includes('vetores')) return 'vetores';
             if (pathname.includes('matrizes')) return 'matrizes';
-            return 'sequencial';
+            return 'sequencial'; // default
         }
-        
+
+        // Função de logout
         function logout() {
             localStorage.clear();
             window.location.href = '/';
         }
-        
+
+        // Função para ir ao lobby do módulo atual
         function goToModuleLobby() {
             const moduleName = getModuleName();
+            console.log(`Navegando para o lobby do módulo: ${moduleName}`);
             window.location.href = `/aulas/${moduleName}`;
         }
     </script>

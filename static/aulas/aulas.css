@@ -66,8 +66,8 @@ body {
 
 .nav-link:hover,
 .nav-link.active {
-    background: #3D5A80;
-    color: white;
+    background: #00DC6E;
+    color: #111B2C;
     transform: translateY(-2px);
 }
 
@@ -1015,4 +1015,17 @@ body {
         padding: 10px 25px;
         font-size: 14px;
     }
+}
+
+.footer  { 
+    background-color: #111B2C;
+    color: white;
+    white-space: nowrap;
+    text-decoration: none; 
+    padding-right: 1.5%;
+
+    .credit{
+        text-align: center;    
+    }
+
 }
