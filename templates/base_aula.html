@@ -137,12 +137,17 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
+    <!-- Floating animated orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    
     <header class="header">
         <div class="nav-container">
-            <div class="logo">
+            <a href="/dashboard" class="logo" style="text-decoration: none; color: inherit;">
                 <img src="{{ url_for('static', filename='img/code_logic.ico') }}" alt="CodeLogic">
                 <h1>CodeLogic</h1>
-            </div>
+            </a>
             <nav class="nav-menu">
                 <a href="/dashboard" class="nav-link">Dashboard</a>
                 <a href="#" class="nav-link" onclick="goToModuleLobby()">Aulas</a>
@@ -490,40 +495,48 @@
             
             if (correction.correct === true) {
                 feedbackTitle.textContent = '🎉 Resposta Correta!';
-                feedbackTitle.className = 'feedback-title correct';
                 completeLessonContainer.style.display = 'block';
             } else if (correction.correct === false) {
                 feedbackTitle.textContent = '🤔 Precisa Melhorar';
-                feedbackTitle.className = 'feedback-title incorrect';
                 completeLessonContainer.style.display = 'none';
             } else {
                 feedbackTitle.textContent = '📝 Análise Concluída';
-                feedbackTitle.className = 'feedback-title neutral';
                 completeLessonContainer.style.display = 'none';
             }
             
+            // Classe do score baseada na pontuação
             feedbackScore.textContent = `${correction.score}/100`;
-            feedbackScore.className = `feedback-score ${correction.score >= 70 ? 'good' : correction.score >= 40 ? 'average' : 'poor'}`;
+            feedbackScore.className = 'feedback-score';
+            if (correction.score >= 90) {
+                feedbackScore.classList.add('perfect');
+            } else if (correction.score >= 70) {
+                feedbackScore.classList.add('good');
+            } else {
+                feedbackScore.classList.add('needs-improvement');
+            }
+            
+            // Feedback com estilo apropriado
+            const messageClass = correction.correct ? 'success-message' : 
+                                correction.score >= 70 ? 'info-message' : 'warning-message';
             
             feedbackContent.innerHTML = `
-                <div class="feedback-message ${correction.correct ? 'success' : 'warning'}">
+                <div class="${messageClass}">
                     <p>${correction.feedback}</p>
                 </div>
             `;
             
             if (correction.suggestions && correction.suggestions.length > 0) {
                 const suggestionsHtml = correction.suggestions.map(suggestion => 
-                    `<li>💡 ${suggestion}</li>`
+                    `<li>${suggestion}</li>`
                 ).join('');
                 
                 feedbackSuggestions.innerHTML = `
-                    <div class="suggestions-container">
-                        <h4>💭 Dicas para Melhorar:</h4>
-                        <ul>${suggestionsHtml}</ul>
-                    </div>
+                    <h4>💡 Sugestões de Melhoria</h4>
+                    <ul>${suggestionsHtml}</ul>
                 `;
+                feedbackSuggestions.style.display = 'block';
             } else {
-                feedbackSuggestions.innerHTML = '';
+                feedbackSuggestions.style.display = 'none';
             }
         }
 

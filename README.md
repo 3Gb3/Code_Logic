@@ -7,15 +7,52 @@
 ![Módulos](https://img.shields.io/badge/M%C3%B3dulos-5%20Ativos-blue.svg)
 ![Status](https://img.shields.io/badge/Status-Funcional-brightgreen.svg)
 ![Licença](https://img.shields.io/badge/Licen%C3%A7a-MIT-yellow.svg)
+![Design](https://img.shields.io/badge/Design-Moderno-purple.svg)
+![Responsive](https://img.shields.io/badge/Responsive-Mobile%20Ready-blueviolet.svg)
 
 ## 📝 Sobre o Projeto
 
-**CodeLogic** é uma plataforma educacional interativa desenvolvida para ensinar programação Python de forma progressiva e prática. O projeto foi construído convertendo 50 exercícios do formato VISUALG (Portugol) para Python, oferecendo uma abordagem estruturada desde conceitos básicos até aplicações avançadas de álgebra linear.
+**CodeLogic** é uma plataforma educacional interativa e moderna desenvolvida para ensinar programação Python de forma progressiva e prática. O projeto foi construído convertendo 50 exercícios do formato VISUALG (Portugol) para Python, oferecendo uma abordagem estruturada desde conceitos básicos até aplicações avançadas de álgebra linear, tudo isso com uma interface visual **completamente redesenhada** e responsiva.
 
 ### 🎓 Informações Acadêmicas
 - **Instituição**: Faculdade Cesuca
+- **Curso**: Análise e Desenvolvimento de Sistemas
 - **Orientador**: Professor Arthur Marques de Oliveira
-- **Status**: Plataforma funcional com 50 aulas completas
+- **Status**: Plataforma funcional com 50 aulas completas e design moderno
+
+## ✨ Destaques da Última Atualização (Novembro 2025)
+
+### 🎨 **Design Completamente Renovado**
+- ✅ Interface moderna com **Glassmorphism**
+- ✅ Gradientes vibrantes e animações suaves
+- ✅ **Dark theme** otimizado para programação
+- ✅ Floating orbs animados em todas as páginas
+- ✅ Grid background animado
+- ✅ Efeitos hover sofisticados
+- ✅ Transições fluidas com cubic-bezier
+
+### 📱 **100% Responsivo**
+- ✅ Suporte completo para **mobile** (360px - 768px)
+- ✅ Tablets otimizados (768px - 1024px)
+- ✅ Desktop em alta resolução (1200px+)
+- ✅ Menu adaptativo para dispositivos móveis
+- ✅ Editor de código responsivo
+- ✅ Cards e layouts flexíveis
+
+### 🚀 **Melhorias de UX/UI**
+- ✅ **Logo clicável** redirecionando ao dashboard
+- ✅ Botão de verificar redesenhado com animações premium
+- ✅ Sistema de feedback da IA estilizado
+- ✅ Blur otimizado para melhor legibilidade (20px → 5-8px)
+- ✅ Contraste de cores melhorado
+- ✅ Tipografia aprimorada (Inter, Fira Code)
+- ✅ Animações de entrada (fadeIn, slideIn, float)
+
+### 👥 **Equipe Atualizada**
+- ✅ 4 desenvolvedores no carrossel de créditos
+- ✅ Natham Moreira Evangelista - QA Engineer
+- ✅ Gabriel Conci - Full-stack & Frontend
+- ✅ Paulo Brito & Cesar Andrade - Desenvolvedores principais
 
 ## 🚀 Funcionalidades
 
@@ -88,15 +125,61 @@ Listas bidimensionais e álgebra linear:
 
 ### 🛠️ Recursos Técnicos
 - ✅ **50 aulas completas** convertidas de VISUALG para Python
-- ✅ Interface web responsiva e moderna
+- ✅ Interface web **responsiva e moderna** com glassmorphism
 - ✅ Sistema de autenticação via Firebase
 - ✅ Acompanhamento de progresso por módulo
 - ✅ Sistema de desbloqueio progressivo de aulas
-- ✅ Editor de código interativo com execução em tempo real
-- ✅ Correção automática de exercícios com IA
+- ✅ **Editor de código interativo** com CodeMirror
+- ✅ Execução de código Python em tempo real
+- ✅ **Correção automática de exercícios com IA** (OpenAI)
 - ✅ Validação de sintaxe Python
 - ✅ Exemplos práticos com entrada/saída formatada
 - ✅ Sistema de "pular módulo" para usuários avançados
+- ✅ **Design system completo** com variáveis CSS
+- ✅ **Animações fluidas** e microinterações
+- ✅ **Dark theme** otimizado para código
+- ✅ **Mobile-first approach** com breakpoints múltiplos
+
+## 🎨 Design System
+
+### **Paleta de Cores**
+- **Background**: Gradient #0F2027 → #203A43 → #2C5364
+- **Primary**: Gradient #667eea → #764ba2 (Roxo)
+- **Secondary**: Gradient #4facfe → #00f2fe (Azul)
+- **Success**: Gradient #27ae60 → #2ecc71 (Verde)
+- **Warning**: Gradient #f39c12 → #f1c40f (Amarelo)
+- **Error**: Gradient #e74c3c → #f44336 (Vermelho)
+
+### **Efeitos Visuais**
+- **Glassmorphism**: backdrop-filter blur(5-8px), rgba backgrounds
+- **Floating Orbs**: 3 orbs animados por página (blur 80-100px)
+- **Grid Animado**: Pattern radial em movimento contínuo
+- **Shadows**: Múltiplas camadas para profundidade
+- **Borders**: Gradientes sutis rgba(255,255,255,0.15)
+
+### **Tipografia**
+- **Headings**: Inter, -apple-system, Segoe UI
+- **Code**: Fira Code, Consolas, Monaco (monospace)
+- **Body**: System fonts com fallbacks
+
+### **Animações**
+- `fadeIn`: Entrada suave com opacidade
+- `fadeInUp`: Entrada de baixo para cima
+- `slideIn`: Deslizamento lateral
+- `float`: Flutuação contínua dos orbs
+- `shimmer`: Brilho passando sobre elementos
+- `pulse`: Pulsação para chamar atenção
+
+### **Breakpoints Responsivos**
+```css
+/* Mobile First */
+360px  - Mobile pequeno
+480px  - Mobile padrão
+768px  - Tablet portrait
+1024px - Tablet landscape
+1200px - Desktop
+```
+
 
 ## 🏗️ Arquitetura do Sistema
 
@@ -239,25 +322,81 @@ A aplicação estará disponível em `http://localhost:5000`
 
 ### 📱 Telas Principais
 
-- **Login/Registro**: Autenticação via Firebase com interface moderna
-- **Dashboard**: Visão geral dos 5 módulos com progresso visual
-- **Página de Módulo**: Lista de 10 aulas com sistema de desbloqueio
-  - 🔒 Bloqueada (cinza)
-  - 🔓 Disponível (azul)
-  - ✅ Concluída (verde)
-- **Página de Aula**: Editor de código integrado com:
-  - Descrição do problema
-  - Exemplos de entrada/saída
-  - Editor de código Python
-  - Botão de execução e submissão
-  - Feedback de correção automática
+#### **Login/Registro**
+- Design moderno com glassmorphism
+- Autenticação via Firebase
+- Validação em tempo real
+- Animações de entrada suaves
 
-### 🎨 Design
-- Interface responsiva (mobile-friendly)
-- Tema moderno com gradientes
-- Ícones intuitivos
-- Animações suaves
-- Feedback visual em tempo real
+#### **Dashboard** 
+- Visão geral dos 5 módulos com cards animados
+- Progresso visual com barras e shimmer effect
+- 4 cards de estatísticas com gradientes
+- 3 floating orbs animados
+- Grid background em movimento
+- Menu de navegação responsivo
+- Logo clicável para retornar ao dashboard
+
+#### **Página de Módulo (Lobbies)**
+- Lista de 10 aulas com sistema de desbloqueio progressivo
+- Cards horizontais com estados visuais:
+  - 🔒 **Bloqueada** (cinza, sem acesso)
+  - 🔓 **Disponível** (azul vibrante, clicável)
+  - ✅ **Concluída** (roxo/verde, badge de conclusão)
+- Progress section com barra animada
+- Modal de "pular módulo" estilizado
+- 2 floating orbs por página
+- Hover effects com transformações 3D
+
+#### **Página de Aula**
+- **Sistema de Tabs**: Teoria / Exercício / Sobre
+- **Editor de código** integrado com:
+  - CodeMirror com syntax highlighting
+  - Tema dark customizado
+  - Botões com gradientes e animações
+  - Execução em tempo real
+- **Seção de Output**: Console estilizado
+- **Feedback da IA**: Container glassmorphism com:
+  - Header com score colorido (Perfect/Good/Needs Improvement)
+  - Conteúdo formatado com markdown support
+  - Sugestões destacadas
+  - Botão de completar com gradiente verde
+- **Navegação**: Prev/Next lessons com animações
+- 3 floating orbs e grid animado
+
+### 🎨 Características Visuais
+- **Glassmorphism**: Blur sutil (5-8px) com transparência
+- **Gradientes vibrantes**: Roxo, azul, verde, rosa
+- **Animações suaves**: Cubic-bezier customizado
+- **Hover effects**: Scale, shadow, color transitions
+- **Loading states**: Spinners e feedback visual
+- **Responsive**: Adapta-se perfeitamente a mobile/tablet/desktop
+- **Dark theme**: Otimizado para leitura de código
+- **Microinterações**: Feedback em cada ação do usuário
+
+### 📐 Layout Responsivo
+
+#### **Desktop (1200px+)**
+- Navegação horizontal completa
+- Cards em grid de 2-3 colunas
+- Editor amplo lado a lado com teoria
+- Floating orbs visíveis
+
+#### **Tablet (768px - 1024px)**
+- Menu em 2 linhas (logo + navegação)
+- Cards em coluna única ou 2 colunas
+- Editor com height reduzido (300px)
+- Botões em grid flexível
+
+#### **Mobile (< 768px)**
+- Menu compacto em 2 linhas
+- Cards 100% width em coluna
+- Editor otimizado (250px height)
+- Botões empilhados ou 2 colunas
+- Orbs ocultos para performance
+- Padding reduzido
+- Fontes menores mas legíveis
+
 
 ## 📱 Como Usar
 
@@ -326,21 +465,65 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ## 👥 Equipe
 
-- **Desenvolvedor**: Gabriel Schwingel Conci
-- **Orientador**: Professor Arthur Marques de Oliveira
-- **Instituição**: Faculdade Cesuca
+### Desenvolvedores
+- **Gabriel Schwingel Conci** - Full-stack Developer & Frontend Design
+  - 🎨 Design System e Interface Visual
+  - 💻 Backend (Flask, Python)
+  - 🔥 Integração Firebase
+  - 📱 Responsividade e UX
+  
+- **Paulo Brito** - Backend Developer
+  - 🔧 Arquitetura e APIs
+  - 🗄️ Banco de dados
+  
+- **Cesar Andrade** - Backend Developer  
+  - ⚙️ Sistema de execução de código
+  - 🔐 Segurança
+  
+- **Natham Moreira Evangelista** - QA Engineer
+  - 🧪 Testes e Qualidade
+  - 🐛 Bug tracking
+  - ✅ Validação de funcionalidades
+
+### Orientação Acadêmica
+- **Professor Arthur Marques de Oliveira** - Orientador
+- **Faculdade Cesuca** - Instituição de Ensino
+
+### Skills da Equipe
+- **Frontend**: HTML5, CSS3, JavaScript, Jinja2, Responsive Design
+- **Backend**: Python, Flask, Firebase Admin
+- **Database**: Firestore NoSQL
+- **Auth**: Firebase Authentication
+- **Design**: Glassmorphism, Gradients, Animations
+- **Tools**: Git, VS Code, Chrome DevTools
+- **Testing**: Manual QA, Integration Testing
+
 
 ## 🔄 Histórico de Desenvolvimento
 
-### 📅 Versão Atual (Outubro 2025)
+### 📅 Versão 2.0 (Novembro 2025) - **REDESIGN COMPLETO**
+- ✨ **Interface completamente redesenhada** com design moderno
+- 🎨 Implementação de **Glassmorphism** em toda a plataforma
+- 🌊 **Floating orbs animados** e grid background dinâmico
+- 📱 **Responsividade total** (360px - 1920px+)
+- 🎯 Botão de verificar **redesenhado com animações premium**
+- 💡 Sistema de **feedback da IA estilizado**
+- 🔗 **Logo clicável** em todas as páginas
+- 🎭 Melhorias de **legibilidade** (blur otimizado, contraste aumentado)
+- 👥 Carrossel de créditos com **4 desenvolvedores**
+- 🚀 **6+ breakpoints responsivos** para todos os dispositivos
+- ⚡ **Design System completo** com variáveis CSS padronizadas
+- 🎬 **Animações fluidas**: fadeIn, slideIn, float, shimmer, pulse
+
+### 📅 Versão 1.5 (Outubro 2025)
 - ✅ **50 aulas completas** criadas e validadas
 - ✅ Conversão integral de exercícios VISUALG → Python
 - ✅ Sincronização de títulos entre módulos e aulas
 - ✅ Sistema de progresso funcional
 - ✅ Correção automática com IA implementada
-- ✅ Interface responsiva e moderna
+- ✅ Interface base funcional
 
-### 🛠️ Processo de Conversão
+### 🛠️ Processo de Conversão (2024-2025)
 Todo o conteúdo foi cuidadosamente adaptado:
 1. **Análise dos PDFs**: 5 PDFs fonte com exercícios em VISUALG
 2. **Extração de Conteúdo**: Mapeamento de todos os 50 exercícios
@@ -348,6 +531,7 @@ Todo o conteúdo foi cuidadosamente adaptado:
 4. **Criação de Templates**: Estrutura consistente com Jinja2
 5. **Validação**: Verificação de sintaxe e estrutura
 6. **Sincronização**: Títulos e descrições consistentes
+7. **Design**: Implementação do novo visual moderno (Nov 2025)
 
 ### 📝 Estrutura das Aulas
 Cada uma das 50 aulas segue o padrão:
@@ -358,6 +542,7 @@ Cada uma das 50 aulas segue o padrão:
 - Exemplos com Entrada/Saída (📝)
 - Código Inicial (💻)
 - Descrição para IA (🤖)
+- Interface Visual Moderna (✨)
 ```
 
 ## 🔄 Status do Desenvolvimento
@@ -365,43 +550,66 @@ Cada uma das 50 aulas segue o padrão:
 ### ✅ Funcionalidades Implementadas
 - ✅ Sistema de autenticação completo via Firebase
 - ✅ **50 aulas distribuídas em 5 módulos** (100% completo)
-- ✅ Interface responsiva e moderna
+- ✅ **Interface responsiva e moderna** com glassmorphism
+- ✅ **Design System completo** com variáveis CSS
 - ✅ Sistema de progresso por usuário
 - ✅ Sistema de desbloqueio progressivo de aulas
-- ✅ Editor de código Python integrado
+- ✅ **Editor de código Python integrado** (CodeMirror)
 - ✅ Execução de código em tempo real
-- ✅ Correção automática com IA
+- ✅ **Correção automática com IA** (OpenAI GPT)
 - ✅ Validação de sintaxe Python
 - ✅ Sistema de "pular módulo"
-- ✅ Títulos das aulas sincronizados entre módulos e páginas
-- ✅ Todos os exercícios convertidos de VISUALG para Python
+- ✅ Títulos das aulas sincronizados
+- ✅ Todos os exercícios convertidos de VISUALG → Python
+- ✅ **Floating orbs animados** em todas as páginas
+- ✅ **Grid background animado**
+- ✅ **6+ breakpoints responsivos** (360px - 1920px+)
+- ✅ **Logo clicável** redirecionando ao dashboard
+- ✅ **Botão de verificar estilizado** com animações
+- ✅ **Feedback da IA moderno** com glassmorphism
+- ✅ **Menu mobile adaptativo** (2 linhas)
+- ✅ **Dark theme** otimizado para código
+- ✅ **Carrossel de créditos** com 4 desenvolvedores
 
 ### 🚧 Em Desenvolvimento
 - ⏳ Sistema de ranking/leaderboard
-- ⏳ Modo colaborativo
-- ⏳ Certificados de conclusão
+- ⏳ Modo colaborativo entre alunos
+- ⏳ Certificados de conclusão personalizados
 - ⏳ Dashboard para professores/instrutores
+- ⏳ Modo escuro/claro (theme switcher)
+- ⏳ Sistema de conquistas (achievements)
 
 ### 🎯 Próximas Funcionalidades Planejadas
 - 📱 Aplicativo mobile (React Native)
-- 🎮 Gamificação com conquistas e badges
-- 💬 Fórum de dúvidas entre alunos
+- 🎮 Gamificação com badges e XP
+- 💬 Fórum de dúvidas integrado
 - 📊 Relatórios detalhados de desempenho
 - 🔗 API pública para integrações
-- 🌐 Suporte multilíngue
+- 🌐 Suporte multilíngue (PT/EN/ES)
+- 🎥 Vídeo-aulas integradas
+- 🤖 Chat com IA para dúvidas
+- 📈 Analytics avançado
+- 🔔 Sistema de notificações
 
 ## 📊 Estatísticas do Projeto
 
+### 📈 Números Atualizados (Novembro 2025)
 - 📚 **Total de Aulas**: 50 (100% completas)
-- 💻 **Linhas de Código**: ~15,000+
+- 💻 **Linhas de Código**: ~20,000+
 - 🎯 **Exercícios Práticos**: 50 (todos com correção automática)
 - 📦 **Módulos**: 5 (Sequencial, Comparativa, Repetitiva, Vetores, Matrizes)
 - 🔧 **Tecnologias**: 10+ (Python, Flask, Firebase, HTML/CSS/JS, etc.)
 - 📖 **Templates HTML**: 60+ arquivos
-- 🎨 **Arquivos CSS**: 15+ estilos customizados
-- ⚡ **Arquivos JavaScript**: 10+ scripts interativos
+- 🎨 **Arquivos CSS**: 20+ estilos customizados (com design moderno)
+- ⚡ **Arquivos JavaScript**: 12+ scripts interativos
 - 🔥 **Firebase Collections**: 2 (users, user_progress)
 - 📝 **Conversão**: VISUALG → Python (50 exercícios)
+- 🎭 **Animações CSS**: 10+ animações customizadas
+- 📱 **Breakpoints**: 6 (360px, 480px, 768px, 1024px, 1200px, 1920px)
+- 🌊 **Floating Orbs**: 3 por página de aula, 2 por lobby, 3 no dashboard
+- 🎨 **Design Variants**: 5+ temas de gradiente
+- 👥 **Desenvolvedores**: 4 (Full-stack, Backend x2, QA)
+
 
 ## 🏆 Objetivos Educacionais
 
@@ -432,4 +640,23 @@ Ao concluir os 5 módulos, o aluno será capaz de:
 
 ---
 
-*Projeto desenvolvido como parte do curso de Análise e Desenvolvimento de Sistemas na Faculdade Cesuca, sob orientação do Professor Arthur Marques de Oliveira.*
+## 🎉 Conclusão
+
+O **CodeLogic** representa uma evolução moderna no ensino de programação, combinando pedagogia sólida com uma experiência visual excepcional. Com **50 aulas completas**, uma interface **totalmente redesenhada** e recursos avançados de IA, a plataforma oferece uma experiência de aprendizado imersiva e eficaz.
+
+### 🌟 Diferenciais
+- ✅ **Design Premium**: Glassmorphism e animações modernas
+- ✅ **100% Responsivo**: Funciona em qualquer dispositivo
+- ✅ **IA Integrada**: Correção automática inteligente
+- ✅ **50 Aulas Práticas**: Conteúdo completo e estruturado
+- ✅ **Código Aberto**: Disponível para a comunidade
+
+### 🚀 Próximos Passos
+O projeto continua em evolução constante, com novas funcionalidades sendo planejadas e desenvolvidas. Contribuições são sempre bem-vindas!
+
+---
+
+*Desenvolvido com ❤️ pela equipe CodeLogic*  
+*Projeto acadêmico - Faculdade Cesuca - 2024/2025*
+
+**Última atualização**: Novembro 2025 - v2.0 (Redesign Completo)

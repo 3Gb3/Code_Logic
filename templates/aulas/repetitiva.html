@@ -262,13 +262,17 @@
 </head>
 
 <body>
+    <!-- Floating animated orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    
     <!-- Header -->
     <header class="header">
         <div class="nav-container">
-            <div class="logo">
+            <a href="/dashboard" class="logo" style="text-decoration: none; color: inherit;">
                 <img src="{{ url_for('static', filename='img/code_logic.ico') }}" alt="CodeLogic">
                 <h1>CodeLogic</h1>
-            </div>
+            </a>
             <nav class="nav-menu">
                 <a href="/dashboard" class="nav-link">Dashboard</a>
                 <a href="/aulas/repetitiva" class="nav-link active">Aulas</a>
