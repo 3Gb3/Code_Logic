@@ -49,13 +49,23 @@ def check_system_time():
         return True  # Assume que está ok se não conseguir verificar
 
 # Inicializa Firebase Admin com service account
-service_account_path = os.path.join(os.path.dirname(__file__), "chave_firebase.json")
-if not os.path.exists(service_account_path):
-    print(f"ERRO: service-account.json não encontrado em {service_account_path}")
-    sys.exit(1)
+# Tenta primeiro ler das variáveis de ambiente (Render, produção)
+firebase_credentials = os.getenv('FIREBASE_CREDENTIALS')
 
-# Configurações do Firebase com tolerância de clock skew
-cred = credentials.Certificate(service_account_path)
+if firebase_credentials:
+    # Modo produção: lê das variáveis de ambiente
+    import json
+    cred = credentials.Certificate(json.loads(firebase_credentials))
+    print("✅ Firebase inicializado com credenciais de ambiente")
+else:
+    # Modo desenvolvimento: lê do arquivo local
+    service_account_path = os.path.join(os.path.dirname(__file__), "chave_firebase.json")
+    if not os.path.exists(service_account_path):
+        print(f"ERRO: chave_firebase.json não encontrado em {service_account_path}")
+        print("💡 Configure a variável FIREBASE_CREDENTIALS no Render.com")
+        sys.exit(1)
+    cred = credentials.Certificate(service_account_path)
+    print("✅ Firebase inicializado com arquivo local")
 
 # Inicializa app Firebase 
 try:
