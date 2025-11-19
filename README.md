@@ -471,19 +471,6 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
   - 💻 Backend (Flask, Python)
   - 🔥 Integração Firebase
   - 📱 Responsividade e UX
-  
-- **Paulo Brito** - Backend Developer
-  - 🔧 Arquitetura e APIs
-  - 🗄️ Banco de dados
-  
-- **Cesar Andrade** - Backend Developer  
-  - ⚙️ Sistema de execução de código
-  - 🔐 Segurança
-  
-- **Natham Moreira Evangelista** - QA Engineer
-  - 🧪 Testes e Qualidade
-  - 🐛 Bug tracking
-  - ✅ Validação de funcionalidades
 
 ### Orientação Acadêmica
 - **Professor Arthur Marques de Oliveira** - Orientador
@@ -498,41 +485,6 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 - **Tools**: Git, VS Code, Chrome DevTools
 - **Testing**: Manual QA, Integration Testing
 
-
-## 🔄 Histórico de Desenvolvimento
-
-### 📅 Versão 2.0 (Novembro 2025) - **REDESIGN COMPLETO**
-- ✨ **Interface completamente redesenhada** com design moderno
-- 🎨 Implementação de **Glassmorphism** em toda a plataforma
-- 🌊 **Floating orbs animados** e grid background dinâmico
-- 📱 **Responsividade total** (360px - 1920px+)
-- 🎯 Botão de verificar **redesenhado com animações premium**
-- 💡 Sistema de **feedback da IA estilizado**
-- 🔗 **Logo clicável** em todas as páginas
-- 🎭 Melhorias de **legibilidade** (blur otimizado, contraste aumentado)
-- 👥 Carrossel de créditos com **4 desenvolvedores**
-- 🚀 **6+ breakpoints responsivos** para todos os dispositivos
-- ⚡ **Design System completo** com variáveis CSS padronizadas
-- 🎬 **Animações fluidas**: fadeIn, slideIn, float, shimmer, pulse
-
-### 📅 Versão 1.5 (Outubro 2025)
-- ✅ **50 aulas completas** criadas e validadas
-- ✅ Conversão integral de exercícios VISUALG → Python
-- ✅ Sincronização de títulos entre módulos e aulas
-- ✅ Sistema de progresso funcional
-- ✅ Correção automática com IA implementada
-- ✅ Interface base funcional
-
-### 🛠️ Processo de Conversão (2024-2025)
-Todo o conteúdo foi cuidadosamente adaptado:
-1. **Análise dos PDFs**: 5 PDFs fonte com exercícios em VISUALG
-2. **Extração de Conteúdo**: Mapeamento de todos os 50 exercícios
-3. **Conversão para Python**: Adaptação da sintaxe e lógica
-4. **Criação de Templates**: Estrutura consistente com Jinja2
-5. **Validação**: Verificação de sintaxe e estrutura
-6. **Sincronização**: Títulos e descrições consistentes
-7. **Design**: Implementação do novo visual moderno (Nov 2025)
-
 ### 📝 Estrutura das Aulas
 Cada uma das 50 aulas segue o padrão:
 ```
@@ -544,52 +496,6 @@ Cada uma das 50 aulas segue o padrão:
 - Descrição para IA (🤖)
 - Interface Visual Moderna (✨)
 ```
-
-## 🔄 Status do Desenvolvimento
-
-### ✅ Funcionalidades Implementadas
-- ✅ Sistema de autenticação completo via Firebase
-- ✅ **50 aulas distribuídas em 5 módulos** (100% completo)
-- ✅ **Interface responsiva e moderna** com glassmorphism
-- ✅ **Design System completo** com variáveis CSS
-- ✅ Sistema de progresso por usuário
-- ✅ Sistema de desbloqueio progressivo de aulas
-- ✅ **Editor de código Python integrado** (CodeMirror)
-- ✅ Execução de código em tempo real
-- ✅ **Correção automática com IA** (OpenAI GPT)
-- ✅ Validação de sintaxe Python
-- ✅ Sistema de "pular módulo"
-- ✅ Títulos das aulas sincronizados
-- ✅ Todos os exercícios convertidos de VISUALG → Python
-- ✅ **Floating orbs animados** em todas as páginas
-- ✅ **Grid background animado**
-- ✅ **6+ breakpoints responsivos** (360px - 1920px+)
-- ✅ **Logo clicável** redirecionando ao dashboard
-- ✅ **Botão de verificar estilizado** com animações
-- ✅ **Feedback da IA moderno** com glassmorphism
-- ✅ **Menu mobile adaptativo** (2 linhas)
-- ✅ **Dark theme** otimizado para código
-- ✅ **Carrossel de créditos** com 4 desenvolvedores
-
-### 🚧 Em Desenvolvimento
-- ⏳ Sistema de ranking/leaderboard
-- ⏳ Modo colaborativo entre alunos
-- ⏳ Certificados de conclusão personalizados
-- ⏳ Dashboard para professores/instrutores
-- ⏳ Modo escuro/claro (theme switcher)
-- ⏳ Sistema de conquistas (achievements)
-
-### 🎯 Próximas Funcionalidades Planejadas
-- 📱 Aplicativo mobile (React Native)
-- 🎮 Gamificação com badges e XP
-- 💬 Fórum de dúvidas integrado
-- 📊 Relatórios detalhados de desempenho
-- 🔗 API pública para integrações
-- 🌐 Suporte multilíngue (PT/EN/ES)
-- 🎥 Vídeo-aulas integradas
-- 🤖 Chat com IA para dúvidas
-- 📈 Analytics avançado
-- 🔔 Sistema de notificações
 
 ## 📊 Estatísticas do Projeto
 
