@@ -4,6 +4,10 @@
 
 {% block lesson_title %}Aula 6 – Sistema de Lanchonete{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='exercicios/comparativa/aulas.css') }}">
+{% endblock %}
+
 {% block lesson_content %}
     <section>
 
@@ -55,9 +59,9 @@ preco = precos.get(codigo, 0)  # 0 se código inválido</code></pre>
     <section>
 
         <h2>🍔 Tabela de Produtos</h2>
-        <table border="1" cellpadding="8" style="border-collapse: collapse; margin: 20px 0;">
+        <table class="content-table" border="1" cellpadding="8">
             <thead>
-                <tr style="background-color: #f0f0f0;">
+                <tr class="content-table-head">
                     <th>Código</th>
                     <th>Produto</th>
                     <th>Preço</th>
