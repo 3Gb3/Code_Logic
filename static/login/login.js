@@ -15,15 +15,27 @@ const auth = getAuth(app);
 const db = getFirestore(app); // Firestore
 
 // Helpers de erro
+let errorClearTimer = null;
 const showError = (msg) => {
   const el = document.getElementById("error");
+  if (errorClearTimer) {
+    clearTimeout(errorClearTimer);
+    errorClearTimer = null;
+  }
   el.textContent = msg;
-  el.style.display = "block";
+  el.classList.add("show");
 };
 const clearError = () => {
   const el = document.getElementById("error");
-  el.textContent = "";
-  el.style.display = "none";
+  el.classList.remove("show");
+  if (errorClearTimer) {
+    clearTimeout(errorClearTimer);
+  }
+  errorClearTimer = window.setTimeout(() => {
+    if (!el.classList.contains("show")) {
+      el.textContent = "";
+    }
+  }, 180);
 };
 
 // Alternância login/cadastro
@@ -34,10 +46,10 @@ const toggleAuth = document.getElementById("toggle-auth");
 const toggleLink = document.getElementById("toggle-link");
 const toggleText = document.getElementById("toggle-text");
 const nomeContainer = document.getElementById("nome-container");
+const loginContainer = document.querySelector(".login-container");
+let toggleTransitionTimer = null;
 
-toggleLink.addEventListener("click", () => {
-  isCadastro = !isCadastro;
-
+function syncAuthMode() {
   if (isCadastro) {
     formTitle.textContent = "Criar Conta no CodeLogic";
     submitBtn.querySelector('.btn-text').textContent = "Cadastrar";
@@ -51,9 +63,29 @@ toggleLink.addEventListener("click", () => {
     toggleText.textContent = "Não tem conta?";
     nomeContainer.classList.remove('show');
   }
+}
 
-  clearError();
+toggleLink.addEventListener("click", () => {
+  if (toggleTransitionTimer) {
+    clearTimeout(toggleTransitionTimer);
+  }
+
+  if (loginContainer) {
+    loginContainer.classList.add("is-switching");
+  }
+
+  toggleTransitionTimer = window.setTimeout(() => {
+    isCadastro = !isCadastro;
+    syncAuthMode();
+    clearError();
+
+    if (loginContainer) {
+      loginContainer.classList.remove("is-switching");
+    }
+  }, 120);
 });
+
+syncAuthMode();
 
 // Login/Cadastro com Email/Senha
 document.getElementById("login-form").addEventListener("submit", async (e) => {

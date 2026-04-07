@@ -32,6 +32,99 @@
             }
         }
 
+        function updateUserName(name) {
+            const userNameElement = document.getElementById("user-name");
+            if (userNameElement) {
+                userNameElement.textContent = name || "Usuário";
+            }
+        }
+
+        function showMainContent() {
+            const loadingScreen = document.getElementById("loading-screen");
+            const mainContent = document.getElementById("main-content");
+
+            if (loadingScreen) {
+                loadingScreen.style.display = "none";
+            }
+
+            if (mainContent) {
+                mainContent.classList.add("show");
+            }
+        }
+
+        let popupRedirectUrl = null;
+        let popupTimer = null;
+
+        function showPrettyPopup(message, options = {}) {
+            const {
+                title = "Aviso",
+                type = "info",
+                redirectTo = null,
+                autoRedirectMs = 0
+            } = options;
+
+            const popupModal = document.getElementById('popup-modal');
+            const popupTitle = document.getElementById('popup-title');
+            const popupMessage = document.getElementById('popup-message');
+            const popupContent = popupModal?.querySelector('.modal-content');
+
+            if (!popupModal || !popupTitle || !popupMessage || !popupContent) {
+                console.warn('Popup não encontrado na página.');
+                if (redirectTo) {
+                    window.location.href = redirectTo;
+                }
+                return;
+            }
+
+            popupRedirectUrl = redirectTo;
+            if (popupTimer) {
+                clearTimeout(popupTimer);
+                popupTimer = null;
+            }
+
+            popupTitle.textContent = title;
+            popupMessage.textContent = message;
+            popupContent.classList.remove('popup-success', 'popup-error', 'popup-warning');
+
+            if (type === 'success') {
+                popupContent.classList.add('popup-success');
+            } else if (type === 'error') {
+                popupContent.classList.add('popup-error');
+            } else if (type === 'warning') {
+                popupContent.classList.add('popup-warning');
+            }
+
+            popupModal.style.display = 'flex';
+
+            if (autoRedirectMs > 0 && redirectTo) {
+                popupTimer = setTimeout(() => {
+                    closePrettyPopup();
+                }, autoRedirectMs);
+            }
+        }
+
+        function closePrettyPopup() {
+            const popupModal = document.getElementById('popup-modal');
+            if (popupModal) {
+                popupModal.style.display = 'none';
+            }
+
+            if (popupTimer) {
+                clearTimeout(popupTimer);
+                popupTimer = null;
+            }
+
+            const redirectTo = popupRedirectUrl;
+            popupRedirectUrl = null;
+
+            if (redirectTo) {
+                window.location.href = redirectTo;
+            }
+        }
+
+        window.showPrettyPopup = showPrettyPopup;
+        window.closePrettyPopup = closePrettyPopup;
+
         // Debug: verifica localStorage
         console.log("🔍 Estado do localStorage:");
         console.log("- userName:", localStorage.getItem("userName"));
@@ -47,12 +140,16 @@
             
             if (!savedUserName || !savedUserId) {
                 console.log("❌ Dados de usuário não encontrados no localStorage");
-                alert("Sua sessão expirou. Faça login novamente.");
-                window.location.href = "/";
+                showPrettyPopup("Sua sessão expirou. Faça login novamente.", {
+                    title: "Sessão expirada",
+                    type: "warning",
+                    redirectTo: "/"
+                });
                 return;
             }
             
             console.log("📱 Dados salvos encontrados:", savedUserName, "ID:", savedUserId);
+            updateUserName(savedUserName);
             
             // SEGUNDO: Verifica várias vezes se o Firebase Auth detecta o usuário
             let attempts = 0;
@@ -99,8 +196,11 @@
                 if (!accessResult.success || !accessResult.can_access) {
                     // Redireciona para página de módulo bloqueado
                     const message = accessResult.message || "Complete o módulo anterior primeiro";
-                    alert(message);
-                    window.location.href = "/dashboard";
+                    showPrettyPopup(message, {
+                        title: "Acesso ao módulo",
+                        type: "warning",
+                        redirectTo: "/dashboard"
+                    });
                     return;
                 }
                 
@@ -111,15 +211,13 @@
                 await loadModuleProgress(userId, 'vetores');
                 
                 // Atualiza interface
-                document.getElementById("user-name").textContent = userName;
-                document.getElementById("loading-screen").style.display = "none";
-                document.getElementById("main-content").style.display = "block";
+                updateUserName(userName);
+                showMainContent();
                 
             } catch (error) {
                 console.error("Erro no fallback:", error);
-                document.getElementById("user-name").textContent = savedUserName || "Usuário";
-                document.getElementById("loading-screen").style.display = "none";
-                document.getElementById("main-content").style.display = "block";
+                updateUserName(userName);
+                showMainContent();
             }
         }
 
@@ -216,8 +314,11 @@
                 if (!accessResult.success || !accessResult.can_access) {
                     // Redireciona para página de módulo bloqueado
                     const message = accessResult.message || "Complete o módulo anterior primeiro";
-                    alert(message);
-                    window.location.href = "/dashboard";
+                    showPrettyPopup(message, {
+                        title: "Acesso ao módulo",
+                        type: "warning",
+                        redirectTo: "/dashboard"
+                    });
                     return;
                 }
                 
@@ -228,13 +329,11 @@
                 await loadModuleProgress(userId, 'vetores');
                 
                 // Mostra conteúdo
-                document.getElementById("loading-screen").style.display = "none";
-                document.getElementById("main-content").style.display = "block";
+                showMainContent();
                 
             } catch (error) {
                 console.error('Erro ao carregar progresso:', error);
-                document.getElementById("loading-screen").style.display = "none";
-                document.getElementById("main-content").style.display = "block";
+                showMainContent();
             }
         }
 
@@ -261,7 +360,7 @@
     </script>
 </head>
 
-<body>
+<body class="module-vetores">
     <!-- Floating animated orbs -->
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
@@ -269,7 +368,7 @@
     <!-- Header -->
     <header class="header">
         <div class="nav-container">
-            <a href="/dashboard" class="logo" style="text-decoration: none; color: inherit;">
+            <a href="/dashboard" class="logo">
                 <img src="{{ url_for('static', filename='img/code_logic.ico') }}" alt="CodeLogic">
                 <h1>CodeLogic</h1>
             </a>
@@ -434,66 +533,6 @@
         </div>
     </main>
 
-    <style>
-        /* Estilos específicos para loading */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-
-        .loading-content {
-            text-align: center;
-            color: white;
-        }
-
-        .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 4px solid white;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .content-wrapper {
-            display: none;
-        }
-
-        .user-info {
-            color: #34495e;
-            font-weight: 500;
-            margin-right: 20px;
-        }
-
-        /* Estilos específicos para aulas de vetores */
-        .content-header h1 {
-            color: #9b59b6;
-            text-shadow: 2px 2px 4px rgba(155, 89, 182, 0.1);
-        }
-
-        .progress-fill {
-            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
-            width: 0%;
-            height: 100%;
-            border-radius: 4px;
-            transition: width 0.3s ease;
-        }
-    </style>
-
     <!-- Modal de confirmação para pular módulo -->
     <div id="skip-module-modal" class="modal">
         <div class="modal-content">
@@ -507,6 +546,20 @@
             <div class="modal-footer">
                 <button class="modal-btn modal-btn-cancel" onclick="hideSkipModuleModal()">Cancelar</button>
                 <button class="modal-btn modal-btn-confirm" onclick="skipModule()">Sim, pular módulo</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="popup-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="popup-title">Aviso</h2>
+            </div>
+            <div class="modal-body">
+                <p id="popup-message"></p>
+            </div>
+            <div class="modal-footer single-action">
+                <button class="modal-btn modal-btn-confirm" onclick="closePrettyPopup()">Entendi</button>
             </div>
         </div>
     </div>
@@ -526,7 +579,10 @@
             try {
                 const userId = localStorage.getItem('userId');
                 if (!userId) {
-                    alert('Erro: Usuário não identificado');
+                    showPrettyPopup('Não foi possível identificar seu usuário. Faça login novamente.', {
+                        title: 'Erro de autenticação',
+                        type: 'error'
+                    });
                     return;
                 }
 
@@ -549,30 +605,45 @@
 
                 if (result.success) {
                     hideSkipModuleModal();
-                    alert(`✅ ${result.message}\n\nVocê será redirecionado para o dashboard.`);
-                    setTimeout(() => {
-                        window.location.href = '/dashboard';
-                    }, 2000);
+
+                    showPrettyPopup(`${result.message} Você será redirecionado para o dashboard.`, {
+                        title: 'Módulo concluído',
+                        type: 'success',
+                        redirectTo: '/dashboard',
+                        autoRedirectMs: 2000
+                    });
                 } else {
-                    alert(`Erro ao pular módulo: ${result.error}`);
+                    showPrettyPopup(`Erro ao pular módulo: ${result.error}`, {
+                        title: 'Não foi possível pular módulo',
+                        type: 'error'
+                    });
                     confirmBtn.disabled = false;
                     confirmBtn.textContent = 'Sim, pular módulo';
                 }
             } catch (error) {
                 console.error('Erro ao pular módulo:', error);
-                alert('Erro ao pular módulo. Tente novamente.');
+                showPrettyPopup('Erro ao pular módulo. Tente novamente.', {
+                    title: 'Falha na operação',
+                    type: 'error'
+                });
                 const confirmBtn = document.querySelector('.modal-btn-confirm');
                 confirmBtn.disabled = false;
                 confirmBtn.textContent = 'Sim, pular módulo';
             }
         }
 
-        window.onclick = function(event) {
-            const modal = document.getElementById('skip-module-modal');
-            if (event.target === modal) {
+        window.addEventListener('click', function(event) {
+            const skipModal = document.getElementById('skip-module-modal');
+            const popupModal = document.getElementById('popup-modal');
+
+            if (event.target === skipModal) {
                 hideSkipModuleModal();
             }
-        }
+
+            if (event.target === popupModal) {
+                closePrettyPopup();
+            }
+        });
     </script>
 </body>
 </html>

@@ -73,7 +73,7 @@
             </div>
 
             <div class="module-card" data-module="matrizes" onclick="abrirModulo('matrizes')">
-                <div class="module-icon">�</div>
+                <div class="module-icon">🧩</div>
                 <h3>Matrizes</h3>
                 <p>Estruturas de dados bidimensionais</p>
                 <div class="progress-bar">
@@ -103,6 +103,16 @@
         </div>
     </main>
 
+    <div id="popup-modal" class="popup-modal" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+        <div class="popup-content" id="popup-content">
+            <h2 id="popup-title" class="popup-title">Aviso</h2>
+            <p id="popup-message" class="popup-message"></p>
+            <div class="popup-actions">
+                <button id="popup-confirm" type="button" class="popup-btn" onclick="closePrettyPopup()">Entendi</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
@@ -113,6 +123,46 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+
+        function showPrettyPopup(message, options = {}) {
+            const {
+                title = 'Aviso',
+                type = 'warning'
+            } = options;
+
+            const popupModal = document.getElementById('popup-modal');
+            const popupTitle = document.getElementById('popup-title');
+            const popupMessage = document.getElementById('popup-message');
+            const popupContent = document.getElementById('popup-content');
+
+            if (!popupModal || !popupTitle || !popupMessage || !popupContent) {
+                console.warn('Popup não encontrado na página.');
+                return;
+            }
+
+            popupTitle.textContent = title;
+            popupMessage.textContent = message;
+            popupContent.classList.remove('popup-success', 'popup-error', 'popup-warning');
+
+            if (type === 'success') {
+                popupContent.classList.add('popup-success');
+            } else if (type === 'error') {
+                popupContent.classList.add('popup-error');
+            } else {
+                popupContent.classList.add('popup-warning');
+            }
+
+            popupModal.classList.add('show');
+        }
+
+        function closePrettyPopup() {
+            const popupModal = document.getElementById('popup-modal');
+            if (popupModal) {
+                popupModal.classList.remove('show');
+            }
+        }
+
+        window.closePrettyPopup = closePrettyPopup;
 
         // Função para abrir módulo
         async function abrirModulo(modulo) {
@@ -142,11 +192,17 @@
                     window.location.href = redirectUrl;
                 } else {
                     console.log('Acesso negado:', result.message);
-                    alert(result.message || 'Você precisa completar os módulos anteriores primeiro!');
+                    showPrettyPopup(result.message || 'Você precisa completar os módulos anteriores primeiro!', {
+                        title: 'Módulo bloqueado',
+                        type: 'warning'
+                    });
                 }
             } catch (error) {
                 console.error('Erro ao verificar acesso ao módulo:', error);
-                alert('Erro ao acessar o módulo. Tente novamente.');
+                showPrettyPopup('Erro ao acessar o módulo. Tente novamente.', {
+                    title: 'Falha ao abrir módulo',
+                    type: 'error'
+                });
             }
         }
         window.abrirModulo = abrirModulo;
@@ -314,6 +370,13 @@
                 progressText.textContent = 'Complete o módulo anterior para desbloquear';
             }
         }
+
+        window.addEventListener('click', (event) => {
+            const popupModal = document.getElementById('popup-modal');
+            if (event.target === popupModal) {
+                closePrettyPopup();
+            }
+        });
     </script>
 </body>
 </html>
